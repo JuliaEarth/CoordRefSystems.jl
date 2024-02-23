@@ -1,0 +1,7 @@
+name = "Cartography"
+uuid = "b46f11dc-f210-4604-bfba-323c1ec968cb"
+authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1.9"
