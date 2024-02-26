@@ -37,6 +37,14 @@ WebMercator(args...) = WebMercator{WGS84}(args...)
 # CONVERSIONS
 # ------------
 
+function formulas(::Type{<:WebMercator{Datum}}, ::Type{T}) where {Datum,T}
+  fx(λ, ϕ) = λ
+
+  fy(λ, ϕ) = asinh(tan(ϕ))
+
+  fx, fy
+end
+
 function Base.convert(::Type{WebMercator{Datum}}, coords::LatLon{Datum}) where {Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)

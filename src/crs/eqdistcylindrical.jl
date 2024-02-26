@@ -47,6 +47,16 @@ const PlateCarree{Datum} = EquidistantCylindrical{0.0u"°",Datum}
 # CONVERSIONS
 # ------------
 
+function formulas(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}, ::Type{T}) where {latₜₛ,Datum,T}
+  ϕₜₛ = T(ustrip(deg2rad(latₜₛ)))
+
+  fx(λ, ϕ) = λ * cos(ϕₜₛ)
+
+  fy(λ, ϕ) = ϕ
+
+  fx, fy
+end
+
 function Base.convert(::Type{EquidistantCylindrical{latₜₛ,Datum}}, coords::LatLon{Datum}) where {latₜₛ,Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)
