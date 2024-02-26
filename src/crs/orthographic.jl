@@ -65,6 +65,38 @@ const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
 # CONVERSIONS
 # ------------
 
+function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
+  λ₀ = T(ustrip(deg2rad(lon₀)))
+  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+  e² = T(eccentricity²(ellipsoid(Datum)))
+
+  sinϕ₀ = sin(ϕ₀)
+  cosϕ₀ = cos(ϕ₀)
+  ν(ϕ) = 1 / sqrt(1 - e² * sin(ϕ)^2)
+  ν₀ = ν(ϕ₀)
+
+  fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ - λ₀)
+
+  function fy(λ, ϕ)
+    sinϕ = sin(ϕ)
+    cosϕ = cos(ϕ)
+    ν(ϕ) * (sinϕ * cosϕ₀ - cosϕ * sinϕ₀ * cos(λ - λ₀)) + e² * (ν₀ * sinϕ₀ - ν * sinϕ) * cosϕ₀
+  end
+
+  fx, fy
+end
+
+function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
+  λ₀ = T(ustrip(deg2rad(lon₀)))
+  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+
+  fx(λ, ϕ) = cos(ϕ) * sin(λ - λ₀)
+
+  fy(λ, ϕ) = sin(ϕ) * cos(ϕ₀) - cos(ϕ) * sin(ϕ₀) * cos(λ - λ₀)
+
+  fx, fy
+end
+
 function Base.convert(::Type{Orthographic{lat₀,lon₀,false,Datum}}, coords::LatLon{Datum}) where {lat₀,lon₀,Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)

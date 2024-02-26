@@ -12,6 +12,15 @@ abstract type CRS{Datum} end
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
+
+"""
+    formulas(CRS, T)
+
+Returns the forward formulas of the `CRS`: `fx(λ, ϕ)` and `fy(λ, ϕ)`,
+with `f(λ::T, ϕ::T) -> T` for both functions.
+"""
+function formulas end
+
 # ------
 # DATUM
 # ------

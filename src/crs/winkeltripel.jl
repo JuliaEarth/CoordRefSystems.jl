@@ -39,6 +39,21 @@ const WinkelTripel{Datum} = Winkel{50.467u"°",Datum}
 # CONVERSIONS
 # ------------
 
+function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
+  ϕ₁ = T(ustrip(deg2rad(lat₁)))
+
+  function sincα(λ, ϕ)
+    α = acos(cos(ϕ) * cos(λ / 2))
+    sinc(α / π) # unnormalized sinc
+  end
+
+  fx(λ, ϕ) = (λ * cos(ϕ₁) + (2cos(ϕ) * sin(λ / 2)) / sincα(λ, ϕ)) / 2
+
+  fy(λ, ϕ) = (ϕ + sin(ϕ) / sincα(λ, ϕ)) / 2
+
+  fx, fy
+end
+
 function Base.convert(::Type{Winkel{lat₁,Datum}}, coords::LatLon{Datum}) where {lat₁,Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)

@@ -95,6 +95,27 @@ const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",Datum}
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/cea.cpp
 # reference formula: https://neacsu.net/docs/geodesy/snyder/3-cylindrical/sect_10/
 
+function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}, ::Type{T}) where {latₜₛ,Datum,T}
+  🌎 = ellipsoid(Datum)
+  λ₀ = T(ustrip(deg2rad(longitudeₒ(Datum))))
+  e = T(eccentricity(🌎))
+  e² = T(eccentricity²(🌎))
+  ϕₜₛ = T(ustrip(deg2rad(latₜₛ)))
+
+  k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
+
+  fx(λ, ϕ) = k₀ * (λ - λ₀)
+
+  function fy(λ, ϕ)
+    sinϕ = sin(ϕ)
+    esinϕ = e * sinϕ
+    q = (1 - e²) * (sinϕ / (1 - esinϕ^2) - (1 / 2e) * log((1 - esinϕ) / (1 + esinϕ)))
+    q / 2k₀
+  end
+
+  fx, fy
+end
+
 function Base.convert(::Type{EqualAreaCylindrical{latₜₛ,Datum}}, coords::LatLon{Datum}) where {latₜₛ,Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)

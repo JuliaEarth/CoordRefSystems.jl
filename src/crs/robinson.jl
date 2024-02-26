@@ -100,6 +100,32 @@ function _V(C, z)
   c₀ + z * (c₁ + z * (c₂ + z * c₃))
 end
 
+function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
+  FXC = T(_FXC)
+  FYC = T(_FYC)
+  C₁ = T(_C₁)
+  RC₁ = T(_RC₁)
+
+  function V(COEFS, ϕ)
+    absϕ = abs(ϕ)
+    i = min(floor(Int, absϕ * C₁ + 1e-15), 18)
+    z = rad2deg(absϕ - RC₁ * i)
+    C = COEFS[i + 1]
+
+    c₀ = T(C.c₀)
+    c₁ = T(C.c₁)
+    c₂ = T(C.c₂)
+    c₃ = T(C.c₃)
+    c₀ + z * (c₁ + z * (c₂ + z * c₃))
+  end
+
+  fx(λ, ϕ) = V(_COEFSX, ϕ) * FXC * λ
+
+  fy(λ, ϕ) = V(_COEFSY, ϕ) * FYC * sign(ϕ)
+
+  fx, fy
+end
+
 function Base.convert(::Type{Robinson{Datum}}, coords::LatLon{Datum}) where {Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)

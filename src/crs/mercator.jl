@@ -37,6 +37,16 @@ Mercator(args...) = Mercator{WGS84}(args...)
 # CONVERSIONS
 # ------------
 
+function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
+  e = T(eccentricity(ellipsoid(Datum)))
+
+  fx(λ, ϕ) = λ
+
+  fy(λ, ϕ) = asinh(tan(ϕ)) - e * atanh(e * sin(ϕ))
+
+  fx, fy
+end
+
 function Base.convert(::Type{Mercator{Datum}}, coords::LatLon{Datum}) where {Datum}
   🌎 = ellipsoid(Datum)
   λ = deg2rad(coords.lon)
