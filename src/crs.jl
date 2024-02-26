@@ -12,7 +12,6 @@ abstract type CRS{Datum} end
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
-
 """
     formulas(CRS, T)
 
