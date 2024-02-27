@@ -8,7 +8,7 @@
 Orthographic CRS with latitude origin `lat₀` and longitude origin `lon₀` in degrees,
 spherical mode `S` enabled or not and a given `Datum`.
 """
-struct Orthographic{lat₀,lon₀,S,Datum,M<:Met} <: CRS{Datum}
+struct Orthographic{lat₀,lon₀,S,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   Orthographic{lat₀,lon₀,S,Datum}(x::M, y::M) where {lat₀,lon₀,S,Datum,M<:Met} = new{lat₀,lon₀,S,Datum,float(M)}(x, y)

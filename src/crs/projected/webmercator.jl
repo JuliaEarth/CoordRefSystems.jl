@@ -21,7 +21,7 @@ WebMercator{WGS84}(1.0u"m", 1.0u"m")
 
 See [EPSG:3857](https://epsg.io/3857).
 """
-struct WebMercator{Datum,M<:Met} <: CRS{Datum}
+struct WebMercator{Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   WebMercator{Datum}(x::M, y::M) where {Datum,M<:Met} = new{Datum,float(M)}(x, y)

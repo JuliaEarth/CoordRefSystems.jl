@@ -2,7 +2,12 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-abstract type LatitudeLongitude{Datum} <: CRS{Datum} end
+"""
+    Geographic{Datum}
+
+Geographic CRS with a given `Datum`.
+"""
+abstract type Geographic{Datum} <: CRS{Datum} end
 
 """
     LatLon(lat, lon)
@@ -27,7 +32,7 @@ LatLon{WGS84}(45.0u"°", 45.0u"°")
 
 See [EPSG:4326](https://epsg.io/4326).
 """
-struct GeodeticLatLon{Datum,D<:Deg} <: LatitudeLongitude{Datum}
+struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
   GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = new{Datum,float(D)}(lat, lon)
@@ -59,7 +64,7 @@ GeocentricLatLon(45.0u"°", 45.0u"°")
 GeocentricLatLon{WGS84}(45.0u"°", 45.0u"°")
 ```
 """
-struct GeocentricLatLon{Datum,D<:Deg} <: LatitudeLongitude{Datum}
+struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
   GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = new{Datum,float(D)}(lat, lon)
@@ -89,7 +94,7 @@ AuthalicLatLon(45.0u"°", 45.0u"°")
 AuthalicLatLon{WGS84}(45.0u"°", 45.0u"°")
 ```
 """
-struct AuthalicLatLon{Datum,D<:Deg} <: LatitudeLongitude{Datum}
+struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
   AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = new{Datum,float(D)}(lat, lon)

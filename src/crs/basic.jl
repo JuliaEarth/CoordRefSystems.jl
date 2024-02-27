@@ -3,6 +3,13 @@
 # ------------------------------------------------------------------
 
 """
+    Basic{Datum}
+
+Basic CRS in the Euclidean space with a given `Datum`.
+"""
+abstract type Basic{Datum} <: CRS{Datum} end
+
+"""
     Cartesian(x₁, x₂, ..., xₙ)
     Cartesian{Datum}(x₁, x₂, ..., xₙ)
 
@@ -25,7 +32,7 @@ Cartesian{WGS84}(1.0u"m", 1.0u"m")
 * [ISO 80000-2:2019](https://www.iso.org/standard/64973.html)
 * [ISO 80000-3:2019](https://www.iso.org/standard/64974.html)
 """
-struct Cartesian{Datum,N,L<:Len} <: CRS{Datum}
+struct Cartesian{Datum,N,L<:Len} <: Basic{Datum}
   coords::NTuple{N,L}
   Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = new{Datum,N,float(L)}(coords)
 end
@@ -112,7 +119,7 @@ Polar{WGS84}(1.0u"m", (π/4)u"rad")
 * [ISO 80000-2:2019](https://www.iso.org/standard/64973.html)
 * [ISO 80000-3:2019](https://www.iso.org/standard/64974.html)
 """
-struct Polar{Datum,L<:Len,R<:Rad} <: CRS{Datum}
+struct Polar{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   ρ::L
   ϕ::R
   Polar{Datum}(ρ::L, ϕ::R) where {Datum,L<:Len,R<:Rad} = new{Datum,float(L),float(R)}(ρ, ϕ)
@@ -148,7 +155,7 @@ Cylindrical{WGS84}(1.0u"m", (π/4)u"rad", 1.0u"m")
 * [ISO 80000-2:2019](https://www.iso.org/standard/64973.html)
 * [ISO 80000-3:2019](https://www.iso.org/standard/64974.html)
 """
-struct Cylindrical{Datum,L<:Len,R<:Rad} <: CRS{Datum}
+struct Cylindrical{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   ρ::L
   ϕ::R
   z::L
@@ -189,7 +196,7 @@ Spherical{WGS84}(1.0u"m", (π/4)u"rad", (π/4)u"rad")
 * [ISO 80000-2:2019](https://www.iso.org/standard/64973.html)
 * [ISO 80000-3:2019](https://www.iso.org/standard/64974.html)
 """
-struct Spherical{Datum,L<:Len,R<:Rad} <: CRS{Datum}
+struct Spherical{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   r::L
   θ::R
   ϕ::R

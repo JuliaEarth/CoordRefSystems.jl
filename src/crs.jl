@@ -5,20 +5,12 @@
 """
     CRS{Datum}
 
-Coordinate Reference System (CRS) with a given `Datum`
+Coordinate Reference System (CRS) with a given `Datum`.
 """
 abstract type CRS{Datum} end
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
-
-"""
-    formulas(CRS, T)
-
-Returns the forward formulas of the `CRS`: `fx(λ, ϕ)` and `fy(λ, ϕ)`,
-with `f(λ::T, ϕ::T) -> T` for both functions.
-"""
-function formulas end
 
 # ------
 # DATUM
@@ -38,7 +30,7 @@ datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
 Returns the ellipsoid of the coordinates `coords`.
 """
 ellipsoid(coords::CRS) = ellipsoid(typeof(coords))
-ellipsoid(T::Type{<:CRS}) = ellipsoid(datum(T))
+ellipsoid(C::Type{<:CRS}) = ellipsoid(datum(C))
 
 """
     latitudeₒ(coords)
@@ -46,7 +38,7 @@ ellipsoid(T::Type{<:CRS}) = ellipsoid(datum(T))
 Returns the latitude origin of the coordinates `coords`.
 """
 latitudeₒ(coords::CRS) = latitudeₒ(typeof(coords))
-latitudeₒ(T::Type{<:CRS}) = latitudeₒ(datum(T))
+latitudeₒ(C::Type{<:CRS}) = latitudeₒ(datum(C))
 
 """
     longitudeₒ(coords)
@@ -54,7 +46,7 @@ latitudeₒ(T::Type{<:CRS}) = latitudeₒ(datum(T))
 Returns the longitude origin of the coordinates `coords`.
 """
 longitudeₒ(coords::CRS) = longitudeₒ(typeof(coords))
-longitudeₒ(T::Type{<:CRS}) = longitudeₒ(datum(T))
+longitudeₒ(C::Type{<:CRS}) = longitudeₒ(datum(C))
 
 """
     altitudeₒ(coords)
@@ -62,7 +54,7 @@ longitudeₒ(T::Type{<:CRS}) = longitudeₒ(datum(T))
 Returns the altitude origin of the coordinates `coords`.
 """
 altitudeₒ(coords::CRS) = altitudeₒ(typeof(coords))
-altitudeₒ(T::Type{<:CRS}) = altitudeₒ(datum(T))
+altitudeₒ(C::Type{<:CRS}) = altitudeₒ(datum(C))
 
 # -----------
 # IO METHODS
@@ -97,36 +89,5 @@ const Rad{T} = Quantity{T,NoDims,typeof(u"rad")}
 const Deg{T} = Quantity{T,NoDims,typeof(u"°")}
 
 include("crs/basic.jl")
-include("crs/latlon.jl")
-include("crs/mercator.jl")
-include("crs/webmercator.jl")
-include("crs/eqdistcylindrical.jl")
-include("crs/eqareacylindrical.jl")
-include("crs/winkeltripel.jl")
-include("crs/robinson.jl")
-include("crs/orthographic.jl")
-
-# ----------
-# FALLBACKS
-# ----------
-
-function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:CRS{Datum}}
-  T = numtype(coords.lon)
-  λ = ustrip(deg2rad(coords.lon))
-  ϕ = ustrip(deg2rad(coords.lat))
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  fx, fy = formulas(C, T)
-  x = fx(λ, ϕ) * a
-  y = fy(λ, ϕ) * a
-  C(x, y)
-end
-
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:CRS{Datum}}
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
-  fx, fy = formulas(C, T)
-  λ, ϕ = projinv(fx, fy, x, y, x, y)
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
-end
+include("crs/geographic.jl")
+include("crs/projected.jl")
