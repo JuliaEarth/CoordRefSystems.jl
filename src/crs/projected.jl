@@ -5,7 +5,7 @@
 """
     Projected{Datum}
 
-Projected CRS from [`Geographic`](@ref) coordinates with a given `Datum`.
+Projected CRS with a given `Datum`.
 """
 abstract type Projected{Datum} <: CRS{Datum} end
 
