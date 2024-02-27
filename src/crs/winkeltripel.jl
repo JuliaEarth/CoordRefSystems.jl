@@ -53,21 +53,3 @@ function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum
 
   fx, fy
 end
-
-function Base.convert(::Type{Winkel{lat₁,Datum}}, coords::LatLon{Datum}) where {lat₁,Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  ϕ₁ = oftype(ϕ, deg2rad(lat₁))
-  l = ustrip(λ)
-  o = ustrip(ϕ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-
-  α = acos(cos(ϕ) * cos(λ / 2))
-  sincα = sinc(α / π) # unnormalized sinc
-
-  x = a / 2 * (l * cos(ϕ₁) + (2cos(ϕ) * sin(λ / 2)) / sincα)
-  y = a / 2 * (o + sin(ϕ) / sincα)
-
-  Winkel{lat₁,Datum}(x * u"m", y * u"m")
-end

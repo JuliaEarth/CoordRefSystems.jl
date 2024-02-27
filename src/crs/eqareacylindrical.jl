@@ -116,29 +116,6 @@ function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}, ::Type{T}) wh
   fx, fy
 end
 
-function Base.convert(::Type{EqualAreaCylindrical{latₜₛ,Datum}}, coords::LatLon{Datum}) where {latₜₛ,Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  λ₀ = oftype(λ, deg2rad(longitudeₒ(Datum)))
-  ϕₜₛ = oftype(ϕ, deg2rad(latₜₛ))
-  l = ustrip(λ)
-  l₀ = ustrip(λ₀)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-  e = oftype(l, eccentricity(🌎))
-  e² = oftype(l, eccentricity²(🌎))
-
-  sinϕ = sin(ϕ)
-  esinϕ = e * sinϕ
-  k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
-  q = (1 - e²) * (sinϕ / (1 - esinϕ^2) - (1 / 2e) * log((1 - esinϕ) / (1 + esinϕ)))
-
-  x = a * k₀ * (l - l₀)
-  y = a * q / 2k₀
-
-  EqualAreaCylindrical{latₜₛ,Datum}(x * u"m", y * u"m")
-end
-
 function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x

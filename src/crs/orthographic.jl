@@ -78,9 +78,10 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) 
   fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ - λ₀)
 
   function fy(λ, ϕ)
+    νϕ = ν(ϕ)
     sinϕ = sin(ϕ)
     cosϕ = cos(ϕ)
-    ν(ϕ) * (sinϕ * cosϕ₀ - cosϕ * sinϕ₀ * cos(λ - λ₀)) + e² * (ν₀ * sinϕ₀ - ν * sinϕ) * cosϕ₀
+    νϕ * (sinϕ * cosϕ₀ - cosϕ * sinϕ₀ * cos(λ - λ₀)) + e² * (ν₀ * sinϕ₀ - νϕ * sinϕ) * cosϕ₀
   end
 
   fx, fy
@@ -95,43 +96,4 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) w
   fy(λ, ϕ) = sin(ϕ) * cos(ϕ₀) - cos(ϕ) * sin(ϕ₀) * cos(λ - λ₀)
 
   fx, fy
-end
-
-function Base.convert(::Type{Orthographic{lat₀,lon₀,false,Datum}}, coords::LatLon{Datum}) where {lat₀,lon₀,Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  λ₀ = oftype(λ, deg2rad(lon₀))
-  ϕ₀ = oftype(ϕ, deg2rad(lat₀))
-  l = ustrip(λ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-  e² = oftype(l, eccentricity²(🌎))
-
-  sinϕ = sin(ϕ)
-  cosϕ = cos(ϕ)
-  sinϕ₀ = sin(ϕ₀)
-  cosϕ₀ = cos(ϕ₀)
-  ν = 1 / sqrt(1 - e² * sinϕ^2)
-  ν₀ = 1 / sqrt(1 - e² * sinϕ₀^2)
-
-  x = a * (ν * cosϕ * sin(λ - λ₀))
-  y = a * (ν * (sinϕ * cosϕ₀ - cosϕ * sinϕ₀ * cos(λ - λ₀)) + e² * (ν₀ * sinϕ₀ - ν * sinϕ) * cosϕ₀)
-
-  Orthographic{lat₀,lon₀,false,Datum}(x * u"m", y * u"m")
-end
-
-function Base.convert(::Type{Orthographic{lat₀,lon₀,true,Datum}}, coords::LatLon{Datum}) where {lat₀,lon₀,Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  λ₀ = oftype(λ, deg2rad(lon₀))
-  ϕ₀ = oftype(ϕ, deg2rad(lat₀))
-  l = ustrip(λ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-
-  cosϕ = cos(ϕ)
-  x = a * cosϕ * sin(λ - λ₀)
-  y = a * (sin(ϕ) * cos(ϕ₀) - cosϕ * sin(ϕ₀) * cos(λ - λ₀))
-
-  Orthographic{lat₀,lon₀,true,Datum}(x * u"m", y * u"m")
 end
