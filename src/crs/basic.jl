@@ -5,7 +5,7 @@
 """
     Basic{Datum}
 
-Basic CRS in the Euclidean space with a given `Datum`.
+Basic CRS with a given `Datum`.
 """
 abstract type Basic{Datum} <: CRS{Datum} end
 
