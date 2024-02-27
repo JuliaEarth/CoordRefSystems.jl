@@ -974,22 +974,32 @@
       c1 = LatLon(T(45), T(90))
       c2 = convert(Robinson{WGS84}, c1)
       @test c2 ≈ Robinson(T(7620313.925950073), T(4805073.646653474))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
       c2 = convert(Robinson{WGS84}, c1)
       @test c2 ≈ Robinson(T(7620313.925950073), -T(4805073.646653474))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
       c2 = convert(Robinson{WGS84}, c1)
       @test c2 ≈ Robinson(-T(7620313.925950073), T(4805073.646653474))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
       c2 = convert(Robinson{WGS84}, c1)
       @test c2 ≈ Robinson(-T(7620313.925950073), -T(4805073.646653474))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
+      c2 = Robinson(T(7620313.925950073), T(4805073.646653474))
       @inferred convert(Robinson{WGS84}, c1)
+      @inferred convert(LatLon{WGS84}, c2)
     end
 
     @testset "LatLon <> OrthoNorth" begin

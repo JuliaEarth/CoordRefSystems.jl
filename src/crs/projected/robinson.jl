@@ -91,6 +91,11 @@ const _FXC = 0.8487
 const _FYC = 1.3523
 const _C₁ = 11.45915590261646417544
 const _RC₁ = 0.08726646259971647884
+const _NODES = 18
+const _ONEEPS = 1.000001
+
+_V(C, z) = C.c₀ + z * (C.c₁ + z * (C.c₂ + z * C.c₃))
+_DV(C, z) = (C.c₁ + 2z * C.c₂ + z^2 * 3C.c₃)
 
 function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
   FXC = T(_FXC)
@@ -100,15 +105,10 @@ function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
 
   function V(COEFS, ϕ)
     absϕ = abs(ϕ)
-    i = min(floor(Int, absϕ * C₁ + 1e-15), 18)
+    i = min(floor(Int, absϕ * C₁ + 1e-15), _NODES)
     z = rad2deg(absϕ - RC₁ * i)
-    C = COEFS[i + 1]
-
-    c₀ = T(C.c₀)
-    c₁ = T(C.c₁)
-    c₂ = T(C.c₂)
-    c₃ = T(C.c₃)
-    c₀ + z * (c₁ + z * (c₂ + z * c₃))
+    C = map(T, COEFS[i + 1])
+    _V(C, z)
   end
 
   fx(λ, ϕ) = V(_COEFSX, ϕ) * FXC * λ
@@ -116,4 +116,43 @@ function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
   fy(λ, ϕ) = V(_COEFSY, ϕ) * FYC * sign(ϕ)
 
   fx, fy
+end
+
+function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Datum}
+  🌎 = ellipsoid(Datum)
+  T = numtype(coords.x)
+  a = numconvert(T, majoraxis(🌎))
+  x = coords.x / a
+  y = coords.y / a
+
+  FXC = T(_FXC)
+  FYC = T(_FYC)
+  Vy = abs(y / FYC)
+
+  if Vy ≥ 1 # simple pathologic cases
+    c₀ = T(_COEFSX[_NODES + 1].c₀)
+    halfπ = T(π / 2)
+
+    λ = x / (FXC * c₀)
+    ϕ = halfπ * sign(y)
+  else # general problem
+    # in Y space, reduce to table interval
+    i = floor(Int, Vy * _NODES) + 1
+    if _COEFSY[i].c₀ > Vy
+      i -= 1
+    elseif _COEFSY[i + 1].c₀ <= Vy
+      i += 1
+    end
+
+    Cy = map(T, _COEFSY[i])
+    c₀ = T(_COEFSY[i + 1].c₀)
+    z₀ = 5 * (Vy - Cy.c₀) / (c₀ - Cy.c₀)
+    z = newton(z -> _V(Cy, z) - Vy, z -> _DV(Cy, z), z₀, maxiter=100)
+
+    Cx = map(T, _COEFSX[i])
+    λ = x / (FXC * _V(Cx, z))
+    ϕ = deg2rad(5 * (i - 1) + z) * sign(y)
+  end
+
+  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
