@@ -45,17 +45,6 @@ function formulas(::Type{<:WebMercator{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
-function Base.convert(::Type{WebMercator{Datum}}, coords::LatLon{Datum}) where {Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  l = ustrip(λ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-  x = a * l
-  y = a * asinh(tan(ϕ))
-  WebMercator{Datum}(x * u"m", y * u"m")
-end
-
 function Base.convert(::Type{LatLon{Datum}}, coords::WebMercator{Datum}) where {Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x

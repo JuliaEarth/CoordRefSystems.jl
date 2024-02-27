@@ -105,3 +105,18 @@ include("crs/eqareacylindrical.jl")
 include("crs/winkeltripel.jl")
 include("crs/robinson.jl")
 include("crs/orthographic.jl")
+
+# ----------
+# FALLBACKS
+# ----------
+
+function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:CRS{Datum}}
+  T = numtype(coords.lon)
+  λ = ustrip(deg2rad(coords.lon))
+  ϕ = ustrip(deg2rad(coords.lat))
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  fx, fy = formulas(C, T)
+  x = fx(λ, ϕ) * a
+  y = fy(λ, ϕ) * a
+  C(x, y)
+end

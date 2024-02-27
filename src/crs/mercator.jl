@@ -47,18 +47,6 @@ function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
-function Base.convert(::Type{Mercator{Datum}}, coords::LatLon{Datum}) where {Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  l = ustrip(λ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-  e = oftype(l, eccentricity(🌎))
-  x = a * l
-  y = a * (asinh(tan(ϕ)) - e * atanh(e * sin(ϕ)))
-  Mercator{Datum}(x * u"m", y * u"m")
-end
-
 function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x

@@ -57,21 +57,6 @@ function formulas(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}, ::Type{T}) 
   fx, fy
 end
 
-function Base.convert(::Type{EquidistantCylindrical{latₜₛ,Datum}}, coords::LatLon{Datum}) where {latₜₛ,Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  ϕₜₛ = oftype(ϕ, deg2rad(latₜₛ))
-  l = ustrip(λ)
-  o = ustrip(ϕ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-
-  x = a * l * cos(ϕₜₛ)
-  y = a * o
-
-  EquidistantCylindrical{latₜₛ,Datum}(x * u"m", y * u"m")
-end
-
 function Base.convert(::Type{LatLon{Datum}}, coords::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x

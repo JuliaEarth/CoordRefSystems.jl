@@ -92,14 +92,6 @@ const _FYC = 1.3523
 const _C₁ = 11.45915590261646417544
 const _RC₁ = 0.08726646259971647884
 
-function _V(C, z)
-  c₀ = oftype(z, C.c₀)
-  c₁ = oftype(z, C.c₁)
-  c₂ = oftype(z, C.c₂)
-  c₃ = oftype(z, C.c₃)
-  c₀ + z * (c₁ + z * (c₂ + z * c₃))
-end
-
 function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
   FXC = T(_FXC)
   FYC = T(_FYC)
@@ -124,26 +116,4 @@ function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
   fy(λ, ϕ) = V(_COEFSY, ϕ) * FYC * sign(ϕ)
 
   fx, fy
-end
-
-function Base.convert(::Type{Robinson{Datum}}, coords::LatLon{Datum}) where {Datum}
-  🌎 = ellipsoid(Datum)
-  λ = deg2rad(coords.lon)
-  ϕ = deg2rad(coords.lat)
-  l = ustrip(λ)
-  o = ustrip(ϕ)
-  a = oftype(l, ustrip(majoraxis(🌎)))
-  absϕ = abs(o)
-
-  FXC = oftype(l, _FXC)
-  FYC = oftype(l, _FYC)
-  C₁ = oftype(l, _C₁)
-  RC₁ = oftype(l, _RC₁)
-  i = min(floor(Int, absϕ * C₁ + 1e-15), 18)
-  z = rad2deg(absϕ - RC₁ * i)
-
-  x = a * _V(_COEFSX[i + 1], z) * FXC * l
-  y = a * _V(_COEFSY[i + 1], z) * FYC * sign(o)
-
-  Robinson{Datum}(x * u"m", y * u"m")
 end
