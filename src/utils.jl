@@ -61,3 +61,46 @@ function newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
   end
   xₙ₊₁
 end
+
+"""
+    projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
+
+Approximates the inverse of a projection with the Newton-Raphson method
+using its forward formulas `fx` and `fy`, `x` and `y` values, 
+initial guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
+
+## References
+
+* Cengizhan Ipbuker and İbrahim Öztuğ Bildirici. 2002. [A GENERAL ALGORITHM FOR THE INVERSE TRANSFORMATION OF MAP PROJECTIONS USING JACOBIAN 
+  MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
+"""
+function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
+  if abs(x) < tol && abs(y) < tol
+    return zero(x), zero(y)
+  end
+
+  f₁(λ, ϕ) = fx(λ, ϕ) - x
+  f₂(λ, ϕ) = fy(λ, ϕ) - y
+  λᵢ₊₁ = λᵢ = λₒ
+  ϕᵢ₊₁ = ϕᵢ = ϕₒ
+
+  for _ in 1:maxiter
+    v₁ = f₁(λᵢ, ϕᵢ)
+    v₂ = f₂(λᵢ, ϕᵢ)
+    df₁dλ, df₁dϕ = gradient(f₁, λᵢ, ϕᵢ)
+    df₂dλ, df₂dϕ = gradient(f₂, λᵢ, ϕᵢ)
+
+    den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
+    λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
+    ϕᵢ₊₁ = ϕᵢ - (v₁ * df₂dλ - v₂ * df₁dλ) / den
+
+    if abs(λᵢ₊₁ - λᵢ) ≤ tol && abs(ϕᵢ₊₁ - ϕᵢ) ≤ tol
+      break
+    end
+
+    λᵢ = λᵢ₊₁
+    ϕᵢ = ϕᵢ₊₁
+  end
+
+  λᵢ₊₁, ϕᵢ₊₁
+end
