@@ -7,7 +7,7 @@
 
 Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` in degrees and a given `Datum`.
 """
-struct EqualAreaCylindrical{latₜₛ,Datum,M<:Met} <: CRS{Datum}
+struct EqualAreaCylindrical{latₜₛ,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   EqualAreaCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Met} = new{latₜₛ,Datum,float(M)}(x, y)

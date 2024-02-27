@@ -21,7 +21,7 @@ Mercator{WGS84}(1.0u"m", 1.0u"m")
 
 See [EPSG:3395](https://epsg.io/3395).
 """
-struct Mercator{Datum,M<:Met} <: CRS{Datum}
+struct Mercator{Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   Mercator{Datum}(x::M, y::M) where {Datum,M<:Met} = new{Datum,float(M)}(x, y)

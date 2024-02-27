@@ -2,7 +2,7 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-struct Winkel{lat₁,Datum,M<:Met} <: CRS{Datum}
+struct Winkel{lat₁,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = new{lat₁,Datum,float(M)}(x, y)

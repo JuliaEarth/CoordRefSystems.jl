@@ -21,7 +21,7 @@ Robinson{WGS84}(1.0u"m", 1.0u"m")
 
 See [ESRI:54030](https://epsg.io/54030).
 """
-struct Robinson{Datum,M<:Met} <: CRS{Datum}
+struct Robinson{Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
   Robinson{Datum}(x::M, y::M) where {Datum,M<:Met} = new{Datum,float(M)}(x, y)
