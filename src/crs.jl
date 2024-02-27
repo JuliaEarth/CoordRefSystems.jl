@@ -120,3 +120,13 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:CRS{Datu
   y = fy(λ, ϕ) * a
   C(x, y)
 end
+
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:CRS{Datum}}
+  T = numtype(coords.x)
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  x = coords.x / a
+  y = coords.y / a
+  fx, fy = formulas(C, T)
+  λ, ϕ = projinv(fx, fy, x, y, x, y)
+  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+end

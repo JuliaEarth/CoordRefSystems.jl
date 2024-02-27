@@ -6,6 +6,7 @@ module Cartography
 
 using Unitful
 using Unitful: numtype
+using Zygote: gradient
 
 include("utils.jl")
 include("ioutils.jl")

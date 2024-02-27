@@ -936,26 +936,38 @@
       c1 = LatLon(T(45), T(90))
       c2 = convert(WinkelTripel{WGS84}, c1)
       @test c2 ≈ WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
       c2 = convert(WinkelTripel{WGS84}, c1)
       @test c2 ≈ WinkelTripel(T(7044801.6979576545), -T(5231448.051548355))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
       c2 = convert(WinkelTripel{WGS84}, c1)
       @test c2 ≈ WinkelTripel(-T(7044801.6979576545), T(5231448.051548355))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
       c2 = convert(WinkelTripel{WGS84}, c1)
       @test c2 ≈ WinkelTripel(-T(7044801.6979576545), -T(5231448.051548355))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(T(0), T(0))
       c2 = convert(WinkelTripel{WGS84}, c1)
       @test c2 ≈ WinkelTripel(T(0), T(0))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
+      c2 = WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
       @inferred convert(WinkelTripel{WGS84}, c1)
+      @inferred convert(LatLon{WGS84}, c2)
     end
 
     @testset "LatLon <> Robinson" begin
