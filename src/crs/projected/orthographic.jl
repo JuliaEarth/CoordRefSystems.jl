@@ -65,6 +65,15 @@ const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
 # CONVERSIONS
 # ------------
 
+# Adapted from PROJ coordinate transformation software
+# Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
+# holder, but he didn't mean to imply he did the work. Essentially all work was
+# done by Gerald Evenden.
+# reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/robin.cpp
+# reference formulas: https://neacsu.net/docs/geodesy/snyder/5-azimuthal/sect_20/
+#                     https://mathworld.wolfram.com/OrthographicProjection.html
+#                     https://epsg.org/guidance-notes.html
+
 function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
   λ₀ = T(ustrip(deg2rad(lon₀)))
   ϕ₀ = T(ustrip(deg2rad(lat₀)))
@@ -96,4 +105,44 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) w
   fy(λ, ϕ) = sin(ϕ) * cos(ϕ₀) - cos(ϕ) * sin(ϕ₀) * cos(λ - λ₀)
 
   fx, fy
+end
+
+function sphericalinv(x, y, λ₀, ϕ₀)
+  ρ = sqrt(x^2 + y^2)
+  c = asin(ρ)
+  if ρ < atol(x)
+    λ₀, ϕ₀
+  else
+    sinc = sin(c)
+    cosc = cos(c)
+    sinϕ₀ = sin(ϕ₀)
+    cosϕ₀ = cos(ϕ₀)
+    λ = λ₀ + atan(x * sinc / (ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc))
+    ϕ = asin(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ))
+    λ, ϕ
+  end
+end
+
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,Datum,C<:Orthographic{lat₀,lon₀,true,Datum}}
+  T = numtype(coords.x)
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  x = coords.x / a
+  y = coords.y / a
+  λ₀ = T(ustrip(deg2rad(lon₀)))
+  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+  λ, ϕ = sphericalinv(x, y, λ₀, ϕ₀)
+  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+end
+
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,S,Datum,C<:Orthographic{lat₀,lon₀,S,Datum}}
+  T = numtype(coords.x)
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  x = coords.x / a
+  y = coords.y / a
+  λ₀ = T(ustrip(deg2rad(lon₀)))
+  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+  λₛ, ϕₛ = sphericalinv(x, y, λ₀, ϕ₀)
+  fx, fy = formulas(C, T)
+  λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
+  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
