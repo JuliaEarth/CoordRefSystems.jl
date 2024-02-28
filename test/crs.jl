@@ -1006,54 +1006,78 @@
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorth{WGS84}, c1)
       @test c2 ≈ OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(T(30), -T(60))
       c2 = convert(OrthoNorth{WGS84}, c1)
       @test c2 ≈ OrthoNorth(-T(4787610.688267582), T(-2764128.319646418))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(60))
+      c2 = OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
       @inferred convert(OrthoNorth{WGS84}, c1)
+      @inferred convert(LatLon{WGS84}, c2)
     end
 
     @testset "LatLon <> OrthoSouth" begin
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouth{WGS84}, c1)
       @test c2 ≈ OrthoSouth(T(4787610.688267582), T(2764128.319646418))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(30), -T(60))
       c2 = convert(OrthoSouth{WGS84}, c1)
       @test c2 ≈ OrthoSouth(-T(4787610.688267582), T(2764128.319646418))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       # type stability
-      c1 = LatLon(T(30), T(60))
+      c1 = LatLon(-T(30), T(60))
+      c2 = OrthoSouth(T(4787610.688267582), T(2764128.319646418))
       @inferred convert(OrthoSouth{WGS84}, c1)
+      @inferred convert(LatLon{WGS84}, c2)
     end
 
     @testset "LatLon <> OrthoSpherical" begin
-      OrthoNorthSpherical = Cartography.Orthographic{90.0u"°",0.0u"°",true,WGS84}
-      OrthoSouthSpherical = Cartography.Orthographic{-90.0u"°",0.0u"°",true,WGS84}
+      OrthoNorthSpherical = Cartography.crs(ESRI{102035})
+      OrthoSouthSpherical = Cartography.crs(ESRI{102037})
 
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorthSpherical, c1)
       @test c2 ≈ OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(T(30), -T(60))
       c2 = convert(OrthoNorthSpherical, c1)
       @test c2 ≈ OrthoNorthSpherical(-T(4783602.75), T(-2761814.335408735))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test c2 ≈ OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       c1 = LatLon(-T(30), -T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test c2 ≈ OrthoSouthSpherical(-T(4783602.75), T(2761814.335408735))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(60))
+      c2 = OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735))
+      c3 = OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
       @inferred convert(OrthoNorthSpherical, c1)
       @inferred convert(OrthoSouthSpherical, c1)
+      @inferred convert(LatLon{WGS84}, c2)
+      @inferred convert(LatLon{WGS84}, c3)
     end
   end
 end
