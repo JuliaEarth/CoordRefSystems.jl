@@ -110,7 +110,7 @@ end
 function sphericalinv(x, y, λ₀, ϕ₀)
   ρ = sqrt(x^2 + y^2)
   c = asin(ρ)
-  if ρ < tol(x)
+  if ρ < atol(x)
     λ₀, ϕ₀
   else
     sinc = sin(c)
