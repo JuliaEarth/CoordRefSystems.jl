@@ -48,6 +48,49 @@ GeodeticLatLon(args...) = GeodeticLatLon{WGS84}(args...)
 const LatLon = GeodeticLatLon
 
 """
+    LatLonAlt(lat, lon, alt)
+    LatLonAlt{Datum}(lat, lon, alt)
+    GeodeticLatLonAlt(lat, lon, alt)
+    GeodeticLatLonAlt{Datum}(lat, lon, alt)
+
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+and altitude in length units (default to meter) with a given `Datum` (default to `WGS84`).
+
+`LatLonAlt` is an alias to `GeodeticLatLonAlt`.
+
+## Examples
+
+```julia
+LatLonAlt(45, 45, 1) # add default units
+LatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
+LatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
+LatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
+LatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
+LatLonAlt{WGS84}(45.0u"°", 45.0u"°", 1.0u"m")
+```
+"""
+struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
+  lat::D
+  lon::D
+  alt::M
+  GeodeticLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
+    new{Datum,float(D),float(M)}(lat, lon, alt)
+end
+
+GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
+  GeodeticLatLonAlt{Datum}(promote(lat, lon)..., alt)
+GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
+  GeodeticLatLonAlt{Datum}(lat, lon, uconvert(u"m", alt))
+GeodeticLatLonAlt{Datum}(lat::Rad, lon::Rad, alt::Len) where {Datum} =
+  GeodeticLatLonAlt{Datum}(rad2deg(lat), rad2deg(lon), alt)
+GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
+  GeodeticLatLonAlt{Datum}(addunit(lat, u"°"), addunit(lon, u"°"), addunit(alt, u"m"))
+
+GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84}(args...)
+
+const LatLonAlt = GeodeticLatLonAlt
+
+"""
     GeocentricLatLon(lat, lon)
     GeocentricLatLon{Datum}(lat, lon)
 
@@ -186,4 +229,61 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
   e² = oftype(β, eccentricity²(ellipsoid(Datum)))
   ϕ = auth2geod(β, e²)
   LatLon{Datum}(rad2deg(ϕ) * u"°", coords.lon)
+end
+
+# reference code: https://github.com/OSGeo/PROJ/blob/master/src/conversions/cart.cpp
+# reference formula: https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#From_geodetic_to_ECEF_coordinates
+
+function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
+  T = numtype(coords.lon)
+  lla = LatLonAlt(coords.lat, coords.lon, zero(T) * u"m")
+  convert(Cartesian{Datum}, lla)
+end
+
+function Base.convert(::Type{LatLon{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
+  lla = convert(LatLonAlt{Datum}, coords)
+  LatLon{Datum}(lla.lat, lla.lon)
+end
+
+function Base.convert(::Type{Cartesian{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
+  T = numtype(coords.lon)
+  🌎 = ellipsoid(Datum)
+  λ = ustrip(deg2rad(coords.lon))
+  ϕ = ustrip(deg2rad(coords.lat))
+  h = ustrip(coords.alt)
+  a = T(ustrip(majoraxis(🌎)))
+  e² = T(eccentricity²(🌎))
+
+  sinϕ = sin(ϕ)
+  cosϕ = cos(ϕ)
+  N = a / sqrt(1 - e² * sinϕ^2)
+  k = N + h
+
+  x = k * cosϕ * cos(λ)
+  y = k * cosϕ * sin(λ)
+  z = k * (1 - e²) * sinϕ
+
+  Cartesian{Datum}(x * u"m", y * u"m", z * u"m")
+end
+
+function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
+  T = numtype(coords.x)
+  🌎 = ellipsoid(Datum)
+  x = ustrip(coords.x)
+  y = ustrip(coords.y)
+  z = ustrip(coords.z)
+  a = T(ustrip(majoraxis(🌎)))
+  b = T(ustrip(minoraxis(🌎)))
+  e² = T(eccentricity²(🌎))
+  e′² = e² / (1 - e²)
+
+  p = hypot(x, y)
+  ψ = atan(a * z, b * p)
+
+  λ = atan(y, x)
+  ϕ = atan(z + b * e′² * sin(ψ)^3, p - a * e² * cos(ψ)^3)
+  N = a / sqrt(1 - e² * sin(ϕ)^2)
+  h = p / cos(ϕ) - N
+
+  LatLonAlt{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°", h * u"m")
 end

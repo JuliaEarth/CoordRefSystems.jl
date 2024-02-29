@@ -196,6 +196,36 @@
     @test_throws ArgumentError LatLon(T(1) * u"s", T(1) * u"s")
   end
 
+  @testset "GeodeticLatLonAlt" begin
+    @test LatLonAlt(T(1), T(1), T(1)) == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
+    @test LatLonAlt(T(1) * u"°", 1 * u"°", T(1) * u"m") == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
+    @test LatLonAlt(T(π / 4) * u"rad", T(π / 4) * u"rad", T(1) * u"km") ≈
+          LatLonAlt(T(45) * u"°", T(45) * u"°", T(1000) * u"m")
+
+    c = LatLonAlt(T(1), T(1), T(1))
+    @test sprint(show, c) == "GeodeticLatLonAlt{WGS84}(lat: 1.0°, lon: 1.0°, alt: 1.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      GeodeticLatLonAlt{WGS84} coordinates
+      ├─ lat: 1.0f0°
+      ├─ lon: 1.0f0°
+      └─ alt: 1.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      GeodeticLatLonAlt{WGS84} coordinates
+      ├─ lat: 1.0°
+      ├─ lon: 1.0°
+      └─ alt: 1.0 m"""
+    end
+
+    # error: invalid units for coordinates
+    @test_throws ArgumentError LatLonAlt(T(1), T(1) * u"°", T(1) * u"m")
+    @test_throws ArgumentError LatLonAlt(T(1) * u"s", T(1) * u"°", T(1) * u"m")
+    @test_throws ArgumentError LatLonAlt(T(1) * u"°", T(1) * u"s", T(1) * u"m")
+    @test_throws ArgumentError LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"s")
+    @test_throws ArgumentError LatLonAlt(T(1) * u"s", T(1) * u"s", T(1) * u"s")
+  end
+
   @testset "GeocentricLatLon" begin
     @test GeocentricLatLon(T(1), T(1)) == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
     @test GeocentricLatLon(T(1) * u"°", 1 * u"°") == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
@@ -738,6 +768,94 @@
       c2 = AuthalicLatLon(T(29.888997034459567), T(40))
       @inferred convert(AuthalicLatLon{WGS84}, c1)
       @inferred convert(LatLon{WGS84}, c2)
+    end
+
+    @testset "LatLon <> Cartesian" begin
+      c1 = LatLon(T(30), T(40))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(35), T(45))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3698470.287205801), T(3698470.2872058), T(3637866.909378095))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(40), T(50))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3144971.82314589), T(3748031.468841677), T(4077985.572200376))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(-T(30), -T(40))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(4234890.278665873), -T(3553494.8709047823), -T(3170373.735383637))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(-T(35), T(45))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3698470.287205801), T(3698470.2872058), -T(3637866.909378095))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(40), -T(50))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3144971.82314589), -T(3748031.468841677), T(4077985.572200376))
+      c3 = convert(LatLon{WGS84}, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLon(T(30), T(40))
+      c2 = Cartesian{WGS84}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      @inferred convert(Cartesian{WGS84}, c1)
+      @inferred convert(LatLon{WGS84}, c2)
+    end
+
+    @testset "LatLonAlt <> Cartesian" begin
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLonAlt(T(35), T(45), T(100))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3698528.2100023343), T(3698528.2100023334), T(3637924.26702173))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLonAlt(T(40), T(50), T(200))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3145070.3039211915), T(3748148.8336594435), T(4078114.1297223135))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLonAlt(-T(30), -T(40), T(0))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(4234890.278665873), -T(3553494.8709047823), -T(3170373.735383637))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLonAlt(-T(35), T(45), T(100))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3698528.2100023343), T(3698528.2100023334), -T(3637924.26702173))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLonAlt(T(40), -T(50), T(200))
+      c2 = convert(Cartesian{WGS84}, c1)
+      @test c2 ≈ Cartesian{WGS84}(T(3145070.3039211915), -T(3748148.8336594435), T(4078114.1297223135))
+      c3 = convert(LatLonAlt{WGS84}, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = Cartesian{WGS84}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      @inferred convert(Cartesian{WGS84}, c1)
+      @inferred convert(LatLonAlt{WGS84}, c2)
     end
 
     @testset "LatLon <> Mercator" begin
