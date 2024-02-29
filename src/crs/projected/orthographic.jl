@@ -108,11 +108,11 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) w
 end
 
 function sphericalinv(x, y, λ₀, ϕ₀)
-  ρ = sqrt(x^2 + y^2)
-  c = asin(ρ)
+  ρ = hypot(x, y)
   if ρ < atol(x)
     λ₀, ϕ₀
   else
+    c = asin(ρ)
     sinc = sin(c)
     cosc = cos(c)
     sinϕ₀ = sin(ϕ₀)
@@ -134,7 +134,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,Dat
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,S,Datum,C<:Orthographic{lat₀,lon₀,S,Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,Datum,C<:Orthographic{lat₀,lon₀,false,Datum}}
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   x = coords.x / a
