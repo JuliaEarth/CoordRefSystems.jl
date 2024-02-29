@@ -269,9 +269,9 @@ end
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
   T = numtype(coords.x)
   🌎 = ellipsoid(Datum)
-  x = ustrip(coords.x)
-  y = ustrip(coords.y)
-  z = ustrip(coords.z)
+  x = ustrip(uconvert(u"m", coords.x))
+  y = ustrip(uconvert(u"m", coords.y))
+  z = ustrip(uconvert(u"m", coords.z))
   a = T(ustrip(majoraxis(🌎)))
   b = T(ustrip(minoraxis(🌎)))
   e² = T(eccentricity²(🌎))
