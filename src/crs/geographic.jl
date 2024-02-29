@@ -257,11 +257,11 @@ function Base.convert(::Type{Cartesian{Datum}}, coords::LatLonAlt{Datum}) where 
   sinϕ = sin(ϕ)
   cosϕ = cos(ϕ)
   N = a / sqrt(1 - e² * sinϕ^2)
-  k = N + h
+  Nph = N + h
 
-  x = k * cosϕ * cos(λ)
-  y = k * cosϕ * sin(λ)
-  z = k * (1 - e²) * sinϕ
+  x = Nph * cosϕ * cos(λ)
+  y = Nph * cosϕ * sin(λ)
+  z = (N * (1 - e²) + h) * sinϕ
 
   Cartesian{Datum}(x * u"m", y * u"m", z * u"m")
 end
