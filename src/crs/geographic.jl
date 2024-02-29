@@ -232,7 +232,9 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/conversions/cart.cpp
-# reference formula: https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#From_geodetic_to_ECEF_coordinates
+# reference formulas: 
+# Wikipedia - Geographic coordinate conversion (https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
+# Bowring, B.R, (1976). Transformation from Spatial to Geographical Coordinates (https://doi.org/10.1179/sre.1976.23.181.323)
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
   T = numtype(coords.lon)
