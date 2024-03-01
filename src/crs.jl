@@ -83,11 +83,6 @@ end
 # IMPLEMENTATIONS
 # ----------------
 
-const Len{T} = Quantity{T,u"𝐋"}
-const Met{T} = Quantity{T,u"𝐋",typeof(u"m")}
-const Rad{T} = Quantity{T,NoDims,typeof(u"rad")}
-const Deg{T} = Quantity{T,NoDims,typeof(u"°")}
-
 include("crs/basic.jl")
 include("crs/geographic.jl")
 include("crs/projected.jl")
