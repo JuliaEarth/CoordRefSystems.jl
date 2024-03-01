@@ -13,10 +13,9 @@ struct HelmertParams{T,S,R}
 end
 
 """
-    helmertparams(Datumₒ, Datumₜ)
+    helmertparams(Datumₛ, Datumₜ)
 
-Returns the Helmert transform parameters that converts
-the origin datum `Datumₒ` to target datum `Datumₜ`.
+Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`.
 """
 function helmertparams end
 

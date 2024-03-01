@@ -231,9 +231,9 @@ Base.convert(::Type{Spherical}, (; x, y, z)::Cartesian{<:Any,3}) =
 # Datum conversion
 astuple(coords::Cartesian) = _coords(coords)
 
-function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₒ,3}) where {Datumₜ,Datumₒ}
+function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
   T = numtype(coords.x)
-  params = helmertparams(Datumₒ, Datumₜ)
+  params = helmertparams(Datumₛ, Datumₜ)
   R = rotation(T, params)
   T = translation(T, params)
   s = scale(T, params)
