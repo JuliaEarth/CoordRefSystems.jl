@@ -29,11 +29,14 @@ export
   Datum,
   NoDatum,
   WGS84,
-  WIII,
+  WGS84Latest,
+  ITRF,
+  ITRFLatest,
   ellipsoid,
   latitudeₒ,
   longitudeₒ,
   altitudeₒ,
+  epoch,
 
   # coordinates
   CRS,

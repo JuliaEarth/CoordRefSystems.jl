@@ -23,7 +23,7 @@ The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, re
 Cartesian(1, 1) # add default units
 Cartesian(1u"m", 1u"m") # integers are converted converted to floats
 Cartesian(1.0u"km", 1.0u"km", 1.0u"km")
-Cartesian{WGS84}(1.0u"m", 1.0u"m")
+Cartesian{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 ## References
@@ -110,7 +110,7 @@ Polar(1, π/4) # add default units
 Polar(1u"m", (π/4)u"rad") # integers are converted converted to floats
 Polar(1.0u"m", 45u"°") # degrees are converted to radians
 Polar(1.0u"km", (π/4)u"rad")
-Polar{WGS84}(1.0u"m", (π/4)u"rad")
+Polar{WGS84Latest}(1.0u"m", (π/4)u"rad")
 ```
 
 ## References
@@ -146,7 +146,7 @@ Cylindrical(1, π/4, 1) # add default units
 Cylindrical(1u"m", (π/4)u"rad", 1u"m") # integers are converted converted to floats
 Cylindrical(1.0u"m", 45u"°", 1.0u"m") # degrees are converted to radians
 Cylindrical(1.0u"km", (π/4)u"rad", 1.0u"km")
-Cylindrical{WGS84}(1.0u"m", (π/4)u"rad", 1.0u"m")
+Cylindrical{WGS84Latest}(1.0u"m", (π/4)u"rad", 1.0u"m")
 ```
 
 ## References
@@ -187,7 +187,7 @@ Spherical(1, π/4, π/4) # add default units
 Spherical(1u"m", (π/4)u"rad", (π/4)u"rad") # integers are converted converted to floats
 Spherical(1.0u"m", 45u"°", 45u"°") # degrees are converted to radians
 Spherical(1.0u"km", (π/4)u"rad", (π/4)u"rad")
-Spherical{WGS84}(1.0u"m", (π/4)u"rad", (π/4)u"rad")
+Spherical{WGS84Latest}(1.0u"m", (π/4)u"rad", (π/4)u"rad")
 ```
 
 ## References
