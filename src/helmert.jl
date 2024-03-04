@@ -53,7 +53,7 @@ end
     helmertparams(Datumₛ, Datumₜ, t)
 
 Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`
-with a given coordinate epoch `t` in year.
+with a given coordinate epoch `t` in years.
 """
 helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, t) where {Datumₜ,Datumₛ} = helmertparams(Datumₛ, Datumₜ, t, epoch(Datumₜ))
 
