@@ -31,9 +31,10 @@ function HelmertParams(tx, ty, tz, θx, θz, θy, s)
 end
 
 """
-    helmertparams(Datumₛ, Datumₜ)
+    helmertparams(Datumₛ, Datumₜ, t)
 
-Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`.
+Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`
+with a given observation time `t` in decimalyear.
 """
 function helmertparams end
 
@@ -43,7 +44,7 @@ function helmertparams end
 Returns the `RotZYX` rotation from Helmert `params` with machine type `T`.
 """
 rotation(::Type{T}, params::HelmertParams) where {T} =
-  RotZYX(numconvert(T, params.rz), numconvert(T, params.ry), numconvert(T, params.rz))
+  RotZYX(numconvert(T, params.θz), numconvert(T, params.θy), numconvert(T, params.θz))
 
 """
     translation(T, params::HelmertParams)
@@ -51,7 +52,7 @@ rotation(::Type{T}, params::HelmertParams) where {T} =
 Returns the translation vector from Helmert `params` with machine type `T`.
 """
 translation(::Type{T}, params::HelmertParams) where {T} =
-  SVector(numconvert(T, params.x), numconvert(T, params.y), numconvert(T, params.z))
+  SVector(numconvert(T, params.tx), numconvert(T, params.ty), numconvert(T, params.tz))
 
 """
     scale(T, params::HelmertParams)
@@ -59,3 +60,23 @@ translation(::Type{T}, params::HelmertParams) where {T} =
 Returns the scale parameter from Helmert `params` with machine type `T`.
 """
 scale(::Type{T}, params::HelmertParams) where {T} = numconvert(T, params.s)
+
+function helmerttimedep(tx, ty, tz, θx, θz, θy, s, dtx, dty, dtz, dθx, dθy, dθz, ds, t, t₀)
+  Δt = (t - t₀)
+  tx′ = tx + dtx * Δt
+  ty′ = ty + dty * Δt
+  tz′ = tz + dtz * Δt
+  θx′ = θx + dθx * Δt
+  θy′ = θy + dθy * Δt
+  θz′ = θz + dθz * Δt
+  s′ = s + ds * Δt
+  HelmertParams(tx′, ty′, tz′, θx′, θz′, θy′, s′)
+end
+
+# parameters source: EPSG Database (https://epsg.org/search/by-name)
+
+helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}, t) = HelmertParams(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+function helmertparams(::Type{ITRF{2008}}, ::Type{ITRF{2020}}, t)
+  t₀ = epoch(ITRF{2020})
+  helmerttimedep(-0.2e-3, -1e-3, -3.3e-3, 0.0, 0.0, 0.0, 0.29e-3, 0.0, 0.1e-3, -0.1e-3, 0.0, 0.0, 0.0, -0.03e-3, t, t₀)
+end
