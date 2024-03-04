@@ -31,13 +31,13 @@ function crs end
 # IMPLEMENTATIONS
 # ----------------
 
-crs(::Type{EPSG{3395}}) = Mercator{WGS84}
-crs(::Type{EPSG{3857}}) = WebMercator{WGS84}
-crs(::Type{EPSG{4326}}) = LatLon{WGS84}
-crs(::Type{EPSG{32662}}) = PlateCarree{WGS84}
-crs(::Type{ESRI{54017}}) = Behrmann{WGS84}
-crs(::Type{ESRI{54030}}) = Robinson{WGS84}
-crs(::Type{ESRI{54034}}) = Lambert{WGS84}
-crs(::Type{ESRI{54042}}) = WinkelTripel{WGS84}
-crs(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84}
-crs(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84}
+crs(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
+crs(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
+crs(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
+crs(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
+crs(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
+crs(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
+crs(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
+crs(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
+crs(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
+crs(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}

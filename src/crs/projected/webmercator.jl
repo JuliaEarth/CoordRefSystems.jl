@@ -16,7 +16,7 @@ WebMercator(1, 1) # add default units
 WebMercator(1u"m", 1u"m") # integers are converted converted to floats
 WebMercator(1.0u"km", 1.0u"km") # length quantities are converted to meters
 WebMercator(1.0u"m", 1.0u"m")
-WebMercator{WGS84}(1.0u"m", 1.0u"m")
+WebMercator{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [EPSG:3857](https://epsg.io/3857).
@@ -31,7 +31,7 @@ WebMercator{Datum}(x::Met, y::Met) where {Datum} = WebMercator{Datum}(promote(x,
 WebMercator{Datum}(x::Len, y::Len) where {Datum} = WebMercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
 WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-WebMercator(args...) = WebMercator{WGS84}(args...)
+WebMercator(args...) = WebMercator{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS

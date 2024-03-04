@@ -21,7 +21,7 @@ Orthographic{lat₀,lon₀,S,Datum}(x::Len, y::Len) where {lat₀,lon₀,S,Datum
 Orthographic{lat₀,lon₀,S,Datum}(x::Number, y::Number) where {lat₀,lon₀,S,Datum} =
   Orthographic{lat₀,lon₀,S,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-Orthographic{lat₀,lon₀,S}(args...) where {lat₀,lon₀,S} = Orthographic{lat₀,lon₀,S,WGS84}(args...)
+Orthographic{lat₀,lon₀,S}(args...) where {lat₀,lon₀,S} = Orthographic{lat₀,lon₀,S,WGS84Latest}(args...)
 
 """
     OrthoNorth(x, y)
@@ -37,7 +37,7 @@ OrthoNorth(1, 1) # add default units
 OrthoNorth(1u"m", 1u"m") # integers are converted converted to floats
 OrthoNorth(1.0u"km", 1.0u"km") # length quantities are converted to meters
 OrthoNorth(1.0u"m", 1.0u"m")
-OrthoNorth{WGS84}(1.0u"m", 1.0u"m")
+OrthoNorth{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
 const OrthoNorth{Datum} = Orthographic{90.0u"°",0.0u"°",false,Datum}
@@ -56,7 +56,7 @@ OrthoSouth(1, 1) # add default units
 OrthoSouth(1u"m", 1u"m") # integers are converted converted to floats
 OrthoSouth(1.0u"km", 1.0u"km") # length quantities are converted to meters
 OrthoSouth(1.0u"m", 1.0u"m")
-OrthoSouth{WGS84}(1.0u"m", 1.0u"m")
+OrthoSouth{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
 const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}

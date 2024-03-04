@@ -16,7 +16,7 @@ Mercator(1, 1) # add default units
 Mercator(1u"m", 1u"m") # integers are converted converted to floats
 Mercator(1.0u"km", 1.0u"km") # length quantities are converted to meters
 Mercator(1.0u"m", 1.0u"m")
-Mercator{WGS84}(1.0u"m", 1.0u"m")
+Mercator{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [EPSG:3395](https://epsg.io/3395).
@@ -31,7 +31,7 @@ Mercator{Datum}(x::Met, y::Met) where {Datum} = Mercator{Datum}(promote(x, y)...
 Mercator{Datum}(x::Len, y::Len) where {Datum} = Mercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
 Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-Mercator(args...) = Mercator{WGS84}(args...)
+Mercator(args...) = Mercator{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS

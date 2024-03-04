@@ -20,7 +20,7 @@ EqualAreaCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} =
 EqualAreaCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,Datum} =
   EqualAreaCylindrical{latₜₛ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-EqualAreaCylindrical{latₜₛ}(args...) where {latₜₛ} = EqualAreaCylindrical{latₜₛ,WGS84}(args...)
+EqualAreaCylindrical{latₜₛ}(args...) where {latₜₛ} = EqualAreaCylindrical{latₜₛ,WGS84Latest}(args...)
 
 """
     Lambert(x, y)
@@ -36,7 +36,7 @@ Lambert(1, 1) # add default units
 Lambert(1u"m", 1u"m") # integers are converted converted to floats
 Lambert(1.0u"km", 1.0u"km") # length quantities are converted to meters
 Lambert(1.0u"m", 1.0u"m")
-Lambert{WGS84}(1.0u"m", 1.0u"m")
+Lambert{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [ESRI:54034](https://epsg.io/54034).
@@ -57,7 +57,7 @@ Behrmann(1, 1) # add default units
 Behrmann(1u"m", 1u"m") # integers are converted converted to floats
 Behrmann(1.0u"km", 1.0u"km") # length quantities are converted to meters
 Behrmann(1.0u"m", 1.0u"m")
-Behrmann{WGS84}(1.0u"m", 1.0u"m")
+Behrmann{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [ESRI:54017](https://epsg.io/54017).
@@ -78,7 +78,7 @@ GallPeters(1, 1) # add default units
 GallPeters(1u"m", 1u"m") # integers are converted converted to floats
 GallPeters(1.0u"km", 1.0u"km") # length quantities are converted to meters
 GallPeters(1.0u"m", 1.0u"m")
-GallPeters{WGS84}(1.0u"m", 1.0u"m")
+GallPeters{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
 const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",Datum}

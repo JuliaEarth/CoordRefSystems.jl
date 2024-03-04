@@ -20,7 +20,7 @@ EquidistantCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} 
 EquidistantCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,Datum} =
   EquidistantCylindrical{latₜₛ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84}(args...)
+EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84Latest}(args...)
 
 """
     PlateCarree(x, y)
@@ -36,7 +36,7 @@ PlateCarree(1, 1) # add default units
 PlateCarree(1u"m", 1u"m") # integers are converted converted to floats
 PlateCarree(1.0u"km", 1.0u"km") # length quantities are converted to meters
 PlateCarree(1.0u"m", 1.0u"m")
-PlateCarree{WGS84}(1.0u"m", 1.0u"m")
+PlateCarree{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [EPSG:32662](https://epsg.io/32662).
