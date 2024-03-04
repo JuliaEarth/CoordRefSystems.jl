@@ -100,3 +100,17 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
 
   λᵢ₊₁, ϕᵢ₊₁
 end
+
+"""
+    ellipparams(a, f⁻¹)
+
+Calculates the parameters of the ellipsoid with a given
+major axis `a` and flattening inverse `f⁻¹`.
+"""
+function ellipparams(a, f⁻¹)
+  f = inv(f⁻¹)
+  b = a * (1 - f)
+  e² = (2 - f) / f⁻¹
+  e = √e²
+  (; a, b, e, e², f, f⁻¹)
+end
