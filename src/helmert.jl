@@ -35,7 +35,7 @@ end
 
 Returns the Time-dependent Helmert ajusted parameters (`tx`, `ty`, `tz`, `θx`, `θz`, `θy`, `s`)
 using their rates (`dtx`, `dty`, `dtz`, `dθx`, `dθy`, `dθz`, `ds`) in parameter unit per year,
-the coordinate epoch `t` and the reference epoch `t₀` in years.
+the coordinate epoch `t` and the reference epoch `t₀` in decimalyear.
 """
 function helmerttimedep(; tx, ty, tz, θx, θz, θy, s, dtx, dty, dtz, dθx, dθy, dθz, ds, t, t₀)
   dt = (t - t₀)
@@ -53,7 +53,7 @@ end
     helmertparams(Datumₛ, Datumₜ, t)
 
 Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`
-with a given coordinate epoch `t` in years.
+with a given coordinate epoch `t` in decimalyear.
 """
 helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, t) where {Datumₜ,Datumₛ} = helmertparams(Datumₛ, Datumₜ, t, epoch(Datumₜ))
 
