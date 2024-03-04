@@ -12,7 +12,7 @@ Winkel{lat₁,Datum}(x::Met, y::Met) where {lat₁,Datum} = Winkel{lat₁,Datum}
 Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(u"m", x), uconvert(u"m", y))
 Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84}(args...)
+Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 
 """
     WinkelTripel(x, y)
@@ -28,7 +28,7 @@ WinkelTripel(1, 1) # add default units
 WinkelTripel(1u"m", 1u"m") # integers are converted converted to floats
 WinkelTripel(1.0u"km", 1.0u"km") # length quantities are converted to meters
 WinkelTripel(1.0u"m", 1.0u"m")
-WinkelTripel{WGS84}(1.0u"m", 1.0u"m")
+WinkelTripel{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [ESRI:54042](https://epsg.io/54042).

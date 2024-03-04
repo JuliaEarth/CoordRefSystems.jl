@@ -7,7 +7,7 @@
   end
 
   @testset "WGS84" begin
-    🌎 = ellipsoid(WGS84)
+    🌎 = ellipsoid(WGS84Latest)
     @test majoraxis(🌎) == 6378137.0u"m"
     @test minoraxis(🌎) == 6356752.314245179u"m"
     @test eccentricity(🌎) == 0.08181919084262149
@@ -15,9 +15,9 @@
     @test flattening(🌎) == 0.0033528106647474805
     @test flattening⁻¹(🌎) == 298.257223563
 
-    @test latitudeₒ(WGS84) == 0.0u"°"
-    @test longitudeₒ(WGS84) == 0.0u"°"
-    @test altitudeₒ(WGS84) == 0.0u"m"
+    @test latitudeₒ(WGS84Latest) == 0.0u"°"
+    @test longitudeₒ(WGS84Latest) == 0.0u"°"
+    @test altitudeₒ(WGS84Latest) == 0.0u"m"
 
     @test isnothing(epoch(WGS84{0}))
     @test epoch(WGS84{730}) == 1994.0
@@ -25,11 +25,10 @@
     @test epoch(WGS84{1150}) == 2001.0
     @test epoch(WGS84{1674}) == 2005.0
     @test epoch(WGS84{1762}) == 2005.0
-    @test epoch(WGS84) == epoch(WGS84{1762})
   end
 
   @testset "ITRF" begin
-    🌎 = ellipsoid(ITRF)
+    🌎 = ellipsoid(ITRFLatest)
     @test majoraxis(🌎) == 6378137.0u"m"
     @test minoraxis(🌎) == 6356752.314140356u"m"
     @test eccentricity(🌎) == 0.08181919104281579
@@ -37,9 +36,9 @@
     @test flattening(🌎) == 0.003352810681182319
     @test flattening⁻¹(🌎) == 298.257222101
 
-    @test latitudeₒ(ITRF) == 0.0u"°"
-    @test longitudeₒ(ITRF) == 0.0u"°"
-    @test altitudeₒ(ITRF) == 0.0u"m"
+    @test latitudeₒ(ITRFLatest) == 0.0u"°"
+    @test longitudeₒ(ITRFLatest) == 0.0u"°"
+    @test altitudeₒ(ITRFLatest) == 0.0u"m"
 
     @test epoch(ITRF{1991}) == 1988.0
     @test epoch(ITRF{1992}) == 1988.0
@@ -52,6 +51,5 @@
     @test epoch(ITRF{2008}) == 2005.0
     @test epoch(ITRF{2014}) == 2010.0
     @test epoch(ITRF{2020}) == 2015.0
-    @test epoch(ITRF) == epoch(ITRF{2020})
   end
 end

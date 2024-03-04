@@ -16,7 +16,7 @@ Robinson(1, 1) # add default units
 Robinson(1u"m", 1u"m") # integers are converted converted to floats
 Robinson(1.0u"km", 1.0u"km") # length quantities are converted to meters
 Robinson(1.0u"m", 1.0u"m")
-Robinson{WGS84}(1.0u"m", 1.0u"m")
+Robinson{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 
 See [ESRI:54030](https://epsg.io/54030).
@@ -31,7 +31,7 @@ Robinson{Datum}(x::Met, y::Met) where {Datum} = Robinson{Datum}(promote(x, y)...
 Robinson{Datum}(x::Len, y::Len) where {Datum} = Robinson{Datum}(uconvert(u"m", x), uconvert(u"m", y))
 Robinson{Datum}(x::Number, y::Number) where {Datum} = Robinson{Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-Robinson(args...) = Robinson{WGS84}(args...)
+Robinson(args...) = Robinson{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS

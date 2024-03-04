@@ -30,6 +30,8 @@ export
   NoDatum,
   WGS84,
   ITRF,
+  WGS84Latest,
+  ITRFLatest,
   ellipsoid,
   latitudeₒ,
   longitudeₒ,

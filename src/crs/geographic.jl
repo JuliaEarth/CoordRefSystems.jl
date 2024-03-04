@@ -27,7 +27,7 @@ LatLon(45, 45) # add default units
 LatLon(45u"°", 45u"°") # integers are converted converted to floats
 LatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
 LatLon(45.0u"°", 45.0u"°")
-LatLon{WGS84}(45.0u"°", 45.0u"°")
+LatLon{WGS84Latest}(45.0u"°", 45.0u"°")
 ```
 
 See [EPSG:4326](https://epsg.io/4326).
@@ -43,7 +43,7 @@ GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(
 GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
   GeodeticLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
 
-GeodeticLatLon(args...) = GeodeticLatLon{WGS84}(args...)
+GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
 const LatLon = GeodeticLatLon
 
@@ -66,7 +66,7 @@ LatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
 LatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
 LatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
 LatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
-LatLonAlt{WGS84}(45.0u"°", 45.0u"°", 1.0u"m")
+LatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
 ```
 """
 struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
@@ -86,7 +86,7 @@ GeodeticLatLonAlt{Datum}(lat::Rad, lon::Rad, alt::Len) where {Datum} =
 GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
   GeodeticLatLonAlt{Datum}(addunit(lat, u"°"), addunit(lon, u"°"), addunit(alt, u"m"))
 
-GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84}(args...)
+GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
 const LatLonAlt = GeodeticLatLonAlt
 
@@ -104,7 +104,7 @@ GeocentricLatLon(45, 45) # add default units
 GeocentricLatLon(45u"°", 45u"°") # integers are converted converted to floats
 GeocentricLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
 GeocentricLatLon(45.0u"°", 45.0u"°")
-GeocentricLatLon{WGS84}(45.0u"°", 45.0u"°")
+GeocentricLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
 ```
 """
 struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
@@ -118,7 +118,7 @@ GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Dat
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
   GeocentricLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
 
-GeocentricLatLon(args...) = GeocentricLatLon{WGS84}(args...)
+GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 
 """
     AuthalicLatLon(lat, lon)
@@ -134,7 +134,7 @@ AuthalicLatLon(45, 45) # add default units
 AuthalicLatLon(45u"°", 45u"°") # integers are converted converted to floats
 AuthalicLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
 AuthalicLatLon(45.0u"°", 45.0u"°")
-AuthalicLatLon{WGS84}(45.0u"°", 45.0u"°")
+AuthalicLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
 ```
 """
 struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
@@ -148,7 +148,7 @@ AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(
 AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
   AuthalicLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
 
-AuthalicLatLon(args...) = AuthalicLatLon{WGS84}(args...)
+AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS

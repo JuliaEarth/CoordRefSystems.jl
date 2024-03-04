@@ -58,16 +58,19 @@ altitudeₒ(::Type{NoDatum}) = nothing
 epoch(::Type{NoDatum}) = nothing
 
 """
-    WGS84
     WGS84{GPSWeek}
 
 WGS84 (World Geodetic System) datum with a given realization `GPSWeek` (default to 1762).
 Currentry, WGS84 has six realizations in the following GPS weeks:
 0, 730, 873, 1150, 1674 and 1762.
 
+`WGS84Latest` is an alias to `WGS84{2020}`.
+
 See [NGA - WORLD GEODETIC SYSTEM 1984](https://nsgreg.nga.mil/doc/view?i=4085)
 """
 abstract type WGS84{GPSWeek} <: Datum end
+
+const WGS84Latest = WGS84{1762}
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
 latitudeₒ(::Type{<:WGS84}) = 0.0u"°"
@@ -81,19 +84,20 @@ epoch(::Type{WGS84{1150}}) = 2001.0
 epoch(::Type{WGS84{1674}}) = 2005.0
 epoch(::Type{WGS84{1762}}) = 2005.0
 
-epoch(::Type{WGS84}) = epoch(WGS84{1762})
-
 """
-    ITRF
     ITRF{Year}
 
 ITRF (International Terrestrial Reference Frame) datum with a given realization `Year` (default to 2020).
 Currentry, ITRF has eleven realizations in the following years:
 1991, 1992, 1993, 1994, 1996, 1997, 2000, 2005, 2008, 2014 and 2020.
 
+`ITRFLatest` is an alias to `ITRF{2020}`.
+
 See [The International Terrestrial Reference Frame (ITRF)](https://www.iers.org/IERS/EN/DataProducts/ITRF/itrf.html)
 """
 abstract type ITRF{Year} end
+
+const ITRFLatest = ITRF{2020}
 
 ellipsoid(::Type{<:ITRF}) = GRS80🌎
 latitudeₒ(::Type{<:ITRF}) = 0.0u"°"
@@ -111,5 +115,3 @@ epoch(::Type{ITRF{2005}}) = 2000.0
 epoch(::Type{ITRF{2008}}) = 2005.0
 epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
-
-epoch(::Type{ITRF}) = epoch(ITRF{2020})
