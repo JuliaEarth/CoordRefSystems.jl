@@ -35,7 +35,7 @@ end
 
 Returns the Time-dependent Helmert ajusted parameters (`tx`, `ty`, `tz`, `θx`, `θz`, `θy`, `s`)
 using their rates (`dtx`, `dty`, `dtz`, `dθx`, `dθy`, `dθz`, `ds`) in parameter unit per year,
-the coordinate epoch `t` and the reefrence epoch `t₀` in years.
+the coordinate epoch `t` and the reference epoch `t₀` in years.
 """
 function helmerttimedep(; tx, ty, tz, θx, θz, θy, s, dtx, dty, dtz, dθx, dθy, dθz, ds, t, t₀)
   dt = (t - t₀)
