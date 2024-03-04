@@ -53,7 +53,7 @@ function flattening⁻¹ end
 
 abstract type WGS84🌎 <: RevolutionEllipsoid end
 
-const _WGS84 = ellipparams(6378137.0u"m", 298.257223563)
+const _WGS84 = ellipfromaf⁻¹(6378137.0u"m", 298.257223563)
 
 majoraxis(::Type{WGS84🌎}) = _WGS84.a
 minoraxis(::Type{WGS84🌎}) = _WGS84.b
@@ -64,7 +64,7 @@ flattening⁻¹(::Type{WGS84🌎}) = _WGS84.f⁻¹
 
 abstract type GRS80🌎 <: RevolutionEllipsoid end
 
-const _GRS80 = ellipparams(6378137.0u"m", 298.257222101)
+const _GRS80 = ellipfromaf⁻¹(6378137.0u"m", 298.257222101)
 
 majoraxis(::Type{GRS80🌎}) = _GRS80.a
 minoraxis(::Type{GRS80🌎}) = _GRS80.b
