@@ -80,6 +80,10 @@ Returns the scale parameter from Helmert `params` with machine type `T`.
 """
 scale(::Type{T}, params::HelmertParams) where {T} = numconvert(T, params.s)
 
+# ----------------
+# IMPLEMENTATIONS
+# ----------------
+
 # source of parameters: EPSG Database (https://epsg.org/search/by-name)
 
 helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}, t, t₀) =

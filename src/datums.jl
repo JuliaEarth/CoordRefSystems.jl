@@ -44,6 +44,10 @@ Returns the reference epoch of the datum type `D`.
 """
 function epoch end
 
+# ----------------
+# IMPLEMENTATIONS
+# ----------------
+
 """
     NoDatum
 
