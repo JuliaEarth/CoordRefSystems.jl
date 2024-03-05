@@ -53,3 +53,16 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   λ, ϕ = projinv(fx, fy, x, y, x, y)
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# projection conversion with same Datum
+function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}
+  latlon = convert(LatLon{Datum}, coords)
+  convert(Cₜ, latlon)
+end
+
+# projection conversion with different datums
+function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datumₜ,Datumₛ,Cₜ<:Projected{Datumₜ},Cₛ<:Projected{Datumₛ}}
+  latlonₛ = convert(LatLon{Datumₛ}, coords)
+  latlonₜ = convert(LatLon{Datumₜ}, latlonₛ)
+  convert(Cₜ, latlonₜ)
+end

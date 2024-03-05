@@ -238,7 +238,7 @@ end
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
   T = numtype(coords.lon)
-  lla = LatLonAlt(coords.lat, coords.lon, zero(T) * u"m")
+  lla = LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * u"m")
   convert(Cartesian{Datum}, lla)
 end
 
@@ -288,4 +288,11 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) wher
   h = p / cos(ϕ) - N
 
   LatLonAlt{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°", h * u"m")
+end
+
+# datum conversion
+function Base.convert(::Type{LatLon{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ}
+  cartₛ = convert(Cartesian{Datumₛ}, coords)
+  cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
+  convert(LatLon{Datumₜ}, cartₜ)
 end
