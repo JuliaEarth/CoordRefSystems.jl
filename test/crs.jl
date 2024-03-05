@@ -682,7 +682,7 @@
       @inferred convert(Cartesian, c2)
     end
 
-    @testset "Datum conversion" begin
+    @testset "Cartesian: Datum conversion" begin
       # WGS84 (G1762) to ITRF2008
       c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
       c2 = convert(Cartesian{ITRF{2008}}, c1)
@@ -700,6 +700,11 @@
       c1 = Cartesian{ITRF{2008}}(T(1), T(1), T(1))
       c2 = convert(Cartesian{ITRFLatest}, c1)
       @test c2 ≈ Cartesian{ITRFLatest}(T(0.9998000005900001), T(0.99800000059), T(0.9977000005900001))
+
+      c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
+      c2 = Cartesian{ITRF{2008}}(T(0), T(0), T(0))
+      @inferred convert(Cartesian{ITRF{2008}}, c1)
+      @inferred convert(Cartesian{ITRFLatest}, c2)
     end
 
     @testset "GeodeticLatLon <> GeocentricLatLon" begin
@@ -879,6 +884,31 @@
         @inferred convert(Cartesian{WGS84Latest}, c1)
         @inferred convert(LatLonAlt{WGS84Latest}, c2)
       end
+    end
+
+    @testset "LatLon: Datum conversion" begin
+      # WGS84 (G1762) to ITRF2008
+      c1 = LatLon(T(30), T(40))
+      c2 = convert(LatLon{ITRF{2008}}, c1)
+      @test c2 ≈ LatLon{ITRF{2008}}(T(30), T(40))
+
+      c1 = LatLon(T(35), T(45))
+      c2 = convert(LatLon{ITRF{2008}}, c1)
+      @test c2 ≈ LatLon{ITRF{2008}}(T(35), T(45))
+
+      # ITRF2008 to ITRF2020
+      c1 = LatLon{ITRF{2008}}(T(30), T(40))
+      c2 = convert(LatLon{ITRFLatest}, c1)
+      @test c2 ≈ LatLon{ITRFLatest}(T(29.999999988422587), T(39.99999998545356))
+
+      c1 = LatLon{ITRF{2008}}(T(35), T(45))
+      c2 = convert(LatLon{ITRFLatest}, c1)
+      @test c2 ≈ LatLon{ITRFLatest}(T(34.99999999095351), T(44.99999998605742))
+
+      c1 = LatLon(T(30), T(40))
+      c2 = LatLon{ITRF{2008}}(T(30), T(40))
+      @inferred convert(LatLon{ITRF{2008}}, c1)
+      @inferred convert(LatLon{ITRFLatest}, c2)
     end
 
     @testset "LatLon <> Mercator" begin
@@ -1219,6 +1249,31 @@
       @inferred convert(OrthoSouthSpherical, c1)
       @inferred convert(LatLon{WGS84Latest}, c2)
       @inferred convert(LatLon{WGS84Latest}, c3)
+    end
+
+    @testset "Projection conversion" begin
+      # same datum
+      c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
+      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      @test c2 ≈ WinkelTripel(T(7044801.69820402), T(5231448.051016482))
+
+      c1 = WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
+      c2 = convert(Robinson{WGS84Latest}, c1)
+      @test c2 ≈ Robinson(T(7620313.9259500755), T(4805073.646653474))
+
+      # different datums
+      c1 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
+      c2 = convert(WinkelTripel{ITRFLatest}, c1)
+      @test c2 ≈ WinkelTripel{ITRFLatest}(T(7044801.699171027), T(5231448.049360464))
+
+      c1 = WinkelTripel{ITRF{2008}}(T(7044801.697957653), T(5231448.051548355))
+      c2 = convert(Robinson{ITRFLatest}, c1)
+      @test c2 ≈ Robinson{ITRFLatest}(T(7620313.811209339), T(4805075.1317550065))
+
+      c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
+      c2 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
+      @inferred convert(WinkelTripel{WGS84Latest}, c1)
+      @inferred convert(WinkelTripel{ITRFLatest}, c2)
     end
   end
 end

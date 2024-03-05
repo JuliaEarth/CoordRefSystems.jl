@@ -228,7 +228,7 @@ Base.convert(::Type{Cartesian}, (; r, θ, ϕ)::Spherical) =
 Base.convert(::Type{Spherical}, (; x, y, z)::Cartesian{<:Any,3}) =
   Spherical(hypot(x, y, z), atan(hypot(x, y), z) * u"rad", atanpos(y, x) * u"rad")
 
-# Datum conversion
+# datum conversion
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
   x = SVector(_coords(coords))
 
