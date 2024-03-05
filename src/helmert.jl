@@ -33,9 +33,11 @@ function helmertparams end
 """
     helmertrates(Datumₛ, Datumₜ)
 
-Returns the Helmert translation rate `(dδx, dty, dtz)` in meters per year, 
+Returns the Helmert translation rate `(dδx, dδy, dδz)` in meters per year, 
 rotation rate `(dθx, dθy, dθz)` in arc seconds per year 
 and scale rate `ds` in ppm (parts per million) per year.
+
+### Notes
 
 Must be defined only for Time-dependent Helmert transforms.
 """
