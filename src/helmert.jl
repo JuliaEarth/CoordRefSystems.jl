@@ -3,15 +3,15 @@
 # ------------------------------------------------------------------
 
 """
-    helmertparams(T, Datumₛ, Datumₜ, t)
+    helmert(T, Datumₛ, Datumₜ, t)
 
 Returns the translation, rotation and scale of the Helmert transform 
 that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
 and a given coordinate epoch `t` in decimalyear.
 """
-function helmertparams(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
-  params = helmertinit(Datumₛ, Datumₜ)
-  rates = helmertrate(Datumₛ, Datumₜ)
+function helmert(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
+  params = helmertparams(Datumₛ, Datumₜ)
+  rates = helmertrates(Datumₛ, Datumₜ)
   δ, θ, s = if isnothing(rates)
     params
   else
@@ -22,16 +22,16 @@ function helmertparams(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {
 end
 
 """
-    helmertinit(Datumₛ, Datumₜ)
+    helmertparams(Datumₛ, Datumₜ)
 
 Returns the Helmert translation parameters `(δx, δy, δz)` in meters, 
 rotation parameters `(θx, θy, θz)` in arc seconds 
 and scale parameter `s` in ppm (parts per million).
 """
-function helmertinit end
+function helmertparams end
 
 """
-    helmertrate(Datumₛ, Datumₜ)
+    helmertrates(Datumₛ, Datumₜ)
 
 Returns the Helmert translation rate `(dδx, dty, dtz)` in meters per year, 
 rotation rate `(dθx, dθy, dθz)` in arc seconds per year 
@@ -39,9 +39,9 @@ and scale rate `ds` in ppm (parts per million) per year.
 
 Must be defined only for Time-dependent Helmert transforms.
 """
-function helmertrate end
+function helmertrates end
 
-helmertrate(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = nothing
+helmertrates(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = nothing
 
 """
     translation(T, δ)
@@ -80,7 +80,7 @@ scale(::Type{T}, s) where {T} = T(s) * u"ppm"
 
 # source of parameters: EPSG Database (https://epsg.org/search/by-name)
 
-helmertinit(::Type{WGS84{1762}}, ::Type{ITRF{2008}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
+helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
 
-helmertinit(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (-0.2e-3, -1e-3, -3.3e-3), (0.0, 0.0, 0.0), 0.29e-3
-helmertrate(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (0.0, 0.1e-3, -0.1e-3), (0.0, 0.0, 0.0), -0.03e-3
+helmertparams(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (-0.2e-3, -1e-3, -3.3e-3), (0.0, 0.0, 0.0), 0.29e-3
+helmertrates(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (0.0, 0.1e-3, -0.1e-3), (0.0, 0.0, 0.0), -0.03e-3
