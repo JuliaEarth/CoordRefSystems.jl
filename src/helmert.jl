@@ -5,9 +5,9 @@
 """
     helmert(T, Datumₛ, Datumₜ, t)
 
-Returns the translation, rotation and scale of the Helmert transform 
-that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
-and a given coordinate epoch `t` in decimalyear.
+Translation, Rotation and scale of the Helmert transform that converts
+the source `Datumₛ` to target `Datumₜ` using a given coordinate epoch `t` in decimalyear. 
+The type `T` is the resulting machine type of the parameters.
 """
 function helmert(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
   params = helmertparams(Datumₛ, Datumₜ)
@@ -48,7 +48,7 @@ helmertrates(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = not
 """
     translation(T, δ)
 
-Returns the translation vector from parameters `δ = (δx, δy, δz)` with machine type `T`.
+Translation vector from parameters `δ = (δx, δy, δz)` with machine type `T`.
 """
 function translation(::Type{T}, (δx, δy, δz)) where {T}
   uδx = T(δx) * u"m"
@@ -60,7 +60,7 @@ end
 """
     rotation(T, θ)
 
-Returns the `RotZYX` rotation from parameters `θ = (θx, θy, θz)` with machine type `T`.
+`RotZYX` rotation from parameters `θ = (θx, θy, θz)` with machine type `T`.
 """
 function rotation(::Type{T}, (θx, θy, θz)) where {T}
   uθx = T(θx) / 3600 * u"°"
@@ -72,7 +72,7 @@ end
 """
     scale(T, s)
 
-Returns the scale parameter from parameter `s` with machine type `T`.
+Scale from parameter `s` with machine type `T`.
 """
 scale(::Type{T}, s) where {T} = T(s) * u"ppm"
 
