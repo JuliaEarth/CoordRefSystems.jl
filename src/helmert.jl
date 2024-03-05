@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------
 
 """
-    helmertparams(Datumₛ, Datumₜ, T, t)
+    helmertparams(T, Datumₛ, Datumₜ, t)
 
 Returns the translation, rotation and scale of the Helmert transform 
 that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
 and a given coordinate epoch `t` in decimalyear.
 """
-function helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, ::Type{T}, t) where {Datumₜ,Datumₛ,T}
+function helmertparams(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
   params = helmertinit(Datumₛ, Datumₜ)
   rates = helmertrate(Datumₛ, Datumₜ)
   δ, θ, s = if isnothing(rates)
