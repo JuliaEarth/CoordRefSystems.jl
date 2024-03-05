@@ -6,7 +6,9 @@
     helmert(T, Datumₛ, Datumₜ, t)
 
 Translation, Rotation and scale of the Helmert transform that converts
-the source `Datumₛ` to target `Datumₜ` using a given coordinate epoch `t` in decimalyear. 
+the source `Datumₛ` to target `Datumₜ` using a given coordinate epoch `t`
+in decimalyear. 
+
 The type `T` is the resulting machine type of the parameters.
 """
 function helmert(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
@@ -39,10 +41,8 @@ and scale rate `ds` in ppm (parts per million) per year.
 
 ### Notes
 
-Must be defined only for Time-dependent Helmert transforms.
+Must be defined only for time-dependent Helmert transforms.
 """
-function helmertrates end
-
 helmertrates(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = nothing
 
 """
