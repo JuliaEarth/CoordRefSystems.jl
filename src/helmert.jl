@@ -24,7 +24,7 @@ end
 """
     helmertparams(Datumₛ, Datumₜ)
 
-Returns the Helmert translation parameters `(δx, δy, δz)` in meters, 
+Helmert translation parameters `(δx, δy, δz)` in meters, 
 rotation parameters `(θx, θy, θz)` in arc seconds 
 and scale parameter `s` in ppm (parts per million).
 """
@@ -33,7 +33,7 @@ function helmertparams end
 """
     helmertrates(Datumₛ, Datumₜ)
 
-Returns the Helmert translation rate `(dδx, dδy, dδz)` in meters per year, 
+Helmert translation rate `(dδx, dδy, dδz)` in meters per year, 
 rotation rate `(dθx, dθy, dθz)` in arc seconds per year 
 and scale rate `ds` in ppm (parts per million) per year.
 
