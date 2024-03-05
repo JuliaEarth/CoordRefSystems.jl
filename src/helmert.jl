@@ -10,18 +10,13 @@ that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
 and a given coordinate epoch `t` in decimalyear.
 """
 function helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, ::Type{T}, t) where {Datumₜ,Datumₛ,T}
+  params = helmertinit(Datumₛ, Datumₜ)
   rates = helmertrate(Datumₛ, Datumₜ)
   δ, θ, s = if isnothing(rates)
-    helmertinit(Datumₛ, Datumₜ)
+    params
   else
-    δ, θ, s = helmertinit(Datumₛ, Datumₜ)
-    t₀ = epoch(Datumₜ)
-    dt = t - t₀
-    dδ, dθ, ds = rates
-    δ′ = δ .+ dδ .* dt
-    θ′ = θ .+ dθ .* dt
-    s′ = s + ds * dt
-    δ′, θ′, s′
+    dt = t - epoch(Datumₜ)
+    map((p, dp) -> p .+ dp .* dt, params, rates)
   end
   translation(T, δ), rotation(T, θ), scale(T, s)
 end
