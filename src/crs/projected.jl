@@ -17,6 +17,8 @@ with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
 
+inrange(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
+
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
@@ -37,6 +39,9 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projecte
   T = numtype(coords.lon)
   λ = ustrip(deg2rad(coords.lon))
   ϕ = ustrip(deg2rad(coords.lat))
+  if !inrange(C, λ, ϕ)
+    throw(ArgumentError("coordinates outside of the projection domain"))
+  end
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   fx, fy = formulas(C, T)
   x = fx(λ, ϕ) * a

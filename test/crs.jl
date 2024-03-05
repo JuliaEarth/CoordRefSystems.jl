@@ -1243,12 +1243,13 @@
 
       # type stability
       c1 = LatLon(T(30), T(60))
-      c2 = OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735))
-      c3 = OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
+      c2 = LatLon(-T(30), T(60))
+      c3 = OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735))
+      c4 = OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
       @inferred convert(OrthoNorthSpherical, c1)
-      @inferred convert(OrthoSouthSpherical, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(OrthoSouthSpherical, c2)
       @inferred convert(LatLon{WGS84Latest}, c3)
+      @inferred convert(LatLon{WGS84Latest}, c4)
     end
 
     @testset "Projection conversion" begin

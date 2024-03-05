@@ -37,6 +37,11 @@ WebMercator(args...) = WebMercator{WGS84Latest}(args...)
 # CONVERSIONS
 # ------------
 
+function inrange(::Type{<:WebMercator}, λ, ϕ)
+  θ = deg2rad(85.06)
+  -π ≤ λ ≤ π && -θ ≤ ϕ ≤ θ
+end
+
 function formulas(::Type{<:WebMercator{Datum}}, ::Type{T}) where {Datum,T}
   fx(λ, ϕ) = λ
 
