@@ -3,32 +3,33 @@
 # ------------------------------------------------------------------
 
 """
-    helmertparams(Datumₛ, Datumₜ, T, e)
+    helmertparams(Datumₛ, Datumₜ, T, t)
 
 Returns the translation, rotation and scale of the Helmert transform 
 that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
-and a given coordinate epoch `e` in decimalyear.
+and a given coordinate epoch `t` in decimalyear.
 """
-function helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, ::Type{T}, e) where {Datumₜ,Datumₛ,T}
-  t, θ, s = helmertinit(Datumₛ, Datumₜ)
+function helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, ::Type{T}, t) where {Datumₜ,Datumₛ,T}
   rates = helmertrate(Datumₛ, Datumₜ)
-  if isnothing(rates)
-    translation(T, t), rotation(T, θ), scale(T, s)
+  δ, θ, s = if isnothing(rates)
+    helmertinit(Datumₛ, Datumₜ)
   else
-    e₀ = epoch(Datumₜ)
-    de = e - e₀
-    dt, dθ, ds = rates
-    t′ = t .+ dt .* de
-    θ′ = θ .+ dθ .* de
-    s′ = s + ds * de
-    translation(T, t′), rotation(T, θ′), scale(T, s′)
+    δ, θ, s = helmertinit(Datumₛ, Datumₜ)
+    t₀ = epoch(Datumₜ)
+    dt = t - t₀
+    dδ, dθ, ds = rates
+    δ′ = δ .+ dδ .* dt
+    θ′ = θ .+ dθ .* dt
+    s′ = s + ds * dt
+    δ′, θ′, s′
   end
+  translation(T, δ), rotation(T, θ), scale(T, s)
 end
 
 """
     helmertinit(Datumₛ, Datumₜ)
 
-Returns the Helmert translation parameters `(tx, ty, tz)` in meters, 
+Returns the Helmert translation parameters `(δx, δy, δz)` in meters, 
 rotation parameters `(θx, θy, θz)` in arc seconds 
 and scale parameter `s` in ppm (parts per million).
 """
@@ -37,7 +38,7 @@ function helmertinit end
 """
     helmertrate(Datumₛ, Datumₜ)
 
-Returns the Helmert translation rate `(dtx, dty, dtz)` in meters per year, 
+Returns the Helmert translation rate `(dδx, dty, dtz)` in meters per year, 
 rotation rate `(dθx, dθy, dθz)` in arc seconds per year 
 and scale rate `ds` in ppm (parts per million) per year.
 
@@ -48,15 +49,15 @@ function helmertrate end
 helmertrate(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = nothing
 
 """
-    translation(T, t)
+    translation(T, δ)
 
-Returns the translation vector from parameters `t = (tx, ty, tz)` with machine type `T`.
+Returns the translation vector from parameters `δ = (δx, δy, δz)` with machine type `T`.
 """
-function translation(::Type{T}, (tx, ty, tz)) where {T}
-  utx = T(tx) * u"m"
-  uty = T(ty) * u"m"
-  utz = T(tz) * u"m"
-  SVector(utx, uty, utz)
+function translation(::Type{T}, (δx, δy, δz)) where {T}
+  uδx = T(δx) * u"m"
+  uty = T(δy) * u"m"
+  utz = T(δz) * u"m"
+  SVector(uδx, uty, utz)
 end
 
 """
