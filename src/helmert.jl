@@ -3,82 +3,80 @@
 # ------------------------------------------------------------------
 
 """
-    HelmertParams(; tx, ty, tz, θx, θz, θy, s)
+    helmertparams(Datumₛ, Datumₜ, T, e)
 
-Helmert translation parameters `tx`, `ty` and `tz` in meters,
-rotation parameters `θx`, `θy` and `θz` in arc seconds
+Returns the translation, rotation and scale of the Helmert transform 
+that convert the source `Datumₛ` to target `Datumₜ` with machine type `T`
+and a given coordinate epoch `e` in decimalyear.
+"""
+function helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, ::Type{T}, e) where {Datumₜ,Datumₛ,T}
+  t, θ, s = helmertinit(Datumₛ, Datumₜ)
+  rates = helmertrate(Datumₛ, Datumₜ)
+  if isnothing(rates)
+    translation(T, t), rotation(T, θ), scale(T, s)
+  else
+    e₀ = epoch(Datumₜ)
+    de = e - e₀
+    dt, dθ, ds = rates
+    t′ = t .+ dt .* de
+    θ′ = θ .+ dθ .* de
+    s′ = s + ds * de
+    translation(T, t′), rotation(T, θ′), scale(T, s′)
+  end
+end
+
+"""
+    helmertinit(Datumₛ, Datumₜ)
+
+Returns the Helmert translation parameters `(tx, ty, tz)` in meters, 
+rotation parameters `(θx, θy, θz)` in arc seconds 
 and scale parameter `s` in ppm (parts per million).
 """
-struct HelmertParams{T<:Met,R<:Deg,S<:PPM}
-  tx::T
-  ty::T
-  tz::T
-  θx::R
-  θy::R
-  θz::R
-  s::S
-end
-
-function HelmertParams(; tx, ty, tz, θx, θz, θy, s)
-  utx = tx * u"m"
-  uty = ty * u"m"
-  utz = tz * u"m"
-  uθx = θx / 3600 * u"°"
-  uθy = θy / 3600 * u"°"
-  uθz = θz / 3600 * u"°"
-  us = s * u"ppm"
-  HelmertParams(promote(utx, uty, utz)..., promote(uθx, uθy, uθz)..., us)
-end
+function helmertinit end
 
 """
-    helmerttimedep(; tx, ty, tz, θx, θz, θy, s, dtx, dty, dtz, dθx, dθy, dθz, ds, t, t₀)
+    helmertrate(Datumₛ, Datumₜ)
 
-Returns the Time-dependent Helmert ajusted parameters (`tx`, `ty`, `tz`, `θx`, `θz`, `θy`, `s`)
-using their rates (`dtx`, `dty`, `dtz`, `dθx`, `dθy`, `dθz`, `ds`) in parameter unit per year,
-the coordinate epoch `t` and the reference epoch `t₀` in decimalyear.
+Returns the Helmert translation rate `(dtx, dty, dtz)` in meters per year, 
+rotation rate `(dθx, dθy, dθz)` in arc seconds per year 
+and scale rate `ds` in ppm (parts per million) per year.
+
+Must be defined only for Time-dependent Helmert transforms.
 """
-function helmerttimedep(; tx, ty, tz, θx, θz, θy, s, dtx, dty, dtz, dθx, dθy, dθz, ds, t, t₀)
-  dt = (t - t₀)
-  tx′ = tx + dtx * dt
-  ty′ = ty + dty * dt
-  tz′ = tz + dtz * dt
-  θx′ = θx + dθx * dt
-  θy′ = θy + dθy * dt
-  θz′ = θz + dθz * dt
-  s′ = s + ds * dt
-  HelmertParams(tx=tx′, ty=ty′, tz=tz′, θx=θx′, θz=θz′, θy=θy′, s=s′)
+function helmertrate end
+
+helmertrate(::Type{Datumₛ}, ::Type{Datumₜ}) where {Datumₜ,Datumₛ} = nothing
+
+"""
+    translation(T, t)
+
+Returns the translation vector from parameters `t = (tx, ty, tz)` with machine type `T`.
+"""
+function translation(::Type{T}, (tx, ty, tz)) where {T}
+  utx = T(tx) * u"m"
+  uty = T(ty) * u"m"
+  utz = T(tz) * u"m"
+  SVector(utx, uty, utz)
 end
 
 """
-    helmertparams(Datumₛ, Datumₜ, t)
+    rotation(T, θ)
 
-Returns the Helmert transform parameters that convert the source `Datumₛ` to target `Datumₜ`
-with a given coordinate epoch `t` in decimalyear.
+Returns the `RotZYX` rotation from parameters `θ = (θx, θy, θz)` with machine type `T`.
 """
-helmertparams(::Type{Datumₛ}, ::Type{Datumₜ}, t) where {Datumₜ,Datumₛ} = helmertparams(Datumₛ, Datumₜ, t, epoch(Datumₜ))
-
-"""
-    rotation(T, params::HelmertParams)
-
-Returns the `RotZYX` rotation from Helmert `params` with machine type `T`.
-"""
-rotation(::Type{T}, params::HelmertParams) where {T} =
-  RotZYX(numconvert(T, params.θz), numconvert(T, params.θy), numconvert(T, params.θz))
+function rotation(::Type{T}, (θx, θy, θz)) where {T}
+  uθx = T(θx) / 3600 * u"°"
+  uθy = T(θy) / 3600 * u"°"
+  uθz = T(θz) / 3600 * u"°"
+  RotZYX(uθz, uθy, uθx)
+end
 
 """
-    translation(T, params::HelmertParams)
+    scale(T, s)
 
-Returns the translation vector from Helmert `params` with machine type `T`.
+Returns the scale parameter from parameter `s` with machine type `T`.
 """
-translation(::Type{T}, params::HelmertParams) where {T} =
-  SVector(numconvert(T, params.tx), numconvert(T, params.ty), numconvert(T, params.tz))
-
-"""
-    scale(T, params::HelmertParams)
-
-Returns the scale parameter from Helmert `params` with machine type `T`.
-"""
-scale(::Type{T}, params::HelmertParams) where {T} = numconvert(T, params.s)
+scale(::Type{T}, s) where {T} = T(s) * u"ppm"
 
 # ----------------
 # IMPLEMENTATIONS
@@ -86,26 +84,7 @@ scale(::Type{T}, params::HelmertParams) where {T} = numconvert(T, params.s)
 
 # source of parameters: EPSG Database (https://epsg.org/search/by-name)
 
-helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}, t, t₀) =
-  HelmertParams(tx=0.0, ty=0.0, tz=0.0, θx=0.0, θz=0.0, θy=0.0, s=0.0)
+helmertinit(::Type{WGS84{1762}}, ::Type{ITRF{2008}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
 
-function helmertparams(::Type{ITRF{2008}}, ::Type{ITRF{2020}}, t, t₀)
-  helmerttimedep(;
-    tx=-0.2e-3,
-    ty=-1e-3,
-    tz=-3.3e-3,
-    θx=0.0,
-    θz=0.0,
-    θy=0.0,
-    s=0.29e-3,
-    dtx=0.0,
-    dty=0.1e-3,
-    dtz=-0.1e-3,
-    dθx=0.0,
-    dθy=0.0,
-    dθz=0.0,
-    ds=-0.03e-3,
-    t,
-    t₀
-  )
-end
+helmertinit(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (-0.2e-3, -1e-3, -3.3e-3), (0.0, 0.0, 0.0), 0.29e-3
+helmertrate(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (0.0, 0.1e-3, -0.1e-3), (0.0, 0.0, 0.0), -0.03e-3

@@ -231,10 +231,7 @@ Base.convert(::Type{Spherical}, (; x, y, z)::Cartesian{<:Any,3}) =
 # Datum conversion
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
   T = numtype(coords.x)
-  P = helmertparams(Datumₛ, Datumₜ, epoch(Datumₛ))
-  R = rotation(T, P)
-  t = translation(T, P)
-  s = scale(T, P)
+  t, R, s = helmertparams(Datumₛ, Datumₜ, T, epoch(Datumₛ))
 
   x = SVector(_coords(coords))
   y = (1 + s) * R * x + t
