@@ -682,6 +682,26 @@
       @inferred convert(Cartesian, c2)
     end
 
+    @testset "Datum conversion" begin
+      # WGS84 (G1762) to ITRF2008
+      c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
+      c2 = convert(Cartesian{ITRF{2008}}, c1)
+      @test c2 ≈ Cartesian{ITRF{2008}}(T(0), T(0), T(0))
+
+      c1 = Cartesian{WGS84Latest}(T(1), T(1), T(1))
+      c2 = convert(Cartesian{ITRF{2008}}, c1)
+      @test c2 ≈ Cartesian{ITRF{2008}}(T(1), T(1), T(1))
+
+      # ITRF2008 to ITRF2020
+      c1 = Cartesian{ITRF{2008}}(T(0), T(0), T(0))
+      c2 = convert(Cartesian{ITRFLatest}, c1)
+      @test c2 ≈ Cartesian{ITRFLatest}(T(-0.0002), T(-0.002), T(-0.0023))
+
+      c1 = Cartesian{ITRF{2008}}(T(1), T(1), T(1))
+      c2 = convert(Cartesian{ITRFLatest}, c1)
+      @test c2 ≈ Cartesian{ITRFLatest}(T(0.9998000005900001), T(0.99800000059), T(0.9977000005900001))
+    end
+
     @testset "GeodeticLatLon <> GeocentricLatLon" begin
       c1 = LatLon(T(30), T(40))
       c2 = convert(GeocentricLatLon{WGS84Latest}, c1)

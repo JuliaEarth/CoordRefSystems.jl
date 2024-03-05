@@ -227,3 +227,14 @@ Base.convert(::Type{Cartesian}, (; r, θ, ϕ)::Spherical) =
   Cartesian(r * sin(θ) * cos(ϕ), r * sin(θ) * sin(ϕ), r * cos(θ))
 Base.convert(::Type{Spherical}, (; x, y, z)::Cartesian{<:Any,3}) =
   Spherical(hypot(x, y, z), atan(hypot(x, y), z) * u"rad", atanpos(y, x) * u"rad")
+
+# Datum conversion
+function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
+  x = SVector(_coords(coords))
+
+  δ, R, s = helmert(numtype(eltype(x)), Datumₛ, Datumₜ, epoch(Datumₛ))
+
+  x′ = (1 + s) * R * x + δ
+
+  Cartesian{Datumₜ}(Tuple(x′))
+end

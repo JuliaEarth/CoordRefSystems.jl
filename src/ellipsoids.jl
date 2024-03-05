@@ -51,6 +51,10 @@ Returns the inverse flattening of the ellipsoid type `E`.
 """
 function flattening⁻¹ end
 
+# ----------------
+# IMPLEMENTATIONS
+# ----------------
+
 abstract type WGS84🌎 <: RevolutionEllipsoid end
 
 const _WGS84 = ellipfromaf⁻¹(6378137.0u"m", 298.257223563)
