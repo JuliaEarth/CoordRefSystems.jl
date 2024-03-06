@@ -1281,10 +1281,8 @@
   @testset "Projection range" begin
     @testset "Mercator" begin
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(Mercator, λ, ϕ)
+        if indomain(Mercator, c1)
           c2 = convert(Mercator{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
@@ -1296,10 +1294,8 @@
 
     @testset "WebMercator" begin
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(WebMercator, λ, ϕ)
+        if indomain(WebMercator, c1)
           c2 = convert(WebMercator{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
@@ -1311,10 +1307,8 @@
 
     @testset "PlateCarree" begin
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(PlateCarree, λ, ϕ)
+        if indomain(PlateCarree, c1)
           c2 = convert(PlateCarree{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
@@ -1327,10 +1321,8 @@
     @testset "Lambert" begin
       atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(Lambert, λ, ϕ)
+        if indomain(Lambert, c1)
           c2 = convert(Lambert{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
@@ -1343,10 +1335,8 @@
     @testset "Behrmann" begin
       atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(Behrmann, λ, ϕ)
+        if indomain(Behrmann, c1)
           c2 = convert(Behrmann{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
@@ -1359,10 +1349,8 @@
     @testset "GallPeters" begin
       atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(GallPeters, λ, ϕ)
+        if indomain(GallPeters, c1)
           c2 = convert(GallPeters{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
@@ -1374,10 +1362,8 @@
 
     @testset "WinkelTripel" begin
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(WinkelTripel, λ, ϕ)
+        if indomain(WinkelTripel, c1)
           c2 = convert(WinkelTripel{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
@@ -1390,10 +1376,8 @@
     @testset "Robinson" begin
       atol = T(1e-3) * u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
-        λ = deg2rad(lon)
-        ϕ = deg2rad(lat)
         c1 = LatLon(lat, lon)
-        if Cartography.inrange(Robinson, λ, ϕ)
+        if indomain(Robinson, c1)
           c2 = convert(Robinson{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)

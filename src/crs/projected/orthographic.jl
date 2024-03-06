@@ -74,16 +74,16 @@ const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
 #                     https://mathworld.wolfram.com/OrthographicProjection.html
 #                     https://epsg.org/guidance-notes.html
 
-function inrange(::Type{<:Orthographic{lat₀,lon₀}}, λ, ϕ) where {lat₀,lon₀}
+function inbounds(::Type{<:Orthographic{lat₀,lon₀}}, λ, ϕ) where {lat₀,lon₀}
   λ₀ = ustrip(deg2rad(lon₀))
   ϕ₀ = ustrip(deg2rad(lat₀))
   c = acos(sin(ϕ₀) * sin(ϕ) + cos(ϕ₀) * cos(ϕ) * cos(λ - λ₀))
   -π / 2 < c < π / 2
 end
 
-inrange(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 2
+inbounds(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 2
 
-inrange(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
+inbounds(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
 
 function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
   λ₀ = T(ustrip(deg2rad(lon₀)))
