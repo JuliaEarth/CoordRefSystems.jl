@@ -123,13 +123,13 @@ function sphericalinv(x, y, λ₀, ϕ₀)
   if ρ < atol(x)
     λ₀, ϕ₀
   else
-    c = asin(ρ)
+    c = asinpos(ρ)
     sinc = sin(c)
     cosc = cos(c)
     sinϕ₀ = sin(ϕ₀)
     cosϕ₀ = cos(ϕ₀)
-    λ = λ₀ + atan(x * sinc / (ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc))
-    ϕ = asin(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ))
+    λ = λ₀ + atan(x * sinc, ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc)
+    ϕ = asinpos(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ))
     λ, ϕ
   end
 end

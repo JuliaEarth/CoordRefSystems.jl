@@ -1284,6 +1284,8 @@
         c1 = LatLon(lat, lon)
         if indomain(Mercator, c1)
           c2 = convert(Mercator{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1297,6 +1299,8 @@
         c1 = LatLon(lat, lon)
         if indomain(WebMercator, c1)
           c2 = convert(WebMercator{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1310,6 +1314,8 @@
         c1 = LatLon(lat, lon)
         if indomain(PlateCarree, c1)
           c2 = convert(PlateCarree{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1319,11 +1325,13 @@
     end
 
     @testset "Lambert" begin
-      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
+      atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Lambert, c1)
           c2 = convert(Lambert{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1333,11 +1341,13 @@
     end
 
     @testset "Behrmann" begin
-      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
+      atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Behrmann, c1)
           c2 = convert(Behrmann{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1347,11 +1357,13 @@
     end
 
     @testset "GallPeters" begin
-      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
+      atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(GallPeters, c1)
           c2 = convert(GallPeters{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1365,6 +1377,8 @@
         c1 = LatLon(lat, lon)
         if indomain(WinkelTripel, c1)
           c2 = convert(WinkelTripel{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1379,10 +1393,86 @@
         c1 = LatLon(lat, lon)
         if indomain(Robinson, c1)
           c2 = convert(Robinson{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
           @test_throws ArgumentError convert(Robinson{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "OrthoNorth forward" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
+        else
+          @test_throws ArgumentError convert(OrthoNorth{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "OrthoNorth inverse" begin
+      # coordinates at the singularity of the projection (lat ≈ 90) cannot be inverted
+      for lat in T.(1:89), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        end
+      end
+
+      # coordinates at the edge of the projection (lat ≈ 0)
+      # cannot be accurately inverted by numerical problems
+      atol = T(0.5) * u"°"
+      for lon in T.(-180:180)
+        c1 = LatLon(T(0), lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
+        end
+      end
+    end
+
+    @testset "OrthoSouth forward" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth{WGS84Latest}, c1)
+          @test isnum(c2.x)
+          @test isnum(c2.y)
+        else
+          @test_throws ArgumentError convert(OrthoSouth{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "OrthoSouth inverse" begin
+      # coordinates at the singularity of the projection (lat ≈ -90) cannot be inverted
+      for lat in T.(-89:-1), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        end
+      end
+
+      # coordinates at the edge of the projection (lat ≈ 0)
+      # cannot be accurately inverted by numerical problems
+      atol = T(0.5) * u"°"
+      for lon in T.(-180:180)
+        c1 = LatLon(T(0), lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
         end
       end
     end
