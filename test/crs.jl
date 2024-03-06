@@ -1278,7 +1278,7 @@
     end
   end
 
-  @testset "Projection range" begin
+  @testset "Projection domain" begin
     @testset "Mercator" begin
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
