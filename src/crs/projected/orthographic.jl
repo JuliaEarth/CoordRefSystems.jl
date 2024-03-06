@@ -119,17 +119,18 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) w
 end
 
 function sphericalinv(x, y, λ₀, ϕ₀)
+  fix(x) = clamp(x, -one(x), one(x))
   ρ = hypot(x, y)
   if ρ < atol(x)
     λ₀, ϕ₀
   else
-    c = asinpos(ρ)
+    c = asin(fix(ρ))
     sinc = sin(c)
     cosc = cos(c)
     sinϕ₀ = sin(ϕ₀)
     cosϕ₀ = cos(ϕ₀)
     λ = λ₀ + atan(x * sinc, ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc)
-    ϕ = asinpos(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ))
+    ϕ = asin(fix(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ)))
     λ, ϕ
   end
 end

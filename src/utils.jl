@@ -35,13 +35,6 @@ addunit(x::Number, u) = x * u
 addunit(x::Quantity, u) = throw(ArgumentError("invalid units for coordinates, please check the documentation"))
 
 """
-    asinpos(x)
-
-Adjusts `x` to be within the `asin` domain (`[-1,1]`).
-"""
-asinpos(x) = asin(clamp(x, -one(x), one(x)))
-
-"""
     atanpos(x, y)
 
 Adjusts the interval of values returned by the `atan(y, x)` function from `[-π,π]` to `[0,2π]`.
