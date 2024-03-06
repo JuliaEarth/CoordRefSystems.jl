@@ -64,6 +64,7 @@ export
   OrthoNorth,
   OrthoSouth,
   datum,
+  indomain,
 
   # codes
   EPSG,

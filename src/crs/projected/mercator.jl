@@ -37,7 +37,7 @@ Mercator(args...) = Mercator{WGS84Latest}(args...)
 # CONVERSIONS
 # ------------
 
-inrange(::Type{<:Mercator}, λ, ϕ) = -π ≤ λ ≤ π && -deg2rad(80) ≤ ϕ ≤ deg2rad(84)
+inbounds(::Type{<:Mercator}, λ, ϕ) = -π ≤ λ ≤ π && -deg2rad(80) ≤ ϕ ≤ deg2rad(84)
 
 function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
   e = T(eccentricity(ellipsoid(Datum)))

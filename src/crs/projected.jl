@@ -17,7 +17,19 @@ with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
 
-inrange(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
+"""
+    inbounds(CRS::Type{<:Projected}, λ, ϕ)
+
+Checks whether `λ` and `ϕ` in radians are within the `CRS` domain.
+"""
+inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
+
+"""
+    indomain(CRS::Type{<:Projected}, latlon::LatLon)
+
+Checks whether `latlon` coordinates are within the `CRS` domain.
+"""
+indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
 
 # ----------------
 # IMPLEMENTATIONS
@@ -39,7 +51,7 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projecte
   T = numtype(coords.lon)
   λ = ustrip(deg2rad(coords.lon))
   ϕ = ustrip(deg2rad(coords.lat))
-  if !inrange(C, λ, ϕ)
+  if !inbounds(C, λ, ϕ)
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
   a = numconvert(T, majoraxis(ellipsoid(Datum)))

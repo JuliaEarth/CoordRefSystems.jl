@@ -74,16 +74,16 @@ const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
 #                     https://mathworld.wolfram.com/OrthographicProjection.html
 #                     https://epsg.org/guidance-notes.html
 
-function inrange(::Type{<:Orthographic{lat₀,lon₀}}, λ, ϕ) where {lat₀,lon₀}
+function inbounds(::Type{<:Orthographic{lat₀,lon₀}}, λ, ϕ) where {lat₀,lon₀}
   λ₀ = ustrip(deg2rad(lon₀))
   ϕ₀ = ustrip(deg2rad(lat₀))
   c = acos(sin(ϕ₀) * sin(ϕ) + cos(ϕ₀) * cos(ϕ) * cos(λ - λ₀))
   -π / 2 < c < π / 2
 end
 
-inrange(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 2
+inbounds(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 2
 
-inrange(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
+inbounds(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
 
 function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
   λ₀ = T(ustrip(deg2rad(lon₀)))
@@ -119,17 +119,18 @@ function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) w
 end
 
 function sphericalinv(x, y, λ₀, ϕ₀)
+  fix(x) = clamp(x, -one(x), one(x))
   ρ = hypot(x, y)
   if ρ < atol(x)
     λ₀, ϕ₀
   else
-    c = asin(ρ)
+    c = asin(fix(ρ))
     sinc = sin(c)
     cosc = cos(c)
     sinϕ₀ = sin(ϕ₀)
     cosϕ₀ = cos(ϕ₀)
-    λ = λ₀ + atan(x * sinc / (ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc))
-    ϕ = asin(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ))
+    λ = λ₀ + atan(x * sinc, ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc)
+    ϕ = asin(fix(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ)))
     λ, ϕ
   end
 end

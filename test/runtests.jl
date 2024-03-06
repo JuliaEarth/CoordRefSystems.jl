@@ -2,6 +2,8 @@ using Cartography
 using Unitful
 using Test
 
+isnum(x) = !isnan(x) && !isinf(x)
+
 testfiles = ["datums.jl", "crs.jl", "codes.jl"]
 
 # --------------------------------
