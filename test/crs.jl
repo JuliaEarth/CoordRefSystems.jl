@@ -1277,4 +1277,130 @@
       @inferred convert(WinkelTripel{ITRFLatest}, c2)
     end
   end
+
+  @testset "Projection range" begin
+    @testset "Mercator" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(Mercator, λ, ϕ)
+          c2 = convert(Mercator{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        else
+          @test_throws ArgumentError convert(Mercator{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "WebMercator" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(WebMercator, λ, ϕ)
+          c2 = convert(WebMercator{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        else
+          @test_throws ArgumentError convert(WebMercator{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "PlateCarree" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(PlateCarree, λ, ϕ)
+          c2 = convert(PlateCarree{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        else
+          @test_throws ArgumentError convert(PlateCarree{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "Lambert" begin
+      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(Lambert, λ, ϕ)
+          c2 = convert(Lambert{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
+        else
+          @test_throws ArgumentError convert(Lambert{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "Behrmann" begin
+      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(Behrmann, λ, ϕ)
+          c2 = convert(Behrmann{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
+        else
+          @test_throws ArgumentError convert(Behrmann{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "GallPeters" begin
+      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(GallPeters, λ, ϕ)
+          c2 = convert(GallPeters{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
+        else
+          @test_throws ArgumentError convert(GallPeters{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "WinkelTripel" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(WinkelTripel, λ, ϕ)
+          c2 = convert(WinkelTripel{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test c3 ≈ c1
+        else
+          @test_throws ArgumentError convert(WinkelTripel{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "Robinson" begin
+      atol = T(1e-3) * u"°"
+      for lat in T.(-90:90), lon in T.(-180:180)
+        λ = deg2rad(lon)
+        ϕ = deg2rad(lat)
+        c1 = LatLon(lat, lon)
+        if Cartography.inrange(Robinson, λ, ϕ)
+          c2 = convert(Robinson{WGS84Latest}, c1)
+          c3 = convert(LatLon{WGS84Latest}, c2)
+          @test isapprox(c3, c1; atol)
+        else
+          @test_throws ArgumentError convert(Robinson{WGS84Latest}, c1)
+        end
+      end
+    end
+  end
 end

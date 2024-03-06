@@ -17,6 +17,11 @@ with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
 
+"""
+    inrange(CRS::Type{<:Projected}, λ, ϕ)
+
+Checks whether `λ` and `ϕ` are within the `CRS` range.
+"""
 inrange(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
 
 # ----------------
@@ -40,7 +45,7 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projecte
   λ = ustrip(deg2rad(coords.lon))
   ϕ = ustrip(deg2rad(coords.lat))
   if !inrange(C, λ, ϕ)
-    throw(ArgumentError("coordinates outside of the projection domain"))
+    throw(ArgumentError("coordinates outside of the projection range"))
   end
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   fx, fy = formulas(C, T)
