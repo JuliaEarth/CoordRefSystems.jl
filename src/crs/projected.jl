@@ -20,14 +20,14 @@ function formulas end
 """
     inbounds(CRS::Type{<:Projected}, λ, ϕ)
 
-Checks whether `λ` and `ϕ` are within the `CRS` domain.
+Checks whether `λ` and `ϕ` in radians are within the `CRS` domain.
 """
 inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
 
 """
-    indomain(CRS::Type{<:Projected}, coords::LatLon)
+    indomain(CRS::Type{<:Projected}, latlon::LatLon)
 
-Checks whether `coords` are within the `CRS` domain.
+Checks whether `latlon` coordinates are within the `CRS` domain.
 """
 indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
 
