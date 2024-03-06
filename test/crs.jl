@@ -1319,7 +1319,7 @@
     end
 
     @testset "Lambert" begin
-      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Lambert, c1)
@@ -1333,7 +1333,7 @@
     end
 
     @testset "Behrmann" begin
-      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Behrmann, c1)
@@ -1347,7 +1347,7 @@
     end
 
     @testset "GallPeters" begin
-      atol = T === Float64 ? 1e-4u"°" : 1.0f-2u"°"
+      atol = T === Float32 ? 1f-2u"°" : 1e-4u"°"
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(GallPeters, c1)
