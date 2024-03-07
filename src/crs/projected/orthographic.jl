@@ -3,25 +3,25 @@
 # ------------------------------------------------------------------
 
 """
-    Orthographic{lat₀,lon₀,S,Datum}
+    Orthographic{latₒ,lonₒ,S,Datum}
 
-Orthographic CRS with latitude origin `lat₀` and longitude origin `lon₀` in degrees,
+Orthographic CRS with latitude origin `latₒ` and longitude origin `lonₒ` in degrees,
 spherical mode `S` enabled or not and a given `Datum`.
 """
-struct Orthographic{lat₀,lon₀,S,Datum,M<:Met} <: Projected{Datum}
+struct Orthographic{latₒ,lonₒ,S,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  Orthographic{lat₀,lon₀,S,Datum}(x::M, y::M) where {lat₀,lon₀,S,Datum,M<:Met} = new{lat₀,lon₀,S,Datum,float(M)}(x, y)
+  Orthographic{latₒ,lonₒ,S,Datum}(x::M, y::M) where {latₒ,lonₒ,S,Datum,M<:Met} = new{latₒ,lonₒ,S,Datum,float(M)}(x, y)
 end
 
-Orthographic{lat₀,lon₀,S,Datum}(x::Met, y::Met) where {lat₀,lon₀,S,Datum} =
-  Orthographic{lat₀,lon₀,S,Datum}(promote(x, y)...)
-Orthographic{lat₀,lon₀,S,Datum}(x::Len, y::Len) where {lat₀,lon₀,S,Datum} =
-  Orthographic{lat₀,lon₀,S,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-Orthographic{lat₀,lon₀,S,Datum}(x::Number, y::Number) where {lat₀,lon₀,S,Datum} =
-  Orthographic{lat₀,lon₀,S,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+Orthographic{latₒ,lonₒ,S,Datum}(x::Met, y::Met) where {latₒ,lonₒ,S,Datum} =
+  Orthographic{latₒ,lonₒ,S,Datum}(promote(x, y)...)
+Orthographic{latₒ,lonₒ,S,Datum}(x::Len, y::Len) where {latₒ,lonₒ,S,Datum} =
+  Orthographic{latₒ,lonₒ,S,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+Orthographic{latₒ,lonₒ,S,Datum}(x::Number, y::Number) where {latₒ,lonₒ,S,Datum} =
+  Orthographic{latₒ,lonₒ,S,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-Orthographic{lat₀,lon₀,S}(args...) where {lat₀,lon₀,S} = Orthographic{lat₀,lon₀,S,WGS84Latest}(args...)
+Orthographic{latₒ,lonₒ,S}(args...) where {latₒ,lonₒ,S} = Orthographic{latₒ,lonₒ,S,WGS84Latest}(args...)
 
 """
     OrthoNorth(x, y)
@@ -74,10 +74,10 @@ const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
 #                     https://mathworld.wolfram.com/OrthographicProjection.html
 #                     https://epsg.org/guidance-notes.html
 
-function inbounds(::Type{<:Orthographic{lat₀,lon₀}}, λ, ϕ) where {lat₀,lon₀}
-  λ₀ = ustrip(deg2rad(lon₀))
-  ϕ₀ = ustrip(deg2rad(lat₀))
-  c = acos(sin(ϕ₀) * sin(ϕ) + cos(ϕ₀) * cos(ϕ) * cos(λ - λ₀))
+function inbounds(::Type{<:Orthographic{latₒ,lonₒ}}, λ, ϕ) where {latₒ,lonₒ}
+  λₒ = ustrip(deg2rad(lonₒ))
+  ϕₒ = ustrip(deg2rad(latₒ))
+  c = acos(sin(ϕₒ) * sin(ϕ) + cos(ϕₒ) * cos(ϕ) * cos(λ - λₒ))
   -π / 2 < c < π / 2
 end
 
@@ -85,75 +85,75 @@ inbounds(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 
 
 inbounds(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
 
-function formulas(::Type{<:Orthographic{lat₀,lon₀,false,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
-  λ₀ = T(ustrip(deg2rad(lon₀)))
-  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+function formulas(::Type{<:Orthographic{latₒ,lonₒ,false,Datum}}, ::Type{T}) where {latₒ,lonₒ,Datum,T}
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+  ϕₒ = T(ustrip(deg2rad(latₒ)))
   e² = T(eccentricity²(ellipsoid(Datum)))
 
-  sinϕ₀ = sin(ϕ₀)
-  cosϕ₀ = cos(ϕ₀)
+  sinϕₒ = sin(ϕₒ)
+  cosϕₒ = cos(ϕₒ)
   ν(ϕ) = 1 / sqrt(1 - e² * sin(ϕ)^2)
-  ν₀ = ν(ϕ₀)
+  νₒ = ν(ϕₒ)
 
-  fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ - λ₀)
+  fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ - λₒ)
 
   function fy(λ, ϕ)
     νϕ = ν(ϕ)
     sinϕ = sin(ϕ)
     cosϕ = cos(ϕ)
-    νϕ * (sinϕ * cosϕ₀ - cosϕ * sinϕ₀ * cos(λ - λ₀)) + e² * (ν₀ * sinϕ₀ - νϕ * sinϕ) * cosϕ₀
+    νϕ * (sinϕ * cosϕₒ - cosϕ * sinϕₒ * cos(λ - λₒ)) + e² * (νₒ * sinϕₒ - νϕ * sinϕ) * cosϕₒ
   end
 
   fx, fy
 end
 
-function formulas(::Type{<:Orthographic{lat₀,lon₀,true,Datum}}, ::Type{T}) where {lat₀,lon₀,Datum,T}
-  λ₀ = T(ustrip(deg2rad(lon₀)))
-  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+function formulas(::Type{<:Orthographic{latₒ,lonₒ,true,Datum}}, ::Type{T}) where {latₒ,lonₒ,Datum,T}
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+  ϕₒ = T(ustrip(deg2rad(latₒ)))
 
-  fx(λ, ϕ) = cos(ϕ) * sin(λ - λ₀)
+  fx(λ, ϕ) = cos(ϕ) * sin(λ - λₒ)
 
-  fy(λ, ϕ) = sin(ϕ) * cos(ϕ₀) - cos(ϕ) * sin(ϕ₀) * cos(λ - λ₀)
+  fy(λ, ϕ) = sin(ϕ) * cos(ϕₒ) - cos(ϕ) * sin(ϕₒ) * cos(λ - λₒ)
 
   fx, fy
 end
 
-function sphericalinv(x, y, λ₀, ϕ₀)
+function sphericalinv(x, y, λₒ, ϕₒ)
   fix(x) = clamp(x, -one(x), one(x))
   ρ = hypot(x, y)
   if ρ < atol(x)
-    λ₀, ϕ₀
+    λₒ, ϕₒ
   else
     c = asin(fix(ρ))
     sinc = sin(c)
     cosc = cos(c)
-    sinϕ₀ = sin(ϕ₀)
-    cosϕ₀ = cos(ϕ₀)
-    λ = λ₀ + atan(x * sinc, ρ * cosϕ₀ * cosc - y * sinϕ₀ * sinc)
-    ϕ = asin(fix(cosc * sinϕ₀ + (y * sinc * cosϕ₀ / ρ)))
+    sinϕₒ = sin(ϕₒ)
+    cosϕₒ = cos(ϕₒ)
+    λ = λₒ + atan(x * sinc, ρ * cosϕₒ * cosc - y * sinϕₒ * sinc)
+    ϕ = asin(fix(cosc * sinϕₒ + (y * sinc * cosϕₒ / ρ)))
     λ, ϕ
   end
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,Datum,C<:Orthographic{lat₀,lon₀,true,Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,true,Datum}}
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   x = coords.x / a
   y = coords.y / a
-  λ₀ = T(ustrip(deg2rad(lon₀)))
-  ϕ₀ = T(ustrip(deg2rad(lat₀)))
-  λ, ϕ = sphericalinv(x, y, λ₀, ϕ₀)
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+  ϕₒ = T(ustrip(deg2rad(latₒ)))
+  λ, ϕ = sphericalinv(x, y, λₒ, ϕₒ)
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₀,lon₀,Datum,C<:Orthographic{lat₀,lon₀,false,Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,false,Datum}}
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   x = coords.x / a
   y = coords.y / a
-  λ₀ = T(ustrip(deg2rad(lon₀)))
-  ϕ₀ = T(ustrip(deg2rad(lat₀)))
-  λₛ, ϕₛ = sphericalinv(x, y, λ₀, ϕ₀)
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+  ϕₒ = T(ustrip(deg2rad(latₒ)))
+  λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
   fx, fy = formulas(C, T)
   λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
