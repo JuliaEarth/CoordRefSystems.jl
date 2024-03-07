@@ -35,10 +35,15 @@ export
   WGS84Latest,
   ITRF,
   ITRFLatest,
+  GGRS87,
+  NAD83,
+  Potsdam,
+  Carthage,
+  Hermannskogel,
+  Ire65,
+  NZGD1949,
+  OSGB36,
   ellipsoid,
-  latitudeₒ,
-  longitudeₒ,
-  altitudeₒ,
   epoch,
 
   # coordinates

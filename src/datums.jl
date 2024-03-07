@@ -17,27 +17,6 @@ Returns the ellipsoid of the datum type `D`.
 function ellipsoid end
 
 """
-    latitudeₒ(D)
-
-Returns the latitude origin of the datum type `D`.
-"""
-function latitudeₒ end
-
-"""
-    longitudeₒ(D)
-
-Returns the longitude origin of the datum type `D`.
-"""
-function longitudeₒ end
-
-"""
-    altitudeₒ(D)
-
-Returns the altitude origin of the datum type `D`.
-"""
-function altitudeₒ end
-
-"""
     epoch(D)
 
 Returns the reference epoch of the datum type `D`.
@@ -48,18 +27,19 @@ function epoch end
 # IMPLEMENTATIONS
 # ----------------
 
+# Adapted from PROJ coordinate transformation software
+# Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
+# holder, but he didn't mean to imply he did the work. Essentially all work was
+# done by Gerald Evenden.
+
+# reference code: https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
+
 """
     NoDatum
 
 Represents the absence of datum in a CRS.
 """
 abstract type NoDatum <: Datum end
-
-ellipsoid(::Type{NoDatum}) = nothing
-latitudeₒ(::Type{NoDatum}) = nothing
-longitudeₒ(::Type{NoDatum}) = nothing
-altitudeₒ(::Type{NoDatum}) = nothing
-epoch(::Type{NoDatum}) = nothing
 
 """
     WGS84{GPSWeek}
@@ -77,11 +57,7 @@ abstract type WGS84{GPSWeek} <: Datum end
 const WGS84Latest = WGS84{1762}
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
-latitudeₒ(::Type{<:WGS84}) = 0.0u"°"
-longitudeₒ(::Type{<:WGS84}) = 0.0u"°"
-altitudeₒ(::Type{<:WGS84}) = 0.0u"m"
 
-epoch(::Type{WGS84{0}}) = nothing
 epoch(::Type{WGS84{730}}) = 1994.0
 epoch(::Type{WGS84{873}}) = 1997.0
 epoch(::Type{WGS84{1150}}) = 2001.0
@@ -99,14 +75,11 @@ Currentry, ITRF has eleven realizations in the following years:
 
 See [The International Terrestrial Reference Frame (ITRF)](https://www.iers.org/IERS/EN/DataProducts/ITRF/itrf.html)
 """
-abstract type ITRF{Year} end
+abstract type ITRF{Year} <: Datum end
 
 const ITRFLatest = ITRF{2020}
 
 ellipsoid(::Type{<:ITRF}) = GRS80🌎
-latitudeₒ(::Type{<:ITRF}) = 0.0u"°"
-longitudeₒ(::Type{<:ITRF}) = 0.0u"°"
-altitudeₒ(::Type{<:ITRF}) = 0.0u"m"
 
 epoch(::Type{ITRF{1991}}) = 1988.0
 epoch(::Type{ITRF{1992}}) = 1988.0
@@ -119,3 +92,75 @@ epoch(::Type{ITRF{2005}}) = 2000.0
 epoch(::Type{ITRF{2008}}) = 2005.0
 epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
+
+"""
+    GGRS87
+
+Greek Geodetic Reference System 1987 datum.
+"""
+abstract type GGRS87 <: Datum end
+
+ellipsoid(::Type{GGRS87}) = GRS80🌎
+
+"""
+    NAD83
+
+North American Datum 1983.
+"""
+abstract type NAD83 <: Datum end
+
+ellipsoid(::Type{NAD83}) = GRS80🌎
+
+"""
+    Potsdam
+
+Potsdam Rauenberg 1950 DHDN datum.
+"""
+abstract type Potsdam <: Datum end
+
+ellipsoid(::Type{Potsdam}) = Bessel🌎
+
+"""
+    Carthage
+
+Carthage 1934 Tunisia datum.
+"""
+abstract type Carthage <: Datum end
+
+ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
+
+"""
+    Hermannskogel
+
+Hermannskogel datum.
+"""
+abstract type Hermannskogel <: Datum end
+
+ellipsoid(::Type{Hermannskogel}) = Bessel🌎
+
+"""
+    Ire65
+
+Ireland 1965 datum.
+"""
+abstract type Ire65 <: Datum end
+
+ellipsoid(::Type{Ire65}) = ModAiry🌎
+
+"""
+    Nzgd49
+
+New Zealand Geodetic Datum 1949.
+"""
+abstract type NZGD1949 <: Datum end
+
+ellipsoid(::Type{NZGD1949}) = Intl🌎
+
+"""
+    OSGB36
+
+Airy 1830 datum.
+"""
+abstract type OSGB36 <: Datum end
+
+ellipsoid(::Type{OSGB36}) = Airy🌎
