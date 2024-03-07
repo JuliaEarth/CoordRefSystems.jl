@@ -141,19 +141,6 @@ altitudeₒ(::Type{GGRS87}) = 0.0u"m"
 epoch(::Type{GGRS87}) = nothing
 
 """
-    NAD27
-
-North American Datum 1927.
-"""
-abstract type NAD27 <: Datum end
-
-ellipsoid(::Type{NAD27}) = Clrk66🌎
-latitudeₒ(::Type{NAD27}) = 0.0u"°"
-longitudeₒ(::Type{NAD27}) = 0.0u"°"
-altitudeₒ(::Type{NAD27}) = 0.0u"m"
-epoch(::Type{NAD27}) = nothing
-
-"""
     NAD83
 
 North American Datum 1983.

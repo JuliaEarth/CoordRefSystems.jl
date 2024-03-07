@@ -61,14 +61,6 @@
     @test isnothing(epoch(GGRS87))
   end
 
-  @testset "NAD27" begin
-    @test ellipsoid(NAD27) === Cartography.Clrk66🌎
-    @test latitudeₒ(NAD27) == 0.0u"°"
-    @test longitudeₒ(NAD27) == 0.0u"°"
-    @test altitudeₒ(NAD27) == 0.0u"m"
-    @test isnothing(epoch(NAD27))
-  end
-
   @testset "NAD83" begin
     @test ellipsoid(NAD83) === Cartography.GRS80🌎
     @test latitudeₒ(NAD83) == 0.0u"°"

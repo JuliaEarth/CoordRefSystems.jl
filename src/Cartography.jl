@@ -36,7 +36,6 @@ export
   ITRF,
   ITRFLatest,
   GGRS87,
-  NAD27,
   NAD83,
   Potsdam,
   Carthage,
