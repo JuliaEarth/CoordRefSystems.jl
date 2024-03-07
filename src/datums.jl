@@ -17,27 +17,6 @@ Returns the ellipsoid of the datum type `D`.
 function ellipsoid end
 
 """
-    latitudeₒ(D)
-
-Returns the latitude origin of the datum type `D`.
-"""
-function latitudeₒ end
-
-"""
-    longitudeₒ(D)
-
-Returns the longitude origin of the datum type `D`.
-"""
-function longitudeₒ end
-
-"""
-    altitudeₒ(D)
-
-Returns the altitude origin of the datum type `D`.
-"""
-function altitudeₒ end
-
-"""
     epoch(D)
 
 Returns the reference epoch of the datum type `D`.
@@ -62,12 +41,6 @@ Represents the absence of datum in a CRS.
 """
 abstract type NoDatum <: Datum end
 
-ellipsoid(::Type{NoDatum}) = nothing
-latitudeₒ(::Type{NoDatum}) = nothing
-longitudeₒ(::Type{NoDatum}) = nothing
-altitudeₒ(::Type{NoDatum}) = nothing
-epoch(::Type{NoDatum}) = nothing
-
 """
     WGS84{GPSWeek}
 
@@ -84,11 +57,7 @@ abstract type WGS84{GPSWeek} <: Datum end
 const WGS84Latest = WGS84{1762}
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
-latitudeₒ(::Type{<:WGS84}) = 0.0u"°"
-longitudeₒ(::Type{<:WGS84}) = 0.0u"°"
-altitudeₒ(::Type{<:WGS84}) = 0.0u"m"
 
-epoch(::Type{WGS84{0}}) = nothing
 epoch(::Type{WGS84{730}}) = 1994.0
 epoch(::Type{WGS84{873}}) = 1997.0
 epoch(::Type{WGS84{1150}}) = 2001.0
@@ -111,9 +80,6 @@ abstract type ITRF{Year} <: Datum end
 const ITRFLatest = ITRF{2020}
 
 ellipsoid(::Type{<:ITRF}) = GRS80🌎
-latitudeₒ(::Type{<:ITRF}) = 0.0u"°"
-longitudeₒ(::Type{<:ITRF}) = 0.0u"°"
-altitudeₒ(::Type{<:ITRF}) = 0.0u"m"
 
 epoch(::Type{ITRF{1991}}) = 1988.0
 epoch(::Type{ITRF{1992}}) = 1988.0
@@ -135,10 +101,6 @@ Greek Geodetic Reference System 1987 datum.
 abstract type GGRS87 <: Datum end
 
 ellipsoid(::Type{GGRS87}) = GRS80🌎
-latitudeₒ(::Type{GGRS87}) = 0.0u"°"
-longitudeₒ(::Type{GGRS87}) = 0.0u"°"
-altitudeₒ(::Type{GGRS87}) = 0.0u"m"
-epoch(::Type{GGRS87}) = nothing
 
 """
     NAD83
@@ -148,10 +110,6 @@ North American Datum 1983.
 abstract type NAD83 <: Datum end
 
 ellipsoid(::Type{NAD83}) = GRS80🌎
-latitudeₒ(::Type{NAD83}) = 0.0u"°"
-longitudeₒ(::Type{NAD83}) = 0.0u"°"
-altitudeₒ(::Type{NAD83}) = 0.0u"m"
-epoch(::Type{NAD83}) = nothing
 
 """
     Potsdam
@@ -161,10 +119,6 @@ Potsdam Rauenberg 1950 DHDN datum.
 abstract type Potsdam <: Datum end
 
 ellipsoid(::Type{Potsdam}) = Bessel🌎
-latitudeₒ(::Type{Potsdam}) = 0.0u"°"
-longitudeₒ(::Type{Potsdam}) = 0.0u"°"
-altitudeₒ(::Type{Potsdam}) = 0.0u"m"
-epoch(::Type{Potsdam}) = nothing
 
 """
     Carthage
@@ -174,10 +128,6 @@ Carthage 1934 Tunisia datum.
 abstract type Carthage <: Datum end
 
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
-latitudeₒ(::Type{Carthage}) = 0.0u"°"
-longitudeₒ(::Type{Carthage}) = 0.0u"°"
-altitudeₒ(::Type{Carthage}) = 0.0u"m"
-epoch(::Type{Carthage}) = nothing
 
 """
     Hermannskogel
@@ -187,10 +137,6 @@ Hermannskogel datum.
 abstract type Hermannskogel <: Datum end
 
 ellipsoid(::Type{Hermannskogel}) = Bessel🌎
-latitudeₒ(::Type{Hermannskogel}) = 0.0u"°"
-longitudeₒ(::Type{Hermannskogel}) = 0.0u"°"
-altitudeₒ(::Type{Hermannskogel}) = 0.0u"m"
-epoch(::Type{Hermannskogel}) = nothing
 
 """
     Ire65
@@ -200,10 +146,6 @@ Ireland 1965 datum.
 abstract type Ire65 <: Datum end
 
 ellipsoid(::Type{Ire65}) = ModAiry🌎
-latitudeₒ(::Type{Ire65}) = 0.0u"°"
-longitudeₒ(::Type{Ire65}) = 0.0u"°"
-altitudeₒ(::Type{Ire65}) = 0.0u"m"
-epoch(::Type{Ire65}) = nothing
 
 """
     Nzgd49
@@ -213,10 +155,6 @@ New Zealand Geodetic Datum 1949.
 abstract type NZGD1949 <: Datum end
 
 ellipsoid(::Type{NZGD1949}) = Intl🌎
-latitudeₒ(::Type{NZGD1949}) = 0.0u"°"
-longitudeₒ(::Type{NZGD1949}) = 0.0u"°"
-altitudeₒ(::Type{NZGD1949}) = 0.0u"m"
-epoch(::Type{NZGD1949}) = nothing
 
 """
     OSGB36
@@ -226,7 +164,3 @@ Airy 1830 datum.
 abstract type OSGB36 <: Datum end
 
 ellipsoid(::Type{OSGB36}) = Airy🌎
-latitudeₒ(::Type{OSGB36}) = 0.0u"°"
-longitudeₒ(::Type{OSGB36}) = 0.0u"°"
-altitudeₒ(::Type{OSGB36}) = 0.0u"m"
-epoch(::Type{OSGB36}) = nothing

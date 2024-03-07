@@ -3,24 +3,25 @@
 # ------------------------------------------------------------------
 
 """
-    EqualAreaCylindrical{latₜₛ,Datum}
+    EqualAreaCylindrical{latₜₛ,lon₀,Datum}
 
-Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` in degrees and a given `Datum`.
+Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` and longitude origin `lon₀`
+in degrees and a given `Datum`.
 """
-struct EqualAreaCylindrical{latₜₛ,Datum,M<:Met} <: Projected{Datum}
+struct EqualAreaCylindrical{latₜₛ,lon₀,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  EqualAreaCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Met} = new{latₜₛ,Datum,float(M)}(x, y)
+  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::M, y::M) where {latₜₛ,lon₀,Datum,M<:Met} = new{latₜₛ,lon₀,Datum,float(M)}(x, y)
 end
 
-EqualAreaCylindrical{latₜₛ,Datum}(x::Met, y::Met) where {latₜₛ,Datum} =
-  EqualAreaCylindrical{latₜₛ,Datum}(promote(x, y)...)
-EqualAreaCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} =
-  EqualAreaCylindrical{latₜₛ,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-EqualAreaCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,Datum} =
-  EqualAreaCylindrical{latₜₛ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Met, y::Met) where {latₜₛ,lon₀,Datum} =
+  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(promote(x, y)...)
+EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Len, y::Len) where {latₜₛ,lon₀,Datum} =
+  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Number, y::Number) where {latₜₛ,lon₀,Datum} =
+  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-EqualAreaCylindrical{latₜₛ}(args...) where {latₜₛ} = EqualAreaCylindrical{latₜₛ,WGS84Latest}(args...)
+EqualAreaCylindrical{latₜₛ,lon₀}(args...) where {latₜₛ,lon₀} = EqualAreaCylindrical{latₜₛ,lon₀,WGS84Latest}(args...)
 
 """
     Lambert(x, y)
@@ -41,7 +42,7 @@ Lambert{WGS84Latest}(1.0u"m", 1.0u"m")
 
 See [ESRI:54034](https://epsg.io/54034).
 """
-const Lambert{Datum} = EqualAreaCylindrical{0.0u"°",Datum}
+const Lambert{Datum} = EqualAreaCylindrical{0.0u"°",0.0u"°",Datum}
 
 """
     Behrmann(x, y)
@@ -62,7 +63,7 @@ Behrmann{WGS84Latest}(1.0u"m", 1.0u"m")
 
 See [ESRI:54017](https://epsg.io/54017).
 """
-const Behrmann{Datum} = EqualAreaCylindrical{30.0u"°",Datum}
+const Behrmann{Datum} = EqualAreaCylindrical{30.0u"°",0.0u"°",Datum}
 
 """
     GallPeters(x, y)
@@ -81,7 +82,7 @@ GallPeters(1.0u"m", 1.0u"m")
 GallPeters{WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
-const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",Datum}
+const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",0.0u"°",Datum}
 
 # ------------
 # CONVERSIONS
@@ -95,11 +96,11 @@ const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",Datum}
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/cea.cpp
 # reference formula: https://neacsu.net/docs/geodesy/snyder/3-cylindrical/sect_10/
 
-function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}, ::Type{T}) where {latₜₛ,Datum,T}
+function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lon₀,Datum}}, ::Type{T}) where {latₜₛ,lon₀,Datum,T}
   🌎 = ellipsoid(Datum)
-  λ₀ = T(ustrip(deg2rad(longitudeₒ(Datum))))
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
+  λ₀ = T(ustrip(deg2rad(lon₀)))
   ϕₜₛ = T(ustrip(deg2rad(latₜₛ)))
 
   k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
@@ -116,14 +117,14 @@ function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}, ::Type{T}) wh
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum}
+function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,lon₀,Datum}) where {latₜₛ,lon₀,Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x
   y = coords.y
   a = oftype(x, majoraxis(🌎))
   e = convert(numtype(x), eccentricity(🌎))
   e² = convert(numtype(x), eccentricity²(🌎))
-  λ₀ = numconvert(numtype(x), deg2rad(longitudeₒ(Datum)))
+  λ₀ = numconvert(numtype(x), deg2rad(lon₀))
   ϕₜₛ = numconvert(numtype(x), deg2rad(latₜₛ))
 
   ome² = 1 - e²

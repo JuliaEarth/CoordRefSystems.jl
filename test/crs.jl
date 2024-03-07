@@ -2,15 +2,9 @@
   @testset "Datum" begin
     c = Cartesian(T(1), T(1))
     @test datum(c) === NoDatum
-    @test isnothing(latitudeₒ(c))
-    @test isnothing(longitudeₒ(c))
-    @test isnothing(altitudeₒ(c))
 
     c = LatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
-    @test latitudeₒ(c) == latitudeₒ(WGS84Latest)
-    @test longitudeₒ(c) == longitudeₒ(WGS84Latest)
-    @test altitudeₒ(c) == altitudeₒ(WGS84Latest)
   end
 
   @testset "Cartesian" begin

@@ -44,9 +44,6 @@ export
   NZGD1949,
   OSGB36,
   ellipsoid,
-  latitudeₒ,
-  longitudeₒ,
-  altitudeₒ,
   epoch,
 
   # coordinates
