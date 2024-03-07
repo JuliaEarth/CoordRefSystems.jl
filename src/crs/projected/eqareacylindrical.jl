@@ -11,7 +11,8 @@ in degrees and a given `Datum`.
 struct EqualAreaCylindrical{latₜₛ,lon₀,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::M, y::M) where {latₜₛ,lon₀,Datum,M<:Met} = new{latₜₛ,lon₀,Datum,float(M)}(x, y)
+  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::M, y::M) where {latₜₛ,lon₀,Datum,M<:Met} =
+    new{latₜₛ,lon₀,Datum,float(M)}(x, y)
 end
 
 EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Met, y::Met) where {latₜₛ,lon₀,Datum} =
