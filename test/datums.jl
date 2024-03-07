@@ -52,4 +52,76 @@
     @test epoch(ITRF{2014}) == 2010.0
     @test epoch(ITRF{2020}) == 2015.0
   end
+
+  @testset "GGRS87" begin
+    @test ellipsoid(GGRS87) === Cartography.GRS80🌎
+    @test latitudeₒ(GGRS87) == 0.0u"°"
+    @test longitudeₒ(GGRS87) == 0.0u"°"
+    @test altitudeₒ(GGRS87) == 0.0u"m"
+    @test isnothing(epoch(GGRS87))
+  end
+
+  @testset "NAD27" begin
+    @test ellipsoid(NAD27) === Cartography.Clrk66🌎
+    @test latitudeₒ(NAD27) == 0.0u"°"
+    @test longitudeₒ(NAD27) == 0.0u"°"
+    @test altitudeₒ(NAD27) == 0.0u"m"
+    @test isnothing(epoch(NAD27))
+  end
+
+  @testset "NAD83" begin
+    @test ellipsoid(NAD83) === Cartography.GRS80🌎
+    @test latitudeₒ(NAD83) == 0.0u"°"
+    @test longitudeₒ(NAD83) == 0.0u"°"
+    @test altitudeₒ(NAD83) == 0.0u"m"
+    @test isnothing(epoch(NAD83))
+  end
+
+  @testset "Potsdam" begin
+    @test ellipsoid(Potsdam) === Cartography.Bessel🌎
+    @test latitudeₒ(Potsdam) == 0.0u"°"
+    @test longitudeₒ(Potsdam) == 0.0u"°"
+    @test altitudeₒ(Potsdam) == 0.0u"m"
+    @test isnothing(epoch(Potsdam))
+  end
+
+  @testset "Carthage" begin
+    @test ellipsoid(Carthage) === Cartography.Clrk80IGN🌎
+    @test latitudeₒ(Carthage) == 0.0u"°"
+    @test longitudeₒ(Carthage) == 0.0u"°"
+    @test altitudeₒ(Carthage) == 0.0u"m"
+    @test isnothing(epoch(Carthage))
+  end
+
+  @testset "Hermannskogel" begin
+    @test ellipsoid(Hermannskogel) === Cartography.Bessel🌎
+    @test latitudeₒ(Hermannskogel) == 0.0u"°"
+    @test longitudeₒ(Hermannskogel) == 0.0u"°"
+    @test altitudeₒ(Hermannskogel) == 0.0u"m"
+    @test isnothing(epoch(Hermannskogel))
+  end
+
+  @testset "Ire65" begin
+    @test ellipsoid(Ire65) === Cartography.ModAiry🌎
+    @test latitudeₒ(Ire65) == 0.0u"°"
+    @test longitudeₒ(Ire65) == 0.0u"°"
+    @test altitudeₒ(Ire65) == 0.0u"m"
+    @test isnothing(epoch(Ire65))
+  end
+
+  @testset "NZGD1949" begin
+    @test ellipsoid(NZGD1949) === Cartography.Intl🌎
+    @test latitudeₒ(NZGD1949) == 0.0u"°"
+    @test longitudeₒ(NZGD1949) == 0.0u"°"
+    @test altitudeₒ(NZGD1949) == 0.0u"m"
+    @test isnothing(epoch(NZGD1949))
+  end
+
+  @testset "OSGB36" begin
+    @test ellipsoid(OSGB36) === Cartography.Airy🌎
+    @test latitudeₒ(OSGB36) == 0.0u"°"
+    @test longitudeₒ(OSGB36) == 0.0u"°"
+    @test altitudeₒ(OSGB36) == 0.0u"m"
+    @test isnothing(epoch(OSGB36))
+  end
 end

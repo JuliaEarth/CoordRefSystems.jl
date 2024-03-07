@@ -48,6 +48,13 @@ function epoch end
 # IMPLEMENTATIONS
 # ----------------
 
+# Adapted from PROJ coordinate transformation software
+# Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
+# holder, but he didn't mean to imply he did the work. Essentially all work was
+# done by Gerald Evenden.
+
+# reference code: https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
+
 """
     NoDatum
 
@@ -99,7 +106,7 @@ Currentry, ITRF has eleven realizations in the following years:
 
 See [The International Terrestrial Reference Frame (ITRF)](https://www.iers.org/IERS/EN/DataProducts/ITRF/itrf.html)
 """
-abstract type ITRF{Year} end
+abstract type ITRF{Year} <: Datum end
 
 const ITRFLatest = ITRF{2020}
 
@@ -119,3 +126,120 @@ epoch(::Type{ITRF{2005}}) = 2000.0
 epoch(::Type{ITRF{2008}}) = 2005.0
 epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
+
+"""
+    GGRS87
+
+Greek Geodetic Reference System 1987 datum.
+"""
+abstract type GGRS87 <: Datum end
+
+ellipsoid(::Type{GGRS87}) = GRS80🌎
+latitudeₒ(::Type{GGRS87}) = 0.0u"°"
+longitudeₒ(::Type{GGRS87}) = 0.0u"°"
+altitudeₒ(::Type{GGRS87}) = 0.0u"m"
+epoch(::Type{GGRS87}) = nothing
+
+"""
+    NAD27
+
+North American Datum 1927.
+"""
+abstract type NAD27 <: Datum end
+
+ellipsoid(::Type{NAD27}) = Clrk66🌎
+latitudeₒ(::Type{NAD27}) = 0.0u"°"
+longitudeₒ(::Type{NAD27}) = 0.0u"°"
+altitudeₒ(::Type{NAD27}) = 0.0u"m"
+epoch(::Type{NAD27}) = nothing
+
+"""
+    NAD83
+
+North American Datum 1983.
+"""
+abstract type NAD83 <: Datum end
+
+ellipsoid(::Type{NAD83}) = GRS80🌎
+latitudeₒ(::Type{NAD83}) = 0.0u"°"
+longitudeₒ(::Type{NAD83}) = 0.0u"°"
+altitudeₒ(::Type{NAD83}) = 0.0u"m"
+epoch(::Type{NAD83}) = nothing
+
+"""
+    Potsdam
+
+Potsdam Rauenberg 1950 DHDN datum.
+"""
+abstract type Potsdam <: Datum end
+
+ellipsoid(::Type{Potsdam}) = Bessel🌎
+latitudeₒ(::Type{Potsdam}) = 0.0u"°"
+longitudeₒ(::Type{Potsdam}) = 0.0u"°"
+altitudeₒ(::Type{Potsdam}) = 0.0u"m"
+epoch(::Type{Potsdam}) = nothing
+
+"""
+    Carthage
+
+Carthage 1934 Tunisia datum.
+"""
+abstract type Carthage <: Datum end
+
+ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
+latitudeₒ(::Type{Carthage}) = 0.0u"°"
+longitudeₒ(::Type{Carthage}) = 0.0u"°"
+altitudeₒ(::Type{Carthage}) = 0.0u"m"
+epoch(::Type{Carthage}) = nothing
+
+"""
+    Hermannskogel
+
+Hermannskogel datum.
+"""
+abstract type Hermannskogel <: Datum end
+
+ellipsoid(::Type{Hermannskogel}) = Bessel🌎
+latitudeₒ(::Type{Hermannskogel}) = 0.0u"°"
+longitudeₒ(::Type{Hermannskogel}) = 0.0u"°"
+altitudeₒ(::Type{Hermannskogel}) = 0.0u"m"
+epoch(::Type{Hermannskogel}) = nothing
+
+"""
+    Ire65
+
+Ireland 1965 datum.
+"""
+abstract type Ire65 <: Datum end
+
+ellipsoid(::Type{Ire65}) = ModAiry🌎
+latitudeₒ(::Type{Ire65}) = 0.0u"°"
+longitudeₒ(::Type{Ire65}) = 0.0u"°"
+altitudeₒ(::Type{Ire65}) = 0.0u"m"
+epoch(::Type{Ire65}) = nothing
+
+"""
+    Nzgd49
+
+New Zealand Geodetic Datum 1949.
+"""
+abstract type NZGD1949 <: Datum end
+
+ellipsoid(::Type{NZGD1949}) = Intl🌎
+latitudeₒ(::Type{NZGD1949}) = 0.0u"°"
+longitudeₒ(::Type{NZGD1949}) = 0.0u"°"
+altitudeₒ(::Type{NZGD1949}) = 0.0u"m"
+epoch(::Type{NZGD1949}) = nothing
+
+"""
+    OSGB36
+
+Airy 1830 datum.
+"""
+abstract type OSGB36 <: Datum end
+
+ellipsoid(::Type{OSGB36}) = Airy🌎
+latitudeₒ(::Type{OSGB36}) = 0.0u"°"
+longitudeₒ(::Type{OSGB36}) = 0.0u"°"
+altitudeₒ(::Type{OSGB36}) = 0.0u"m"
+epoch(::Type{OSGB36}) = nothing
