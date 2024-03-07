@@ -121,3 +121,17 @@ function ellipfromaf⁻¹(a, f⁻¹)
   e = √e²
   (; a, b, e, e², f, f⁻¹)
 end
+
+"""
+    ellipfromab(a, b)
+
+Calculates the parameters of the ellipsoid with a given
+major axis `a` and minor axis `b`.
+"""
+function ellipfromab(a, b)
+  f = (a - b) / a
+  f⁻¹ = inv(f)
+  e² = (2 - f) / f⁻¹
+  e = √e²
+  (; a, b, e, e², f, f⁻¹)
+end
