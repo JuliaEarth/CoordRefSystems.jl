@@ -4,7 +4,7 @@ using Test
 
 isnum(x) = !isnan(x) && !isinf(x)
 
-testfiles = ["datums.jl", "crs.jl", "codes.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION
