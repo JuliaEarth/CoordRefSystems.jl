@@ -3,25 +3,25 @@
 # ------------------------------------------------------------------
 
 """
-    EqualAreaCylindrical{latₜₛ,lon₀,Datum}
+    EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
 
-Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` and longitude origin `lon₀`
+Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` and longitude origin `lonₒ`
 in degrees and a given `Datum`.
 """
-struct EqualAreaCylindrical{latₜₛ,lon₀,Datum,M<:Met} <: Projected{Datum}
+struct EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::M, y::M) where {latₜₛ,lon₀,Datum,M<:Met} = new{latₜₛ,lon₀,Datum,float(M)}(x, y)
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::M, y::M) where {latₜₛ,lonₒ,Datum,M<:Met} = new{latₜₛ,lonₒ,Datum,float(M)}(x, y)
 end
 
-EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Met, y::Met) where {latₜₛ,lon₀,Datum} =
-  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(promote(x, y)...)
-EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Len, y::Len) where {latₜₛ,lon₀,Datum} =
-  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-EqualAreaCylindrical{latₜₛ,lon₀,Datum}(x::Number, y::Number) where {latₜₛ,lon₀,Datum} =
-  EqualAreaCylindrical{latₜₛ,lon₀,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Met, y::Met) where {latₜₛ,lonₒ,Datum} =
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(promote(x, y)...)
+EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Len, y::Len) where {latₜₛ,lonₒ,Datum} =
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Number, y::Number) where {latₜₛ,lonₒ,Datum} =
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-EqualAreaCylindrical{latₜₛ,lon₀}(args...) where {latₜₛ,lon₀} = EqualAreaCylindrical{latₜₛ,lon₀,WGS84Latest}(args...)
+EqualAreaCylindrical{latₜₛ,lonₒ}(args...) where {latₜₛ,lonₒ} = EqualAreaCylindrical{latₜₛ,lonₒ,WGS84Latest}(args...)
 
 """
     Lambert(x, y)
@@ -96,16 +96,16 @@ const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",0.0u"°",Datum}
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/cea.cpp
 # reference formula: https://neacsu.net/docs/geodesy/snyder/3-cylindrical/sect_10/
 
-function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lon₀,Datum}}, ::Type{T}) where {latₜₛ,lon₀,Datum,T}
+function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}, ::Type{T}) where {latₜₛ,lonₒ,Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
-  λ₀ = T(ustrip(deg2rad(lon₀)))
+  λₒ = T(ustrip(deg2rad(lonₒ)))
   ϕₜₛ = T(ustrip(deg2rad(latₜₛ)))
 
   k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
 
-  fx(λ, ϕ) = k₀ * (λ - λ₀)
+  fx(λ, ϕ) = k₀ * (λ - λₒ)
 
   function fy(λ, ϕ)
     sinϕ = sin(ϕ)
@@ -117,14 +117,14 @@ function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lon₀,Datum}}, ::Type
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,lon₀,Datum}) where {latₜₛ,lon₀,Datum}
+function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}) where {latₜₛ,lonₒ,Datum}
   🌎 = ellipsoid(Datum)
   x = coords.x
   y = coords.y
   a = oftype(x, majoraxis(🌎))
   e = convert(numtype(x), eccentricity(🌎))
   e² = convert(numtype(x), eccentricity²(🌎))
-  λ₀ = numconvert(numtype(x), deg2rad(lon₀))
+  λₒ = numconvert(numtype(x), deg2rad(lonₒ))
   ϕₜₛ = numconvert(numtype(x), deg2rad(latₜₛ))
 
   ome² = 1 - e²
@@ -132,7 +132,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜ
   # same formula as q, but ϕ = 90°
   qₚ = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
 
-  λ = λ₀ + x / (a * k₀)
+  λ = λₒ + x / (a * k₀)
   q = 2y * k₀ / a
   β = asin(q / qₚ)
   ϕ = auth2geod(β, e²)
