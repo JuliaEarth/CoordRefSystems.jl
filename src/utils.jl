@@ -7,7 +7,6 @@ const Len{T} = Quantity{T,u"𝐋"}
 const Met{T} = Quantity{T,u"𝐋",typeof(u"m")}
 const Deg{T} = Quantity{T,NoDims,typeof(u"°")}
 const Rad{T} = Quantity{T,NoDims,typeof(u"rad")}
-const PPM{T} = Quantity{T,NoDims,typeof(u"ppm")}
 
 """
     atol(T)
@@ -23,7 +22,7 @@ isapprox(a::T, b::T, atol=atol(T))
 """
 atol(x) = atol(typeof(x))
 atol(::Type{Float64}) = 1e-10
-atol(::Type{Float32}) = 1.0f-5
+atol(::Type{Float32}) = 1f-5
 atol(::Type{Q}) where {Q<:Quantity} = atol(numtype(Q)) * unit(Q)
 
 """
