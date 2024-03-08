@@ -3,21 +3,20 @@
 # ------------------------------------------------------------------
 
 """
-    helmert(T, Datumₛ, Datumₜ, t)
+    helmert(T, Datumₛ, Datumₜ)
 
 Translation, Rotation and scale of the Helmert transform that converts
-the source `Datumₛ` to target `Datumₜ` using a given coordinate epoch `t`
-in decimalyear. 
+the source `Datumₛ` to target `Datumₜ`. 
 
 The type `T` is the resulting machine type of the parameters.
 """
-function helmert(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}, t) where {T,Datumₜ,Datumₛ}
+function helmert(::Type{T}, ::Type{Datumₛ}, ::Type{Datumₜ}) where {T,Datumₜ,Datumₛ}
   params = helmertparams(Datumₛ, Datumₜ)
   rates = helmertrates(Datumₛ, Datumₜ)
   δ, θ, s = if isnothing(rates)
     params
   else
-    dt = t - epoch(Datumₜ)
+    dt = epoch(Datumₛ) - epoch(Datumₜ)
     map((p, dp) -> p .+ dp .* dt, params, rates)
   end
   translation(T, δ), rotation(T, θ), scale(T, s)
@@ -66,7 +65,7 @@ function rotation(::Type{T}, (θx, θy, θz)) where {T}
   uθx = T(θx) / 3600 * u"°"
   uθy = T(θy) / 3600 * u"°"
   uθz = T(θz) / 3600 * u"°"
-  RotZYX(uθz, uθy, uθx)
+  RotXYZ(uθx, uθy, uθz)
 end
 
 """
