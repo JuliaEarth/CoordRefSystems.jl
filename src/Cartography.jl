@@ -7,7 +7,7 @@ module Cartography
 using Unitful
 using Unitful: numtype
 using Zygote: gradient
-using Rotations: RotZYX
+using Rotations: RotXYZ
 using StaticArrays: SVector
 
 include("utils.jl")
