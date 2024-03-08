@@ -80,9 +80,32 @@ scale(::Type{T}, s) where {T} = T(s) * u"ppm"
 # IMPLEMENTATIONS
 # ----------------
 
-# source of parameters: EPSG Database (https://epsg.org/search/by-name)
+# Adapted from PROJ coordinate transformation software
+# Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
+# holder, but he didn't mean to imply he did the work. Essentially all work was
+# done by Gerald Evenden.
+
+# source of parameters: 
+# EPSG Database: https://epsg.org/search/by-name
+# PROJ source code: https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 
 helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
 
 helmertparams(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (-0.2e-3, -1e-3, -3.3e-3), (0.0, 0.0, 0.0), 0.29e-3
 helmertrates(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (0.0, 0.1e-3, -0.1e-3), (0.0, 0.0, 0.0), -0.03e-3
+
+helmertparams(::Type{GGRS87}, ::Type{<:WGS84}) = (-199.87, 74.79, 246.62), (0.0, 0.0, 0.0), 0.0
+
+helmertparams(::Type{NAD83}, ::Type{<:WGS84}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
+
+helmertparams(::Type{Potsdam}, ::Type{<:WGS84}) = (598.1, 73.7, 418.2), (0.202, 0.045, -2.455), 6.7
+
+helmertparams(::Type{Carthage}, ::Type{<:WGS84}) = (-263.0, 6.0, 431.0), (0.0, 0.0, 0.0), 0.0
+
+helmertparams(::Type{Hermannskogel}, ::Type{<:WGS84}) = (577.326, 90.129, 463.919), (5.137, 1.474, 5.297), 2.4232
+
+helmertparams(::Type{Ire65}, ::Type{<:WGS84}) = (482.530, -130.596, 564.557), (-1.042, -0.214, -0.631), 8.15
+
+helmertparams(::Type{NZGD1949}, ::Type{<:WGS84}) = (59.47, -5.04, 187.44), (0.47, -0.1, 1.024), -4.5993
+
+helmertparams(::Type{OSGB36}, ::Type{<:WGS84}) = (446.448, -125.157, 542.060), (0.1502, 0.2470, 0.8421), -20.4894

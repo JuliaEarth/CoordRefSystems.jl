@@ -899,6 +899,42 @@
       c2 = convert(LatLon{ITRFLatest}, c1)
       @test c2 ≈ LatLon{ITRFLatest}(T(34.99999999095351), T(44.99999998605742))
 
+      # GGRS87 to WGS84
+      c1 = LatLon{GGRS87}(T(30), T(40))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(T(30.00192882268015), T(40.002486991945155))
+
+      c1 = LatLon{GGRS87}(T(35), T(45))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(T(35.00223103195274), T(45.00233792216629))
+
+      # NAD83 to WGS84
+      c1 = LatLon{NAD83}(T(30), T(40))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(T(30), T(40))
+
+      c1 = LatLon{NAD83}(T(35), T(45))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(T(35), T(45))
+
+      # Potsdam to WGS84
+      c1 = LatLon{Potsdam}(T(30), T(40))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(29.996517848254378, 40.00027867741483)
+
+      c1 = LatLon{Potsdam}(T(35), T(45))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(34.995680137764744, 44.99989350030216)
+
+      # Potsdam to WGS84
+      c1 = LatLon{Potsdam}(T(30), T(40))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(29.996517848254378, 40.00027867741483)
+
+      c1 = LatLon{Potsdam}(T(35), T(45))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test c2 ≈ LatLon{WGS84Latest}(34.995680137764744, 44.99989350030216)
+
       c1 = LatLon(T(30), T(40))
       c2 = LatLon{ITRF{2008}}(T(30), T(40))
       @inferred convert(LatLon{ITRF{2008}}, c1)
