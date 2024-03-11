@@ -43,7 +43,7 @@ function formulas(::Type{<:TransverseMercator{kₒ,latₒ,lonₒ,Datum}}, ::Type
     C = fC(ϕ)
     ν = fν(ϕ)
     tanϕ² = tan(ϕ)^2
-    k * ν * (A + (1 - tanϕ² + C) * A^3 / 6 + (5 - 18tanϕ² + tanϕ²^2 + 73C - 58e′²) * A^5 / 120)
+    k * ν * (A + (1 - tanϕ² + C) * A^3 / 6 + (5 - 18tanϕ² + tanϕ²^2 + 72C - 58e′²) * A^5 / 120)
   end
 
   function fy(λ, ϕ)
