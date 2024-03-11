@@ -95,7 +95,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{kₒ,lat
   C₁ = e′² * cos(ϕ₁)^2
   ν₁ = 1 / sqrt(1 - e² * sin(ϕ₁)^2)
   ρ₁ = (1 - e²) / sqrt(1 - e² * sin(ϕ₁)^2)
-  D = y / (v₁ * k)
+  D = x / (v₁ * k)
   tanϕ₁ = tan(ϕ₁)
   tanϕ₁² = tanϕ₁^2
 
