@@ -27,13 +27,9 @@ function formulas(::Type{<:TransverseMercator{kₒ,latₒ,lonₒ,Datum}}, ::Type
   λₒ = T(ustrip(deg2rad(lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
   e² = T(eccentricity²(ellipsoid(Datum)))
-  e⁴ = e²^2
-  e⁶ = e²^3
   e′² = e² / (1 - e²)
 
-  M(ϕ) =
-    (1 - (e² / 4) - (3e⁴ / 64) - (5e⁶ / 256)) * ϕ - ((3e² / 8) + (3e⁴ / 32) + (45e⁶ / 1024)) * sin(2ϕ) +
-    ((15e⁴ / 256) + (45e⁶ / 1024)) * sin(4ϕ) - (35e⁶ / 3072) * sin(6ϕ)
+  M(ϕ) = Pi(e², ϕ, e²) * (1 - e²)
 
   function fx(λ, ϕ)
     λ -= λₒ

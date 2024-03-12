@@ -4,12 +4,14 @@ authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
 version = "0.1.0"
 
 [deps]
+Elliptic = "b305315f-e792-5b7a-8f41-49f472929428"
 Rotations = "6038ab10-8711-5258-84ad-4b1120ba62dc"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
+Elliptic = "1.0"
 Rotations = "1.7"
 StaticArrays = "1.9"
 Unitful = "1.19"

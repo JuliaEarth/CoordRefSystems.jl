@@ -9,6 +9,7 @@ using Unitful: numtype
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using Elliptic: Pi
 
 include("utils.jl")
 include("ioutils.jl")
