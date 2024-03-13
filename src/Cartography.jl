@@ -10,6 +10,9 @@ using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
 
+import Elliptic
+import Elliptic.Jacobi
+
 include("utils.jl")
 include("ioutils.jl")
 include("ellipsoids.jl")
