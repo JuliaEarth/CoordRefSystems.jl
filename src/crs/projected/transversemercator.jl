@@ -138,9 +138,13 @@ end
 eatanhe(x, e) = e > 0 ? e * atanh(e * x) : -e * atan(e * x)
 
 function tauprime(τ, e)
-  τ₁ = hypot(one(τ), τ)
-  sig = sinh(eatanhe(τ / τ₁, e))
-  hypot(one(τ), sig) * τ - sig * τ₁
+  if isfinite(τ)
+    τ₁ = hypot(one(τ), τ)
+    sig = sinh(eatanhe(τ / τ₁, e))
+    hypot(one(τ), sig) * τ - sig * τ₁
+  else
+    τ
+  end
 end
 
 function tau(τ′, e; maxiter=5)
@@ -161,7 +165,7 @@ function tau(τ′, e; maxiter=5)
     τ′ᵢ = tauprime(τ, e)
     dτ = (τ′ - τ′ᵢ) * (1 + ome² * τ^2) / (ome² * hypot(o, τ) * hypot(o, τ′ᵢ))
     τ += dτ
-    if !(abs(dτ) >= stol)
+    if !(abs(dτ) ≥ stol)
       break
     end
   end
@@ -334,7 +338,7 @@ function sigmainv(T, ξ, η, mu, mv; maxiter=10)
       break
     end
     delw² = delu^2 + delv^2
-    if !(delw² >= tol2)
+    if !(delw² ≥ tol2)
       trip += 1
     end
   end
