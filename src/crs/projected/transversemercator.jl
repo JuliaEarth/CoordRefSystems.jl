@@ -43,9 +43,18 @@ function Base.convert(C::Type{TransverseMercator{kₒ,lonₒ,Datum}}, coords::La
 
   mu = e²
   mv = 1 - e²
+  halfπ = T(π / 2)
+
+  backside = λ > halfπ
+  if backside
+    if ϕ == 0
+      ϕsign = -1
+    end
+    λ = π - λ
+  end
+
   τ = tan(ϕ)
   τ′ = tauprime(τ, e)
-  halfπ = T(π / 2)
   u, v = if ϕ == halfπ
     Elliptic.K(mu), zero(T)
   elseif ϕ == 0 && λ == halfπ * (1 - e)
@@ -57,6 +66,9 @@ function Base.convert(C::Type{TransverseMercator{kₒ,lonₒ,Datum}}, coords::La
   snv, cnv, dnv = sncndn(v, mv)
 
   ξ, η = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
+  if backside
+    ξ = 2 * Elliptic.E(mu) - ξ
+  end
 
   x = η * a * k * λsign
   y = ξ * a * k * ϕsign
@@ -75,16 +87,23 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{kₒ,lon
   ξ = coords.y / (a * k)
   η = coords.x / (a * k)
 
+  mu = e²
+  mv = 1 - e²
+  Kmv = Elliptic.K(mv)
+  Emu = Elliptic.E(mu)
+  Emv = Elliptic.E(mv)
+  KEmv = Kmv - Emv
+
   ξsign = signbit(ξ) ? -1 : 1
   ηsign = signbit(η) ? -1 : 1
   ξ *= ξsign
   η *= ηsign
 
-  mu = e²
-  mv = 1 - e²
-  Kmv = Elliptic.K(mv)
-  Emv = Elliptic.E(mv)
-  KEmv = Kmv - Emv
+  backside = xi > Emu
+  if (backside)
+    ξ = 2 * Emu - ξ
+  end
+
   u, v = if ξ == 0 && η == KEmv
     zero(T), Kmv
   else
@@ -100,6 +119,10 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{kₒ,lon
   else
     λ = zero(T)
     ϕ = T(π / 2)
+  end
+
+  if backside
+    λ = π - λ
   end
 
   λ = (λ + λₒ) * ηsign
@@ -191,7 +214,7 @@ function zetainv0(T, ψ, λ, e, mu, mv)
   elseif (ψ < e * halfπ) && (λ > (1 - 2e) * halfπ)
     dλ = λ - (1 - e) * halfπ
     rad = hypot(ψ, dλ)
-    ang = atan(dλ - ψ, ψ + dλ) - T(0.75π) 
+    ang = atan(dλ - ψ, ψ + dλ) - T(0.75π)
     retval = rad < e * taytol
     rad = cbrt(3 / (mv * e) * rad)
     ang /= 3
