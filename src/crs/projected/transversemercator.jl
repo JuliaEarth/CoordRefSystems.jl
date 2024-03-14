@@ -57,10 +57,10 @@ function Base.convert(C::Type{TransverseMercator{kₒ,lonₒ,Datum}}, coords::La
   snv, cnv, dnv = sncndn(v, mv)
 
   # unsacled x,y
-  xu, yu = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
+  ξ, η = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
 
-  x = xu * a * k * λsign
-  y = yu * a * k * ϕsign
+  x = η * a * k * λsign
+  y = ξ * a * k * ϕsign
 
   C(x, y)
 end
@@ -73,23 +73,23 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{kₒ,lon
   e² = T(eccentricity²(🌎))
   k = T(kₒ)
   λₒ = T(ustrip(deg2rad(lonₒ)))
-  x = coords.x / (a * k)
-  y = coords.y / (a * k)
+  ξ = coords.y / (a * k)
+  η = coords.x / (a * k)
 
-  xsign = signbit(x) ? -1 : 1
-  ysign = signbit(y) ? -1 : 1
-  x *= xsign
-  y *= ysign
+  ξsign = signbit(ξ) ? -1 : 1
+  ηsign = signbit(η) ? -1 : 1
+  ξ *= ξsign
+  η *= ηsign
 
   mu = e²
   mv = 1 - e²
   Kmv = Elliptic.K(mv)
   Emv = Elliptic.E(mv)
   KEmv = Kmv - Emv
-  u, v = if x == 0 && y == KEmv
+  u, v = if ξ == 0 && η == KEmv
     zero(T), Kmv
   else
-    sigmainv(T, x, y, e, mu, mv)
+    sigmainv(T, ξ, η, mu, mv)
   end
   snu, cnu, dnu = sncndn(u, mu)
   snv, cnv, dnv = sncndn(v, mv)
@@ -103,8 +103,8 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{kₒ,lon
     ϕ = T(π / 2)
   end
 
-  λ = (λ + λₒ) * xsign
-  ϕ = ϕ * ysign
+  λ = (λ + λₒ) * ηsign
+  ϕ = ϕ * ξsign
 
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
@@ -157,7 +157,7 @@ function zeta(T, snu, cnu, dnu, snv, cnv, dnv, e, mu, mv)
   d₁ = sqrt(cnu^2 + mv * (snu * snv)^2)
   d₂ = sqrt(mu * cnu^2 + mv * cnv^2)
   t₁ = ifelse(d₁ ≠ 0, snu * dnv / d₁, overflow)
-  t₂ = ifelse(d₂ ≠ 0, sinh(e * asin(e * snu / d₂)), overflow)
+  t₂ = ifelse(d₂ ≠ 0, sinh(e * asinh(e * snu / d₂)), overflow)
 
   τ′ = t₁ * hypot(one(T), t₂) - t₂ * hypot(one(T), t₁)
   λ = ifelse(d₁ ≠ 0 && d₂ ≠ 0, atan(dnu * snv, cnu * cnv) - e * atan(e * cnu * snv, dnu * cnv), zero(T))
@@ -182,14 +182,14 @@ function zetainv0(T, ψ, λ, e, mu, mv)
   if (ψ < -e * T(π / 4)) && (λ > (1 - 2e) * halfπ) && (ψ < λ - (1 - e) * halfπ)
     ψx = 1 - ψ / e
     λx = (halfπ - λ) / e
-    u = asinh(sin(λx) / hypot(cos(λx), sin(ψx))) * (1 + mu / 2)
-    v = atan(cos(λx), sin(ψx)) * (1 + mu / 2)
+    u = asinh(sin(λx) / hypot(cos(λx), sinh(ψx))) * (1 + mu / 2)
+    v = atan(cos(λx), sinh(ψx)) * (1 + mu / 2)
     u = Kmu - u
     v = Kmv - v
   elseif (ψ < e * halfπ) && (λ > (1 - 2e) * halfπ)
     dλ = λ - (1 - e) * halfπ
     rad = hypot(ψ, dλ)
-    ang = atan(dλ - ψ, ψ + dλ) - T(0.75) * π
+    ang = atan(dλ - ψ, ψ + dλ) - T(0.75π) 
     retval = rad < e * taytol
     rad = cbrt(3 / (mv * e) * rad)
     ang /= 3
@@ -206,7 +206,7 @@ end
 
 function zetainv(T, τ′, λ, e, mu, mv; maxiter=10)
   tol2 = eps(T) * T(0.1)
-  ψ = asin(τ′)
+  ψ = asinh(τ′)
   scal = 1 / hypot(one(T), τ′)
   u, v, retval = zetainv0(T, ψ, λ, e, mu, mv)
   if retval
@@ -229,22 +229,22 @@ function zetainv(T, τ′, λ, e, mu, mv; maxiter=10)
     if trip > 0
       break
     end
-    delw2 = delu^2 + delv^2
-    if !(delw2 >= stol2)
+    delw² = delu^2 + delv^2
+    if !(delw² ≥ stol2)
       trip += 1
     end
   end
   u, v
 end
 
-# xi = x/a (x unsacled)
-# eta = y/a (y unsacled)
+# ξ (xi) = y/a (y unsacled)
+# η (eta) = x/a (x unsacled)
 
 function sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
   d = mu * cnu^2 + mv * cnv^2
-  x = Elliptic.E(u, mu) - mu * snu * cnu * dnu / d
-  y = v - Elliptic.E(v, mv) + mv * snv * cnv * dnv / d
-  x, y
+  ξ = Elliptic.E(u, mu) - mu * snu * cnu * dnu / d
+  η = v - Elliptic.E(v, mv) + mv * snv * cnv * dnv / d
+  ξ, η
 end
 
 function dwdsigma(snu, cnu, dnu, snv, cnv, dnv, mu, mv)
@@ -257,7 +257,7 @@ function dwdsigma(snu, cnu, dnu, snv, cnv, dnv, mu, mv)
 end
 
 # Starting point for sigmainv
-function sigmainv0(T, x, y, mu, mv)
+function sigmainv0(T, ξ, η, mu, mv)
   retval = false
   Kmu = Elliptic.K(mu)
   Kmv = Elliptic.K(mv)
@@ -265,31 +265,31 @@ function sigmainv0(T, x, y, mu, mv)
   Emv = Elliptic.E(mv)
   KEmv = Kmv - Emv
   taytol = eps(T)^T(0.6)
-  if (y > T(1.25) * KEmv) || ((x < -T(0.25) * Emu && (x < y - KEmv)))
-    a = x - Emu
-    b = y - KEmv
+  if (η > T(1.25) * KEmv) || ((ξ < -T(0.25) * Emu && (ξ < η - KEmv)))
+    a = ξ - Emu
+    b = η - KEmv
     c² = a^2 + b^2
     u = Kmu + a / c²
     v = Kmv - b / c²
-  elseif ((y > T(0.75) * KEmv) && (x < T(0.25) * Emu)) || (y > KEmv)
-    dy = y - KEmv
-    rad = hypot(x, dy)
-    ang = atan(dy - x, x + dy) - T(0.75π)
+  elseif ((η > T(0.75) * KEmv) && (ξ < T(0.25) * Emu)) || (η > KEmv)
+    dη = η - KEmv
+    rad = hypot(ξ, dη)
+    ang = atan(dη - ξ, ξ + dη) - T(0.75π)
     retval = rad < 2 * taytol
     rad = cbrt(3 / mv * rad)
     ang /= 3
     u = rad * cos(ang)
     v = rad * sin(ang) + Kmv
   else
-    u = x * Kmu / Emu
-    v = y * Kmu / Emu
+    u = ξ * Kmu / Emu
+    v = η * Kmu / Emu
   end
   u, v, retval
 end
 
-function sigmainv(T, x, y, e, mu, mv; maxiter=10)
+function sigmainv(T, ξ, η, mu, mv; maxiter=10)
   tol2 = eps(T) * T(0.1)
-  u, v, retval = sigmainv0(T, x, y, mu, mv)
+  u, v, retval = sigmainv0(T, ξ, η, mu, mv)
   if retval
     return u, v
   end
@@ -297,19 +297,19 @@ function sigmainv(T, x, y, e, mu, mv; maxiter=10)
   for _ in 1:maxiter
     snu, cnu, dnu = sncndn(u, mu)
     snv, cnv, dnv = sncndn(v, mv)
-    x1, y1 = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
+    ξ1, η1 = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
     du1, dv1 = dwdsigma(snu, cnu, dnu, snv, cnv, dnv, mu, mv)
-    x1 -= x
-    y1 -= y
-    delu = x1 * du1 - y1 * dv1
-    delv = x1 * dv1 + y1 * du1
+    ξ1 -= ξ
+    η1 -= η
+    delu = ξ1 * du1 - η1 * dv1
+    delv = ξ1 * dv1 + η1 * du1
     u -= delu
     v -= delv
     if trip > 0
       break
     end
-    delw2 = delu^2 + delv^2
-    if !(delw2 >= tol2)
+    delw² = delu^2 + delv^2
+    if !(delw² >= tol2)
       trip += 1
     end
   end
