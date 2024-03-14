@@ -35,15 +35,15 @@ function Base.convert(C::Type{TransverseMercator{kₒ,lonₒ,Datum}}, coords::La
   k = T(kₒ)
   λₒ = T(ustrip(deg2rad(lonₒ)))
 
+  mu = e²
+  mv = 1 - e²
+  halfπ = T(π / 2)
+
   λ -= λₒ
   λsign = signbit(λ) ? -1 : 1
   ϕsign = signbit(ϕ) ? -1 : 1
   λ *= λsign
   ϕ *= ϕsign
-
-  mu = e²
-  mv = 1 - e²
-  halfπ = T(π / 2)
 
   backside = λ > halfπ
   if backside
