@@ -56,7 +56,6 @@ function Base.convert(C::Type{TransverseMercator{kₒ,lonₒ,Datum}}, coords::La
   snu, cnu, dnu = sncndn(u, mu)
   snv, cnv, dnv = sncndn(v, mv)
 
-  # unsacled x,y
   ξ, η = sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
 
   x = η * a * k * λsign
@@ -149,6 +148,9 @@ end
 
 sncndn(u, m) = Jacobi.sn(u, m), Jacobi.cn(u, m), Jacobi.dn(u, m)
 
+# mu = e²
+# mv = 1 - e²
+
 # Lee 54.17
 function zeta(T, snu, cnu, dnu, snv, cnv, dnv, e, mu, mv)
   o = 1 / eps(T)^2
@@ -237,8 +239,8 @@ function zetainv(T, τ′, λ, e, mu, mv; maxiter=10)
   u, v
 end
 
-# ξ (xi) = y/a (y unsacled)
-# η (eta) = x/a (x unsacled)
+# ξ (xi) = y/a (y unscaled)
+# η (eta) = x/a (x unscaled)
 
 function sigma(u, v, snu, cnu, dnu, snv, cnv, dnv, mu, mv)
   d = mu * cnu^2 + mv * cnv^2
