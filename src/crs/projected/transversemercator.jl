@@ -32,6 +32,7 @@ TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = Tra
 # Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
 # holder, but he didn't mean to imply he did the work. Essentially all work was
 # done by Gerald Evenden.
+# Authors of the original algorithm: Knud Poder and Karsten Engsager
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
 
 function formulas(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, ::Type{T}) where {k₀,latₒ,lonₒ,Datum,T}
