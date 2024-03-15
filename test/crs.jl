@@ -1322,7 +1322,7 @@
       # tests from GeographicLib testset
       # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
       TM = Cartography.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
-      
+
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
       c2 = convert(TM{WGS84Latest}, c1)
       @test c2 ≈ TM(T(1548706.7916191491794), T(8451449.1987722350778))
@@ -1367,6 +1367,30 @@
       c2 = TM(T(3478021.0568801453), T(2237622.8976712096))
       @inferred convert(TM{WGS84Latest}, c1)
       @inferred convert(LatLon{WGS84Latest}, c2)
+    end
+
+    @testset "LatLon <> UTM" begin
+      c1 = LatLon(T(56), T(12))
+      c2 = convert(UTMNorth{32,WGS84Latest}, c1)
+      @test c2 ≈ UTMNorth{32}(T(687071.439107327), T(6210141.326872105))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(-T(44), T(174))
+      c2 = convert(UTMSouth{59,WGS84Latest}, c1)
+      @test c2 ≈ UTMSouth{59}(T(740526.3210524899), T(5123750.873037999))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLon(T(56), T(12))
+      c2 = LatLon(-T(44), T(174))
+      c3 = UTMNorth{32}(T(687071.439107327), T(6210141.326872105))
+      c4 = UTMSouth{59}(T(740526.3210524899), T(5123750.873037999))
+      @inferred convert(UTMNorth{32,WGS84Latest}, c1)
+      @inferred convert(UTMSouth{59,WGS84Latest}, c2)
+      @inferred convert(LatLon{WGS84Latest}, c3)
+      @inferred convert(LatLon{WGS84Latest}, c4)
     end
 
     @testset "Projection conversion" begin
