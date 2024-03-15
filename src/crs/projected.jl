@@ -42,6 +42,7 @@ include("projected/eqareacylindrical.jl")
 include("projected/winkeltripel.jl")
 include("projected/robinson.jl")
 include("projected/orthographic.jl")
+include("projected/transversemercator.jl")
 
 # ----------
 # FALLBACKS
