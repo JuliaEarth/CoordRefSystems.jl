@@ -41,10 +41,8 @@ struct UTM{H,Zone,Datum,M<:Met} <: Projected{Datum}
 end
 
 UTM{H,Zone,Datum}(x::Met, y::Met) where {H,Zone,Datum} = UTM{H,Zone,Datum}(promote(x, y)...)
-UTM{H,Zone,Datum}(x::Len, y::Len) where {H,Zone,Datum} =
-  UTM{H,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-UTM{H,Zone,Datum}(x::Number, y::Number) where {H,Zone,Datum} =
-  UTM{H,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+UTM{H,Zone,Datum}(x::Len, y::Len) where {H,Zone,Datum} = UTM{H,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+UTM{H,Zone,Datum}(x::Number, y::Number) where {H,Zone,Datum} = UTM{H,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
 UTM{H,Zone}(args...) where {H,Zone} = UTM{H,Zone,WGS84Latest}(args...)
 
