@@ -28,6 +28,33 @@ TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = Tra
 # done by Gerald Evenden.
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
 
+function formulas(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, ::Type{T}) where {k₀,latₒ,lonₒ,Datum,T}
+  🌎 = ellipsoid(Datum)
+  a = numconvert(T, majoraxis(🌎))
+  b = numconvert(T, minoraxis(🌎))
+  k = T(k₀)
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+  ϕₒ = T(ustrip(deg2rad(latₒ)))
+
+  n = (a - b) / (a + b) # third flattening
+  cbg, gtu = tmfwdcoefs(T, n)
+  Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
+
+  function fx(λ, ϕ)
+    λ -= λₒ
+    _, Ce = tmCnCe(λ, ϕ, cbg, gtu)
+    Qn * Ce
+  end
+
+  function fy(λ, ϕ)
+    λ -= λₒ
+    Cn, _ = tmCnCe(λ, ϕ, cbg, gtu)
+    Qn * Cn + Zb
+  end
+
+  fx, fy
+end
+
 function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coords::LatLon{Datum}) where {k₀,latₒ,lonₒ,Datum}
   🌎 = ellipsoid(Datum)
   T = numtype(coords.lon)
@@ -45,23 +72,8 @@ function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coo
   λ -= λₒ
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
-  Qn = tmQn(T, n, k)
-  Zb = tmZb(cbg, gtu, Qn, ϕₒ)
-
-  Cn = gatg(cbg, ϕ)
-  sinCn = sin(Cn)
-  cosCn = cos(Cn)
-  sinCe = sin(λ)
-  cosCe = cos(λ)
-  cosCncosCe = cosCn * cosCe
-  tanCe = sinCe * cosCn / hypot(sinCn, cosCncosCe)
-
-  Cn = atan(sinCn, cosCncosCe)
-  Ce = asinh(tanCe)
-
-  dCn, dCe = clenshaw(gtu, Cn, Ce)
-  Cn += dCn
-  Ce += dCe
+  Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
+  Cn, Ce = tmCnCe(λ, ϕ, cbg, gtu)
 
   x = (Qn * Ce) * a
   y = (Qn * Cn + Zb) * a
@@ -82,8 +94,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{k₀,lat
 
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
-  Qn = tmQn(T, n, k)
-  Zb = tmZb(cbg, gtu, Qn, ϕₒ)
+  Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
 
   Ce = x / Qn
   Cn = (y - Zb) / Qn
@@ -112,8 +123,8 @@ end
 function gatg(p, B)
   b = 2 * cos(2B)
   h = h₂ = zero(B)
-  h₁ = last(p)
-  for pᵢ in p[(end - 1):-1:begin]
+  h₁, rest... = reverse(p)
+  for pᵢ in rest
     h = -h₂ + b * h₁ + pᵢ
     h₂ = h₁
     h₁ = h
@@ -130,8 +141,8 @@ function clenshaw(p, real, imag)
   i = -2 * sin2r * sinh2i
   hi = hi₁ = hi₂ = zero(real)
   hr₁ = hr₂ = zero(real)
-  hr = last(p)
-  for pᵢ in p[(end - 1):-1:begin]
+  hr, rest... = reverse(p)
+  for pᵢ in rest
     hr₂ = hr₁
     hi₂ = hi₁
     hr₁ = hr
@@ -152,8 +163,8 @@ end
 function clenshaw(p, real)
   r = 2 * cos(real)
   hr₁ = hr₂ = zero(real)
-  hr = last(p)
-  for pᵢ in p[(end - 1):-1:begin]
+  hr, rest... = reverse(p)
+  for pᵢ in rest
     hr₂ = hr₁
     hr₁ = hr
     hr = -hr₂ + r * hr₁ + pᵢ
@@ -221,15 +232,32 @@ function tminvcoefs(T, n)
   cgb, utg
 end
 
-# norm. mer. quad, K&W p.50 (96), p.19 (38b), p.5 (2)
-function tmQn(T, n, k₀)
+function tmQnZb(T, n, k₀, ϕₒ, cbg, gtu)
   n² = n^2
-  T(k₀ / (1 + n) * (1 + n² * (1 / 4 + n² * (1 / 64 + n² / 256))))
-end
-
-# origin northing minus true northing at the origin latitude
-function tmZb(cbg, gtu, Qn, ϕₒ)
+  # norm. mer. quad, K&W p.50 (96), p.19 (38b), p.5 (2)
+  Qn = T(k₀ / (1 + n) * (1 + n² * (1 / 4 + n² * (1 / 64 + n² / 256))))
   # gaussian latitude value of the origin latitude
   Z = gatg(cbg, ϕₒ)
-  -Qn * (Z + clenshaw(gtu, 2Z))
+  # origin northing minus true northing at the origin latitude
+  Zb = -Qn * (Z + clenshaw(gtu, 2Z))
+  Qn, Zb
+end
+
+function tmCnCe(λ, ϕ, cbg, gtu)
+  Cn = gatg(cbg, ϕ)
+  sinCn = sin(Cn)
+  cosCn = cos(Cn)
+  sinCe = sin(λ)
+  cosCe = cos(λ)
+  cosCncosCe = cosCn * cosCe
+  tanCe = sinCe * cosCn / hypot(sinCn, cosCncosCe)
+
+  Cn = atan(sinCn, cosCncosCe)
+  Ce = asinh(tanCe)
+
+  dCn, dCe = clenshaw(gtu, Cn, Ce)
+  Cn += dCn
+  Ce += dCe
+
+  Cn, Ce
 end
