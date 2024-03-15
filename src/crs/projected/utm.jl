@@ -6,7 +6,7 @@
     UTM{IsNorth,Zone,Datum}
 
 UTM (Universal Transverse Mercator) CRS in north hemisphere (`IsNorth = true`)
-or south hemisphere (`IsNorth = false`) with a `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
+or south hemisphere (`IsNorth = false`) with `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
 """
 struct UTM{IsNorth,Zone,Datum,M<:Met} <: Projected{Datum}
   x::M
@@ -32,7 +32,7 @@ UTM{IsNorth,Zone}(args...) where {IsNorth,Zone} = UTM{IsNorth,Zone,WGS84Latest}(
     UTMNorth{zone,Datum}(x, y)
 
 UTM (Universal Transverse Mercator) North coordinates in length units (default to meter)
-with a `zone` (1 ≤ zone ≤ 60) and a given `Datum` (default to `WGS84`).
+with `zone` (1 ≤ zone ≤ 60) and a given `Datum` (default to `WGS84`).
 
 ## Examples
 
