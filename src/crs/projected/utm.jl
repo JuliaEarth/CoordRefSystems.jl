@@ -24,27 +24,28 @@ Southern hemisphere.
 abstract type South <: Hemisphere end
 
 """
-    UTM{H,Zone,Datum}
+    UTM{Hemisphere,Zone,Datum}
 
-UTM (Universal Transverse Mercator) CRS in north hemisphere `H` 
-with `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
+UTM (Universal Transverse Mercator) CRS in `Hemisphere` with `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
 """
-struct UTM{H,Zone,Datum,M<:Met} <: Projected{Datum}
+struct UTM{Hemisphere,Zone,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  function UTM{H,Zone,Datum}(x::M, y::M) where {H,Zone,Datum,M<:Met}
+  function UTM{Hemisphere,Zone,Datum}(x::M, y::M) where {Hemisphere,Zone,Datum,M<:Met}
     if !(1 ≤ Zone ≤ 60)
       throw(ArgumentError("the UTM zone must be an integer between 1 and 60"))
     end
-    new{H,Zone,Datum,float(M)}(x, y)
+    new{Hemisphere,Zone,Datum,float(M)}(x, y)
   end
 end
 
-UTM{H,Zone,Datum}(x::Met, y::Met) where {H,Zone,Datum} = UTM{H,Zone,Datum}(promote(x, y)...)
-UTM{H,Zone,Datum}(x::Len, y::Len) where {H,Zone,Datum} = UTM{H,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-UTM{H,Zone,Datum}(x::Number, y::Number) where {H,Zone,Datum} = UTM{H,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+UTM{Hemisphere,Zone,Datum}(x::Met, y::Met) where {Hemisphere,Zone,Datum} = UTM{Hemisphere,Zone,Datum}(promote(x, y)...)
+UTM{Hemisphere,Zone,Datum}(x::Len, y::Len) where {Hemisphere,Zone,Datum} =
+  UTM{Hemisphere,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+UTM{Hemisphere,Zone,Datum}(x::Number, y::Number) where {Hemisphere,Zone,Datum} =
+  UTM{Hemisphere,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-UTM{H,Zone}(args...) where {H,Zone} = UTM{H,Zone,WGS84Latest}(args...)
+UTM{Hemisphere,Zone}(args...) where {Hemisphere,Zone} = UTM{Hemisphere,Zone,WGS84Latest}(args...)
 
 """
     UTMNorth{zone}(x, y)
@@ -84,12 +85,12 @@ UTMSouth{1,WGS84Latest}(1.0u"m", 1.0u"m")
 """
 const UTMSouth{Zone,Datum} = UTM{South,Zone,Datum}
 
-function formulas(C::Type{<:UTM{H,Zone,Datum}}, ::Type{T}) where {H,Zone,Datum,T}
+function formulas(C::Type{<:UTM{Hemisphere,Zone,Datum}}, ::Type{T}) where {Hemisphere,Zone,Datum,T}
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   xₒ = falseeasting(T, C) / a
   yₒ = falsenorthing(T, C) / a
 
-  TM = totm(C)
+  TM = astm(C)
   tmfx, tmfy = formulas(TM, T)
 
   fx(λ, ϕ) = tmfx(λ, ϕ) + xₒ
@@ -98,23 +99,23 @@ function formulas(C::Type{<:UTM{H,Zone,Datum}}, ::Type{T}) where {H,Zone,Datum,T
   fx, fy
 end
 
-function Base.convert(C::Type{UTM{H,Zone,Datum}}, coords::LatLon{Datum}) where {H,Zone,Datum}
+function Base.convert(C::Type{UTM{Hemisphere,Zone,Datum}}, coords::LatLon{Datum}) where {Hemisphere,Zone,Datum}
   T = numtype(coords.lon)
   xₒ = falseeasting(T, C)
   yₒ = falsenorthing(T, C)
 
-  TM = totm(C)
+  TM = astm(C)
   tm = convert(TM, coords)
 
   C(tm.x + xₒ, tm.y + yₒ)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {H,Zone,Datum,C<:UTM{H,Zone,Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Hemisphere,Zone,Datum,C<:UTM{Hemisphere,Zone,Datum}}
   T = numtype(coords.x)
   xₒ = falseeasting(T, C)
   yₒ = falsenorthing(T, C)
 
-  TM = totm(C)
+  TM = astm(C)
   tm = TM(coords.x - xₒ, coords.y - yₒ)
 
   convert(LatLon{Datum}, tm)
@@ -124,7 +125,7 @@ end
 # HELPER FUNCTIONS
 # -----------------
 
-function totm(::Type{<:UTM{H,Zone,Datum}}) where {H,Zone,Datum}
+function astm(::Type{<:UTM{Hemisphere,Zone,Datum}}) where {Hemisphere,Zone,Datum}
   lonₒ = (6 * Zone - 183) * u"°"
   TransverseMercator{0.9996,0.0u"°",lonₒ,Datum}
 end
