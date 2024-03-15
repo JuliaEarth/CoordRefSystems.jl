@@ -1318,6 +1318,57 @@
       @inferred convert(LatLon{WGS84Latest}, c4)
     end
 
+    @testset "LatLon <> TransverseMercator" begin
+      # tests from GeographicLib testset
+      # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
+      TM = Cartography.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
+      
+      c1 = LatLon(T(70.579277094557), T(45.599419731762))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(1548706.7916191491794), T(8451449.1987722350778))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(19.479895588178), T(75.662049225092))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(9855841.2329353332058), T(6145496.1151551160577))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(5.458957393183), T(36.385237374895))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(4328154.0835012728645), T(749647.6236903529367))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(61.965604972549), T(58.931370849824))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(2727657.3379737519243), T(8283916.696409868168))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      # latₒ, lonₒ ≠ 0
+      TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
+
+      c1 = LatLon(T(30), T(60))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(3478021.0568801453), T(2237622.8976712096))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(35), T(65))
+      c2 = convert(TM{WGS84Latest}, c1)
+      @test c2 ≈ TM(T(3736618.554412091), T(3043187.5889959945))
+      c3 = convert(LatLon{WGS84Latest}, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLon(T(30), T(60))
+      c2 = TM(T(3478021.0568801453), T(2237622.8976712096))
+      @inferred convert(TM{WGS84Latest}, c1)
+      @inferred convert(LatLon{WGS84Latest}, c2)
+    end
+
     @testset "Projection conversion" begin
       # same datum
       c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))

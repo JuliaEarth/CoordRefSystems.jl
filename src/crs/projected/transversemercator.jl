@@ -2,6 +2,12 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    TransverseMercator{k₀,latₒ,lonₒ,Datum}
+
+Transverse Mercator CRS with scale factor `k₀`, latitude origin `latₒ`
+and longitude origin `lonₒ` in degrees and a given `Datum`.
+"""
 struct TransverseMercator{k₀,latₒ,lonₒ,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
