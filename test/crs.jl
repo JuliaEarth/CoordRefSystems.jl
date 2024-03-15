@@ -1322,7 +1322,7 @@
       # tests from GeographicLib testset
       # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
       TM = Cartography.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
-      
+
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
       c2 = convert(TM{WGS84Latest}, c1)
       @test c2 ≈ TM(T(1548706.7916191491794), T(8451449.1987722350778))
