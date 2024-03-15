@@ -68,10 +68,15 @@ export
   Robinson,
   OrthoNorth,
   OrthoSouth,
+  UTM,
   UTMNorth,
   UTMSouth,
   datum,
   indomain,
+
+  # hemispheres
+  North,
+  South,
 
   # codes
   EPSG,
