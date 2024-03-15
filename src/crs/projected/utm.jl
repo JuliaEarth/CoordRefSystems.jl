@@ -3,29 +3,50 @@
 # ------------------------------------------------------------------
 
 """
-    UTM{IsNorth,Zone,Datum}
+    Hemisphere
 
-UTM (Universal Transverse Mercator) CRS in north hemisphere (`IsNorth = true`)
-or south hemisphere (`IsNorth = false`) with `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
+Hemisphere of the Earth.
 """
-struct UTM{IsNorth,Zone,Datum,M<:Met} <: Projected{Datum}
+abstract type Hemisphere end
+
+"""
+    North
+
+Northern hemisphere.
+"""
+abstract type North <: Hemisphere end
+
+"""
+    South
+
+Southern hemisphere.
+"""
+abstract type South <: Hemisphere end
+
+"""
+    UTM{H,Zone,Datum}
+
+UTM (Universal Transverse Mercator) CRS in north hemisphere `H` 
+with `Zone` (1 ≤ Zone ≤ 60) and a given `Datum`.
+"""
+struct UTM{H,Zone,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  function UTM{IsNorth,Zone,Datum}(x::M, y::M) where {IsNorth,Zone,Datum,M<:Met}
+  function UTM{H,Zone,Datum}(x::M, y::M) where {H,Zone,Datum,M<:Met}
     if !(1 ≤ Zone ≤ 60)
       throw(ArgumentError("the UTM zone must be an integer between 1 and 60"))
     end
-    new{IsNorth,Zone,Datum,float(M)}(x, y)
+    new{H,Zone,Datum,float(M)}(x, y)
   end
 end
 
-UTM{IsNorth,Zone,Datum}(x::Met, y::Met) where {IsNorth,Zone,Datum} = UTM{IsNorth,Zone,Datum}(promote(x, y)...)
-UTM{IsNorth,Zone,Datum}(x::Len, y::Len) where {IsNorth,Zone,Datum} =
-  UTM{IsNorth,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-UTM{IsNorth,Zone,Datum}(x::Number, y::Number) where {IsNorth,Zone,Datum} =
-  UTM{IsNorth,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+UTM{H,Zone,Datum}(x::Met, y::Met) where {H,Zone,Datum} = UTM{H,Zone,Datum}(promote(x, y)...)
+UTM{H,Zone,Datum}(x::Len, y::Len) where {H,Zone,Datum} =
+  UTM{H,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+UTM{H,Zone,Datum}(x::Number, y::Number) where {H,Zone,Datum} =
+  UTM{H,Zone,Datum}(addunit(x, u"m"), addunit(y, u"m"))
 
-UTM{IsNorth,Zone}(args...) where {IsNorth,Zone} = UTM{IsNorth,Zone,WGS84Latest}(args...)
+UTM{H,Zone}(args...) where {H,Zone} = UTM{H,Zone,WGS84Latest}(args...)
 
 """
     UTMNorth{zone}(x, y)
@@ -44,7 +65,7 @@ UTMNorth{1}(1.0u"m", 1.0u"m")
 UTMNorth{1,WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
-const UTMNoth{Zone,Datum} = UTM{true,Zone,Datum}
+const UTMNorth{Zone,Datum} = UTM{North,Zone,Datum}
 
 """
     UTMSouth{zone}(x, y)
@@ -63,18 +84,12 @@ UTMSouth{1}(1.0u"m", 1.0u"m")
 UTMSouth{1,WGS84Latest}(1.0u"m", 1.0u"m")
 ```
 """
-const UTMSouth{Zone,Datum} = UTM{false,Zone,Datum}
+const UTMSouth{Zone,Datum} = UTM{South,Zone,Datum}
 
-function totm(::Type{<:UTM{IsNorth,Zone,Datum}}) where {IsNorth,Zone,Datum}
-  lonₒ = (6 * Zone - 183) * u"°"
-  TransverseMercator{0.9996,0.0u"°",lonₒ,Datum}
-end
-
-function formulas(C::Type{<:UTM{IsNorth,Zone,Datum}}, ::Type{T}) where {IsNorth,Zone,Datum,T}
-  a = majoraxis(ellipsoid(Datum))
-  # unscaled false easting and false northing
-  xₒ = T(500000u"m" / a)
-  yₒ = IsNorth ? T(0) : T(10000000u"m" / a)
+function formulas(C::Type{<:UTM{H,Zone,Datum}}, ::Type{T}) where {H,Zone,Datum,T}
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  xₒ = falseeasting(T, C) / a
+  yₒ = falsenorthing(T, C) / a
 
   TM = totm(C)
   tmfx, tmfy = formulas(TM, T)
@@ -85,10 +100,10 @@ function formulas(C::Type{<:UTM{IsNorth,Zone,Datum}}, ::Type{T}) where {IsNorth,
   fx, fy
 end
 
-function Base.convert(C::Type{UTM{IsNorth,Zone,Datum}}, coords::LatLon{Datum}) where {IsNorth,Zone,Datum}
+function Base.convert(C::Type{UTM{H,Zone,Datum}}, coords::LatLon{Datum}) where {H,Zone,Datum}
   T = numtype(coords.lon)
-  xₒ = T(500000) * u"m"
-  yₒ = IsNorth ? T(0) * u"m" : T(10000000) * u"m"
+  xₒ = falseeasting(T, C)
+  yₒ = falsenorthing(T, C)
 
   TM = totm(C)
   tm = convert(TM, coords)
@@ -96,13 +111,27 @@ function Base.convert(C::Type{UTM{IsNorth,Zone,Datum}}, coords::LatLon{Datum}) w
   C(tm.x + xₒ, tm.y + yₒ)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {IsNorth,Zone,Datum,C<:UTM{IsNorth,Zone,Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {H,Zone,Datum,C<:UTM{H,Zone,Datum}}
   T = numtype(coords.x)
-  xₒ = T(500000) * u"m"
-  yₒ = IsNorth ? T(0) * u"m" : T(10000000) * u"m"
+  xₒ = falseeasting(T, C)
+  yₒ = falsenorthing(T, C)
 
   TM = totm(C)
   tm = TM(coords.x - xₒ, coords.y - yₒ)
 
   convert(LatLon{Datum}, tm)
 end
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+function totm(::Type{<:UTM{H,Zone,Datum}}) where {H,Zone,Datum}
+  lonₒ = (6 * Zone - 183) * u"°"
+  TransverseMercator{0.9996,0.0u"°",lonₒ,Datum}
+end
+
+falseeasting(::Type{T}, ::Type{<:UTM}) where {T} = T(500000) * u"m"
+
+falsenorthing(::Type{T}, ::Type{<:UTM{North}}) where {T} = T(0) * u"m"
+falsenorthing(::Type{T}, ::Type{<:UTM{South}}) where {T} = T(10000000) * u"m"

@@ -68,7 +68,7 @@ export
   Robinson,
   OrthoNorth,
   OrthoSouth,
-  UTMNoth,
+  UTMNorth,
   UTMSouth,
   datum,
   indomain,
