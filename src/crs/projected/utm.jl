@@ -90,8 +90,7 @@ function formulas(C::Type{<:UTM{Hemisphere,Zone,Datum}}, ::Type{T}) where {Hemis
   xₒ = falseeasting(T, C) / a
   yₒ = falsenorthing(T, C) / a
 
-  TM = astm(C)
-  tmfx, tmfy = formulas(TM, T)
+  tmfx, tmfy = formulas(astm(C), T)
 
   fx(λ, ϕ) = tmfx(λ, ϕ) + xₒ
   fy(λ, ϕ) = tmfy(λ, ϕ) + yₒ
@@ -104,8 +103,7 @@ function Base.convert(C::Type{UTM{Hemisphere,Zone,Datum}}, coords::LatLon{Datum}
   xₒ = falseeasting(T, C)
   yₒ = falsenorthing(T, C)
 
-  TM = astm(C)
-  tm = convert(TM, coords)
+  tm = convert(astm(C), coords)
 
   C(tm.x + xₒ, tm.y + yₒ)
 end
@@ -115,8 +113,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Hemisphere,Zone,D
   xₒ = falseeasting(T, C)
   yₒ = falsenorthing(T, C)
 
-  TM = astm(C)
-  tm = TM(coords.x - xₒ, coords.y - yₒ)
+  tm = astm(C)(coords.x - xₒ, coords.y - yₒ)
 
   convert(LatLon{Datum}, tm)
 end
