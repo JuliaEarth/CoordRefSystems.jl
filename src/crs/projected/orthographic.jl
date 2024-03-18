@@ -158,3 +158,13 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Dat
   λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{Orthographic{latₒ,lonₒ,S}}, coords::LatLon{Datum}) where {latₒ,lonₒ,S,Datum} =
+  convert(Orthographic{latₒ,lonₒ,S,Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::Orthographic{latₒ,lonₒ,S,Datum}) where {latₒ,lonₒ,S,Datum} =
+  convert(LatLon{Datum}, coords)

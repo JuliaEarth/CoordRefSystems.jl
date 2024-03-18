@@ -69,3 +69,13 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EquidistantCylindrical{lat�
 
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{EquidistantCylindrical{latₜₛ}}, coords::LatLon{Datum}) where {latₜₛ,Datum} =
+  convert(EquidistantCylindrical{latₜₛ,Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
+  convert(LatLon{Datum}, coords)

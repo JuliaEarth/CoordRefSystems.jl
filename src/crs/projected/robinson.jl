@@ -156,3 +156,11 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Dat
 
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{Robinson}, coords::LatLon{Datum}) where {Datum} = convert(Robinson{Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::Robinson{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
