@@ -29,7 +29,7 @@ Basic CRS include `Cartesian`, `Spherical`, `Cylindrical` and `Polar`.
 We adopt Julia's conversion syntax to convert between them:
 
 #### Cartesian <> Polar
-```
+```julia
 julia> cartesian = Cartesian(1, 1)
 Cartesian{NoDatum} coordinates
 ├─ x: 1.0 m
@@ -47,7 +47,7 @@ Cartesian{NoDatum} coordinates
 ```
 
 #### Cartesian <> Cylindrical
-```
+```julia
 julia> cartesian = Cartesian(1, 1, 1)
 Cartesian{NoDatum} coordinates
 ├─ x: 1.0 m
@@ -68,7 +68,7 @@ Cartesian{NoDatum} coordinates
 ```
 
 #### Cartesian <> Spherical
-```
+```julia
 julia> cartesian = Cartesian(1, 1, 1)
 Cartesian{NoDatum} coordinates
 ├─ x: 1.0 m
@@ -101,7 +101,7 @@ Below is an example converting geodetic `LatLon` coordinates
 on the `WGS84Latest` datum to `Mercator`, `WebMercator`, and
 `Robinson` projected coordinates on the same datum:
 
-```
+```julia
 julia> latlon = LatLon(30, 60)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
@@ -140,7 +140,7 @@ GeodeticLatLon{WGS84Latest} coordinates
 
 It is also possible to convert between different datum, transparently:
 
-```
+```julia
 julia> latlon = LatLon{WGS84Latest}(30, 60)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
