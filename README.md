@@ -3,7 +3,15 @@
 [![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/JuliaEarth/Cartography.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/Cartography.jl)
 
-Cartography.jl is a package for defining and converting coordinates Coordinate Reference Systems (CRS), in a "Julian" way with full support for units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl).
+Cartography.jl provides conversions between Coordinate Reference Systems (CRS) for professional geographic mapping.
+It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), respects the
+projection bounds documented in [EPSG](https://epsg.io), and is very fast thanks to advanced parametrizations at
+compile time.
+
+This package addresses various design issues encountered in previous attempts such as
+[Geodesy.jl](https://github.com/JuliaGeo/Geodesy.jl) and [MapMaths.jl](https://github.com/subnero1/MapMaths.jl).
+Our benchmarks show that Cartography.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ), which is the
+most widely used software library for coordinate projections in the world (written in C/C++).
 
 ## Installation
 
@@ -15,11 +23,12 @@ Get the latest stable release with Julia's package manager:
 
 ## Usage
 
-### Basic coordinates
+### Basic CRS
 
-Conversions between basic CSR are defined by Cartography.jl:
+Basic CRS include `Cartesian`, `Spherical`, `Cylindrical` and `Polar`.
+We adopt Julia's conversion syntax to convert between them:
 
-Cartesian <> Polar:
+#### Cartesian <> Polar
 ```
 julia> cartesian = Cartesian(1, 1)
 Cartesian{NoDatum} coordinates
@@ -37,7 +46,7 @@ Cartesian{NoDatum} coordinates
 └─ y: 1.0 m
 ```
 
-Cartesian <> Cylindrical:
+#### Cartesian <> Cylindrical
 ```
 julia> cartesian = Cartesian(1, 1, 1)
 Cartesian{NoDatum} coordinates
@@ -58,7 +67,7 @@ Cartesian{NoDatum} coordinates
 └─ z: 1.0 m
 ```
 
-Cartesian <> Spherical:
+#### Cartesian <> Spherical
 ```
 julia> cartesian = Cartesian(1, 1, 1)
 Cartesian{NoDatum} coordinates
@@ -79,9 +88,18 @@ Cartesian{NoDatum} coordinates
 └─ z: 0.9999999999999999 m
 ```
 
-### GIS coordinates
+### Advanced CRS
 
-The most common use of Cartography.jl is to convert geographic coordinates into projected coordinates:
+CRS are most useful to locate objets in the physical world.
+Given an ellipsoid of revolution and a standardized origin,
+a.k.a. "datum", we can locate points without ambiguity.
+
+Cartography.jl provides all datums of the PROJ library in
+pure Julia code, using type parameters for maximum performance.
+
+Below is an example converting geodetic `LatLon` coordinates
+on the `WGS84Latest` datum to `Mercator`, `WebMercator`, and
+`Robinson` projected coordinates on the same datum:
 
 ```
 julia> latlon = LatLon(30, 60)
@@ -103,11 +121,7 @@ julia> convert(Robinson{WGS84Latest}, latlon)
 Robinson{WGS84Latest} coordinates
 ├─ x: 5.441866544132874e6 m
 └─ y: 3.2085576115038935e6 m
-```
 
-It is also possible to convert the projected coordinates back into geographic coordinates:
-
-```
 julia> latlon = LatLon(30, 60)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
@@ -124,7 +138,7 @@ GeodeticLatLon{WGS84Latest} coordinates
 └─ lon: 59.99999999999999°
 ```
 
-Conversions between geographic coordinates and projected coordinates with the same or different Datums can be done in the same way:
+It is also possible to convert between different datum, transparently:
 
 ```
 julia> latlon = LatLon{WGS84Latest}(30, 60)
@@ -155,4 +169,6 @@ WebMercator{ITRF{2008}} coordinates
 
 ## Credits
 
-Most implementations of this package are adaptations from [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ), which is also under the [MIT license](https://github.com/OSGeo/PROJ/blob/master/COPYING).
+Most implementations of this package are adaptations from
+[PROJ](https://github.com/OSGeo/PROJ), which is also under
+the [MIT license](https://github.com/OSGeo/PROJ/blob/master/COPYING).
