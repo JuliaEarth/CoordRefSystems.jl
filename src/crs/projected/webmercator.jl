@@ -59,3 +59,11 @@ function Base.convert(::Type{LatLon{Datum}}, coords::WebMercator{Datum}) where {
   ϕ = atan(sinh(y / a))
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{WebMercator}, coords::LatLon{Datum}) where {Datum} = convert(WebMercator{Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::WebMercator{Datum}) where {Datum} = convert(LatLon{Datum}, coords)

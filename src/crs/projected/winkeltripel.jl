@@ -76,3 +76,11 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₁,Datum,C<:W
   end
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{Winkel{lat₁}}, coords::LatLon{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::Winkel{lat₁,Datum}) where {lat₁,Datum} = convert(LatLon{Datum}, coords)

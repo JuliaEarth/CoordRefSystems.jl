@@ -73,7 +73,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
-# projection conversion with same Datum
+# projection conversion with same datum
 function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}
   latlon = convert(LatLon{Datum}, coords)
   convert(Cₜ, latlon)

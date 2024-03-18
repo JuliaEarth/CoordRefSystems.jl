@@ -78,3 +78,11 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Dat
 
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{Mercator}, coords::LatLon{Datum}) where {Datum} = convert(Mercator{Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::Mercator{Datum}) where {Datum} = convert(LatLon{Datum}, coords)

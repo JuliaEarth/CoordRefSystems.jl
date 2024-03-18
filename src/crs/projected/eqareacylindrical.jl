@@ -140,3 +140,13 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜ
 
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{EqualAreaCylindrical{latₜₛ,lonₒ}}, coords::LatLon{Datum}) where {latₜₛ,lonₒ,Datum} =
+  convert(EqualAreaCylindrical{latₜₛ,lonₒ,Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}) where {latₜₛ,lonₒ,Datum} =
+  convert(LatLon{Datum}, coords)

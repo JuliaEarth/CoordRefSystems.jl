@@ -120,6 +120,16 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Hemisphere,Zone,D
   convert(LatLon{Datum}, tm)
 end
 
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{UTM{Hemisphere,Zone}}, coords::LatLon{Datum}) where {Hemisphere,Zone,Datum} =
+  convert(UTM{Hemisphere,Zone,Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum} =
+  convert(LatLon{Datum}, coords)
+
 # -----------------
 # HELPER FUNCTIONS
 # -----------------
