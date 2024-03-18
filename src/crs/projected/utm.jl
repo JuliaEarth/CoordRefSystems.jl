@@ -85,7 +85,7 @@ UTMSouth{1,WGS84Latest}(1.0u"m", 1.0u"m")
 """
 const UTMSouth{Zone,Datum} = UTM{South,Zone,Datum}
 
-inbounds(C::Type{<:UTM}, λ, ϕ) = inbounds(astm(C), λ, ϕ) 
+inbounds(C::Type{<:UTM}, λ, ϕ) = inbounds(astm(C), λ, ϕ)
 
 function formulas(C::Type{<:UTM{Hemisphere,Zone,Datum}}, ::Type{T}) where {Hemisphere,Zone,Datum,T}
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
