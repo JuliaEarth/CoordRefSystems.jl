@@ -18,22 +18,22 @@ Get the latest stable release with Julia's package manager:
 The most common use of Cartography.jl is to convert geographic coordinates into projected coordinates:
 
 ```
-julia> gcoord = LatLon(30, 60)
+julia> latlon = LatLon(30, 60)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
 └─ lon: 60.0°
 
-julia> pcoord1 = convert(Mercator{WGS84Latest}, gcoord)
+julia> convert(Mercator{WGS84Latest}, latlon)
 Mercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.482189085408618e6 m
 
-julia> pcoord2 = convert(WebMercator{WGS84Latest}, gcoord)
+julia> convert(WebMercator{WGS84Latest}, latlon)
 WebMercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.5035498435043753e6 m
 
-julia> pcoord3 = convert(Robinson{WGS84Latest}, gcoord)
+julia> convert(Robinson{WGS84Latest}, latlon)
 Robinson{WGS84Latest} coordinates
 ├─ x: 5.441866544132874e6 m
 └─ y: 3.2085576115038935e6 m
@@ -42,17 +42,17 @@ Robinson{WGS84Latest} coordinates
 It is also possible to convert the projected coordinates back into geographic coordinates:
 
 ```
-julia> gcoord = LatLon(30, 60)
+julia> latlon = LatLon(30, 60)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
 └─ lon: 60.0°
 
-julia> pcoord = convert(Mercator{WGS84Latest}, gcoord)
+julia> mercator = convert(Mercator{WGS84Latest}, latlon)
 Mercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.482189085408618e6 m
 
-julia> convert(LatLon{WGS84Latest}, pcoord)
+julia> convert(LatLon{WGS84Latest}, mercator)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 29.999999999999996°
 └─ lon: 59.99999999999999°
@@ -60,4 +60,4 @@ GeodeticLatLon{WGS84Latest} coordinates
 
 ## Credits
 
-Most implementations of this package are adaptations from [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ), which is also under the MIT license.
+Most implementations of this package are adaptations from [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ), which is also under the [MIT license](https://github.com/OSGeo/PROJ/blob/master/COPYING).
