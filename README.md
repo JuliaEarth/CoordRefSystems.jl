@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/JuliaEarth/Cartography.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/Cartography.jl)
 
-Cartography.jl is a package for defining and converting coordinates between CRS (Coordinate Reference Systems), i.e. Cartographic Projections, in a "Julian" way and with full support of units using the [Unitful.jl](https://github.com/PainterQubits/Unitful.jl) package.
+Cartography.jl is a package for defining and converting coordinates Coordinate Reference Systems (CRS), in a "Julian" way with full support for units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl).
 
 ## Installation
 
@@ -15,8 +15,7 @@ Get the latest stable release with Julia's package manager:
 
 ## Usage
 
-The most common use of Cartography.jl is to convert geodetic coordinates into projected coordinates.
-For examplify, let's project some geodetic coordinates:
+The most common use of Cartography.jl is to convert geographic coordinates into projected coordinates:
 
 ```
 julia> gcoord = LatLon(30, 60)
@@ -40,7 +39,7 @@ Robinson{WGS84Latest} coordinates
 └─ y: 3.2085576115038935e6 m
 ```
 
-It is also possible to convert the projected coordinate back into a geodetic coordinate:
+It is also possible to convert the projected coordinates back into geographic coordinates:
 
 ```
 julia> gcoord = LatLon(30, 60)
@@ -61,4 +60,4 @@ GeodeticLatLon{WGS84Latest} coordinates
 
 ## Credits
 
-Most implementations of this package are adaptations from [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ).
+Most implementations of this package are adaptations from [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ), which is also under the MIT license.
