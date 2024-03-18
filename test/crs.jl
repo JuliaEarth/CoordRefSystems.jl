@@ -1425,8 +1425,8 @@
         c1 = LatLon(lat, lon)
         if indomain(Mercator, c1)
           c2 = convert(Mercator{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1440,8 +1440,8 @@
         c1 = LatLon(lat, lon)
         if indomain(WebMercator, c1)
           c2 = convert(WebMercator{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1455,8 +1455,8 @@
         c1 = LatLon(lat, lon)
         if indomain(PlateCarree, c1)
           c2 = convert(PlateCarree{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1471,8 +1471,8 @@
         c1 = LatLon(lat, lon)
         if indomain(Lambert, c1)
           c2 = convert(Lambert{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1487,8 +1487,8 @@
         c1 = LatLon(lat, lon)
         if indomain(Behrmann, c1)
           c2 = convert(Behrmann{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1503,8 +1503,8 @@
         c1 = LatLon(lat, lon)
         if indomain(GallPeters, c1)
           c2 = convert(GallPeters{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1518,8 +1518,8 @@
         c1 = LatLon(lat, lon)
         if indomain(WinkelTripel, c1)
           c2 = convert(WinkelTripel{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test c3 ≈ c1
         else
@@ -1534,8 +1534,8 @@
         c1 = LatLon(lat, lon)
         if indomain(Robinson, c1)
           c2 = convert(Robinson{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
         else
@@ -1549,8 +1549,8 @@
         c1 = LatLon(lat, lon)
         if indomain(OrthoNorth, c1)
           c2 = convert(OrthoNorth{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
         else
           @test_throws ArgumentError convert(OrthoNorth{WGS84Latest}, c1)
         end
@@ -1586,8 +1586,8 @@
         c1 = LatLon(lat, lon)
         if indomain(OrthoSouth, c1)
           c2 = convert(OrthoSouth{WGS84Latest}, c1)
-          @test isnum(c2.x)
-          @test isnum(c2.y)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
         else
           @test_throws ArgumentError convert(OrthoSouth{WGS84Latest}, c1)
         end
@@ -1614,6 +1614,46 @@
           c2 = convert(OrthoSouth{WGS84Latest}, c1)
           c3 = convert(LatLon{WGS84Latest}, c2)
           @test isapprox(c3, c1; atol)
+        end
+      end
+    end
+
+    @testset "TransverseMercator forward" begin
+      TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(TM{WGS84Latest}, c1)
+          c2 = convert(TM{WGS84Latest}, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(TM{WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "UTMNorth forward" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(UTMNorth{32,WGS84Latest}, c1)
+          c2 = convert(UTMNorth{32,WGS84Latest}, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(UTMNorth{32,WGS84Latest}, c1)
+        end
+      end
+    end
+
+    @testset "UTMSouth forward" begin
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(UTMSouth{59,WGS84Latest}, c1)
+          c2 = convert(UTMSouth{59,WGS84Latest}, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(UTMSouth{59,WGS84Latest}, c1)
         end
       end
     end

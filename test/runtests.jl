@@ -2,8 +2,6 @@ using Cartography
 using Unitful
 using Test
 
-isnum(x) = !isnan(x) && !isinf(x)
-
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl"]
 
 # --------------------------------

@@ -35,6 +35,20 @@ TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = Tra
 # Authors of the original algorithm: Knud Poder and Karsten Engsager
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
 
+function inbounds(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, λ, ϕ) where {k₀,latₒ,lonₒ,Datum}
+  T = typeof(λ)
+  🌎 = ellipsoid(Datum)
+  a = numconvert(T, majoraxis(🌎))
+  b = numconvert(T, minoraxis(🌎))
+  λₒ = T(ustrip(deg2rad(lonₒ)))
+
+  n = (a - b) / (a + b) # third flattening
+  cbg, gtu = tmfwdcoefs(T, n)
+  _, Ce = tmCnCe(λ - λₒ, ϕ, cbg, gtu)
+
+  abs(Ce) ≤ T(2.623395162778)
+end
+
 function formulas(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, ::Type{T}) where {k₀,latₒ,lonₒ,Datum,T}
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
@@ -67,9 +81,6 @@ function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coo
   T = numtype(coords.lon)
   λ = ustrip(deg2rad(coords.lon))
   ϕ = ustrip(deg2rad(coords.lat))
-  if !inbounds(C, λ, ϕ)
-    throw(ArgumentError("coordinates outside of the projection domain"))
-  end
   k = T(k₀)
   λₒ = T(ustrip(deg2rad(lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
@@ -81,6 +92,10 @@ function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coo
   cbg, gtu = tmfwdcoefs(T, n)
   Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
   Cn, Ce = tmCnCe(λ, ϕ, cbg, gtu)
+
+  if !(abs(Ce) ≤ T(2.623395162778))
+    throw(ArgumentError("coordinates outside of the projection domain"))
+  end
 
   x = (Qn * Ce) * a
   y = (Qn * Cn + Zb) * a
