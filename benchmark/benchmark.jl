@@ -2,6 +2,7 @@ using Cartography
 import Geodesy
 import Proj
 
+using DataFrames
 using PrettyTables
 using BenchmarkTools
 
@@ -172,5 +173,7 @@ for (proj, args) in projargs
   )
 end
 
-results = identity.(results)
-pretty_table(results)
+df = DataFrame(results)
+df."Cartography.jl (speedup)" = df."Proj.jl" ./ df."Cartography.jl"
+
+pretty_table(df)
