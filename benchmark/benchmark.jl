@@ -20,16 +20,14 @@ function geodesytime(trans, invtrans, (lat, lon))
   fwdtime, invtime
 end
 
-function cartographytime(CRS, Datum, (lat, lon))
-  latlon = LatLon{Datum}(lat, lon)
+function cartographytime(CRS, (lat, lon))
+  latlon = LatLon(lat, lon)
   fwdtime = @belapsed convert(CRS, $latlon)
   coord = convert(CRS, latlon)
   invtime = @belapsed convert(LatLon, $coord)
   fwdtime, invtime
 end
 
-coords = (56, 12)
-results = []
 projargs = let
   # -------------
   # WEB MERCATOR
@@ -49,16 +47,16 @@ projargs = let
   proj=pipeline
   step proj=axisswap order=2,1
   step proj=unitconvert xy_in=deg xy_out=rad
-  step proj=utm zone=32 ellps=WGS84
+  step proj=utm zone=38 ellps=WGS84
   """)
   pinvutm = Proj.Transformation("""
   proj=pipeline
-  step inv proj=utm zone=32 ellps=WGS84
+  step proj=utm inv zone=38 ellps=WGS84
   step proj=unitconvert xy_in=rad xy_out=deg
   step proj=axisswap order=2,1
   """)
 
-  gfwdutm = Geodesy.UTMfromLLA(32, true, Geodesy.wgs84)
+  gfwdutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
   ginvutm = inv(gfwdutm)
 
   # ---------
@@ -96,28 +94,61 @@ projargs = let
   pfwdrobin = Proj.Transformation("EPSG:4326", "ESRI:54030")
   pinvrobin = inv(pfwdrobin)
 
+  # -----------------------
+  # ORTHOGRAPHIC SPHERICAL
+  # -----------------------
+
+  OrthoNorthSpherical = Cartography.crs(ESRI{102035})
+
+  pfwdorthosphere = Proj.Transformation("EPSG:4326", "ESRI:102035")
+  pinvorthosphere = inv(pfwdorthosphere)
+
+  # ------------------------
+  # ORTHOGRAPHIC ELLIPTICAL
+  # ------------------------
+
+  pfwdorthoellip = Proj.Transformation("""
+  proj=pipeline
+  step proj=axisswap order=2,1
+  step proj=unitconvert xy_in=deg xy_out=rad
+  step proj=ortho lat_0=90 lon_0=0 ellps=WGS84
+  """)
+  pinvorthoellip = Proj.Transformation("""
+  proj=pipeline
+  step proj=ortho inv lat_0=90 lon_0=0 ellps=WGS84
+  step proj=unitconvert xy_in=rad xy_out=deg
+  step proj=axisswap order=2,1
+  """)
+
   [
-    "Web Mercator" =>
-      (Proj=(pfwdwmerc, pinvwmerc), Geodesy=(gfwdwmerc, ginvwmerc), Cartography=(WebMercator, WGS84Latest)),
-    "UTM 32N" => (Proj=(pfwdutm, pinvutm), Geodesy=(gfwdutm, ginvutm), Cartography=(UTMNorth{32}, WGS84Latest)),
-    "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=nothing, Cartography=(Mercator, WGS84Latest)),
-    "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=nothing, Cartography=(PlateCarree, WGS84Latest)),
-    "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=nothing, Cartography=(Lambert, WGS84Latest)),
-    "Winkel Tripel" => (Proj=(pfwdwinkel, pinvwinkel), Geodesy=nothing, Cartography=(WinkelTripel, WGS84Latest)),
-    "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=nothing, Cartography=(Robinson, WGS84Latest))
+    "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=(gfwdwmerc, ginvwmerc), Cartography=WebMercator),
+    "UTM 32N" => (Proj=(pfwdutm, pinvutm), Geodesy=(gfwdutm, ginvutm), Cartography=UTMNorth{38}),
+    "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, Cartography=Mercator),
+    "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, Cartography=PlateCarree),
+    "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, Cartography=Lambert),
+    "Winkel Tripel" => (Proj=(pfwdwinkel, pinvwinkel), Geodesy=missing, Cartography=WinkelTripel),
+    "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=missing, Cartography=Robinson),
+    "Orthographic Spherical" =>
+      (Proj=(pfwdorthosphere, pinvorthosphere), Geodesy=missing, Cartography=OrthoNorthSpherical),
+    "Orthographic Elliptical" => (Proj=(pfwdorthoellip, pinvorthoellip), Geodesy=missing, Cartography=OrthoNorth)
   ]
 end
 
-for (proj, args) in projargs
-  pfwdtime, pinvtime = projtime(args.Proj..., coords)
+# Orthographic North latitude bounds: [0,90]
+# UTM Zone 38 longitude bounds: [42,48]
+latlon = (rand(0:0.001:90), rand(42:0.001:48))
+results = []
 
-  gfwdtime, ginvtime = if isnothing(args.Geodesy)
+for (proj, args) in projargs
+  pfwdtime, pinvtime = projtime(args.Proj..., latlon)
+
+  gfwdtime, ginvtime = if ismissing(args.Geodesy)
     missing, missing
   else
-    geodesytime(args.Geodesy..., coords)
+    geodesytime(args.Geodesy..., latlon)
   end
 
-  cfwdtime, cinvtime = cartographytime(args.Cartography..., coords)
+  cfwdtime, cinvtime = cartographytime(args.Cartography, latlon)
 
   push!(
     results,
