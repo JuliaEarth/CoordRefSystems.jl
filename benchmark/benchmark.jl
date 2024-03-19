@@ -59,6 +59,25 @@ projargs = let
 
   gutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
 
+  # --------------------
+  # TRANSVERSE MERCATOR
+  # --------------------
+
+  pfwdtmerc = Proj.Transformation("""
+  proj=pipeline
+  step proj=axisswap order=2,1
+  step proj=unitconvert xy_in=deg xy_out=rad
+  step proj=tmerc lat_0=15 lon_0=45 k_0=0.9996 ellps=WGS84
+  """)
+  pinvtmerc = Proj.Transformation("""
+  proj=pipeline
+  step proj=tmerc inv lat_0=15 lon_0=45 k_0=0.9996 ellps=WGS84
+  step proj=unitconvert xy_in=rad xy_out=deg
+  step proj=axisswap order=2,1
+  """)
+
+  TransverseMercator = Cartography.TransverseMercator{0.9996,15.0u"°",45.0u"°"}
+
   # ---------
   # MERCATOR
   # ---------
@@ -123,6 +142,7 @@ projargs = let
   [
     "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, Cartography=WebMercator),
     "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, Cartography=UTMNorth{38}),
+    "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, Cartography=TransverseMercator),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, Cartography=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, Cartography=PlateCarree),
     "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, Cartography=Lambert),
@@ -173,7 +193,8 @@ for (proj, args) in projargs
   )
 end
 
-df = DataFrame(results)
+df = DataFrame(identity.(results))
+sort!(df, :CRS)
 df."Cartography.jl / Proj.jl" = round.(df."Proj.jl" ./ df."Cartography.jl", digits=2)
 
 pretty_table(df)
