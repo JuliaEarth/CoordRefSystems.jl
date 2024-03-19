@@ -40,7 +40,7 @@ projargs = let
   ginvwmerc = inv(gfwdwmerc)
 
   # --------
-  # UTM 32N
+  # UTM 38N
   # --------
 
   pfwdutm = Proj.Transformation("""
@@ -122,7 +122,7 @@ projargs = let
 
   [
     "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=(gfwdwmerc, ginvwmerc), Cartography=WebMercator),
-    "UTM 32N" => (Proj=(pfwdutm, pinvutm), Geodesy=(gfwdutm, ginvutm), Cartography=UTMNorth{38}),
+    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=(gfwdutm, ginvutm), Cartography=UTMNorth{38}),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, Cartography=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, Cartography=PlateCarree),
     "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, Cartography=Lambert),
