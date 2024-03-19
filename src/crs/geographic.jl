@@ -296,3 +296,19 @@ function Base.convert(::Type{LatLon{Datumₜ}}, coords::LatLon{Datumₛ}) where 
   cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
   convert(LatLon{Datumₜ}, cartₜ)
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{GeocentricLatLon}, coords::LatLon{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
+Base.convert(::Type{LatLon}, coords::GeocentricLatLon{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+
+Base.convert(::Type{AuthalicLatLon}, coords::LatLon{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)
+Base.convert(::Type{LatLon}, coords::AuthalicLatLon{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+
+Base.convert(::Type{Cartesian}, coords::LatLon{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{LatLon}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLon{Datum}, coords)
+
+Base.convert(::Type{Cartesian}, coords::LatLonAlt{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{LatLonAlt}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLonAlt{Datum}, coords)
