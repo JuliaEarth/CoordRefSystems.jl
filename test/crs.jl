@@ -703,180 +703,180 @@
 
     @testset "GeodeticLatLon <> GeocentricLatLon" begin
       c1 = LatLon(T(30), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(T(29.833635809829065), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(35), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(T(34.819388702349606), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(40), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(T(39.810610551928434), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(-T(29.833635809829065), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(35), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(-T(34.819388702349606), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(40), T(40))
-      c2 = convert(GeocentricLatLon{WGS84Latest}, c1)
+      c2 = convert(GeocentricLatLon, c1)
       @test c2 ≈ GeocentricLatLon(-T(39.810610551928434), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(40))
       c2 = GeocentricLatLon(T(29.833635809829065), T(40))
-      @inferred convert(GeocentricLatLon{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(GeocentricLatLon, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "GeodeticLatLon <> AuthalicLatLon" begin
       c1 = LatLon(T(30), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(T(29.888997034459567), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(35), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(T(34.87951854973729), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(40), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(T(39.87369373453432), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(-T(29.888997034459567), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(35), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(-T(34.87951854973729), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(40), T(40))
-      c2 = convert(AuthalicLatLon{WGS84Latest}, c1)
+      c2 = convert(AuthalicLatLon, c1)
       @test c2 ≈ AuthalicLatLon(-T(39.87369373453432), T(40))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(40))
       c2 = AuthalicLatLon(T(29.888997034459567), T(40))
-      @inferred convert(AuthalicLatLon{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(AuthalicLatLon, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> Cartesian" begin
       c1 = LatLon(T(30), T(40))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(35), T(45))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(3698470.287205801), T(3698470.2872058), T(3637866.909378095))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(40), T(50))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(3144971.82314589), T(3748031.468841677), T(4077985.572200376))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), -T(40))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), -T(3553494.8709047823), -T(3170373.735383637))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(35), T(45))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(3698470.287205801), T(3698470.2872058), -T(3637866.909378095))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(40), -T(50))
-      c2 = convert(Cartesian{WGS84Latest}, c1)
+      c2 = convert(Cartesian, c1)
       @test c2 ≈ Cartesian{WGS84Latest}(T(3144971.82314589), -T(3748031.468841677), T(4077985.572200376))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(40))
       c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      @inferred convert(Cartesian{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(Cartesian, c1)
+      @inferred convert(LatLon, c2)
     end
 
     if T === Float64
       # altitude can only be calculated accurately using Float64
       @testset "LatLonAlt <> Cartesian" begin
         c1 = LatLonAlt(T(30), T(40), T(0))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         c1 = LatLonAlt(T(35), T(45), T(100))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(3698528.2100023343), T(3698528.2100023334), T(3637924.26702173))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         c1 = LatLonAlt(T(40), T(50), T(200))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(3145070.3039211915), T(3748148.8336594435), T(4078114.1297223135))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         c1 = LatLonAlt(-T(30), -T(40), T(0))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), -T(3553494.8709047823), -T(3170373.735383637))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         c1 = LatLonAlt(-T(35), T(45), T(100))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(3698528.2100023343), T(3698528.2100023334), -T(3637924.26702173))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         c1 = LatLonAlt(T(40), -T(50), T(200))
-        c2 = convert(Cartesian{WGS84Latest}, c1)
+        c2 = convert(Cartesian, c1)
         @test c2 ≈ Cartesian{WGS84Latest}(T(3145070.3039211915), -T(3748148.8336594435), T(4078114.1297223135))
-        c3 = convert(LatLonAlt{WGS84Latest}, c2)
+        c3 = convert(LatLonAlt, c2)
         @test c3 ≈ c1
 
         # type stability
         c1 = LatLonAlt(T(30), T(40), T(0))
         c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-        @inferred convert(Cartesian{WGS84Latest}, c1)
-        @inferred convert(LatLonAlt{WGS84Latest}, c2)
+        @inferred convert(Cartesian, c1)
+        @inferred convert(LatLonAlt, c2)
       end
     end
 
@@ -979,304 +979,304 @@
 
     @testset "LatLon <> Mercator" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Mercator{WGS84Latest}, c1)
+      c2 = convert(Mercator, c1)
       @test c2 ≈ Mercator(T(10018754.171394622), T(5591295.9185533915))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(Mercator{WGS84Latest}, c1)
+      c2 = convert(Mercator, c1)
       @test c2 ≈ Mercator(T(10018754.171394622), -T(5591295.9185533915))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(Mercator{WGS84Latest}, c1)
+      c2 = convert(Mercator, c1)
       @test c2 ≈ Mercator(-T(10018754.171394622), T(5591295.9185533915))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(Mercator{WGS84Latest}, c1)
+      c2 = convert(Mercator, c1)
       @test c2 ≈ Mercator(-T(10018754.171394622), -T(5591295.9185533915))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = Mercator(T(10018754.171394622), T(5591295.9185533915))
-      @inferred convert(Mercator{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(Mercator, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> WebMercator" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(WebMercator{WGS84Latest}, c1)
+      c2 = convert(WebMercator, c1)
       @test c2 ≈ WebMercator(T(10018754.171394622), T(5621521.486192066))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(WebMercator{WGS84Latest}, c1)
+      c2 = convert(WebMercator, c1)
       @test c2 ≈ WebMercator(T(10018754.171394622), -T(5621521.486192066))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(WebMercator{WGS84Latest}, c1)
+      c2 = convert(WebMercator, c1)
       @test c2 ≈ WebMercator(-T(10018754.171394622), T(5621521.486192066))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(WebMercator{WGS84Latest}, c1)
+      c2 = convert(WebMercator, c1)
       @test c2 ≈ WebMercator(-T(10018754.171394622), -T(5621521.486192066))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = WebMercator(T(10018754.171394622), T(5621521.486192066))
-      @inferred convert(WebMercator{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(WebMercator, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> PlateCarree" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      c2 = convert(PlateCarree, c1)
       @test c2 ≈ PlateCarree(T(10018754.171394622), T(5009377.085697311))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      c2 = convert(PlateCarree, c1)
       @test c2 ≈ PlateCarree(T(10018754.171394622), -T(5009377.085697311))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      c2 = convert(PlateCarree, c1)
       @test c2 ≈ PlateCarree(-T(10018754.171394622), T(5009377.085697311))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      c2 = convert(PlateCarree, c1)
       @test c2 ≈ PlateCarree(-T(10018754.171394622), -T(5009377.085697311))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = PlateCarree(T(10018754.171394622), T(5009377.085697311))
-      @inferred convert(PlateCarree{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(PlateCarree, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> Lambert" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Lambert{WGS84Latest}, c1)
+      c2 = convert(Lambert, c1)
       @test c2 ≈ Lambert(T(10018754.171394622), T(4489858.8869480025))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(Lambert{WGS84Latest}, c1)
+      c2 = convert(Lambert, c1)
       @test c2 ≈ Lambert(T(10018754.171394622), -T(4489858.8869480025))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(Lambert{WGS84Latest}, c1)
+      c2 = convert(Lambert, c1)
       @test c2 ≈ Lambert(-T(10018754.171394622), T(4489858.8869480025))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(Lambert{WGS84Latest}, c1)
+      c2 = convert(Lambert, c1)
       @test c2 ≈ Lambert(-T(10018754.171394622), -T(4489858.8869480025))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = Lambert(T(10018754.171394622), T(4489858.8869480025))
-      @inferred convert(Lambert{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(Lambert, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> Behrmann" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Behrmann{WGS84Latest}, c1)
+      c2 = convert(Behrmann, c1)
       @test c2 ≈ Behrmann(T(8683765.222580686), T(5180102.328839251))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(Behrmann{WGS84Latest}, c1)
+      c2 = convert(Behrmann, c1)
       @test c2 ≈ Behrmann(T(8683765.222580686), -T(5180102.328839251))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(Behrmann{WGS84Latest}, c1)
+      c2 = convert(Behrmann, c1)
       @test c2 ≈ Behrmann(-T(8683765.222580686), T(5180102.328839251))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(Behrmann{WGS84Latest}, c1)
+      c2 = convert(Behrmann, c1)
       @test c2 ≈ Behrmann(-T(8683765.222580686), -T(5180102.328839251))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = Behrmann(T(8683765.222580686), T(5180102.328839251))
-      @inferred convert(Behrmann{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(Behrmann, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> GallPeters" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(GallPeters{WGS84Latest}, c1)
+      c2 = convert(GallPeters, c1)
       @test c2 ≈ GallPeters(T(7096215.158458031), T(6338983.732612475))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(GallPeters{WGS84Latest}, c1)
+      c2 = convert(GallPeters, c1)
       @test c2 ≈ GallPeters(T(7096215.158458031), -T(6338983.732612475))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(GallPeters{WGS84Latest}, c1)
+      c2 = convert(GallPeters, c1)
       @test c2 ≈ GallPeters(-T(7096215.158458031), T(6338983.732612475))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(GallPeters{WGS84Latest}, c1)
+      c2 = convert(GallPeters, c1)
       @test c2 ≈ GallPeters(-T(7096215.158458031), -T(6338983.732612475))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = GallPeters(T(7096215.158458031), T(6338983.732612475))
-      @inferred convert(GallPeters{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(GallPeters, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> WinkelTripel" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test c2 ≈ WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test c2 ≈ WinkelTripel(T(7044801.6979576545), -T(5231448.051548355))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test c2 ≈ WinkelTripel(-T(7044801.6979576545), T(5231448.051548355))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test c2 ≈ WinkelTripel(-T(7044801.6979576545), -T(5231448.051548355))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(0), T(0))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test c2 ≈ WinkelTripel(T(0), T(0))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
-      @inferred convert(WinkelTripel{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(WinkelTripel, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> Robinson" begin
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Robinson{WGS84Latest}, c1)
+      c2 = convert(Robinson, c1)
       @test c2 ≈ Robinson(T(7620313.925950073), T(4805073.646653474))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(Robinson{WGS84Latest}, c1)
+      c2 = convert(Robinson, c1)
       @test c2 ≈ Robinson(T(7620313.925950073), -T(4805073.646653474))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(Robinson{WGS84Latest}, c1)
+      c2 = convert(Robinson, c1)
       @test c2 ≈ Robinson(-T(7620313.925950073), T(4805073.646653474))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(Robinson{WGS84Latest}, c1)
+      c2 = convert(Robinson, c1)
       @test c2 ≈ Robinson(-T(7620313.925950073), -T(4805073.646653474))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = Robinson(T(7620313.925950073), T(4805073.646653474))
-      @inferred convert(Robinson{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(Robinson, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> OrthoNorth" begin
       c1 = LatLon(T(30), T(60))
-      c2 = convert(OrthoNorth{WGS84Latest}, c1)
+      c2 = convert(OrthoNorth, c1)
       @test c2 ≈ OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(30), -T(60))
-      c2 = convert(OrthoNorth{WGS84Latest}, c1)
+      c2 = convert(OrthoNorth, c1)
       @test c2 ≈ OrthoNorth(-T(4787610.688267582), T(-2764128.319646418))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(60))
       c2 = OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
-      @inferred convert(OrthoNorth{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(OrthoNorth, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> OrthoSouth" begin
       c1 = LatLon(-T(30), T(60))
-      c2 = convert(OrthoSouth{WGS84Latest}, c1)
+      c2 = convert(OrthoSouth, c1)
       @test c2 ≈ OrthoSouth(T(4787610.688267582), T(2764128.319646418))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), -T(60))
-      c2 = convert(OrthoSouth{WGS84Latest}, c1)
+      c2 = convert(OrthoSouth, c1)
       @test c2 ≈ OrthoSouth(-T(4787610.688267582), T(2764128.319646418))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(-T(30), T(60))
       c2 = OrthoSouth(T(4787610.688267582), T(2764128.319646418))
-      @inferred convert(OrthoSouth{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(OrthoSouth, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> OrthoSpherical" begin
@@ -1286,25 +1286,25 @@
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorthSpherical, c1)
       @test c2 ≈ OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(30), -T(60))
       c2 = convert(OrthoNorthSpherical, c1)
       @test c2 ≈ OrthoNorthSpherical(-T(4783602.75), T(-2761814.335408735))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test c2 ≈ OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(30), -T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test c2 ≈ OrthoSouthSpherical(-T(4783602.75), T(2761814.335408735))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
@@ -1314,8 +1314,8 @@
       c4 = OrthoSouthSpherical(T(4783602.75), T(2761814.335408735))
       @inferred convert(OrthoNorthSpherical, c1)
       @inferred convert(OrthoSouthSpherical, c2)
-      @inferred convert(LatLon{WGS84Latest}, c3)
-      @inferred convert(LatLon{WGS84Latest}, c4)
+      @inferred convert(LatLon, c3)
+      @inferred convert(LatLon, c4)
     end
 
     @testset "LatLon <> TransverseMercator" begin
@@ -1324,62 +1324,62 @@
       TM = Cartography.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
 
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(1548706.7916191491794), T(8451449.1987722350778))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(19.479895588178), T(75.662049225092))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(9855841.2329353332058), T(6145496.1151551160577))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(5.458957393183), T(36.385237374895))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(4328154.0835012728645), T(749647.6236903529367))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(61.965604972549), T(58.931370849824))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(2727657.3379737519243), T(8283916.696409868168))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # latₒ, lonₒ ≠ 0
       TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
 
       c1 = LatLon(T(30), T(60))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(3478021.0568801453), T(2237622.8976712096))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(T(35), T(65))
-      c2 = convert(TM{WGS84Latest}, c1)
+      c2 = convert(TM, c1)
       @test c2 ≈ TM(T(3736618.554412091), T(3043187.5889959945))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
       c1 = LatLon(T(30), T(60))
       c2 = TM(T(3478021.0568801453), T(2237622.8976712096))
-      @inferred convert(TM{WGS84Latest}, c1)
-      @inferred convert(LatLon{WGS84Latest}, c2)
+      @inferred convert(TM, c1)
+      @inferred convert(LatLon, c2)
     end
 
     @testset "LatLon <> UTM" begin
       c1 = LatLon(T(56), T(12))
-      c2 = convert(UTMNorth{32,WGS84Latest}, c1)
+      c2 = convert(UTMNorth{32}, c1)
       @test c2 ≈ UTMNorth{32}(T(687071.439107327), T(6210141.326872105))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       c1 = LatLon(-T(44), T(174))
-      c2 = convert(UTMSouth{59,WGS84Latest}, c1)
+      c2 = convert(UTMSouth{59}, c1)
       @test c2 ≈ UTMSouth{59}(T(740526.3210524899), T(5123750.873037999))
-      c3 = convert(LatLon{WGS84Latest}, c2)
+      c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
       # type stability
@@ -1387,10 +1387,10 @@
       c2 = LatLon(-T(44), T(174))
       c3 = UTMNorth{32}(T(687071.439107327), T(6210141.326872105))
       c4 = UTMSouth{59}(T(740526.3210524899), T(5123750.873037999))
-      @inferred convert(UTMNorth{32,WGS84Latest}, c1)
-      @inferred convert(UTMSouth{59,WGS84Latest}, c2)
-      @inferred convert(LatLon{WGS84Latest}, c3)
-      @inferred convert(LatLon{WGS84Latest}, c4)
+      @inferred convert(UTMNorth{32}, c1)
+      @inferred convert(UTMSouth{59}, c2)
+      @inferred convert(LatLon, c3)
+      @inferred convert(LatLon, c4)
     end
 
     @testset "Projection conversion" begin
@@ -1424,13 +1424,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Mercator, c1)
-          c2 = convert(Mercator{WGS84Latest}, c1)
+          c2 = convert(Mercator, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         else
-          @test_throws ArgumentError convert(Mercator{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(Mercator, c1)
         end
       end
     end
@@ -1439,13 +1439,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(WebMercator, c1)
-          c2 = convert(WebMercator{WGS84Latest}, c1)
+          c2 = convert(WebMercator, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         else
-          @test_throws ArgumentError convert(WebMercator{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(WebMercator, c1)
         end
       end
     end
@@ -1454,13 +1454,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(PlateCarree, c1)
-          c2 = convert(PlateCarree{WGS84Latest}, c1)
+          c2 = convert(PlateCarree, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         else
-          @test_throws ArgumentError convert(PlateCarree{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(PlateCarree, c1)
         end
       end
     end
@@ -1470,13 +1470,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Lambert, c1)
-          c2 = convert(Lambert{WGS84Latest}, c1)
+          c2 = convert(Lambert, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         else
-          @test_throws ArgumentError convert(Lambert{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(Lambert, c1)
         end
       end
     end
@@ -1486,13 +1486,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Behrmann, c1)
-          c2 = convert(Behrmann{WGS84Latest}, c1)
+          c2 = convert(Behrmann, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         else
-          @test_throws ArgumentError convert(Behrmann{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(Behrmann, c1)
         end
       end
     end
@@ -1502,13 +1502,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(GallPeters, c1)
-          c2 = convert(GallPeters{WGS84Latest}, c1)
+          c2 = convert(GallPeters, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         else
-          @test_throws ArgumentError convert(GallPeters{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(GallPeters, c1)
         end
       end
     end
@@ -1517,13 +1517,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(WinkelTripel, c1)
-          c2 = convert(WinkelTripel{WGS84Latest}, c1)
+          c2 = convert(WinkelTripel, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         else
-          @test_throws ArgumentError convert(WinkelTripel{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(WinkelTripel, c1)
         end
       end
     end
@@ -1533,13 +1533,13 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(Robinson, c1)
-          c2 = convert(Robinson{WGS84Latest}, c1)
+          c2 = convert(Robinson, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         else
-          @test_throws ArgumentError convert(Robinson{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(Robinson, c1)
         end
       end
     end
@@ -1548,11 +1548,11 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth{WGS84Latest}, c1)
+          c2 = convert(OrthoNorth, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
         else
-          @test_throws ArgumentError convert(OrthoNorth{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(OrthoNorth, c1)
         end
       end
     end
@@ -1562,8 +1562,8 @@
       for lat in T.(1:89), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth{WGS84Latest}, c1)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c2 = convert(OrthoNorth, c1)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         end
       end
@@ -1574,8 +1574,8 @@
       for lon in T.(-180:180)
         c1 = LatLon(T(0), lon)
         if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth{WGS84Latest}, c1)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c2 = convert(OrthoNorth, c1)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         end
       end
@@ -1585,11 +1585,11 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth{WGS84Latest}, c1)
+          c2 = convert(OrthoSouth, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
         else
-          @test_throws ArgumentError convert(OrthoSouth{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(OrthoSouth, c1)
         end
       end
     end
@@ -1599,8 +1599,8 @@
       for lat in T.(-89:-1), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth{WGS84Latest}, c1)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c2 = convert(OrthoSouth, c1)
+          c3 = convert(LatLon, c2)
           @test c3 ≈ c1
         end
       end
@@ -1611,8 +1611,8 @@
       for lon in T.(-180:180)
         c1 = LatLon(T(0), lon)
         if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth{WGS84Latest}, c1)
-          c3 = convert(LatLon{WGS84Latest}, c2)
+          c2 = convert(OrthoSouth, c1)
+          c3 = convert(LatLon, c2)
           @test isapprox(c3, c1; atol)
         end
       end
@@ -1623,11 +1623,11 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(TM{WGS84Latest}, c1)
-          c2 = convert(TM{WGS84Latest}, c1)
+          c2 = convert(TM, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
         else
-          @test_throws ArgumentError convert(TM{WGS84Latest}, c1)
+          @test_throws ArgumentError convert(TM, c1)
         end
       end
     end
@@ -1636,11 +1636,11 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(UTMNorth{32,WGS84Latest}, c1)
-          c2 = convert(UTMNorth{32,WGS84Latest}, c1)
+          c2 = convert(UTMNorth{32}, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
         else
-          @test_throws ArgumentError convert(UTMNorth{32,WGS84Latest}, c1)
+          @test_throws ArgumentError convert(UTMNorth{32}, c1)
         end
       end
     end
@@ -1649,11 +1649,11 @@
       for lat in T.(-90:90), lon in T.(-180:180)
         c1 = LatLon(lat, lon)
         if indomain(UTMSouth{59,WGS84Latest}, c1)
-          c2 = convert(UTMSouth{59,WGS84Latest}, c1)
+          c2 = convert(UTMSouth{59}, c1)
           @test isfinite(c2.x)
           @test isfinite(c2.y)
         else
-          @test_throws ArgumentError convert(UTMSouth{59,WGS84Latest}, c1)
+          @test_throws ArgumentError convert(UTMSouth{59}, c1)
         end
       end
     end

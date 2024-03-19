@@ -107,17 +107,17 @@ GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
 └─ lon: 60.0°
 
-julia> convert(Mercator{WGS84Latest}, latlon)
+julia> convert(Mercator, latlon)
 Mercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.482189085408618e6 m
 
-julia> convert(WebMercator{WGS84Latest}, latlon)
+julia> convert(WebMercator, latlon)
 WebMercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.5035498435043753e6 m
 
-julia> convert(Robinson{WGS84Latest}, latlon)
+julia> convert(Robinson, latlon)
 Robinson{WGS84Latest} coordinates
 ├─ x: 5.441866544132874e6 m
 └─ y: 3.2085576115038935e6 m
@@ -127,12 +127,12 @@ GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 30.0°
 └─ lon: 60.0°
 
-julia> mercator = convert(Mercator{WGS84Latest}, latlon)
+julia> mercator = convert(Mercator, latlon)
 Mercator{WGS84Latest} coordinates
 ├─ x: 6.679169447596414e6 m
 └─ y: 3.482189085408618e6 m
 
-julia> convert(LatLon{WGS84Latest}, mercator)
+julia> convert(LatLon, mercator)
 GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: 29.999999999999996°
 └─ lon: 59.99999999999999°

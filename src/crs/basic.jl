@@ -215,18 +215,21 @@ Spherical(args...) = Spherical{NoDatum}(args...)
 # ------------
 
 # Cartesian <> Polar
-Base.convert(::Type{Cartesian}, (; ρ, ϕ)::Polar) = Cartesian(ρ * cos(ϕ), ρ * sin(ϕ))
-Base.convert(::Type{Polar}, (; x, y)::Cartesian{<:Any,2}) = Polar(hypot(x, y), atanpos(y, x) * u"rad")
+Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ)::Polar{Datum}) where {Datum} = Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ))
+Base.convert(::Type{Polar{Datum}}, (; x, y)::Cartesian{Datum,2}) where {Datum} =
+  Polar{Datum}(hypot(x, y), atanpos(y, x) * u"rad")
 
 # Cartesian <> Cylindrical
-Base.convert(::Type{Cartesian}, (; ρ, ϕ, z)::Cylindrical) = Cartesian(ρ * cos(ϕ), ρ * sin(ϕ), z)
-Base.convert(::Type{Cylindrical}, (; x, y, z)::Cartesian{<:Any,3}) = Cylindrical(hypot(x, y), atanpos(y, x) * u"rad", z)
+Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ, z)::Cylindrical{Datum}) where {Datum} =
+  Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ), z)
+Base.convert(::Type{Cylindrical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
+  Cylindrical{Datum}(hypot(x, y), atanpos(y, x) * u"rad", z)
 
 # Cartesian <> Spherical
-Base.convert(::Type{Cartesian}, (; r, θ, ϕ)::Spherical) =
-  Cartesian(r * sin(θ) * cos(ϕ), r * sin(θ) * sin(ϕ), r * cos(θ))
-Base.convert(::Type{Spherical}, (; x, y, z)::Cartesian{<:Any,3}) =
-  Spherical(hypot(x, y, z), atan(hypot(x, y), z) * u"rad", atanpos(y, x) * u"rad")
+Base.convert(::Type{Cartesian{Datum}}, (; r, θ, ϕ)::Spherical{Datum}) where {Datum} =
+  Cartesian{Datum}(r * sin(θ) * cos(ϕ), r * sin(θ) * sin(ϕ), r * cos(θ))
+Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
+  Spherical{Datum}(hypot(x, y, z), atan(hypot(x, y), z) * u"rad", atanpos(y, x) * u"rad")
 
 # datum conversion
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
@@ -238,3 +241,16 @@ function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}
 
   Cartesian{Datumₜ}(Tuple(x′))
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{Cartesian}, coords::Polar{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{Polar}, coords::Cartesian{Datum,2}) where {Datum} = convert(Polar{Datum}, coords)
+
+Base.convert(::Type{Cartesian}, coords::Cylindrical{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{Cylindrical}, coords::Cartesian{Datum,3}) where {Datum} = convert(Cylindrical{Datum}, coords)
+
+Base.convert(::Type{Cartesian}, coords::Spherical{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{Spherical}, coords::Cartesian{Datum,3}) where {Datum} = convert(Spherical{Datum}, coords)
