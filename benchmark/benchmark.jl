@@ -2,6 +2,7 @@ using Cartography
 import Geodesy
 import Proj
 
+using Unitful
 using DataFrames
 using PrettyTables
 using BenchmarkTools
