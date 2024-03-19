@@ -2,6 +2,7 @@ using Cartography
 import Geodesy
 import Proj
 
+using CSV
 using Unitful
 using DataFrames
 using PrettyTables
@@ -198,4 +199,5 @@ df = DataFrame(identity.(results))
 sort!(df, :CRS)
 df."Cartography.jl / Proj.jl" = round.(df."Proj.jl" ./ df."Cartography.jl", digits=2)
 
+CSV.write(joinpath(@__DIR__, "output.csv"), df)
 pretty_table(df)
