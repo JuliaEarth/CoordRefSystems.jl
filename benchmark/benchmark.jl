@@ -98,10 +98,10 @@ projargs = let
   # ORTHOGRAPHIC SPHERICAL
   # -----------------------
 
-  OrthoNorthSpherical = Cartography.crs(ESRI{102035})
-
   pfwdorthosphere = Proj.Transformation("EPSG:4326", "ESRI:102035")
   pinvorthosphere = inv(pfwdorthosphere)
+
+  OrthoNorthSpherical = Cartography.crs(ESRI{102035})
 
   # ------------------------
   # ORTHOGRAPHIC ELLIPTICAL
