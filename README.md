@@ -10,8 +10,8 @@ compile time.
 
 This package addresses various design issues encountered in previous attempts such as
 [Geodesy.jl](https://github.com/JuliaGeo/Geodesy.jl) and [MapMaths.jl](https://github.com/subnero1/MapMaths.jl).
-Our benchmarks show that Cartography.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ), which is the
-most widely used software library for coordinate projections in the world (written in C/C++).
+Our [benchmarks](benchmark/output.csv) show that Cartography.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ),
+which is the most widely used software library for coordinate projections in the world (written in C/C++).
 
 ## Installation
 
