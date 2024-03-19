@@ -174,6 +174,6 @@ for (proj, args) in projargs
 end
 
 df = DataFrame(results)
-df."Cartography.jl (speedup)" = df."Proj.jl" ./ df."Cartography.jl"
+df."Cartography.jl / Proj.jl" = round.(df."Proj.jl" ./ df."Cartography.jl", digits=2)
 
 pretty_table(df)
