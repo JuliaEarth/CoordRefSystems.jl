@@ -5,18 +5,19 @@ import Proj
 using PrettyTables
 using BenchmarkTools
 
-function projtime(trans, invtrans, (lat, lon))
-  fwdtime = @belapsed $trans($lat, $lon)
-  coord = trans(lat, lon)
-  invtime = @belapsed $invtrans($coord)
+function projtime(transf, invtransf, (lat, lon))
+  fwdtime = @belapsed $transf($lat, $lon)
+  coord = transf(lat, lon)
+  invtime = @belapsed $invtransf($coord)
   fwdtime, invtime
 end
 
-function geodesytime(trans, invtrans, (lat, lon))
+function geodesytime(transf, (lat, lon))
   latlon = Geodesy.LLA(lat, lon, 0.0)
-  fwdtime = @belapsed $trans($latlon)
-  coord = trans(latlon)
-  invtime = @belapsed $invtrans($coord)
+  fwdtime = @belapsed $transf($latlon)
+  coord = transf(latlon)
+  invtransf = inv(transf)
+  invtime = @belapsed $invtransf($coord)
   fwdtime, invtime
 end
 
@@ -36,8 +37,7 @@ projargs = let
   pfwdwmerc = Proj.Transformation("EPSG:4326", "EPSG:3857")
   pinvwmerc = inv(pfwdwmerc)
 
-  gfwdwmerc = Geodesy.WebMercatorfromLLA(Geodesy.wgs84)
-  ginvwmerc = inv(gfwdwmerc)
+  gwmerc = Geodesy.WebMercatorfromLLA(Geodesy.wgs84)
 
   # --------
   # UTM 38N
@@ -56,8 +56,7 @@ projargs = let
   step proj=axisswap order=2,1
   """)
 
-  gfwdutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
-  ginvutm = inv(gfwdutm)
+  gutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
 
   # ---------
   # MERCATOR
@@ -121,8 +120,8 @@ projargs = let
   """)
 
   [
-    "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=(gfwdwmerc, ginvwmerc), Cartography=WebMercator),
-    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=(gfwdutm, ginvutm), Cartography=UTMNorth{38}),
+    "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, Cartography=WebMercator),
+    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, Cartography=UTMNorth{38}),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, Cartography=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, Cartography=PlateCarree),
     "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, Cartography=Lambert),
@@ -145,7 +144,7 @@ for (proj, args) in projargs
   gfwdtime, ginvtime = if ismissing(args.Geodesy)
     missing, missing
   else
-    geodesytime(args.Geodesy..., latlon)
+    geodesytime(args.Geodesy, latlon)
   end
 
   cfwdtime, cinvtime = cartographytime(args.Cartography, latlon)
