@@ -23,10 +23,10 @@ Get the latest stable release with Julia's package manager:
 
 ## Usage
 
-### Basic CRS
+### Basic usage
 
-Basic CRS include `Cartesian`, `Spherical`, `Cylindrical` and `Polar`.
-We adopt Julia's conversion syntax to convert between them:
+Consider the `Cartesian`, `Spherical`, `Cylindrical` and `Polar` coordinate systems,
+and the conversion examples below:
 
 #### Cartesian <> Polar
 ```julia
@@ -88,7 +88,20 @@ Cartesian{NoDatum} coordinates
 └─ z: 0.9999999999999999 m
 ```
 
-### Advanced CRS
+Julia's `convert` methods can be triggered with special
+syntax assuming that a list of coordinates needs to be
+converted. Below we convert a list of `LatLon` to
+`Mercator` by prefixing the vector with the type:
+
+```julia
+julia> Mercator[LatLon(0, 0), LatLon(30, 30), LatLon(20,30)]
+3-element Vector{Mercator}:
+ Mercator{WGS84Latest}(x: 0.0 m, y: 0.0 m)
+ Mercator{WGS84Latest}(x: 3.33958e6 m, y: 3.48219e6 m)
+ Mercator{WGS84Latest}(x: 3.33958e6 m, y: 2.25842e6 m)
+```
+
+### Advanced usage
 
 CRS are most useful to locate objets in the physical world.
 Given an ellipsoid of revolution and a standardized origin
