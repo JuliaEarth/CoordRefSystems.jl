@@ -890,6 +890,39 @@
       @inferred convert(LatLon, c4)
     end
 
+    @testset "LatLon <> Shifted" begin
+      ShiftedMercator = shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test c2 ≈ ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
+      c3 = convert(LatLon, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test c2 ≈ ShiftedMercator(T(8349161.809495518), -T(5591495.9185533915))
+      c3 = convert(LatLon, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(T(45), -T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test c2 ≈ ShiftedMercator(-T(11688346.533293724), T(5591495.9185533915))
+      c3 = convert(LatLon, c2)
+      @test c3 ≈ c1
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test c2 ≈ ShiftedMercator(-T(11688346.533293724), -T(5591495.9185533915))
+      c3 = convert(LatLon, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
+      @inferred convert(ShiftedMercator, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "Projection conversion" begin
       # same datum
       c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))

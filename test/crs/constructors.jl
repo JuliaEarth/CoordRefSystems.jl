@@ -612,5 +612,30 @@
       # error: the UTM zone must be an integer between 1 and 60
       @test_throws ArgumentError UTMSouth{61}(T(1), T(1))
     end
+
+    @testset "Shifted" begin
+      ShiftedMercator = shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      @test ShiftedMercator(T(1), T(1)) == ShiftedMercator(T(1) * u"m", T(1) * u"m")
+      @test ShiftedMercator(T(1) * u"m", 1 * u"m") == ShiftedMercator(T(1) * u"m", T(1) * u"m")
+      @test ShiftedMercator(T(1) * u"km", T(1) * u"km") == ShiftedMercator(T(1000) * u"m", T(1000) * u"m")
+
+      c = ShiftedMercator(T(1), T(1))
+      @test sprint(show, c) == "Shifted{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        Shifted{WGS84Latest} coordinates
+        └─ coords: Mercator{WGS84Latest}(x: 1.0 m, y: 1.0 m)"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        Shifted{WGS84Latest} coordinates
+        └─ coords: Mercator{WGS84Latest}(x: 1.0 m, y: 1.0 m)"""
+      end
+
+      # error: invalid units for coordinates
+      @test_throws ArgumentError ShiftedMercator(T(1), T(1) * u"m")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"s", T(1) * u"m")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"m", T(1) * u"s")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"s", T(1) * u"s")
+    end
   end
 end

@@ -6,12 +6,27 @@ struct Shifted{CRS,lonₒ,xₒ,yₒ,Datum} <: Projected{Datum}
   coords::CRS
 end
 
+_coords(coords::Shifted) = getfield(coords, :coords)
+
+Base.propertynames(coords::Shifted) = propertynames(_coords(coords))
+
+Base.getproperty(coords::Shifted, name::Symbol) = getproperty(_coords(coords), name)
+
+Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Shifted} =
+  isapprox(_coords(coords₁), _coords(coords₂); kwargs...)
+
 function Shifted{CRS,lonₒ,xₒ,yₒ}(args...) where {CRS<:Projected,lonₒ,xₒ,yₒ}
   coords = CRS(args...)
   Datum = datum(coords)
   Shifted{typeof(coords),lonₒ,xₒ,yₒ,Datum}(coords)
 end
 
+"""
+    shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m")
+
+Shifts the `CRS` by longitude origin `lonₒ` in degrees, false easting `xₒ`
+and false northing `yₒ` in meters.
+"""
 shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m") = Shifted{CRS,lonₒ,xₒ,yₒ}
 
 # ------------
@@ -20,8 +35,7 @@ shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m") = Shi
 
 function inbounds(::Type{<:Shifted{CRS,lonₒ}}, λ, ϕ) where {CRS,lonₒ}
   λₒ = T(ustrip(deg2rad(lonₒ)))
-  λ -= λₒ
-  inbounds(CRS, λ, ϕ)
+  inbounds(CRS, λ - λₒ, ϕ)
 end
 
 function formulas(::Type{<:Shifted{CRS,lonₒ,xₒ,yₒ}}, ::Type{T}) where {CRS,lonₒ,xₒ,yₒ,T}
@@ -32,15 +46,9 @@ function formulas(::Type{<:Shifted{CRS,lonₒ,xₒ,yₒ}}, ::Type{T}) where {CRS
 
   crsfx, crsfy = formulas(CRS, T)
 
-  function fx(λ, ϕ)
-    λ -= λₒ
-    crsfx(λ, ϕ) + x
-  end
+  fx(λ, ϕ) = crsfx(λ - λₒ, ϕ) + x
 
-  function fy(λ, ϕ)
-    λ -= λₒ
-    crsfy(λ, ϕ) + y
-  end
+  fy(λ, ϕ) = crsfy(λ - λₒ, ϕ) + y
 
   fx, fy
 end
@@ -56,12 +64,11 @@ function Base.convert(C::Type{<:Shifted{CRS,lonₒ,xₒ,yₒ}}, coords::LatLon{D
 end
 
 function Base.convert(C::Type{<:LatLon}, coords::Shifted{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
-  scoords = coords.coords
-  T = numtype(scoords.x)
+  T = numtype(coords.x)
   x = numconvert(T, xₒ)
   y = numconvert(T, yₒ)
   lon = numconvert(T, lonₒ)
-  pcoords = CRS(scoords.x - x, scoords.y - y)
+  pcoords = CRS(coords.x - x, coords.y - y)
   latlon = convert(C, pcoords)
   C(latlon.lat, latlon.lon + lon)
 end
