@@ -172,4 +172,5 @@ WebMercator{ITRF{2008}} coordinates
 Most implementations in this package are adaptations from
 [PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ)
 and its [list of references](https://proj.org/en/9.3/zreferences.html).
-Our tests were designed to match their results to the last digit.
+Our tests were designed to match their results to the last digit
+via the [Proj.jl](https://github.com/JuliaGeo/Proj.jl) wrapper.
