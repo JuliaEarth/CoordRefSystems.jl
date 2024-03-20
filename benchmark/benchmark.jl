@@ -157,8 +157,9 @@ projargs = let
 end
 
 # Orthographic North latitude bounds: [0,90]
+# Mercator latitude bounds: [-80,84]
 # UTM Zone 38 longitude bounds: [42,48]
-latlon = (rand(0:0.001:90), rand(42:0.001:48))
+latlon = (rand(0:0.001:84), rand(42:0.001:48))
 results = []
 
 for (proj, args) in projargs
