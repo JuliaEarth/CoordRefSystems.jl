@@ -169,6 +169,7 @@ WebMercator{ITRF{2008}} coordinates
 
 ## Credits
 
-Most implementations of this package are adaptations from
-[PROJ](https://github.com/OSGeo/PROJ), which is also under
-the [MIT license](https://github.com/OSGeo/PROJ/blob/master/COPYING).
+Most implementations in this package are adaptations from
+[PROJ - Cartographic Projections and Coordinate Transformations Library](https://github.com/OSGeo/PROJ)
+and its [list of references](https://proj.org/en/9.3/zreferences.html).
+Our tests were designed to match their results to the last digit.
