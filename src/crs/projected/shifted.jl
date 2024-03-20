@@ -47,7 +47,7 @@ function Base.show(io::IO, ::MIME"text/plain", coords::Shifted)
 end
 
 """
-    shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m")
+    Cartography.shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m")
 
 Shifts the `CRS` by longitude origin `lonₒ` in degrees, false easting `xₒ`
 and false northing `yₒ` in meters.
