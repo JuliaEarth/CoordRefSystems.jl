@@ -73,7 +73,6 @@ export
   UTMSouth,
   datum,
   indomain,
-  shift,
 
   # hemispheres
   North,

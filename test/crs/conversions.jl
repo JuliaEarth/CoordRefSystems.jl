@@ -891,7 +891,7 @@
     end
 
     @testset "LatLon <> Shifted" begin
-      ShiftedMercator = shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      ShiftedMercator = Cartography.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       c1 = LatLon(T(45), T(90))
       c2 = convert(ShiftedMercator, c1)
       @test c2 ≈ ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
