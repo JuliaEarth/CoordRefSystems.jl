@@ -35,6 +35,7 @@ indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2ra
 # IMPLEMENTATIONS
 # ----------------
 
+include("projected/shifted.jl")
 include("projected/mercator.jl")
 include("projected/webmercator.jl")
 include("projected/eqdistcylindrical.jl")
