@@ -900,7 +900,7 @@
 
       c1 = LatLon(-T(45), T(90))
       c2 = convert(ShiftedMercator, c1)
-      @test c2 ≈ ShiftedMercator(T(8349161.809495518), -T(5591495.9185533915))
+      @test c2 ≈ ShiftedMercator(T(8349161.809495518), -T(5591095.9185533915))
       c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
@@ -912,7 +912,7 @@
 
       c1 = LatLon(-T(45), -T(90))
       c2 = convert(ShiftedMercator, c1)
-      @test c2 ≈ ShiftedMercator(-T(11688346.533293724), -T(5591495.9185533915))
+      @test c2 ≈ ShiftedMercator(-T(11688346.533293724), -T(5591095.9185533915))
       c3 = convert(LatLon, c2)
       @test c3 ≈ c1
 
