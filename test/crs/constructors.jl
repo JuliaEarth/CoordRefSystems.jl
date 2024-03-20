@@ -620,7 +620,7 @@
       @test ShiftedMercator(T(1) * u"km", T(1) * u"km") == ShiftedMercator(T(1000) * u"m", T(1000) * u"m")
 
       c = ShiftedMercator(T(1), T(1))
-      @test sprint(show, c) == "Shifted{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
+      @test sprint(show, c) == "Shifted{WGS84Latest}(coords: Mercator{WGS84Latest}(x: 1.0 m, y: 1.0 m))"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Shifted{WGS84Latest} coordinates

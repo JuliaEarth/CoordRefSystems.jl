@@ -5,9 +5,9 @@
 struct Winkel{lat₁,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = new{lat₁,Datum,float(M)}(x, y)
 end
 
+Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = Winkel{lat₁,Datum,float(M)}(x, y)
 Winkel{lat₁,Datum}(x::Met, y::Met) where {lat₁,Datum} = Winkel{lat₁,Datum}(promote(x, y)...)
 Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(u"m", x), uconvert(u"m", y))
 Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, u"m"), addunit(y, u"m"))

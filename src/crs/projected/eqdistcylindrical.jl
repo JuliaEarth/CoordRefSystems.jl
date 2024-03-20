@@ -10,9 +10,10 @@ Equidistant Cylindrical CRS with latitude of true scale `latₜₛ` in degrees a
 struct EquidistantCylindrical{latₜₛ,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  EquidistantCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Met} = new{latₜₛ,Datum,float(M)}(x, y)
 end
 
+EquidistantCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Met} =
+  EquidistantCylindrical{latₜₛ,Datum,float(M)}(x, y)
 EquidistantCylindrical{latₜₛ,Datum}(x::Met, y::Met) where {latₜₛ,Datum} =
   EquidistantCylindrical{latₜₛ,Datum}(promote(x, y)...)
 EquidistantCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} =

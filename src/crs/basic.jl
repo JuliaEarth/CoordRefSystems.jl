@@ -34,9 +34,9 @@ Cartesian{WGS84Latest}(1.0u"m", 1.0u"m")
 """
 struct Cartesian{Datum,N,L<:Len} <: Basic{Datum}
   coords::NTuple{N,L}
-  Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = new{Datum,N,float(L)}(coords)
 end
 
+Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
 Cartesian{Datum}(coords::L...) where {Datum,L<:Len} = Cartesian{Datum}(coords)
 Cartesian{Datum}(coords::Len...) where {Datum} = Cartesian{Datum}(promote(coords...))
 Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(addunit.(coords, u"m")...)
@@ -122,9 +122,9 @@ Polar{WGS84Latest}(1.0u"m", (π/4)u"rad")
 struct Polar{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   ρ::L
   ϕ::R
-  Polar{Datum}(ρ::L, ϕ::R) where {Datum,L<:Len,R<:Rad} = new{Datum,float(L),float(R)}(ρ, ϕ)
 end
 
+Polar{Datum}(ρ::L, ϕ::R) where {Datum,L<:Len,R<:Rad} = Polar{Datum,float(L),float(R)}(ρ, ϕ)
 Polar{Datum}(ρ::Len, ϕ::Deg) where {Datum} = Polar{Datum}(ρ, deg2rad(ϕ))
 Polar{Datum}(ρ::Number, ϕ::Number) where {Datum} = Polar{Datum}(addunit(ρ, u"m"), addunit(ϕ, u"rad"))
 
@@ -159,9 +159,9 @@ struct Cylindrical{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   ρ::L
   ϕ::R
   z::L
-  Cylindrical{Datum}(ρ::L, ϕ::R, z::L) where {Datum,L<:Len,R<:Rad} = new{Datum,float(L),float(R)}(ρ, ϕ, z)
 end
 
+Cylindrical{Datum}(ρ::L, ϕ::R, z::L) where {Datum,L<:Len,R<:Rad} = Cylindrical{Datum,float(L),float(R)}(ρ, ϕ, z)
 function Cylindrical{Datum}(ρ::Len, ϕ::Rad, z::Len) where {Datum}
   nρ, nz = promote(ρ, z)
   Cylindrical{Datum}(nρ, ϕ, nz)
@@ -200,9 +200,9 @@ struct Spherical{Datum,L<:Len,R<:Rad} <: Basic{Datum}
   r::L
   θ::R
   ϕ::R
-  Spherical{Datum}(r::L, θ::R, ϕ::R) where {Datum,L<:Len,R<:Rad} = new{Datum,float(L),float(R)}(r, θ, ϕ)
 end
 
+Spherical{Datum}(r::L, θ::R, ϕ::R) where {Datum,L<:Len,R<:Rad} = Spherical{Datum,float(L),float(R)}(r, θ, ϕ)
 Spherical{Datum}(r::Len, θ::Rad, ϕ::Rad) where {Datum} = Spherical{Datum}(r, promote(θ, ϕ)...)
 Spherical{Datum}(r::Len, θ::Deg, ϕ::Deg) where {Datum} = Spherical{Datum}(r, deg2rad(θ), deg2rad(ϕ))
 Spherical{Datum}(r::Number, θ::Number, ϕ::Number) where {Datum} =

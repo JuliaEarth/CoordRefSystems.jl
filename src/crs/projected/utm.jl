@@ -31,14 +31,15 @@ UTM (Universal Transverse Mercator) CRS in `Hemisphere` with `Zone` (1 ≤ Zone 
 struct UTM{Hemisphere,Zone,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  function UTM{Hemisphere,Zone,Datum}(x::M, y::M) where {Hemisphere,Zone,Datum,M<:Met}
+  function UTM{Hemisphere,Zone,Datum,M}(x, y) where {Hemisphere,Zone,Datum,M<:Met}
     if !(1 ≤ Zone ≤ 60)
       throw(ArgumentError("the UTM zone must be an integer between 1 and 60"))
     end
-    new{Hemisphere,Zone,Datum,float(M)}(x, y)
+    new{Hemisphere,Zone,Datum,M}(x, y)
   end
 end
 
+UTM{Hemisphere,Zone,Datum}(x::M, y::M) where {Hemisphere,Zone,Datum,M<:Met} = UTM{Hemisphere,Zone,Datum,float(M)}(x, y)
 UTM{Hemisphere,Zone,Datum}(x::Met, y::Met) where {Hemisphere,Zone,Datum} = UTM{Hemisphere,Zone,Datum}(promote(x, y)...)
 UTM{Hemisphere,Zone,Datum}(x::Len, y::Len) where {Hemisphere,Zone,Datum} =
   UTM{Hemisphere,Zone,Datum}(uconvert(u"m", x), uconvert(u"m", y))
