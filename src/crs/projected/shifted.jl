@@ -6,7 +6,7 @@
     Shifted{CRS,lonₒ,xₒ,yₒ}
 
 Shifted `CRS` with longitude origin `lonₒ` in degrees, false easting `xₒ`
-and false northing `yₒ` in meters
+and false northing `yₒ` in meters.
 """
 struct Shifted{CRS,lonₒ,xₒ,yₒ,Datum} <: Projected{Datum}
   coords::CRS
