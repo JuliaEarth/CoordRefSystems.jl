@@ -5,7 +5,7 @@
 
 Cartography.jl provides conversions between Coordinate Reference Systems (CRS) in native Julia.
 It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl),
-respects projection bounds documented in [EPSG](https://epsg.io), and is very fast thanks to advanced
+respects projection bounds catalogued in <https://epsg.io>, and is very fast thanks to advanced
 parametrizations at compile-time.
 
 This package addresses various design issues encountered in previous attempts such as
