@@ -25,49 +25,11 @@ Get the latest stable release with Julia's package manager:
 
 ### Basic usage
 
-Consider the `Cartesian`, `Spherical`, `Cylindrical` and `Polar` coordinate systems,
-and the conversion examples below:
-
-#### Cartesian <> Polar
-```julia
-julia> cartesian = Cartesian(1, 1)
-Cartesian{NoDatum} coordinates
-├─ x: 1.0 m
-└─ y: 1.0 m
-
-julia> polar = convert(Polar, cartesian)
-Polar{NoDatum} coordinates
-├─ ρ: 1.4142135623730951 m
-└─ ϕ: 0.7853981633974483 rad
-
-julia> convert(Cartesian, polar)
-Cartesian{NoDatum} coordinates
-├─ x: 1.0000000000000002 m
-└─ y: 1.0 m
-```
-
-#### Cartesian <> Cylindrical
-```julia
-julia> cartesian = Cartesian(1, 1, 1)
-Cartesian{NoDatum} coordinates
-├─ x: 1.0 m
-├─ y: 1.0 m
-└─ z: 1.0 m
-
-julia> cylindrical = convert(Cylindrical, cartesian)
-Cylindrical{NoDatum} coordinates
-├─ ρ: 1.4142135623730951 m
-├─ ϕ: 0.7853981633974483 rad
-└─ z: 1.0 m
-
-julia> convert(Cartesian, cylindrical)
-Cartesian{NoDatum} coordinates
-├─ x: 1.0000000000000002 m
-├─ y: 1.0 m
-└─ z: 1.0 m
-```
+Consider the following conversions between `Cartesian`, `Spherical`,
+`Cylindrical` and `Polar` coordinates to get started:
 
 #### Cartesian <> Spherical
+
 ```julia
 julia> cartesian = Cartesian(1, 1, 1)
 Cartesian{NoDatum} coordinates
@@ -88,10 +50,51 @@ Cartesian{NoDatum} coordinates
 └─ z: 0.9999999999999999 m
 ```
 
+#### Cartesian <> Cylindrical
+
+```julia
+julia> cartesian = Cartesian(1, 1, 1)
+Cartesian{NoDatum} coordinates
+├─ x: 1.0 m
+├─ y: 1.0 m
+└─ z: 1.0 m
+
+julia> cylindrical = convert(Cylindrical, cartesian)
+Cylindrical{NoDatum} coordinates
+├─ ρ: 1.4142135623730951 m
+├─ ϕ: 0.7853981633974483 rad
+└─ z: 1.0 m
+
+julia> convert(Cartesian, cylindrical)
+Cartesian{NoDatum} coordinates
+├─ x: 1.0000000000000002 m
+├─ y: 1.0 m
+└─ z: 1.0 m
+```
+
+#### Cartesian <> Polar
+
+```julia
+julia> cartesian = Cartesian(1, 1)
+Cartesian{NoDatum} coordinates
+├─ x: 1.0 m
+└─ y: 1.0 m
+
+julia> polar = convert(Polar, cartesian)
+Polar{NoDatum} coordinates
+├─ ρ: 1.4142135623730951 m
+└─ ϕ: 0.7853981633974483 rad
+
+julia> convert(Cartesian, polar)
+Cartesian{NoDatum} coordinates
+├─ x: 1.0000000000000002 m
+└─ y: 1.0 m
+```
+
+#### Special syntax
+
 Julia's `convert` methods can be triggered with special
-syntax assuming that a list of coordinates is available.
-Below we convert a list of `LatLon` to `Mercator` by
-prefixing the brackets with the type:
+syntax assuming that a list of coordinates is available:
 
 ```julia
 julia> Mercator[LatLon(0, 0), LatLon(30, 30), LatLon(20,30)]
@@ -100,6 +103,10 @@ julia> Mercator[LatLon(0, 0), LatLon(30, 30), LatLon(20,30)]
  Mercator{WGS84Latest}(x: 3.33958e6 m, y: 3.48219e6 m)
  Mercator{WGS84Latest}(x: 3.33958e6 m, y: 2.25842e6 m)
 ```
+
+The example above is equivalent to running
+`convert(Mercator, latlon)` for all `latlon`
+coordinates in the list.
 
 ### Advanced usage
 
