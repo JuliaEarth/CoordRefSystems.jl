@@ -94,8 +94,8 @@ CRS are most useful to locate objets in the physical world.
 Given an ellipsoid of revolution and a standardized origin,
 a.k.a. "datum", we can locate points without ambiguity.
 
-Cartography.jl provides all datums of the PROJ library in
-pure Julia code, using type parameters for maximum performance.
+Cartography.jl provides all datums of the PROJ library as
+type parameters for maximum compile-time performance.
 
 Below is an example converting geodetic `LatLon` coordinates
 on the `WGS84Latest` datum to `Mercator`, `WebMercator`, and
