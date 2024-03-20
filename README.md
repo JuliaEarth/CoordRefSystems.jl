@@ -89,9 +89,9 @@ Cartesian{NoDatum} coordinates
 ```
 
 Julia's `convert` methods can be triggered with special
-syntax assuming that a list of coordinates needs to be
-converted. Below we convert a list of `LatLon` to
-`Mercator` by prefixing the vector with the type:
+syntax assuming that a list of coordinates is available.
+Below we convert a list of `LatLon` to `Mercator` by
+prefixing the brackets with the type:
 
 ```julia
 julia> Mercator[LatLon(0, 0), LatLon(30, 30), LatLon(20,30)]
