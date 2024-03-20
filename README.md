@@ -3,15 +3,15 @@
 [![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/JuliaEarth/Cartography.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/Cartography.jl)
 
-Cartography.jl provides conversions between Coordinate Reference Systems (CRS) for professional geographic mapping.
-It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl), respects the
-projection bounds documented in [EPSG](https://epsg.io), and is very fast thanks to advanced parametrizations at
-compile time.
+Cartography.jl provides conversions between Coordinate Reference Systems (CRS) in native Julia.
+It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl),
+respects projection bounds documented in [EPSG](https://epsg.io), and is very fast thanks to advanced
+parametrizations at compile-time.
 
 This package addresses various design issues encountered in previous attempts such as
 [Geodesy.jl](https://github.com/JuliaGeo/Geodesy.jl) and [MapMaths.jl](https://github.com/subnero1/MapMaths.jl).
 Our [benchmarks](benchmark/output.csv) show that Cartography.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ),
-which is the most widely used software library for coordinate projections in the world (written in C/C++).
+which is the most widely used software library for cartography in the world (written in C/C++).
 
 ## Installation
 
@@ -91,11 +91,9 @@ Cartesian{NoDatum} coordinates
 ### Advanced CRS
 
 CRS are most useful to locate objets in the physical world.
-Given an ellipsoid of revolution and a standardized origin,
-a.k.a. "datum", we can locate points without ambiguity.
-
-Cartography.jl provides all datums of the PROJ library as
-type parameters for maximum compile-time performance.
+Given an ellipsoid of revolution and a standardized origin
+(a.k.a. datum), it is possible assign coordinates to points
+without ambiguity.
 
 Below is an example converting geodetic `LatLon` coordinates
 on the `WGS84Latest` datum to `Mercator`, `WebMercator`, and
@@ -138,7 +136,9 @@ GeodeticLatLon{WGS84Latest} coordinates
 └─ lon: 59.99999999999999°
 ```
 
-It is also possible to convert between different datum, transparently:
+It is also possible to convert between different datum, transparently.
+In the following examples, we convert coordinates between the `WGS84Latest`
+datum, currently an alias to `WGS84{1762}`, and the `ITRF{2008}` datum:
 
 ```julia
 julia> latlon = LatLon{WGS84Latest}(30, 60)
