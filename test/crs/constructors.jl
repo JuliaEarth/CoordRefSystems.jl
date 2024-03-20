@@ -612,5 +612,32 @@
       # error: the UTM zone must be an integer between 1 and 60
       @test_throws ArgumentError UTMSouth{61}(T(1), T(1))
     end
+
+    @testset "Shifted" begin
+      ShiftedMercator = Cartography.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      @test ShiftedMercator(T(1), T(1)) == ShiftedMercator(T(1) * u"m", T(1) * u"m")
+      @test ShiftedMercator(T(1) * u"m", 1 * u"m") == ShiftedMercator(T(1) * u"m", T(1) * u"m")
+      @test ShiftedMercator(T(1) * u"km", T(1) * u"km") == ShiftedMercator(T(1000) * u"m", T(1000) * u"m")
+
+      c = ShiftedMercator(T(1), T(1))
+      @test sprint(show, c) == "ShiftedMercator{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
+        ├─ x: 1.0f0 m
+        └─ y: 1.0f0 m"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
+        ├─ x: 1.0 m
+        └─ y: 1.0 m"""
+      end
+
+      # error: invalid units for coordinates
+      @test_throws ArgumentError ShiftedMercator(T(1), T(1) * u"m")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"s", T(1) * u"m")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"m", T(1) * u"s")
+      @test_throws ArgumentError ShiftedMercator(T(1) * u"s", T(1) * u"s")
+    end
   end
 end

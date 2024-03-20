@@ -24,9 +24,9 @@ See [EPSG:3857](https://epsg.io/3857).
 struct WebMercator{Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  WebMercator{Datum}(x::M, y::M) where {Datum,M<:Met} = new{Datum,float(M)}(x, y)
 end
 
+WebMercator{Datum}(x::M, y::M) where {Datum,M<:Met} = WebMercator{Datum,float(M)}(x, y)
 WebMercator{Datum}(x::Met, y::Met) where {Datum} = WebMercator{Datum}(promote(x, y)...)
 WebMercator{Datum}(x::Len, y::Len) where {Datum} = WebMercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
 WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))

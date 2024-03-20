@@ -11,9 +11,10 @@ spherical mode `S` enabled or not and a given `Datum`.
 struct Orthographic{latₒ,lonₒ,S,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  Orthographic{latₒ,lonₒ,S,Datum}(x::M, y::M) where {latₒ,lonₒ,S,Datum,M<:Met} = new{latₒ,lonₒ,S,Datum,float(M)}(x, y)
 end
 
+Orthographic{latₒ,lonₒ,S,Datum}(x::M, y::M) where {latₒ,lonₒ,S,Datum,M<:Met} =
+  Orthographic{latₒ,lonₒ,S,Datum,float(M)}(x, y)
 Orthographic{latₒ,lonₒ,S,Datum}(x::Met, y::Met) where {latₒ,lonₒ,S,Datum} =
   Orthographic{latₒ,lonₒ,S,Datum}(promote(x, y)...)
 Orthographic{latₒ,lonₒ,S,Datum}(x::Len, y::Len) where {latₒ,lonₒ,S,Datum} =

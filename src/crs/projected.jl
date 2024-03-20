@@ -44,6 +44,7 @@ include("projected/robinson.jl")
 include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
 include("projected/utm.jl")
+include("projected/shifted.jl")
 
 # ----------
 # FALLBACKS

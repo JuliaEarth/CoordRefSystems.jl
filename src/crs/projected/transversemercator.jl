@@ -11,10 +11,10 @@ and longitude origin `lonₒ` in degrees and a given `Datum`.
 struct TransverseMercator{k₀,latₒ,lonₒ,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::M, y::M) where {k₀,latₒ,lonₒ,Datum,M<:Met} =
-    new{k₀,latₒ,lonₒ,Datum,float(M)}(x, y)
 end
 
+TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::M, y::M) where {k₀,latₒ,lonₒ,Datum,M<:Met} =
+  TransverseMercator{k₀,latₒ,lonₒ,Datum,float(M)}(x, y)
 TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Met, y::Met) where {k₀,latₒ,lonₒ,Datum} =
   TransverseMercator{k₀,latₒ,lonₒ,Datum}(promote(x, y)...)
 TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Len, y::Len) where {k₀,latₒ,lonₒ,Datum} =

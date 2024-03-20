@@ -24,9 +24,9 @@ See [EPSG:3395](https://epsg.io/3395).
 struct Mercator{Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
-  Mercator{Datum}(x::M, y::M) where {Datum,M<:Met} = new{Datum,float(M)}(x, y)
 end
 
+Mercator{Datum}(x::M, y::M) where {Datum,M<:Met} = Mercator{Datum,float(M)}(x, y)
 Mercator{Datum}(x::Met, y::Met) where {Datum} = Mercator{Datum}(promote(x, y)...)
 Mercator{Datum}(x::Len, y::Len) where {Datum} = Mercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
 Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))
