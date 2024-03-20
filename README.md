@@ -180,6 +180,20 @@ WebMercator{ITRF{2008}} coordinates
 └─ y: 3.5035498436094625e6 m
 ```
 
+### EPSG/ERSI codes
+
+CRS are catalogued with numerical codes in <https://epsg.io>.
+The package provides `EPSG{code}` and `ERSI{code}`, and the
+utility `Cartography.crs` function to query the database:
+
+```julia
+julia> Cartography.crs(EPSG{3395})
+Mercator{WGS84Latest}
+
+julia> Cartography.crs(ESRI{54030})
+Robinson{WGS84Latest}
+```
+
 ## Credits
 
 Most implementations in this package are adaptations from
