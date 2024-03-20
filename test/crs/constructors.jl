@@ -625,7 +625,7 @@
         @test sprint(show, MIME("text/plain"), c) == """
         ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
         ├─ x: 1.0f0 m
-        └─ y: 1.0fo m"""
+        └─ y: 1.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
