@@ -3,5 +3,5 @@
 To run the benchmarks in this folder, instantiate the environment and run:
 
 ```
-$ julia -t auto benchmark.jl
+$ julia --project -t auto benchmark.jl
 ```
