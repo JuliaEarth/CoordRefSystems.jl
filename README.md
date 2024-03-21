@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="logo/logo.svg" height="200">
+  <img src="logo/logo-text.svg" height="200">
 </p>
-
-# Cartography.jl
 
 [![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/JuliaEarth/Cartography.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/Cartography.jl)
