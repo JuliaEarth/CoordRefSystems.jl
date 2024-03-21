@@ -1,3 +1,5 @@
+![Cartography.jl](https://raw.githubusercontent.com/JuliaEarth/Cartography.jl/main/logo/logo.svg)
+
 # Cartography.jl
 
 [![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
