@@ -1,4 +1,6 @@
-![Cartography.jl](logo/logo.svg)
+<p align="center">
+  <img src="logo/logo.svg" height="200">
+</p>
 
 # Cartography.jl
 
