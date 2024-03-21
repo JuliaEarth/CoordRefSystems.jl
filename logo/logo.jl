@@ -1,5 +1,5 @@
-# Logo script by cormullion
-# code: https://gist.github.com/cormullion/2a536d562aa4e7e4557daba8d6b4619e
+# Logo script adapted from cormullion's code
+# link: https://gist.github.com/cormullion/2a536d562aa4e7e4557daba8d6b4619e
 
 using Thebes
 using Luxor
@@ -81,9 +81,9 @@ function render_sphere(o::Object)
   end
 end
 
-function main(fname)
-  Drawing(500, 500, fname)
-  origin()
+function cartography(s)
+  Δ = s / 600 # scale factor, original design was 600units
+  scale(Δ)
 
   # background
   squircle(O, 240, 240, rt=0.2, :clip)
@@ -135,9 +135,40 @@ function main(fname)
 
   # the cursor-like shape
   cursor(O, 140)
+end
 
+function logo(s, fname)
+  Drawing(s, s, fname)
+  origin()
+  cartography(s)
   finish()
   preview()
 end
 
-main(joinpath(@__DIR__, "logo.svg"))
+function logotext(w, h, fname)
+  Drawing(w, h, fname)
+  origin()
+  table = Table([h], [h, w - h])
+  @layer begin
+    translate(table[1])
+    cartography(h)
+  end
+  @layer begin
+    translate(table[2])
+    background("white")
+    sethue("black")
+    # find all fonts available on Linux with `fc-list | -f 2 -d ":"`
+    fontface("Julius Sans One")
+    fontsize(h / 2.5)
+    text("Cartography.jl", halign=:center, valign=:middle)
+  end
+  @layer begin
+    translate(table[1])
+    cartography(h)
+  end
+  finish()
+  preview()
+end
+
+logo(240, joinpath(@__DIR__, "logo.svg"))
+logotext(880, 200, joinpath(@__DIR__, "logo-text.svg"))
