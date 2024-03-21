@@ -86,3 +86,6 @@ function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datumₜ,Datumₛ,Cₜ<
   latlonₜ = convert(LatLon{Datumₜ}, latlonₛ)
   convert(Cₜ, latlonₜ)
 end
+
+# avoid converting coordinates with the same type as the first argument
+Base.convert(::Type{C}, coords::C) where {Datum,C<:Projected{Datum}} = coords
