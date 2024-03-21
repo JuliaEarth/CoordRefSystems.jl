@@ -150,10 +150,6 @@ function logotext(w, h, fname)
   origin()
   table = Table([h], [h, w - h])
   @layer begin
-    translate(table[1])
-    cartography(h)
-  end
-  @layer begin
     translate(table[2])
     background("white")
     sethue("black")
