@@ -1,4 +1,4 @@
-![Cartography.jl](https://raw.githubusercontent.com/JuliaEarth/Cartography.jl/main/logo/logo.svg)
+![Cartography.jl](logo/logo.svg)
 
 # Cartography.jl
 
