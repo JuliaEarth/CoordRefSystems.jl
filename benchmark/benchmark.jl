@@ -1,4 +1,4 @@
-using Cartography
+using CoordRefSystems
 import Geodesy
 import Proj
 
@@ -78,7 +78,7 @@ projargs = let
   step proj=axisswap order=2,1
   """)
 
-  TransverseMercator = Cartography.TransverseMercator{0.9996,15.0u"°",45.0u"°"}
+  TransverseMercator = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",45.0u"°"}
 
   # ---------
   # MERCATOR
@@ -122,7 +122,7 @@ projargs = let
   pfwdorthosphere = Proj.Transformation("EPSG:4326", "ESRI:102035")
   pinvorthosphere = inv(pfwdorthosphere)
 
-  OrthoNorthSpherical = Cartography.crs(ESRI{102035})
+  OrthoNorthSpherical = CoordRefSystems.get(ESRI{102035})
 
   # ------------------------
   # ORTHOGRAPHIC ELLIPTICAL
@@ -142,17 +142,17 @@ projargs = let
   """)
 
   [
-    "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, Cartography=WebMercator),
-    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, Cartography=UTMNorth{38}),
-    "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, Cartography=TransverseMercator),
-    "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, Cartography=Mercator),
-    "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, Cartography=PlateCarree),
-    "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, Cartography=Lambert),
-    "Winkel Tripel" => (Proj=(pfwdwinkel, pinvwinkel), Geodesy=missing, Cartography=WinkelTripel),
-    "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=missing, Cartography=Robinson),
+    "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, CoordRefSystems=WebMercator),
+    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, CoordRefSystems=UTMNorth{38}),
+    "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, CoordRefSystems=TransverseMercator),
+    "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, CoordRefSystems=Mercator),
+    "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, CoordRefSystems=PlateCarree),
+    "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, CoordRefSystems=Lambert),
+    "Winkel Tripel" => (Proj=(pfwdwinkel, pinvwinkel), Geodesy=missing, CoordRefSystems=WinkelTripel),
+    "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=missing, CoordRefSystems=Robinson),
     "Orthographic Spherical" =>
-      (Proj=(pfwdorthosphere, pinvorthosphere), Geodesy=missing, Cartography=OrthoNorthSpherical),
-    "Orthographic Elliptical" => (Proj=(pfwdorthoellip, pinvorthoellip), Geodesy=missing, Cartography=OrthoNorth)
+      (Proj=(pfwdorthosphere, pinvorthosphere), Geodesy=missing, CoordRefSystems=OrthoNorthSpherical),
+    "Orthographic Elliptical" => (Proj=(pfwdorthoellip, pinvorthoellip), Geodesy=missing, CoordRefSystems=OrthoNorth)
   ]
 end
 
@@ -171,7 +171,7 @@ for (proj, args) in projargs
     geodesytime(args.Geodesy, latlon)
   end
 
-  cfwdtime, cinvtime = cartographytime(args.Cartography, latlon)
+  cfwdtime, cinvtime = cartographytime(args.CoordRefSystems, latlon)
 
   push!(
     results,
@@ -180,7 +180,7 @@ for (proj, args) in projargs
       :DIRECTION => "forward",
       Symbol("Proj.jl") => pfwdtime,
       Symbol("Geodesy.jl") => gfwdtime,
-      Symbol("Cartography.jl") => cfwdtime
+      Symbol("CoordRefSystems.jl") => cfwdtime
     )
   )
 
@@ -191,14 +191,14 @@ for (proj, args) in projargs
       :DIRECTION => "inverse",
       Symbol("Proj.jl") => pinvtime,
       Symbol("Geodesy.jl") => ginvtime,
-      Symbol("Cartography.jl") => cinvtime
+      Symbol("CoordRefSystems.jl") => cinvtime
     )
   )
 end
 
 df = DataFrame(identity.(results))
 sort!(df, :CRS)
-df."Proj.jl / Cartography.jl" = round.(df."Proj.jl" ./ df."Cartography.jl", digits=2)
+df."Proj.jl / CoordRefSystems.jl" = round.(df."Proj.jl" ./ df."CoordRefSystems.jl", digits=2)
 
 CSV.write(joinpath(@__DIR__, "output.csv"), df)
 pretty_table(df)

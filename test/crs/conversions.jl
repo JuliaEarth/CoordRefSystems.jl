@@ -1,6 +1,6 @@
 @testset "Conversions" begin
   @testset "Basic" begin
-    atol = Cartography.atol(T) * u"m"
+    atol = CoordRefSystems.atol(T) * u"m"
     @testset "Cartesian <> Polar" begin
       c1 = Cartesian(T(1), T(1))
       c2 = convert(Polar, c1)
@@ -777,8 +777,8 @@
     end
 
     @testset "LatLon <> OrthoSpherical" begin
-      OrthoNorthSpherical = Cartography.crs(ESRI{102035})
-      OrthoSouthSpherical = Cartography.crs(ESRI{102037})
+      OrthoNorthSpherical = CoordRefSystems.get(ESRI{102035})
+      OrthoSouthSpherical = CoordRefSystems.get(ESRI{102037})
 
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorthSpherical, c1)
@@ -818,7 +818,7 @@
     @testset "LatLon <> TransverseMercator" begin
       # tests from GeographicLib testset
       # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
-      TM = Cartography.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
+      TM = CoordRefSystems.TransverseMercator{0.9996,0.0u"°",0.0u"°"}
 
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
       c2 = convert(TM, c1)
@@ -845,7 +845,7 @@
       @test c3 ≈ c1
 
       # latₒ, lonₒ ≠ 0
-      TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
+      TM = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
 
       c1 = LatLon(T(30), T(60))
       c2 = convert(TM, c1)
@@ -891,7 +891,7 @@
     end
 
     @testset "LatLon <> Shifted" begin
-      ShiftedMercator = Cartography.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       c1 = LatLon(T(45), T(90))
       c2 = convert(ShiftedMercator, c1)
       @test c2 ≈ ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))

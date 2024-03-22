@@ -2,7 +2,7 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-module Cartography
+module CoordRefSystems
 
 using Unitful
 using Unitful: numtype

@@ -198,7 +198,7 @@
   end
 
   @testset "TransverseMercator forward" begin
-    TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
+    TM = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(TM{WGS84Latest}, c1)

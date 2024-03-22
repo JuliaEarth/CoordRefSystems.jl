@@ -531,7 +531,7 @@
     end
 
     @testset "TransverseMercator" begin
-      TM = Cartography.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
+      TM = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",25.0u"°"}
       @test TM(T(1), T(1)) == TM(T(1) * u"m", T(1) * u"m")
       @test TM(T(1) * u"m", 1 * u"m") == TM(T(1) * u"m", T(1) * u"m")
       @test TM(T(1) * u"km", T(1) * u"km") == TM(T(1000) * u"m", T(1000) * u"m")
@@ -614,7 +614,7 @@
     end
 
     @testset "Shifted" begin
-      ShiftedMercator = Cartography.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       @test ShiftedMercator(T(1), T(1)) == ShiftedMercator(T(1) * u"m", T(1) * u"m")
       @test ShiftedMercator(T(1) * u"m", 1 * u"m") == ShiftedMercator(T(1) * u"m", T(1) * u"m")
       @test ShiftedMercator(T(1) * u"km", T(1) * u"km") == ShiftedMercator(T(1000) * u"m", T(1000) * u"m")
