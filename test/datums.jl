@@ -1,6 +1,6 @@
 @testset "Datums" begin
   @testset "WGS84" begin
-    @test ellipsoid(WGS84Latest) === Cartography.WGS84🌎
+    @test ellipsoid(WGS84Latest) === CoordRefSystems.WGS84🌎
     @test epoch(WGS84{730}) == 1994.0
     @test epoch(WGS84{873}) == 1997.0
     @test epoch(WGS84{1150}) == 2001.0
@@ -9,7 +9,7 @@
   end
 
   @testset "ITRF" begin
-    @test ellipsoid(ITRFLatest) === Cartography.GRS80🌎
+    @test ellipsoid(ITRFLatest) === CoordRefSystems.GRS80🌎
     @test epoch(ITRF{1991}) == 1988.0
     @test epoch(ITRF{1992}) == 1988.0
     @test epoch(ITRF{1993}) == 1988.0
@@ -24,34 +24,34 @@
   end
 
   @testset "GGRS87" begin
-    @test ellipsoid(GGRS87) === Cartography.GRS80🌎
+    @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
   end
 
   @testset "NAD83" begin
-    @test ellipsoid(NAD83) === Cartography.GRS80🌎
+    @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
   end
 
   @testset "Potsdam" begin
-    @test ellipsoid(Potsdam) === Cartography.Bessel🌎
+    @test ellipsoid(Potsdam) === CoordRefSystems.Bessel🌎
   end
 
   @testset "Carthage" begin
-    @test ellipsoid(Carthage) === Cartography.Clrk80IGN🌎
+    @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
   end
 
   @testset "Hermannskogel" begin
-    @test ellipsoid(Hermannskogel) === Cartography.Bessel🌎
+    @test ellipsoid(Hermannskogel) === CoordRefSystems.Bessel🌎
   end
 
   @testset "Ire65" begin
-    @test ellipsoid(Ire65) === Cartography.ModAiry🌎
+    @test ellipsoid(Ire65) === CoordRefSystems.ModAiry🌎
   end
 
   @testset "NZGD1949" begin
-    @test ellipsoid(NZGD1949) === Cartography.Intl🌎
+    @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
   end
 
   @testset "OSGB36" begin
-    @test ellipsoid(OSGB36) === Cartography.Airy🌎
+    @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
   end
 end

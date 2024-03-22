@@ -156,7 +156,7 @@ function logotext(w, h, fname)
     # find all fonts available on Linux with `fc-list | -f 2 -d ":"`
     fontface("Julius Sans One")
     fontsize(h / 2.5)
-    text("Cartography.jl", halign=:center, valign=:middle)
+    text("CoordRefSystems.jl", halign=:center, valign=:middle)
   end
   @layer begin
     translate(table[1])
@@ -167,4 +167,4 @@ function logotext(w, h, fname)
 end
 
 logo(240, joinpath(@__DIR__, "logo.svg"))
-logotext(880, 200, joinpath(@__DIR__, "logo-text.svg"))
+logotext(1060, 200, joinpath(@__DIR__, "logo-text.svg"))

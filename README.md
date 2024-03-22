@@ -2,17 +2,17 @@
   <img src="logo/logo-text.svg" height="200">
 </p>
 
-[![Build Status](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/Cartography.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/JuliaEarth/Cartography.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/Cartography.jl)
+[![Build Status](https://github.com/JuliaEarth/CoordRefSystems.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/CoordRefSystems.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/JuliaEarth/CoordRefSystems.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/CoordRefSystems.jl)
 
-Cartography.jl provides conversions between Coordinate Reference Systems (CRS) in native Julia.
+CoordRefSystems.jl provides conversions between Coordinate Reference Systems (CRS) in native Julia.
 It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl),
 respects projection bounds catalogued in <https://epsg.io>, and is very fast thanks to advanced
 parametrizations at compile-time.
 
 This package addresses various design issues encountered in previous attempts such as
 [Geodesy.jl](https://github.com/JuliaGeo/Geodesy.jl) and [MapMaths.jl](https://github.com/subnero1/MapMaths.jl).
-Our [benchmarks](benchmark/output.csv) show that Cartography.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ),
+Our [benchmarks](benchmark/output.csv) show that CoordRefSystems.jl is often faster than [PROJ](https://github.com/OSGeo/PROJ),
 which is the most widely used software library for cartography in the world (written in C/C++).
 
 ## Installation
@@ -20,7 +20,7 @@ which is the most widely used software library for cartography in the world (wri
 Get the latest stable release with Julia's package manager:
 
 ```
-] add Cartography
+] add CoordRefSystems
 ```
 
 ## Usage
@@ -193,13 +193,13 @@ WebMercator{ITRF{2008}} coordinates
 
 CRS are catalogued with numerical codes in <https://epsg.io>.
 The package provides `EPSG{code}` and `ERSI{code}`, and the
-utility `Cartography.crs` function to query the database:
+utility `CoordRefSystems.get` function to query the database:
 
 ```julia
-julia> Cartography.crs(EPSG{3395})
+julia> CoordRefSystems.get(EPSG{3395})
 Mercator{WGS84Latest}
 
-julia> Cartography.crs(ESRI{54030})
+julia> CoordRefSystems.get(ESRI{54030})
 Robinson{WGS84Latest}
 ```
 

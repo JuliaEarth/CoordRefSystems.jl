@@ -4,5 +4,5 @@
 
   c = LatLon(T(1), T(1))
   @test datum(c) === WGS84Latest
-  @test ellipsoid(c) === Cartography.WGS84🌎
+  @test ellipsoid(c) === CoordRefSystems.WGS84🌎
 end

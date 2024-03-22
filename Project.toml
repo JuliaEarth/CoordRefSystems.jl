@@ -1,6 +1,6 @@
-name = "Cartography"
+name = "CoordRefSystems"
 uuid = "b46f11dc-f210-4604-bfba-323c1ec968cb"
-authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
+authors = ["Elias Carvalho <eliascarvdev@gmail.com>", "Júlio Hoffimann <julio.hoffimann@gmail.com> and contributors"]
 version = "0.1.0"
 
 [deps]

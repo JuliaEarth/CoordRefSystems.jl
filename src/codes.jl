@@ -20,24 +20,24 @@ ESRI dataset `code`. Codes can be searched at [epsg.io](https://epsg.io).
 abstract type ESRI{Code} end
 
 """
-    crs(::Type{EPSG{code}})
-    crs(::Type{ESRI{code}})
+    CoordRefSystems.get(::Type{EPSG{code}})
+    CoordRefSystems.get(::Type{ESRI{code}})
 
 Returns a CRS type that has the EPSG/ESRI `code`.
 """
-function crs end
+function get end
 
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
 
-crs(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
-crs(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
-crs(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
-crs(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
-crs(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
-crs(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
-crs(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
-crs(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
-crs(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
-crs(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
+get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
+get(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
+get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
+get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
+get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
+get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
+get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
+get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
+get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}

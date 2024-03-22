@@ -1,4 +1,4 @@
-using Cartography
+using CoordRefSystems
 using Unitful
 using Test
 
@@ -9,7 +9,7 @@ testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl"]
 # --------------------------------
 
 T = Float32
-@testset "Cartography.jl ($T)" begin
+@testset "CoordRefSystems.jl ($T)" begin
   for testfile in testfiles
     println("Testing $testfile...")
     include(testfile)
@@ -21,7 +21,7 @@ end
 # --------------------------------
 
 T = Float64
-@testset "Cartography.jl ($T)" begin
+@testset "CoordRefSystems.jl ($T)" begin
   for testfile in testfiles
     println("Testing $testfile...")
     include(testfile)
