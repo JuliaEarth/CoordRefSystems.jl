@@ -154,7 +154,7 @@ function logotext(w, h, fname)
     background("white")
     sethue("black")
     # find all fonts available on Linux with `fc-list | -f 2 -d ":"`
-    fontface("Julius Sans One")
+    fontface("JuliaMono Light")
     fontsize(h / 2.5)
     text("CoordRefSystems.jl", halign=:center, valign=:middle)
   end
@@ -167,4 +167,4 @@ function logotext(w, h, fname)
 end
 
 logo(240, joinpath(@__DIR__, "logo.svg"))
-logotext(1060, 200, joinpath(@__DIR__, "logo-text.svg"))
+logotext(1100, 200, joinpath(@__DIR__, "logo-text.svg"))
