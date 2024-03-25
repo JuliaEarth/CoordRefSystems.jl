@@ -10,24 +10,20 @@ Geographic CRS with a given `Datum`.
 abstract type Geographic{Datum} <: CRS{Datum} end
 
 """
-    LatLon(lat, lon)
-    LatLon{Datum}(lat, lon)
     GeodeticLatLon(lat, lon)
     GeodeticLatLon{Datum}(lat, lon)
 
 Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
-with a given `Datum` (default to `WGS84`).
-
-`LatLon` is an alias to `GeodeticLatLon`.
+with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
 
 ```julia
-LatLon(45, 45) # add default units
-LatLon(45u"°", 45u"°") # integers are converted converted to floats
-LatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-LatLon(45.0u"°", 45.0u"°")
-LatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+GeodeticLatLon(45, 45) # add default units
+GeodeticLatLon(45u"°", 45u"°") # integers are converted converted to floats
+GeodeticLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
+GeodeticLatLon(45.0u"°", 45.0u"°")
+GeodeticLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
 ```
 
 See [EPSG:4326](https://epsg.io/4326).
@@ -45,28 +41,42 @@ GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 
 GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
-const LatLon = GeodeticLatLon
-
 """
-    LatLonAlt(lat, lon, alt)
-    LatLonAlt{Datum}(lat, lon, alt)
-    GeodeticLatLonAlt(lat, lon, alt)
-    GeodeticLatLonAlt{Datum}(lat, lon, alt)
+    LatLon(lat, lon)
+    LatLon{Datum}(lat, lon)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
-and altitude in length units (default to meter) with a given `Datum` (default to `WGS84`).
-
-`LatLonAlt` is an alias to `GeodeticLatLonAlt`.
+Alias to [`GeodeticLatLon`](@ref).
 
 ## Examples
 
 ```julia
-LatLonAlt(45, 45, 1) # add default units
-LatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
-LatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-LatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
-LatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
-LatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
+LatLon(45, 45) # add default units
+LatLon(45u"°", 45u"°") # integers are converted converted to floats
+LatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
+LatLon(45.0u"°", 45.0u"°")
+LatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+```
+
+See [EPSG:4326](https://epsg.io/4326).
+"""
+const LatLon = GeodeticLatLon
+
+"""
+    GeodeticLatLonAlt(lat, lon, alt)
+    GeodeticLatLonAlt{Datum}(lat, lon, alt)
+
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
+
+## Examples
+
+```julia
+GeodeticLatLonAlt(45, 45, 1) # add default units
+GeodeticLatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
+GeodeticLatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
+GeodeticLatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
+GeodeticLatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
+GeodeticLatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
 ```
 """
 struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
@@ -88,6 +98,23 @@ GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
 
 GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
+"""
+    LatLonAlt(lat, lon, alt)
+    LatLonAlt{Datum}(lat, lon, alt)
+
+Alias to [`GeodeticLatLonAlt`](@ref).
+
+## Examples
+
+```julia
+LatLonAlt(45, 45, 1) # add default units
+LatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
+LatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
+LatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
+LatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
+LatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
+```
+"""
 const LatLonAlt = GeodeticLatLonAlt
 
 """
