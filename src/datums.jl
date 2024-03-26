@@ -45,15 +45,16 @@ abstract type NoDatum <: Datum end
     WGS84{GPSWeek}
 
 WGS84 (World Geodetic System) datum with a given realization `GPSWeek` (default to 1762).
-Currentry, WGS84 has six realizations in the following GPS weeks:
+Currently, WGS84 has six realizations in the following GPS weeks:
 0, 730, 873, 1150, 1674 and 1762.
 
-`WGS84Latest` is an alias to `WGS84{2020}`.
+`WGS84Latest` is an alias to `WGS84{1762}`.
 
 See [NGA - WORLD GEODETIC SYSTEM 1984](https://nsgreg.nga.mil/doc/view?i=4085)
 """
 abstract type WGS84{GPSWeek} <: Datum end
 
+@doc (@doc WGS84)
 const WGS84Latest = WGS84{1762}
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
@@ -68,7 +69,7 @@ epoch(::Type{WGS84{1762}}) = 2005.0
     ITRF{Year}
 
 ITRF (International Terrestrial Reference Frame) datum with a given realization `Year` (default to 2020).
-Currentry, ITRF has eleven realizations in the following years:
+Currently, ITRF has eleven realizations in the following years:
 1991, 1992, 1993, 1994, 1996, 1997, 2000, 2005, 2008, 2014 and 2020.
 
 `ITRFLatest` is an alias to `ITRF{2020}`.
@@ -77,6 +78,7 @@ See [The International Terrestrial Reference Frame (ITRF)](https://www.iers.org/
 """
 abstract type ITRF{Year} <: Datum end
 
+@doc (@doc ITRF)
 const ITRFLatest = ITRF{2020}
 
 ellipsoid(::Type{<:ITRF}) = GRS80🌎
