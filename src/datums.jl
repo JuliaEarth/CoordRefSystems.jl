@@ -54,8 +54,7 @@ See [NGA - WORLD GEODETIC SYSTEM 1984](https://nsgreg.nga.mil/doc/view?i=4085)
 """
 abstract type WGS84{GPSWeek} <: Datum end
 
-@doc (@doc WGS84)
-const WGS84Latest = WGS84{1762}
+@doc (@doc WGS84) const WGS84Latest = WGS84{1762}
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
 
@@ -78,8 +77,7 @@ See [The International Terrestrial Reference Frame (ITRF)](https://www.iers.org/
 """
 abstract type ITRF{Year} <: Datum end
 
-@doc (@doc ITRF)
-const ITRFLatest = ITRF{2020}
+@doc (@doc ITRF) const ITRFLatest = ITRF{2020}
 
 ellipsoid(::Type{<:ITRF}) = GRS80🌎
 
