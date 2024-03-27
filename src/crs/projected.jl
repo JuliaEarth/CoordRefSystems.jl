@@ -89,3 +89,6 @@ end
 
 # avoid converting coordinates with the same type as the first argument
 Base.convert(::Type{C}, coords::C) where {Datum,C<:Projected{Datum}} = coords
+
+Base.convert(::Type{Cartesian}, coords::Projected) = convert(Cartesian, convert(LatLon, coords))
+Base.convert(P::Type{<:Projected}, coords::Cartesian) = convert(P, convert(LatLon, coords))
