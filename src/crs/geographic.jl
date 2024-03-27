@@ -259,7 +259,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/conversions/cart.cpp
-# reference formulas: 
+# reference formulas:
 # Wikipedia - Geographic coordinate conversion (https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
 # Bowring, B.R, (1976). Transformation from Spatial to Geographical Coordinates (https://doi.org/10.1179/sre.1976.23.181.323)
 
@@ -339,3 +339,8 @@ Base.convert(::Type{LatLon}, coords::Cartesian{Datum,3}) where {Datum} = convert
 
 Base.convert(::Type{Cartesian}, coords::LatLonAlt{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
 Base.convert(::Type{LatLonAlt}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLonAlt{Datum}, coords)
+
+Base.convert(::Type{LatLon}, coords::LatLonAlt{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{LatLon{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = LatLon{Datum}(coords.lat, coords.lon)
+Base.convert(::Type{LatLonAlt}, coords::LatLon{Datum}) where {Datum} = convert(LatLonAlt{Datum}, coords)
+Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum, Deg{T}}) where {Datum, T} = LatLonAlt{Datum}(coords.lat, coords.lon, zero(Met{T}))
