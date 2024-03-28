@@ -938,14 +938,13 @@
 
       # type stability
       c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c2 = Mercator(T(0), T(0))
+      c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = Mercator(T(0), T(0))
+      c4 = OrthoNorth(T(0), T(0))
       @inferred convert(Mercator, c1)
-      @inferred convert(Cartesian, c2)
-
-      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c2 = OrthoNorth(T(0), T(0))
-      @inferred convert(OrthoNorth, c1)
-      @inferred convert(Cartesian, c2)
+      @inferred convert(OrthoNorth, c2)
+      @inferred convert(Cartesian, c3)
+      @inferred convert(Cartesian, c4)
     end
 
     @testset "Projection conversion" begin
