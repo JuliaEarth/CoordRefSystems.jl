@@ -341,6 +341,4 @@ Base.convert(::Type{Cartesian}, coords::LatLonAlt{Datum}) where {Datum} = conver
 Base.convert(::Type{LatLonAlt}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLonAlt{Datum}, coords)
 
 Base.convert(::Type{LatLon}, coords::LatLonAlt{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
-Base.convert(::Type{LatLon{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = LatLon{Datum}(coords.lat, coords.lon)
 Base.convert(::Type{LatLonAlt}, coords::LatLon{Datum}) where {Datum} = convert(LatLonAlt{Datum}, coords)
-Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum, Deg{T}}) where {Datum, T} = LatLonAlt{Datum}(coords.lat, coords.lon, zero(Met{T}))
