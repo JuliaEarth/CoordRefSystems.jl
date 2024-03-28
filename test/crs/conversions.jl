@@ -937,6 +937,30 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "Cartesian <> Projected" begin
+      c1 = convert(Mercator, LatLon(T(30), T(40)))
+      c2 = convert(Cartesian, c1)
+      @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(Mercator, c2)
+
+      c1 = convert(OrthoNorth, LatLon(T(30), T(40)))
+      c2 = convert(Cartesian, c1)
+      @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(OrthoNorth, c2)
+      @test c3 ≈ c1
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = Mercator(T(0), T(0))
+      c4 = OrthoNorth(T(0), T(0))
+      @inferred convert(Mercator, c1)
+      @inferred convert(OrthoNorth, c2)
+      @inferred convert(Cartesian, c3)
+      @inferred convert(Cartesian, c4)
+    end
+
     @testset "Projection conversion" begin
       # same datum
       c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
