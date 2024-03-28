@@ -263,15 +263,21 @@ end
 # Wikipedia - Geographic coordinate conversion (https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
 # Bowring, B.R, (1976). Transformation from Spatial to Geographical Coordinates (https://doi.org/10.1179/sre.1976.23.181.323)
 
-function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
+Base.convert(::Type{LatLon{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = LatLon{Datum}(coords.lat, coords.lon)
+
+function Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum}) where {Datum}
   T = numtype(coords.lon)
-  lla = LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * u"m")
+  LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * u"m")
+end
+
+function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
+  lla = convert(LatLonAlt{Datum}, coords)
   convert(Cartesian{Datum}, lla)
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
   lla = convert(LatLonAlt{Datum}, coords)
-  LatLon{Datum}(lla.lat, lla.lon)
+  convert(LatLon{Datum}, lla)
 end
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
