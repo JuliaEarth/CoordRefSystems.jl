@@ -328,6 +328,20 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> LatLonAlt" begin
+      c1 = LatLon(T(30), T(40))
+      c2 = convert(LatLonAlt, c1)
+      @test c2 ≈ LatLonAlt(T(30), T(40), T(0))
+      c3 = convert(LatLon, c2)
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = LatLon(T(30), T(40))
+      c2 = LatLonAlt(T(30), T(40), T(0))
+      @inferred convert(LatLonAlt, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     if T === Float64
       # altitude can only be calculated accurately using Float64
       @testset "LatLonAlt <> Cartesian" begin
