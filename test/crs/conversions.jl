@@ -506,20 +506,6 @@
       @inferred convert(LatLon, c2)
     end
 
-    @testset "Cartesian <> Mercator" begin
-      c1 = convert(Mercator, LatLon(T(30), T(40)))
-      c2 = convert(Cartesian, c1)
-      @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c3 = convert(Mercator, c2)
-      @test c3 ≈ c1
-
-      # type stability
-      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c2 = Mercator(T(0), T(0))
-      @inferred convert(Mercator, c1)
-      @inferred convert(Cartesian, c2)
-    end
-
     @testset "LatLon <> WebMercator" begin
       c1 = LatLon(T(45), T(90))
       c2 = convert(WebMercator, c1)
@@ -935,6 +921,31 @@
       c2 = ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
       @inferred convert(ShiftedMercator, c1)
       @inferred convert(LatLon, c2)
+    end
+
+    @testset "Cartesian <> Projected" begin
+      c1 = convert(Mercator, LatLon(T(30), T(40)))
+      c2 = convert(Cartesian, c1)
+      @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(Mercator, c2)
+
+      c1 = convert(OrthoNorth, LatLon(T(30), T(40)))
+      c2 = convert(Cartesian, c1)
+      @test c2 ≈ Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c3 = convert(OrthoNorth, c2)
+      @test c3 ≈ c1
+      @test c3 ≈ c1
+
+      # type stability
+      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c2 = Mercator(T(0), T(0))
+      @inferred convert(Mercator, c1)
+      @inferred convert(Cartesian, c2)
+
+      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c2 = OrthoNorth(T(0), T(0))
+      @inferred convert(OrthoNorth, c1)
+      @inferred convert(Cartesian, c2)
     end
 
     @testset "Projection conversion" begin

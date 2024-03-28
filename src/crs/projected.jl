@@ -74,6 +74,9 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
+Base.convert(C::Type{<:Cartesian}, coords::Projected) = convert(C, convert(LatLon, coords))
+Base.convert(C::Type{<:Projected}, coords::Cartesian) = convert(C, convert(LatLon, coords))
+
 # projection conversion with same datum
 function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}
   latlon = convert(LatLon{Datum}, coords)
@@ -89,6 +92,3 @@ end
 
 # avoid converting coordinates with the same type as the first argument
 Base.convert(::Type{C}, coords::C) where {Datum,C<:Projected{Datum}} = coords
-
-Base.convert(C::Type{<:Cartesian}, coords::Projected) = convert(C, convert(LatLon, coords))
-Base.convert(C::Type{<:Projected}, coords::Cartesian) = convert(C, convert(LatLon, coords))
