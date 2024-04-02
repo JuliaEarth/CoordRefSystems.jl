@@ -2,7 +2,7 @@ using CoordRefSystems
 using Unitful
 using Test
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "misc.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION

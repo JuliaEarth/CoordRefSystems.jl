@@ -59,9 +59,10 @@ function Base.getproperty(coords::Cartesian, name::Symbol)
 end
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
-  tup₁ = _coords(coords₁)
-  tup₂ = _coords(coords₂)
-  all(isapprox(c₁, c₂; kwargs...) for (c₁, c₂) in zip(tup₁, tup₂))
+  # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
+  c₁ = _coords(coords₁) |> SVector
+  c₂ = _coords(coords₂) |> SVector
+  isapprox(c₁, c₂; kwargs...)
 end
 
 function Base.summary(io::IO, coords::Cartesian)
