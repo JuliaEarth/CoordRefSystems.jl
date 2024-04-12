@@ -69,6 +69,7 @@ abstract type WGS84{GPSWeek} <: Datum end
 
 ellipsoid(::Type{<:WGS84}) = WGS84🌎
 
+epoch(::Type{WGS84{0}}) = 1984.0
 epoch(::Type{WGS84{730}}) = 1994.0
 epoch(::Type{WGS84{873}}) = 1997.0
 epoch(::Type{WGS84{1150}}) = 2001.0

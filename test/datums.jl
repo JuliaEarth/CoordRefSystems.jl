@@ -1,6 +1,7 @@
 @testset "Datums" begin
   @testset "WGS84" begin
     @test ellipsoid(WGS84Latest) === CoordRefSystems.WGS84🌎
+    @test epoch(WGS84{0}) == 1984.0
     @test epoch(WGS84{730}) == 1994.0
     @test epoch(WGS84{873}) == 1997.0
     @test epoch(WGS84{1150}) == 2001.0
