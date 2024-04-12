@@ -1,7 +1,7 @@
 name = "CoordRefSystems"
 uuid = "b46f11dc-f210-4604-bfba-323c1ec968cb"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com>", "Júlio Hoffimann <julio.hoffimann@gmail.com> and contributors"]
-version = "0.1.3"
+version = "0.2.0"
 
 [deps]
 Rotations = "6038ab10-8711-5258-84ad-4b1120ba62dc"
