@@ -613,7 +613,7 @@
       @test_throws ArgumentError UTMSouth{61}(T(1), T(1))
     end
 
-    @testset "Shifted" begin
+    @testset "ShiftedCRS" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       @test ShiftedMercator(T(1), T(1)) == ShiftedMercator(T(1) * u"m", T(1) * u"m")
       @test ShiftedMercator(T(1) * u"m", 1 * u"m") == ShiftedMercator(T(1) * u"m", T(1) * u"m")

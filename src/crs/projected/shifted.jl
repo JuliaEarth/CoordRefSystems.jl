@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------
 
 """
-    Shifted{CRS,lonₒ,xₒ,yₒ}
+    ShiftedCRS{CRS,lonₒ,xₒ,yₒ}
 
 Shifted `CRS` with longitude origin `lonₒ` in degrees, false easting `xₒ`
 and false northing `yₒ` in meters.

@@ -904,7 +904,7 @@
       @inferred convert(LatLon, c4)
     end
 
-    @testset "LatLon <> Shifted" begin
+    @testset "LatLon <> ShiftedCRS" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       c1 = LatLon(T(45), T(90))
       c2 = convert(ShiftedMercator, c1)
