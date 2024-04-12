@@ -1,6 +1,7 @@
 @testset "Datums" begin
   @testset "WGS84" begin
     @test ellipsoid(WGS84Latest) === CoordRefSystems.WGS84🌎
+    @test epoch(WGS84{0}) == 1984.0
     @test epoch(WGS84{730}) == 1994.0
     @test epoch(WGS84{873}) == 1997.0
     @test epoch(WGS84{1150}) == 2001.0
@@ -53,5 +54,11 @@
 
   @testset "OSGB36" begin
     @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
+  end
+
+  @testset "ShiftedDatum" begin
+    ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
+    @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
+    @test epoch(ShiftedWGS84) == 2024.0
   end
 end
