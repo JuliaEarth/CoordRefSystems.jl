@@ -46,14 +46,6 @@ function Base.show(io::IO, ::MIME"text/plain", coords::Shifted)
   printfields(io, _coords(coords))
 end
 
-"""
-    CoordRefSystems.shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m")
-
-Shifts the `CRS` by longitude origin `lonₒ` in degrees, false easting `xₒ`
-and false northing `yₒ` in meters.
-"""
-shift(CRS::Type{<:Projected}; lonₒ=0.0u"°", xₒ=0.0u"m", yₒ=0.0u"m") = Shifted{CRS,lonₒ,xₒ,yₒ}
-
 # ------------
 # CONVERSIONS
 # ------------

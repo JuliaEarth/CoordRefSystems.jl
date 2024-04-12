@@ -16,6 +16,7 @@ include("ellipsoids.jl")
 include("datums.jl")
 include("helmert.jl")
 include("crs.jl")
+include("shift.jl")
 include("codes.jl")
 
 export

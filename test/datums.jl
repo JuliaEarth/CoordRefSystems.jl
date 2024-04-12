@@ -54,4 +54,10 @@
   @testset "OSGB36" begin
     @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
   end
+
+  @testset "ShiftedDatum" begin
+    ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
+    @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
+    @test epoch(ShiftedWGS84) == 2024.0
+  end
 end

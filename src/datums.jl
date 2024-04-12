@@ -42,6 +42,17 @@ Represents the absence of datum in a CRS.
 abstract type NoDatum <: Datum end
 
 """
+    ShiftedDatum{Datum,Epoch}
+
+Shifted `Datum` with a given `Epoch` in decimalyear.
+"""
+abstract type ShiftedDatum{D,Epoch} <: Datum end
+
+ellipsoid(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = ellipsoid(D)
+
+epoch(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = Epoch
+
+"""
     WGS84{GPSWeek}
 
 WGS84 (World Geodetic System) datum with a given realization `GPSWeek` (default to 1762).
