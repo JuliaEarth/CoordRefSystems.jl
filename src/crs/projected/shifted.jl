@@ -24,11 +24,11 @@ Base.propertynames(coords::ShiftedCRS) = propertynames(_coords(coords))
 
 Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords), name)
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
-  allapprox(_coords(coords₁), _coords(coords₂); kwargs...)
-
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   isapprox(_coords(coords₁), _coords(coords₂); kwargs...)
+
+allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
+  allapprox(_coords(coords₁), _coords(coords₂); kwargs...)
 
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
   Datum = datum(coords)
