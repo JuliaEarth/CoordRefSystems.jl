@@ -1,6 +1,6 @@
 @testset "Conversions" begin
   @testset "Basic" begin
-    atol = CoordRefSystems.atol(T) * u"m"
+    atol = CoordRefSystems.atol(T(1) * u"m")
     @testset "Cartesian <> Polar" begin
       c1 = Cartesian(T(1), T(1))
       c2 = convert(Polar, c1)

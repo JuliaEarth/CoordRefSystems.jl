@@ -27,6 +27,8 @@ Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords)
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   isapprox(_coords(coords₁), _coords(coords₂); kwargs...)
 
+atol(coords::ShiftedCRS) = atol(_coords(coords))
+
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
   Datum = datum(coords)
   name = prettyname(CRS)

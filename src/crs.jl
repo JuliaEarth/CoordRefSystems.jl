@@ -10,7 +10,9 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
-  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+  isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
+
+atol(coords::CRS) = atol(convert(Cartesian, coords))
 
 # ------
 # DATUM

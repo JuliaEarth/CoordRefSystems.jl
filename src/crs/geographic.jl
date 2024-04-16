@@ -334,6 +334,9 @@ end
 # FALLBACKS
 # ----------
 
+Base.convert(C::Type{<:Cartesian}, coords::Geographic) = convert(C, convert(LatLon, coords))
+Base.convert(C::Type{<:Geographic}, coords::Cartesian) = convert(C, convert(LatLon, coords))
+
 Base.convert(::Type{GeocentricLatLon}, coords::LatLon{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
 Base.convert(::Type{LatLon}, coords::GeocentricLatLon{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
 
