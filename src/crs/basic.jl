@@ -60,9 +60,15 @@ end
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
-  c₁ = _coords(coords₁) |> SVector
-  c₂ = _coords(coords₂) |> SVector
+  c₁ = SVector(_coords(coords₁))
+  c₂ = SVector(_coords(coords₂))
   isapprox(c₁, c₂; kwargs...)
+end
+
+function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
+  c₁ = _coords(coords₁)
+  c₂ = _coords(coords₂)
+  all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
 end
 
 function Base.summary(io::IO, coords::Cartesian)
