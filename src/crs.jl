@@ -9,8 +9,23 @@ Coordinate Reference System (CRS) with a given `Datum`.
 """
 abstract type CRS{Datum} end
 
-Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
+"""
+    allapprox(coords₁, coords₂; kwargs...)
+
+Checks whether all fields of `coords₁` and `coords₂`
+are approximated using the `isapprox` function.
+"""
+allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+
+"""
+    isapprox(coords₁, coords₂; kwargs...)
+
+Checks whether the vector coordinates of `coords₁` and `coords₂`
+are approximated using the `isapprox` function.
+"""
+Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
+  isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
 
 # ------
 # DATUM
