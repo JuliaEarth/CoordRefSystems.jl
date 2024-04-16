@@ -10,7 +10,9 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
-  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+  all(ntuple(i -> isapprox(ustrip(getfield(coords₁, i)), ustrip(getfield(coords₂, i)); kwargs...), nfields(coords₁)))
+
+atol(coords::CRS) = maximum(ntuple(i -> atol(numtype(getfield(coords, i))), nfields(coords)))
 
 # ------
 # DATUM

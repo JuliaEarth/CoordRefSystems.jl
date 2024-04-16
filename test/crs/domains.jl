@@ -45,7 +45,7 @@
   end
 
   @testset "Lambert" begin
-    atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
+    atol = T === Float32 ? 1.0f-2 : 1e-4
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(Lambert, c1)
@@ -61,7 +61,7 @@
   end
 
   @testset "Behrmann" begin
-    atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
+    atol = T === Float32 ? 1.0f-2 : 1e-4
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(Behrmann, c1)
@@ -77,7 +77,7 @@
   end
 
   @testset "GallPeters" begin
-    atol = T === Float32 ? 1.0f-2u"°" : 1e-4u"°"
+    atol = T === Float32 ? 1.0f-2 : 1e-4
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(GallPeters, c1)
@@ -108,7 +108,7 @@
   end
 
   @testset "Robinson" begin
-    atol = T(1e-3) * u"°"
+    atol = T(1e-3)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(Robinson, c1)
@@ -149,7 +149,7 @@
 
     # coordinates at the edge of the projection (lat ≈ 0)
     # cannot be accurately inverted by numerical problems
-    atol = T(0.5) * u"°"
+    atol = T(0.5)
     for lon in T.(-180:180)
       c1 = LatLon(T(0), lon)
       if indomain(OrthoNorth, c1)
@@ -186,7 +186,7 @@
 
     # coordinates at the edge of the projection (lat ≈ 0)
     # cannot be accurately inverted by numerical problems
-    atol = T(0.5) * u"°"
+    atol = T(0.5)
     for lon in T.(-180:180)
       c1 = LatLon(T(0), lon)
       if indomain(OrthoSouth, c1)

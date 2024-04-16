@@ -60,10 +60,12 @@ end
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
-  c₁ = _coords(coords₁) |> SVector
-  c₂ = _coords(coords₂) |> SVector
+  c₁ = ustrip.(_coords(coords₁)) |> SVector
+  c₂ = ustrip.(_coords(coords₂)) |> SVector
   isapprox(c₁, c₂; kwargs...)
 end
+
+atol(coords::Cartesian) = atol(numtype(first(_coords(coords))))
 
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
