@@ -377,7 +377,10 @@
 
         c1 = LatLonAlt(T(40), -T(50), T(200))
         c2 = convert(Cartesian, c1)
-        @test allapprox(c2, Cartesian{WGS84Latest}(T(3145070.3039211915), -T(3748148.8336594435), T(4078114.1297223135)))
+        @test allapprox(
+          c2,
+          Cartesian{WGS84Latest}(T(3145070.3039211915), -T(3748148.8336594435), T(4078114.1297223135))
+        )
         c3 = convert(LatLonAlt, c2)
         @test allapprox(c3, c1)
 
