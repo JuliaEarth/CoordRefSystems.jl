@@ -30,7 +30,8 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
 """
     CoordRefSystems.tol(coords)
 
-Tolerance of the `coords`.
+Absolute tolerance for the underlying machine type (e.g. `Float64`) used to represent the `coords`. 
+The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
