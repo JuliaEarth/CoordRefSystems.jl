@@ -30,6 +30,8 @@ Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   allapprox(_coords(coords₁), _coords(coords₂); kwargs...)
 
+tol(coords::ShiftedCRS) = tol(_coords(coords))
+
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
   Datum = datum(coords)
   name = prettyname(CRS)
