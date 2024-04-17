@@ -1,4 +1,5 @@
 @testset "CRS" begin
+  include("crs/tol.jl")
   include("crs/approx.jl")
   include("crs/datumapi.jl")
   include("crs/constructors.jl")

@@ -27,6 +27,13 @@ are approximate using the `isapprox` function.
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
+"""
+    CoordRefSystems.tol(coords)
+
+Tolerance of the `coords`.
+"""
+tol(coords::CRS) = tol(convert(Cartesian, coords))
+
 # ------
 # DATUM
 # ------

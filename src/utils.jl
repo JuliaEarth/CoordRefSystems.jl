@@ -12,18 +12,12 @@ const Rad{T} = Quantity{T,NoDims,typeof(u"rad")}
     atol(T)
     atol(x::T)
 
-Absolute tolerance used in algorithms for approximate
-comparison with numbers of type `T`. It is used in the
-source code in calls to the [`isapprox`](@ref) function:
-
-```julia
-isapprox(a::T, b::T, atol=atol(T))
-```
+Absolute tolerance used in source code for approximate
+comparison with numbers of type `T`.
 """
 atol(x) = atol(typeof(x))
 atol(::Type{Float64}) = 1e-10
-atol(::Type{Float32}) = 1.0f-5
-atol(::Type{Q}) where {Q<:Quantity} = atol(numtype(Q)) * unit(Q)
+atol(::Type{Float32}) = 1f-5
 
 """
     addunit(x, u)

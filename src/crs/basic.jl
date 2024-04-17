@@ -71,6 +71,11 @@ function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
 end
 
+function tol(coords::Cartesian)
+  Q = eltype(_coords(coords))
+  atol(numtype(Q)) * unit(Q)
+end
+
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
   print(io, "Cartesian{$Datum} coordinates")
