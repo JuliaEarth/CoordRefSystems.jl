@@ -37,15 +37,15 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
 tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
-  Datum = datum(coords)
   name = prettyname(CRS)
-  print(io, "Shifted$name{$Datum} coordinates with lonₒ: $lonₒ, xₒ: $xₒ, yₒ: $yₒ")
+  Datum = datum(coords)
+  print(io, "Shifted$name{$(rmmodule(Datum))} coordinates with lonₒ: $lonₒ, xₒ: $xₒ, yₒ: $yₒ")
 end
 
 function Base.show(io::IO, coords::ShiftedCRS{CRS}) where {CRS}
-  Datum = datum(coords)
   name = prettyname(CRS)
-  print(io, "Shifted$name{$Datum}(")
+  Datum = datum(coords)
+  print(io, "Shifted$name{$(rmmodule(Datum))}(")
   printfields(io, _coords(coords), compact=true)
   print(io, ")")
 end

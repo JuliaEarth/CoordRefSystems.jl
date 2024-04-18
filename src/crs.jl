@@ -81,13 +81,13 @@ ellipsoid(C::Type{<:CRS}) = ellipsoid(datum(C))
 function Base.summary(io::IO, coords::CRS)
   name = prettyname(coords)
   Datum = datum(coords)
-  print(io, "$name{$Datum} coordinates")
+  print(io, "$name{$(rmmodule(Datum))} coordinates")
 end
 
 function Base.show(io::IO, coords::CRS)
   name = prettyname(coords)
   Datum = datum(coords)
-  print(io, "$name{$Datum}(")
+  print(io, "$name{$(rmmodule(Datum))}(")
   printfields(io, coords, compact=true)
   print(io, ")")
 end
