@@ -78,7 +78,7 @@ end
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
-ncoords(coords::Cartesian) = length(_coords(coords))
+ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)

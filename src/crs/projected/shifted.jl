@@ -34,7 +34,7 @@ tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 ndims(::Type{<:ShiftedCRS{CRS}}) = ndims(CRS)
 
-ncoords(coords::ShiftedCRS) = ncoords(_coords(coords))
+ncoords(::Type{<:ShiftedCRS{CRS}}) = ncoords(CRS)
 
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
   Datum = datum(coords)

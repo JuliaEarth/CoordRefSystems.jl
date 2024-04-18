@@ -47,7 +47,8 @@ ndims(coords::CRS) = ndims(typeof(coords))
 
 Number of coordinates of `coords`.
 """
-ncoords(coords::CRS) = nfields(coords)
+ncoords(coords::CRS) = ncoords(typeof(coords))
+ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 # ------
 # DATUM
