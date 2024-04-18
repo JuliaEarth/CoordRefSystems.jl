@@ -76,6 +76,10 @@ function tol(coords::Cartesian)
   atol(numtype(Q)) * unit(Q)
 end
 
+ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+
+ncoords(coords::Cartesian) = length(_coords(coords))
+
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
   print(io, "Cartesian{$Datum} coordinates")
@@ -95,7 +99,7 @@ end
 
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
-function _fnames(::Cartesian{<:Any,N}) where {N}
+function _fnames(::Cartesian{Datum,N}) where {Datum,N}
   if N == 1
     ("x",)
   elseif N == 2
@@ -142,6 +146,8 @@ Polar{Datum}(ρ::Number, ϕ::Number) where {Datum} = Polar{Datum}(addunit(ρ, u"
 
 Polar(args...) = Polar{NoDatum}(args...)
 
+ndims(::Type{<:Polar}) = 2
+
 """
     Cylindrical(ρ, ϕ, z)
     Cylindrical{Datum}(ρ, ϕ, z)
@@ -184,6 +190,8 @@ Cylindrical{Datum}(ρ::Number, ϕ::Number, z::Number) where {Datum} =
 
 Cylindrical(args...) = Cylindrical{NoDatum}(args...)
 
+ndims(::Type{<:Cylindrical}) = 3
+
 """
     Spherical(r, θ, ϕ)
     Spherical{Datum}(r, θ, ϕ)
@@ -221,6 +229,8 @@ Spherical{Datum}(r::Number, θ::Number, ϕ::Number) where {Datum} =
   Spherical{Datum}(addunit(r, u"m"), addunit(θ, u"rad"), addunit(ϕ, u"rad"))
 
 Spherical(args...) = Spherical{NoDatum}(args...)
+
+ndims(::Type{<:Spherical}) = 3
 
 # ------------
 # CONVERSIONS

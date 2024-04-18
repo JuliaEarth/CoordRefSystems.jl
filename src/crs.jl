@@ -35,6 +35,20 @@ The result inherits the unit of the `coords` after conversion to [`Cartesian`](@
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
+"""
+    CoordRefSystems.ndims(coords)
+
+Number of enbedding dimensions of `coords`.
+"""
+ndims(coords::CRS) = ndims(typeof(coords))
+
+"""
+    CoordRefSystems.ncoords(coords)
+
+Number of coordinates of `coords`.
+"""
+ncoords(coords::CRS) = nfields(coords)
+
 # ------
 # DATUM
 # ------

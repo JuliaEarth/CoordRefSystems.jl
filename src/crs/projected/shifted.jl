@@ -32,6 +32,10 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
 
 tol(coords::ShiftedCRS) = tol(_coords(coords))
 
+ndims(::Type{<:ShiftedCRS{CRS}}) = ndims(CRS)
+
+ncoords(coords::ShiftedCRS) = ncoords(_coords(coords))
+
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
   Datum = datum(coords)
   name = prettyname(CRS)
