@@ -8,7 +8,14 @@ prettyname(obj) = prettyname(typeof(obj))
 function prettyname(T::Type)
   name = string(T)
   name = replace(name, r"{.*" => "")
-  replace(name, r".+\." => "")
+  replace(name, r".*\." => "")
+end
+
+# remove the "CoordRefSystems" module from type, 
+# it is displayed when the module is not imported
+function rmmodule(T)
+  name = string(T)
+  replace(name, "CoordRefSystems." => "")
 end
 
 printfields(io, obj; kwargs...) = printfields(io, obj, fieldnames(typeof(obj)); kwargs...)

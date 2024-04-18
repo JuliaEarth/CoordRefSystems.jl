@@ -82,12 +82,12 @@ end
 
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
-  print(io, "Cartesian{$Datum} coordinates")
+  print(io, "Cartesian{$(rmmodule(Datum))} coordinates")
 end
 
 function Base.show(io::IO, coords::Cartesian)
   Datum = datum(coords)
-  print(io, "Cartesian{$Datum}(")
+  print(io, "Cartesian{$(rmmodule(Datum))}(")
   printfields(io, _coords(coords), _fnames(coords), compact=true)
   print(io, ")")
 end
