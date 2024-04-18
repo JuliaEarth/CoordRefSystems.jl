@@ -10,6 +10,21 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 """
+    CoordRefSystems.ndims(coords)
+
+Number of embedding dimensions of `coords`.
+"""
+ndims(coords::CRS) = ndims(typeof(coords))
+
+"""
+    CoordRefSystems.ncoords(coords)
+
+Number of coordinates of `coords`.
+"""
+ncoords(coords::CRS) = ncoords(typeof(coords))
+ncoords(C::Type{<:CRS}) = fieldcount(C)
+
+"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`
@@ -34,21 +49,6 @@ Absolute tolerance for the underlying machine type (e.g. `Float64`) used to repr
 The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
-
-"""
-    CoordRefSystems.ndims(coords)
-
-Number of enbedding dimensions of `coords`.
-"""
-ndims(coords::CRS) = ndims(typeof(coords))
-
-"""
-    CoordRefSystems.ncoords(coords)
-
-Number of coordinates of `coords`.
-"""
-ncoords(coords::CRS) = ncoords(typeof(coords))
-ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 # ------
 # DATUM

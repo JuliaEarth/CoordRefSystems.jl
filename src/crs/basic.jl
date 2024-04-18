@@ -58,6 +58,10 @@ function Base.getproperty(coords::Cartesian, name::Symbol)
   end
 end
 
+ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+
+ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
   c₁ = SVector(_coords(coords₁))
@@ -75,10 +79,6 @@ function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
   atol(numtype(Q)) * unit(Q)
 end
-
-ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
-
-ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
