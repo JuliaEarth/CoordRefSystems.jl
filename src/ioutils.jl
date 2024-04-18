@@ -13,10 +13,7 @@ end
 
 # remove the "CoordRefSystems" module from type, 
 # it is displayed when the module is not imported
-function rmmodule(T)
-  name = string(T)
-  replace(name, "CoordRefSystems." => "")
-end
+rmmodule(T) = replace(string(T), "CoordRefSystems." => "")
 
 printfields(io, obj; kwargs...) = printfields(io, obj, fieldnames(typeof(obj)); kwargs...)
 
