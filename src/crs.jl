@@ -10,6 +10,25 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 """
+    CoordRefSystems.ncoords(coords)
+
+Number of coordinates of `coords`.
+
+See also [`ndims`](@ref).
+"""
+ncoords(coords::CRS) = ncoords(typeof(coords))
+ncoords(C::Type{<:CRS}) = fieldcount(C)
+
+"""
+    CoordRefSystems.ndims(coords)
+
+Number of embedding dimensions of `coords`.
+
+See also [`ncoords`](@ref).
+"""
+ndims(coords::CRS) = ndims(typeof(coords))
+
+"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`

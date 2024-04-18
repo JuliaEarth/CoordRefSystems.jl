@@ -9,6 +9,8 @@ Geographic CRS with a given `Datum`.
 """
 abstract type Geographic{Datum} <: CRS{Datum} end
 
+ndims(::Type{<:Geographic}) = 3
+
 """
     GeodeticLatLon(lat, lon)
     GeodeticLatLon{Datum}(lat, lon)
