@@ -24,9 +24,9 @@ Base.propertynames(coords::ShiftedCRS) = propertynames(_coords(coords))
 
 Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords), name)
 
-ndims(::Type{<:ShiftedCRS{CRS}}) = ndims(CRS)
+ncoords(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ncoords(CRS)
 
-ncoords(::Type{<:ShiftedCRS{CRS}}) = ncoords(CRS)
+ndims(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ndims(CRS)
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   isapprox(_coords(coords₁), _coords(coords₂); kwargs...)

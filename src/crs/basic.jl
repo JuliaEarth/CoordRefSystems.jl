@@ -58,9 +58,9 @@ function Base.getproperty(coords::Cartesian, name::Symbol)
   end
 end
 
-ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
-
 ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+
+ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53

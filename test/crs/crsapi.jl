@@ -1,27 +1,6 @@
 @testset "CRS API" begin
   ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
 
-  @testset "ndims" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 2
-    c = Cartesian(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = Polar(T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 2
-    c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.ndims(c) == 3
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 2
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.ndims(c) == 2
-  end
-
   @testset "ncoords" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
@@ -41,6 +20,27 @@
     @test CoordRefSystems.ncoords(c) == 2
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.ncoords(c) == 2
+  end
+
+  @testset "ndims" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 2
+    c = Cartesian(T(1), T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 3
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 2
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 3
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 3
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.ndims(c) == 3
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.ndims(c) == 3
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.ndims(c) == 2
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.ndims(c) == 2
   end
 
   @testset "isapprox" begin
