@@ -60,6 +60,10 @@ end
 
 ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
+coords(crs::Cartesian) = _coords(crs)
+
+cnames(C::Type{<:Cartesian}) = _fnames(C)
+
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
@@ -99,15 +103,16 @@ end
 
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
-function _fnames(::Cartesian{Datum,N}) where {Datum,N}
+_fnames(coords::Cartesian) = _fnames(typeof(coords))
+function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}
   if N == 1
-    ("x",)
+    (:x,)
   elseif N == 2
-    ("x", "y")
+    (:x, :y)
   elseif N == 3
-    ("x", "y", "z")
+    (:x, :y, :z)
   else
-    ntuple(i -> "x$i", N)
+    ntuple(i -> Symbol(:x, i), N)
   end
 end
 
