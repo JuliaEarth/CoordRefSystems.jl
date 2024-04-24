@@ -24,6 +24,8 @@ Orthographic{latₒ,lonₒ,S,Datum}(x::Number, y::Number) where {latₒ,lonₒ,S
 
 Orthographic{latₒ,lonₒ,S}(args...) where {latₒ,lonₒ,S} = Orthographic{latₒ,lonₒ,S,WGS84Latest}(args...)
 
+lentype(::Type{Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
+
 """
     OrthoNorth(x, y)
     OrthoNorth{Datum}(x, y)

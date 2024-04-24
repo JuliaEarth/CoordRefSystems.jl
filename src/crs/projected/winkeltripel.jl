@@ -14,6 +14,8 @@ Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,
 
 Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 
+lentype(::Type{Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
+
 """
     WinkelTripel(x, y)
     WinkelTripel{Datum}(x, y)

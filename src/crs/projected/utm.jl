@@ -48,6 +48,8 @@ UTM{Hemisphere,Zone,Datum}(x::Number, y::Number) where {Hemisphere,Zone,Datum} =
 
 UTM{Hemisphere,Zone}(args...) where {Hemisphere,Zone} = UTM{Hemisphere,Zone,WGS84Latest}(args...)
 
+lentype(::Type{UTM{Hemisphere,Zone,Datum,M}}) where {Hemisphere,Zone,Datum,M} = M
+
 """
     UTMNorth{zone}(x, y)
     UTMNorth{zone,Datum}(x, y)

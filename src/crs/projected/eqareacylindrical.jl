@@ -24,6 +24,8 @@ EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Number, y::Number) where {latₜ
 
 EqualAreaCylindrical{latₜₛ,lonₒ}(args...) where {latₜₛ,lonₒ} = EqualAreaCylindrical{latₜₛ,lonₒ,WGS84Latest}(args...)
 
+lentype(::Type{EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
+
 """
     Lambert(x, y)
     Lambert{Datum}(x, y)
