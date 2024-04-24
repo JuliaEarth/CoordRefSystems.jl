@@ -22,6 +22,48 @@
     @test CoordRefSystems.ncoords(c) == 2
   end
 
+  @testset "coords" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m")
+    c = Cartesian(T(1), T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m", T(1) * u"m")
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad")
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"m")
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.coords(c) == (T(30) * u"°", T(60) * u"°")
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.coords(c) == (T(30) * u"°", T(60) * u"°", T(1) * u"m")
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m")
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(2) * u"m")
+  end
+
+  @testset "cnames" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:x, :y)
+    c = Cartesian(T(1), T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:x, :y, :z)
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:ρ, :ϕ)
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:ρ, :ϕ, :z)
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:r, :θ, :ϕ)
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.cnames(c) == (:lat, :lon)
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.cnames(c) == (:lat, :lon, :alt)
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.cnames(c) == (:x, :y)
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.cnames(c) == (:x, :y)
+  end
+
   @testset "ndims" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ndims(c) == 2

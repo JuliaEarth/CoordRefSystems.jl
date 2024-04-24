@@ -20,6 +20,21 @@ ncoords(coords::CRS) = ncoords(typeof(coords))
 ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 """
+    CoordRefSystems.coords(coords)
+
+Coordinate values of `coords` as tuple.
+"""
+coords(crs::CRS) = ntuple(i -> getfield(crs, i), nfields(crs))
+
+"""
+    CoordRefSystems.cnames(coords)
+
+Coordinate names of `coords`.
+"""
+cnames(coords::CRS) = cnames(typeof(coords))
+cnames(C::Type{<:CRS}) = fieldnames(C)
+
+"""
     CoordRefSystems.ndims(coords)
 
 Number of embedding dimensions of `coords`.
