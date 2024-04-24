@@ -69,6 +69,13 @@ The result inherits the unit of the `coords` after conversion to [`Cartesian`](@
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
+"""
+    CoordRefSystems.lentype(coords)
+
+Length unit type of `coords`.
+"""
+lentype(coords::CRS) = lentype(typeof(coords))
+
 # ------
 # DATUM
 # ------

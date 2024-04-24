@@ -23,6 +23,8 @@ EquidistantCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,D
 
 EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84Latest}(args...)
 
+lentype(::Type{EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
+
 """
     PlateCarree(x, y)
     PlateCarree{Datum}(x, y)

@@ -84,6 +84,8 @@ function tol(coords::Cartesian)
   atol(numtype(Q)) * unit(Q)
 end
 
+lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
   print(io, "Cartesian{$(rmmodule(Datum))} coordinates")
@@ -153,6 +155,8 @@ Polar(args...) = Polar{NoDatum}(args...)
 
 ndims(::Type{<:Polar}) = 2
 
+lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
+
 """
     Cylindrical(ρ, ϕ, z)
     Cylindrical{Datum}(ρ, ϕ, z)
@@ -197,6 +201,8 @@ Cylindrical(args...) = Cylindrical{NoDatum}(args...)
 
 ndims(::Type{<:Cylindrical}) = 3
 
+lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
+
 """
     Spherical(r, θ, ϕ)
     Spherical{Datum}(r, θ, ϕ)
@@ -236,6 +242,8 @@ Spherical{Datum}(r::Number, θ::Number, ϕ::Number) where {Datum} =
 Spherical(args...) = Spherical{NoDatum}(args...)
 
 ndims(::Type{<:Spherical}) = 3
+
+lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 
 # ------------
 # CONVERSIONS

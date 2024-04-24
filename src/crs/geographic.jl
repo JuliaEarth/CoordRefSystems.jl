@@ -43,6 +43,8 @@ GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 
 GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
+lentype(::Type{GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
 """
     LatLon(lat, lon)
     LatLon{Datum}(lat, lon)
@@ -100,6 +102,8 @@ GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
 
 GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
+lentype(::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+
 """
     LatLonAlt(lat, lon, alt)
     LatLonAlt{Datum}(lat, lon, alt)
@@ -149,6 +153,8 @@ GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 
 GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 
+lentype(::Type{GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
 """
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
@@ -178,6 +184,8 @@ AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
   AuthalicLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
 
 AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
+
+lentype(::Type{AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 # ------------
 # CONVERSIONS
