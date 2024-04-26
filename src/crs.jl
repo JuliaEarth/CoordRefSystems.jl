@@ -20,7 +20,7 @@ ncoords(coords::CRS) = ncoords(typeof(coords))
 ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 """
-    CoordRefSystems.coords(coords)
+    CoordRefSystems.cvalues(coords)
 
 Coordinate values of `coords` as tuple.
 """
