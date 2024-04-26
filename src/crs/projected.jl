@@ -33,6 +33,14 @@ Checks whether `latlon` coordinates are within the `CRS` domain.
 """
 indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
 
+function Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{C}) where {C<:Projected}
+  try
+    convert(C, rand(rng, LatLon))
+  catch
+    rand(rng, C)
+  end
+end
+
 # ----------------
 # IMPLEMENTATIONS
 # ----------------

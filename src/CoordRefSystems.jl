@@ -10,6 +10,8 @@ using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
 
+import Random
+
 include("utils.jl")
 include("ioutils.jl")
 include("ellipsoids.jl")
