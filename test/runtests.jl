@@ -1,5 +1,6 @@
 using CoordRefSystems
 using Unitful
+using StableRNGs
 using Test
 
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "misc.jl"]
