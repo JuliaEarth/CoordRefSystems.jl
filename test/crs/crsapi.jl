@@ -23,25 +23,25 @@
     @test CoordRefSystems.ncoords(c) == 2
   end
 
-  @testset "coords" begin
+  @testset "cvalues" begin
     c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"m")
     c = Cartesian(T(1), T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m", T(1) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"m", T(1) * u"m")
     c = Polar(T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"rad")
     c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"m")
     c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
     c = LatLon(T(30), T(60))
-    @test CoordRefSystems.coords(c) == (T(30) * u"°", T(60) * u"°")
+    @test CoordRefSystems.cvalues(c) == (T(30) * u"°", T(60) * u"°")
     c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.coords(c) == (T(30) * u"°", T(60) * u"°", T(1) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(30) * u"°", T(60) * u"°", T(1) * u"m")
     c = Mercator(T(1), T(1))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(1) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(1) * u"m")
     c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.coords(c) == (T(1) * u"m", T(2) * u"m")
+    @test CoordRefSystems.cvalues(c) == (T(1) * u"m", T(2) * u"m")
   end
 
   @testset "cnames" begin

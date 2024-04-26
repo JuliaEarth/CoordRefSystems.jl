@@ -24,7 +24,7 @@ ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 Coordinate values of `coords` as tuple.
 """
-coords(crs::CRS) = ntuple(i -> getfield(crs, i), nfields(crs))
+cvalues(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
     CoordRefSystems.cnames(coords)

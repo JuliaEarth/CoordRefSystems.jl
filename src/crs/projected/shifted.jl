@@ -26,7 +26,7 @@ Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords)
 
 ncoords(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ncoords(CRS)
 
-coords(crs::ShiftedCRS) = coords(_coords(crs))
+cvalues(coords::ShiftedCRS) = cvalues(_coords(coords))
 
 cnames(::Type{<:ShiftedCRS{CRS}}) where {CRS} = cnames(CRS)
 
