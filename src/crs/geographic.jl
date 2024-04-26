@@ -45,6 +45,11 @@ GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
 lentype(::Type{GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
+  GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon}) = rand(rng, GeodeticLatLon{WGS84Latest})
+
 """
     LatLon(lat, lon)
     LatLon{Datum}(lat, lon)
@@ -104,6 +109,11 @@ GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
 lentype(::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
+  GeodeticLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt}) = rand(rng, GeodeticLatLonAlt{WGS84Latest})
+
 """
     LatLonAlt(lat, lon, alt)
     LatLonAlt{Datum}(lat, lon, alt)
@@ -155,6 +165,11 @@ GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 
 lentype(::Type{GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
+  GeocentricLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon}) = rand(rng, GeocentricLatLon{WGS84Latest})
+
 """
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
@@ -186,6 +201,11 @@ AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 
 lentype(::Type{AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon{Datum}}) where {Datum} =
+  AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon}) = rand(rng, AuthalicLatLon{WGS84Latest})
 
 # ------------
 # CONVERSIONS

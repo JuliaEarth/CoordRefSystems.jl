@@ -43,6 +43,11 @@ Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(addunit.(co
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
 
+# type aliases for internal use
+const Cartesian1 = Cartesian{NoDatum,1,Met{Float64}}
+const Cartesian2 = Cartesian{NoDatum,2,Met{Float64}}
+const Cartesian3 = Cartesian{NoDatum,3,Met{Float64}}
+
 Base.propertynames(::Cartesian) = (:x, :y, :z)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
@@ -85,6 +90,9 @@ function tol(coords::Cartesian)
 end
 
 lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{<:Cartesian{Datum,N}}) where {Datum,N} =
+  Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
 function Base.summary(io::IO, coords::Cartesian)
   Datum = datum(coords)
@@ -157,6 +165,11 @@ ndims(::Type{<:Polar}) = 2
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
+  Polar{Datum}(rand(rng), 2π * rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar}) = rand(rng, Polar{NoDatum})
+
 """
     Cylindrical(ρ, ϕ, z)
     Cylindrical{Datum}(ρ, ϕ, z)
@@ -203,6 +216,11 @@ ndims(::Type{<:Cylindrical}) = 3
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
+  Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical}) = rand(rng, Cylindrical{NoDatum})
+
 """
     Spherical(r, θ, ϕ)
     Spherical{Datum}(r, θ, ϕ)
@@ -244,6 +262,11 @@ Spherical(args...) = Spherical{NoDatum}(args...)
 ndims(::Type{<:Spherical}) = 3
 
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
+  Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical}) = rand(rng, Spherical{NoDatum})
 
 # ------------
 # CONVERSIONS
