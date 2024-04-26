@@ -43,11 +43,6 @@ Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(addunit.(co
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
 
-# type aliases for internal use
-const Cartesian1 = Cartesian{NoDatum,1,Met{Float64}}
-const Cartesian2 = Cartesian{NoDatum,2,Met{Float64}}
-const Cartesian3 = Cartesian{NoDatum,3,Met{Float64}}
-
 Base.propertynames(::Cartesian) = (:x, :y, :z)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
