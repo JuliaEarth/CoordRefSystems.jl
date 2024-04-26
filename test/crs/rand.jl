@@ -41,6 +41,34 @@
   @testset "Projected" begin
     rng = StableRNG(123)
 
+    @test rand(rng, Mercator{WGS84Latest}) isa Mercator
+    @test rand(rng, Mercator) isa Mercator{WGS84Latest}
 
+    @test rand(rng, WebMercator{WGS84Latest}) isa WebMercator
+    @test rand(rng, WebMercator) isa WebMercator{WGS84Latest}
+
+    @test rand(rng, PlateCarree{WGS84Latest}) isa PlateCarree
+    @test rand(rng, PlateCarree) isa PlateCarree{WGS84Latest}
+
+    @test rand(rng, Lambert{WGS84Latest}) isa Lambert
+    @test rand(rng, Lambert) isa Lambert{WGS84Latest}
+
+    @test rand(rng, Behrmann{WGS84Latest}) isa Behrmann
+    @test rand(rng, Behrmann) isa Behrmann{WGS84Latest}
+
+    @test rand(rng, GallPeters{WGS84Latest}) isa GallPeters
+    @test rand(rng, GallPeters) isa GallPeters{WGS84Latest}
+
+    @test rand(rng, WinkelTripel{WGS84Latest}) isa WinkelTripel
+    @test rand(rng, WinkelTripel) isa WinkelTripel{WGS84Latest}
+
+    @test rand(rng, Robinson{WGS84Latest}) isa Robinson
+    @test rand(rng, Robinson) isa Robinson{WGS84Latest}
+
+    @test rand(rng, OrthoNorth{WGS84Latest}) isa OrthoNorth
+    @test rand(rng, OrthoNorth) isa OrthoNorth{WGS84Latest}
+
+    @test rand(rng, OrthoSouth{WGS84Latest}) isa OrthoSouth
+    @test rand(rng, OrthoSouth) isa OrthoSouth{WGS84Latest}
   end
 end
