@@ -4,4 +4,5 @@
   include("crs/constructors.jl")
   include("crs/conversions.jl")
   include("crs/domains.jl")
+  include("crs/rand.jl")
 end
