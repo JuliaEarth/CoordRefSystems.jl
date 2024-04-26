@@ -86,7 +86,7 @@ end
 
 lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{<:Cartesian{Datum,N}}) where {Datum,N} =
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
 function Base.summary(io::IO, coords::Cartesian)
