@@ -26,12 +26,6 @@ Cartesian(1, 1) # add default units
 Cartesian(1u"m", 1u"m") # integers are converted converted to floats
 Cartesian(1.0u"km", 1.0u"km", 1.0u"km")
 Cartesian{WGS84Latest}(1.0u"m", 1.0u"m")
-
-# constructing with tuples
-Cartesian((1, 1))
-Cartesian((1u"m", 1u"m"))
-Cartesian((1.0u"km", 1.0u"km", 1.0u"km"))
-Cartesian{WGS84Latest}((1.0u"m", 1.0u"m"))
 ```
 
 ## References
