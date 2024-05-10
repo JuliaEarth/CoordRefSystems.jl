@@ -110,13 +110,13 @@ function Base.show(io::IO, coords::CRS)
   name = prettyname(coords)
   Datum = datum(coords)
   print(io, "$name{$(rmmodule(Datum))}(")
-  printfields(io, coords, compact=true)
+  printfields(io, cvalues(coords), cnames(coords), compact=true)
   print(io, ")")
 end
 
 function Base.show(io::IO, ::MIME"text/plain", coords::CRS)
   summary(io, coords)
-  printfields(io, coords)
+  printfields(io, cvalues(coords), cnames(coords))
 end
 
 # ----------------

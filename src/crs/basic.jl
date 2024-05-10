@@ -89,26 +89,8 @@ lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
-function Base.summary(io::IO, coords::Cartesian)
-  Datum = datum(coords)
-  print(io, "Cartesian{$(rmmodule(Datum))} coordinates")
-end
-
-function Base.show(io::IO, coords::Cartesian)
-  Datum = datum(coords)
-  print(io, "Cartesian{$(rmmodule(Datum))}(")
-  printfields(io, _coords(coords), _fnames(coords), compact=true)
-  print(io, ")")
-end
-
-function Base.show(io::IO, ::MIME"text/plain", coords::Cartesian)
-  summary(io, coords)
-  printfields(io, _coords(coords), _fnames(coords))
-end
-
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
-_fnames(coords::Cartesian) = _fnames(typeof(coords))
 function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}
   if N == 1
     (:x,)
