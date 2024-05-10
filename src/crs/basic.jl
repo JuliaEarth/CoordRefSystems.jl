@@ -12,6 +12,8 @@ abstract type Basic{Datum} <: CRS{Datum} end
 """
     Cartesian(x₁, x₂, ..., xₙ)
     Cartesian{Datum}(x₁, x₂, ..., xₙ)
+    Cartesian((x₁, x₂, ..., xₙ))
+    Cartesian{Datum}((x₁, x₂, ..., xₙ))
 
 N-dimensional Cartesian coordinates `x₁, x₂, ..., xₙ` in length units (default to meter)
 with a given `Datum` (default to `NoDatum`).
@@ -37,9 +39,9 @@ struct Cartesian{Datum,N,L<:Len} <: Basic{Datum}
 end
 
 Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
-Cartesian{Datum}(coords::L...) where {Datum,L<:Len} = Cartesian{Datum}(coords)
-Cartesian{Datum}(coords::Len...) where {Datum} = Cartesian{Datum}(promote(coords...))
-Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(addunit.(coords, u"m")...)
+Cartesian{Datum}(coords::NTuple{N,Len}) where {Datum,N} = Cartesian{Datum}(promote(coords...))
+Cartesian{Datum}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum}(addunit.(coords, u"m"))
+Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(coords)
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
 
