@@ -42,23 +42,12 @@ tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
 
+prettyname(::Type{<:ShiftedCRS{CRS}}) where {CRS} = "Shifted$(prettyname(CRS))"
+
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
-  name = prettyname(CRS)
+  name = prettyname(coords)
   Datum = datum(coords)
-  print(io, "Shifted$name{$(rmmodule(Datum))} coordinates with lonₒ: $lonₒ, xₒ: $xₒ, yₒ: $yₒ")
-end
-
-function Base.show(io::IO, coords::ShiftedCRS{CRS}) where {CRS}
-  name = prettyname(CRS)
-  Datum = datum(coords)
-  print(io, "Shifted$name{$(rmmodule(Datum))}(")
-  printfields(io, _coords(coords), compact=true)
-  print(io, ")")
-end
-
-function Base.show(io::IO, ::MIME"text/plain", coords::ShiftedCRS)
-  summary(io, coords)
-  printfields(io, _coords(coords))
+  print(io, "$name{$(rmmodule(Datum))} coordinates with lonₒ: $lonₒ, xₒ: $xₒ, yₒ: $yₒ")
 end
 
 # ------------
