@@ -5,6 +5,9 @@
       @test Cartesian(T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m")
       @test Cartesian(T(1), T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m", T(1) * u"m")
       @test Cartesian(T(1) * u"m", 1 * u"m") == Cartesian(T(1) * u"m", T(1) * u"m")
+      @test Cartesian((T(1), T(1))) == Cartesian((T(1) * u"m", T(1) * u"m"))
+      @test Cartesian((T(1), T(1), T(1))) == Cartesian((T(1) * u"m", T(1) * u"m", T(1) * u"m"))
+      @test Cartesian((T(1) * u"m", 1 * u"m")) == Cartesian((T(1) * u"m", T(1) * u"m"))
 
       c = Cartesian(T(1))
       @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m)"
