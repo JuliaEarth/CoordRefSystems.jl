@@ -33,6 +33,8 @@ Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x,
 
 Mercator(args...) = Mercator{WGS84Latest}(args...)
 
+Base.convert(::Type{Mercator{Datum,M}}, coords::Mercator{Datum}) where {Datum,M} = Mercator{Datum,M}(coords.x, coords.y)
+
 lentype(::Type{Mercator{Datum,M}}) where {Datum,M} = M
 
 # ------------

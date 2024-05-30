@@ -45,6 +45,9 @@ Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(coords)
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
 
+Base.convert(::Type{Cartesian{Datum,N,L}}, coords::Cartesian{Datum}) where {Datum,N,L} =
+  Cartesian{Datum,N,L}(_coords(coords))
+
 Base.propertynames(::Cartesian) = (:x, :y, :z)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
@@ -140,6 +143,8 @@ Polar{Datum}(ρ::Number, ϕ::Number) where {Datum} = Polar{Datum}(addunit(ρ, u"
 
 Polar(args...) = Polar{NoDatum}(args...)
 
+Base.convert(::Type{Polar{Datum,L,R}}, coords::Polar{Datum}) where {Datum,L,R} = Polar{Datum,L,R}(coords.ρ, coords.ϕ)
+
 ndims(::Type{<:Polar}) = 2
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
@@ -191,6 +196,9 @@ Cylindrical{Datum}(ρ::Number, ϕ::Number, z::Number) where {Datum} =
 
 Cylindrical(args...) = Cylindrical{NoDatum}(args...)
 
+Base.convert(::Type{Cylindrical{Datum,L,R}}, coords::Cylindrical{Datum}) where {Datum,L,R} =
+  Cylindrical{Datum,L,R}(coords.ρ, coords.ϕ, coords.z)
+
 ndims(::Type{<:Cylindrical}) = 3
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
@@ -237,6 +245,9 @@ Spherical{Datum}(r::Number, θ::Number, ϕ::Number) where {Datum} =
   Spherical{Datum}(addunit(r, u"m"), addunit(θ, u"rad"), addunit(ϕ, u"rad"))
 
 Spherical(args...) = Spherical{NoDatum}(args...)
+
+Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datum,L,R} =
+  Spherical{Datum,L,R}(coords.r, coords.θ, coords.ϕ)
 
 ndims(::Type{<:Spherical}) = 3
 

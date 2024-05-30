@@ -24,6 +24,11 @@ Orthographic{latₒ,lonₒ,S,Datum}(x::Number, y::Number) where {latₒ,lonₒ,S
 
 Orthographic{latₒ,lonₒ,S}(args...) where {latₒ,lonₒ,S} = Orthographic{latₒ,lonₒ,S,WGS84Latest}(args...)
 
+Base.convert(
+  ::Type{Orthographic{latₒ,lonₒ,S,Datum,M}},
+  coords::Orthographic{latₒ,lonₒ,S,Datum}
+) where {latₒ,lonₒ,S,Datum,M} = Orthographic{latₒ,lonₒ,S,Datum,M}(coords.x, coords.y)
+
 lentype(::Type{Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
 
 """

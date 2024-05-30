@@ -24,6 +24,11 @@ EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Number, y::Number) where {latₜ
 
 EqualAreaCylindrical{latₜₛ,lonₒ}(args...) where {latₜₛ,lonₒ} = EqualAreaCylindrical{latₜₛ,lonₒ,WGS84Latest}(args...)
 
+Base.convert(
+  ::Type{EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}},
+  coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+) where {latₜₛ,lonₒ,Datum,M} = EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}(coords.x, coords.y)
+
 lentype(::Type{EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
 
 """

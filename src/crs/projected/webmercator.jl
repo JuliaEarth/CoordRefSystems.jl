@@ -33,6 +33,9 @@ WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addu
 
 WebMercator(args...) = WebMercator{WGS84Latest}(args...)
 
+Base.convert(::Type{WebMercator{Datum,M}}, coords::WebMercator{Datum}) where {Datum,M} =
+  WebMercator{Datum,M}(coords.x, coords.y)
+
 lentype(::Type{WebMercator{Datum,M}}) where {Datum,M} = M
 
 # ------------
