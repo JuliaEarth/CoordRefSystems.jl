@@ -3,6 +3,8 @@ using Unitful
 using StableRNGs
 using Test
 
+using CoordRefSystems: Met, Deg, Rad
+
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "misc.jl"]
 
 # --------------------------------

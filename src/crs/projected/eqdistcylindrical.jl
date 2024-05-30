@@ -23,6 +23,11 @@ EquidistantCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,D
 
 EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84Latest}(args...)
 
+Base.convert(
+  ::Type{EquidistantCylindrical{latₜₛ,Datum,M}},
+  coords::EquidistantCylindrical{latₜₛ,Datum}
+) where {latₜₛ,Datum,M} = EquidistantCylindrical{latₜₛ,Datum,M}(coords.x, coords.y)
+
 lentype(::Type{EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
 
 """

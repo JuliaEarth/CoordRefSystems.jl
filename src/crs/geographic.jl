@@ -43,6 +43,9 @@ GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 
 GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
+Base.convert(::Type{GeodeticLatLon{Datum,D}}, coords::GeodeticLatLon{Datum}) where {Datum,D} =
+  GeodeticLatLon{Datum,D}(coords.lat, coords.lon)
+
 lentype(::Type{GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
@@ -107,6 +110,9 @@ GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
 
 GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
+Base.convert(::Type{GeodeticLatLonAlt{Datum,D,M}}, coords::GeodeticLatLonAlt{Datum}) where {Datum,D,M} =
+  GeodeticLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
+
 lentype(::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
@@ -164,6 +170,9 @@ GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
 
 GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 
+Base.convert(::Type{GeocentricLatLon{Datum,D}}, coords::GeocentricLatLon{Datum}) where {Datum,D} =
+  GeocentricLatLon{Datum,D}(coords.lat, coords.lon)
+
 lentype(::Type{GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
@@ -200,6 +209,9 @@ AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
   AuthalicLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
 
 AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
+
+Base.convert(::Type{AuthalicLatLon{Datum,D}}, coords::AuthalicLatLon{Datum}) where {Datum,D} =
+  AuthalicLatLon{Datum,D}(coords.lat, coords.lon)
 
 lentype(::Type{AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 

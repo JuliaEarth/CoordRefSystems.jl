@@ -20,6 +20,11 @@ end
 
 _coords(coords::ShiftedCRS) = getfield(coords, :coords)
 
+Base.convert(
+  ::Type{ShiftedCRS{CRSₜ,lonₒ,xₒ,yₒ,Datum}},
+  coords::ShiftedCRS{CRSₛ,lonₒ,xₒ,yₒ,Datum}
+) where {CRSₜ,CRSₛ,lonₒ,xₒ,yₒ,Datum} = ShiftedCRS{CRSₜ,lonₒ,xₒ,yₒ,Datum}(_coords(coords))
+
 Base.propertynames(coords::ShiftedCRS) = propertynames(_coords(coords))
 
 Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords), name)

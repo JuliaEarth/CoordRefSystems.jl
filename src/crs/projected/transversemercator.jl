@@ -24,6 +24,11 @@ TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Number, y::Number) where {k₀,l
 
 TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = TransverseMercator{k₀,latₒ,lonₒ,WGS84Latest}(args...)
 
+Base.convert(
+  ::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum,M}},
+  coords::TransverseMercator{k₀,latₒ,lonₒ,Datum}
+) where {k₀,latₒ,lonₒ,Datum,M} = TransverseMercator{k₀,latₒ,lonₒ,Datum,M}(coords.x, coords.y)
+
 lentype(::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,latₒ,lonₒ,Datum,M} = M
 
 # ------------

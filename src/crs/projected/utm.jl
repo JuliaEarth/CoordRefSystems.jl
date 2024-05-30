@@ -48,6 +48,9 @@ UTM{Hemisphere,Zone,Datum}(x::Number, y::Number) where {Hemisphere,Zone,Datum} =
 
 UTM{Hemisphere,Zone}(args...) where {Hemisphere,Zone} = UTM{Hemisphere,Zone,WGS84Latest}(args...)
 
+Base.convert(::Type{UTM{Hemisphere,Zone,Datum,M}}, coords::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum,M} =
+  UTM{Hemisphere,Zone,Datum,M}(coords.x, coords.y)
+
 lentype(::Type{UTM{Hemisphere,Zone,Datum,M}}) where {Hemisphere,Zone,Datum,M} = M
 
 """

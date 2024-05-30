@@ -33,6 +33,8 @@ Robinson{Datum}(x::Number, y::Number) where {Datum} = Robinson{Datum}(addunit(x,
 
 Robinson(args...) = Robinson{WGS84Latest}(args...)
 
+Base.convert(::Type{Robinson{Datum,M}}, coords::Robinson{Datum}) where {Datum,M} = Robinson{Datum,M}(coords.x, coords.y)
+
 lentype(::Type{Robinson{Datum,M}}) where {Datum,M} = M
 
 # ------------
