@@ -133,6 +133,14 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
+    C = UTMNorth{32,WGS84Latest,Met{T}}
+    c1 = UTMNorth{32}(1.0, 1.0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+    c1 = UTMNorth{32}(1.0f0, 1.0f0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+
     ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
     C = typeof(ShiftedMercator(T(1), T(1)))
     c1 = ShiftedMercator(1.0, 1.0)
