@@ -188,6 +188,15 @@
       c2 = convert(Cartesian{ITRFLatest}, c1)
       @test allapprox(c2, Cartesian{ITRFLatest}(T(0.9998000005900001), T(0.99800000059), T(0.9977000005900001)))
 
+      # avoid converting coordinates with the same datum as the first argument
+      c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
+      c2 = convert(Cartesian{WGS84Latest}, c1)
+      @test c1 === c2
+
+      c1 = Cartesian{WGS84Latest}(T(0), T(0))
+      c2 = convert(Cartesian{WGS84Latest}, c1)
+      @test c1 === c2
+
       c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
       c2 = Cartesian{ITRF{2008}}(T(0), T(0), T(0))
       @inferred convert(Cartesian{ITRF{2008}}, c1)
