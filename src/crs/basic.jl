@@ -291,7 +291,7 @@ function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}
 end
 
 # avoid converting coordinates with the same datum as the first argument
-Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum}) where {Datum} = coords 
+Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum,3}) where {Datum} = coords 
 
 # ----------
 # FALLBACKS
