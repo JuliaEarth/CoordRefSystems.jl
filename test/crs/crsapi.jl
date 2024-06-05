@@ -65,6 +65,45 @@
     @test CoordRefSystems.cnames(c) == (:x, :y)
   end
 
+  @testset "ctype" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Cartesian{NoDatum}
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Polar{NoDatum}
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Cylindrical{NoDatum}
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Spherical{NoDatum}
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.ctype(c) === LatLon{WGS84Latest}
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.ctype(c) === LatLonAlt{WGS84Latest}
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.ctype(c) === GeocentricLatLon{WGS84Latest}
+    c = AuthalicLatLon(T(30), T(60))
+    @test CoordRefSystems.ctype(c) === AuthalicLatLon{WGS84Latest}
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Mercator{WGS84Latest}
+    c = WebMercator(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === WebMercator{WGS84Latest}
+    c = PlateCarree(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === PlateCarree{WGS84Latest}
+    c = Lambert(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Lambert{WGS84Latest}
+    c = WinkelTripel(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === WinkelTripel{WGS84Latest}
+    c = Robinson(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === Robinson{WGS84Latest}
+    c = OrthoNorth(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === OrthoNorth{WGS84Latest}
+    c = TransverseMercator(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === TransverseMercator{WGS84Latest}
+    c = UTMNorth{32}(T(1), T(1))
+    @test CoordRefSystems.ctype(c) === UTMNorth{32,WGS84Latest}
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.ctype(c) === CoordRefSystems.ShiftedCRS{Mercator{WGS84Latest},15.0u"°",200.0u"m",200.0u"m"}
+  end
+
   @testset "ndims" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ndims(c) == 2

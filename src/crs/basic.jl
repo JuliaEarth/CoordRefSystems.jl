@@ -89,7 +89,9 @@ function tol(coords::Cartesian)
   atol(numtype(Q)) * unit(Q)
 end
 
-lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+ctype(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
+
+lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
@@ -147,6 +149,8 @@ Base.convert(::Type{Polar{Datum,L,R}}, coords::Polar{Datum}) where {Datum,L,R} =
 
 ndims(::Type{<:Polar}) = 2
 
+ctype(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
+
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
@@ -201,6 +205,8 @@ Base.convert(::Type{Cylindrical{Datum,L,R}}, coords::Cylindrical{Datum}) where {
 
 ndims(::Type{<:Cylindrical}) = 3
 
+ctype(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
+
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
@@ -251,6 +257,8 @@ Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datu
 
 ndims(::Type{<:Spherical}) = 3
 
+ctype(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
+
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
@@ -289,6 +297,9 @@ function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}
 
   Cartesian{Datumₜ}(Tuple(x′))
 end
+
+# avoid converting coordinates with the same datum
+Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum,3}) where {Datum} = coords 
 
 # ----------
 # FALLBACKS

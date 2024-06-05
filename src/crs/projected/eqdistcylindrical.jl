@@ -28,7 +28,9 @@ Base.convert(
   coords::EquidistantCylindrical{latₜₛ,Datum}
 ) where {latₜₛ,Datum,M} = EquidistantCylindrical{latₜₛ,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
+ctype(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,Datum} = EquidistantCylindrical{latₜₛ,Datum}
+
+lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
 
 """
     PlateCarree(x, y)

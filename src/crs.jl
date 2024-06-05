@@ -35,6 +35,13 @@ cnames(coords::CRS) = cnames(typeof(coords))
 cnames(C::Type{<:CRS}) = fieldnames(C)
 
 """
+    CoordRefSystems.ctype(coords)
+
+CRS type of `coords` that can be used in conversions.
+"""
+ctype(coords::CRS) = ctype(typeof(coords))
+
+"""
     CoordRefSystems.ndims(coords)
 
 Number of embedding dimensions of `coords`.

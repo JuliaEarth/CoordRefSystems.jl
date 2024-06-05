@@ -35,6 +35,8 @@ cvalues(coords::ShiftedCRS) = cvalues(_coords(coords))
 
 cnames(::Type{<:ShiftedCRS{CRS}}) where {CRS} = cnames(CRS)
 
+ctype(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{ctype(CRS),lonₒ,xₒ,yₒ}
+
 ndims(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ndims(CRS)
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
