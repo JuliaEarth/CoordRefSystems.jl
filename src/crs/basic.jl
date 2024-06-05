@@ -290,6 +290,9 @@ function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}
   Cartesian{Datumₜ}(Tuple(x′))
 end
 
+# avoid converting coordinates with the same datum as the first argument
+Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum}) where {Datum} = coords 
+
 # ----------
 # FALLBACKS
 # ----------
