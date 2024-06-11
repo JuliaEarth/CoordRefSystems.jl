@@ -25,7 +25,13 @@ abstract type ESRI{Code} end
 
 Returns a CRS type that has the EPSG/ESRI `code`.
 """
-function get end
+function get(code)
+  throw(ArgumentError("""
+  The provided code $code is not mapped to a CRS type yet. 
+  Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/codes.jl
+  If you know the CRS type of a given code, please submit a pull request.
+  """))
+end
 
 # ----------------
 # IMPLEMENTATIONS
