@@ -9,4 +9,5 @@
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
   @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
   @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+  @test_throws ArgumentError CoordRefSystems.get(EPSG{1})
 end
