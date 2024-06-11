@@ -28,7 +28,7 @@ Returns a CRS type that has the EPSG/ESRI `code`.
 function get(code)
   throw(ArgumentError("""
   The provided code $code is not mapped to a CRS type yet. 
-  Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/codes.jl for the available list. 
+  Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/codes.jl
   Contributions are welcome!
   """))
 end
