@@ -46,7 +46,9 @@ GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLon{Datum,D}}, coords::GeodeticLatLon{Datum}) where {Datum,D} =
   GeodeticLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:GeodeticLatLon{Datum}}) where {Datum} = GeodeticLatLon{Datum}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
   GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -113,7 +115,9 @@ GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLonAlt{Datum,D,M}}, coords::GeodeticLatLonAlt{Datum}) where {Datum,D,M} =
   GeodeticLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
 
-lentype(::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+
+constructor(::Type{<:GeodeticLatLonAlt{Datum}}) where {Datum} = GeodeticLatLonAlt{Datum}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
   GeodeticLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
@@ -173,7 +177,9 @@ GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeocentricLatLon{Datum,D}}, coords::GeocentricLatLon{Datum}) where {Datum,D} =
   GeocentricLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:GeocentricLatLon{Datum}}) where {Datum} = GeocentricLatLon{Datum}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
   GeocentricLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -213,7 +219,9 @@ AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 Base.convert(::Type{AuthalicLatLon{Datum,D}}, coords::AuthalicLatLon{Datum}) where {Datum,D} =
   AuthalicLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:AuthalicLatLon{Datum}}) where {Datum} = AuthalicLatLon{Datum}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon{Datum}}) where {Datum} =
   AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))

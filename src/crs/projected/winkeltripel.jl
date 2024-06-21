@@ -17,7 +17,9 @@ Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 Base.convert(::Type{Winkel{lat₁,Datum,M}}, coords::Winkel{lat₁,Datum}) where {lat₁,Datum,M} =
   Winkel{lat₁,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
+lentype(::Type{<:Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
+
+constructor(::Type{<:Winkel{lat₁,Datum}}) where {lat₁,Datum} = Winkel{lat₁,Datum}
 
 """
     WinkelTripel(x, y)

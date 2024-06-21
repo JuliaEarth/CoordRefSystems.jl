@@ -29,7 +29,9 @@ Base.convert(
   coords::Orthographic{latₒ,lonₒ,S,Datum}
 ) where {latₒ,lonₒ,S,Datum,M} = Orthographic{latₒ,lonₒ,S,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
+lentype(::Type{<:Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
+
+constructor(::Type{<:Orthographic{latₒ,lonₒ,S,Datum}}) where {latₒ,lonₒ,S,Datum} = Orthographic{latₒ,lonₒ,S,Datum}
 
 """
     OrthoNorth(x, y)

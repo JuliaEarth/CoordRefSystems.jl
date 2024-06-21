@@ -71,6 +71,10 @@ cnames(C::Type{<:Cartesian}) = _fnames(C)
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
+lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+
+constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
+
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
   c₁ = SVector(_coords(coords₁))
@@ -88,8 +92,6 @@ function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
   atol(numtype(Q)) * unit(Q)
 end
-
-lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
@@ -149,6 +151,8 @@ ndims(::Type{<:Polar}) = 2
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
+constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
   Polar{Datum}(rand(rng), 2π * rand(rng))
 
@@ -203,6 +207,8 @@ ndims(::Type{<:Cylindrical}) = 3
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
+constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
   Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
 
@@ -252,6 +258,8 @@ Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datu
 ndims(::Type{<:Spherical}) = 3
 
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
+
+constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
   Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))

@@ -29,7 +29,10 @@ Base.convert(
   coords::TransverseMercator{k₀,latₒ,lonₒ,Datum}
 ) where {k₀,latₒ,lonₒ,Datum,M} = TransverseMercator{k₀,latₒ,lonₒ,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,latₒ,lonₒ,Datum,M} = M
+lentype(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,latₒ,lonₒ,Datum,M} = M
+
+constructor(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}) where {k₀,latₒ,lonₒ,Datum} =
+  TransverseMercator{k₀,latₒ,lonₒ,Datum}
 
 # ------------
 # CONVERSIONS
