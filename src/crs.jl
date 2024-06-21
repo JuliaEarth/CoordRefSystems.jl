@@ -53,7 +53,7 @@ lentype(coords::CRS) = lentype(typeof(coords))
 """
     CoordRefSystems.constructor(coords)
 
-CRS type of `coords` that can be used for construct 
+CRS type of `coords` that can be used to construct 
 a new instance or in conversions.
 """
 constructor(coords::CRS) = constructor(typeof(coords))
