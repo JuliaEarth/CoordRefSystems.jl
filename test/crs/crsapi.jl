@@ -86,6 +86,85 @@
     @test CoordRefSystems.ndims(c) == 2
   end
 
+  @testset "lentype" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = Polar(T(1) * u"km", T(1) * u"rad")
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"km")
+    c = Cylindrical(T(1) * u"cm", T(1) * u"rad", T(1) * u"cm")
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"cm")
+    c = Spherical(T(1) * u"mm", T(1) * u"rad", T(1) * u"rad")
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"mm")
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = AuthalicLatLon(T(30), T(60))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = WebMercator(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = PlateCarree(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = Lambert(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = WinkelTripel(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = Robinson(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = OrthoNorth(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = TransverseMercator(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = UTMNorth{32}(T(1), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
+  end
+
+  @testset "constructor" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Polar{NoDatum}
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Cylindrical{NoDatum}
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Spherical{NoDatum}
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.constructor(c) === LatLon{WGS84Latest}
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.constructor(c) === LatLonAlt{WGS84Latest}
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.constructor(c) === GeocentricLatLon{WGS84Latest}
+    c = AuthalicLatLon(T(30), T(60))
+    @test CoordRefSystems.constructor(c) === AuthalicLatLon{WGS84Latest}
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Mercator{WGS84Latest}
+    c = WebMercator(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === WebMercator{WGS84Latest}
+    c = PlateCarree(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === PlateCarree{WGS84Latest}
+    c = Lambert(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Lambert{WGS84Latest}
+    c = WinkelTripel(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === WinkelTripel{WGS84Latest}
+    c = Robinson(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === Robinson{WGS84Latest}
+    c = OrthoNorth(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === OrthoNorth{WGS84Latest}
+    c = TransverseMercator(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === TransverseMercator{WGS84Latest}
+    c = UTMNorth{32}(T(1), T(1))
+    @test CoordRefSystems.constructor(c) === UTMNorth{32,WGS84Latest}
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.constructor(c) ===
+          CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+  end
+
   @testset "isapprox" begin
     c1 = Cartesian(T(1), T(2))
     c2 = Cartesian(T(1) + eps(T), T(2) + eps(T))
@@ -132,44 +211,5 @@
     @test CoordRefSystems.tol(c) == tol
     c = ShiftedMercator(T(1), T(1))
     @test CoordRefSystems.tol(c) == tol
-  end
-
-  @testset "lentype" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = Polar(T(1) * u"km", T(1) * u"rad")
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"km")
-    c = Cylindrical(T(1) * u"cm", T(1) * u"rad", T(1) * u"cm")
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"cm")
-    c = Spherical(T(1) * u"mm", T(1) * u"rad", T(1) * u"rad")
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"mm")
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = WebMercator(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = PlateCarree(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = Lambert(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = WinkelTripel(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = Robinson(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = OrthoNorth(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = TransverseMercator(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = UTMNorth{32}(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * u"m")
   end
 end
