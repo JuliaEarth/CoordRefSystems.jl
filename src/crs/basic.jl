@@ -71,7 +71,10 @@ names(C::Type{<:Cartesian}) = _fnames(C)
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
-function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
+Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(Cartesian{Datum₁}, coords₂); kwargs...)
+
+function Base.isapprox(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}; kwargs...) where {Datum,N}
   # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
   c₁ = SVector(_coords(coords₁))
   c₂ = SVector(_coords(coords₂))
