@@ -65,9 +65,9 @@ end
 
 ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
-cvalues(coords::Cartesian) = _coords(coords)
+values(coords::Cartesian) = _coords(coords)
 
-cnames(C::Type{<:Cartesian}) = _fnames(C)
+names(C::Type{<:Cartesian}) = _fnames(C)
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 

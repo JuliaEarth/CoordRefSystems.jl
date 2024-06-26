@@ -20,19 +20,19 @@ ncoords(coords::CRS) = ncoords(typeof(coords))
 ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 """
-    CoordRefSystems.cvalues(coords)
+    CoordRefSystems.values(coords)
 
 Coordinate values of `coords` as tuple.
 """
-cvalues(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
+values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
-    CoordRefSystems.cnames(coords)
+    CoordRefSystems.names(coords)
 
 Coordinate names of `coords`.
 """
-cnames(coords::CRS) = cnames(typeof(coords))
-cnames(C::Type{<:CRS}) = fieldnames(C)
+names(coords::CRS) = names(typeof(coords))
+names(C::Type{<:CRS}) = fieldnames(C)
 
 """
     CoordRefSystems.ndims(coords)
@@ -110,13 +110,13 @@ function Base.show(io::IO, coords::CRS)
   name = prettyname(coords)
   Datum = datum(coords)
   print(io, "$name{$(rmmodule(Datum))}(")
-  printfields(io, cvalues(coords), cnames(coords), compact=true)
+  printfields(io, values(coords), names(coords), compact=true)
   print(io, ")")
 end
 
 function Base.show(io::IO, ::MIME"text/plain", coords::CRS)
   summary(io, coords)
-  printfields(io, cvalues(coords), cnames(coords))
+  printfields(io, values(coords), names(coords))
 end
 
 # ----------------
