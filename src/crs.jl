@@ -49,7 +49,7 @@ ndims(coords::CRS) = ndims(typeof(coords))
 Checks whether the coordinates `coords₁` and `coords₂`
 are approximate using the `isapprox` function.
 """
-Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
+Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
 
 """
