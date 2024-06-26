@@ -51,6 +51,14 @@ Length unit type of `coords`.
 lentype(coords::CRS) = lentype(typeof(coords))
 
 """
+    CoordRefSystems.units(coords)
+
+Units of coordinates of `coords`.
+"""
+units(coords::CRS) = units(typeof(coords))
+units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
+
+"""
     CoordRefSystems.constructor(coords)
 
 CRS type of `coords` that can be used to construct 

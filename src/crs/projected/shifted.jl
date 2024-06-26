@@ -49,6 +49,8 @@ tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
 
+units(::Type{<:ShiftedCRS{CRS}}) where {CRS} = units(CRS)
+
 constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{constructor(CRS),lonₒ,xₒ,yₒ}
 
 prettyname(::Type{<:ShiftedCRS{CRS}}) where {CRS} = "Shifted$(prettyname(CRS))"

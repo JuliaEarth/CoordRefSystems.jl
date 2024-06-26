@@ -73,6 +73,8 @@ ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
+units(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = ntuple(_ -> unit(L), N)
+
 constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
