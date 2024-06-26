@@ -39,7 +39,7 @@ function isapproxtest3D(CRS)
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
-  
+
   τ = CoordRefSystems.atol(T) * u"m"
   c1 = convert(CRS, Cartesian{ITRF{2008}}(T(3.2e6), T(3.2e6), T(4.5e6)))
   c2 = convert(CRS, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
