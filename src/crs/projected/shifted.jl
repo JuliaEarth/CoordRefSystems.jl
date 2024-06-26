@@ -49,6 +49,8 @@ tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
 
+constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{constructor(CRS),lonₒ,xₒ,yₒ}
+
 prettyname(::Type{<:ShiftedCRS{CRS}}) where {CRS} = "Shifted$(prettyname(CRS))"
 
 function Base.summary(io::IO, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}

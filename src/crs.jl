@@ -44,6 +44,19 @@ See also [`ncoords`](@ref).
 ndims(coords::CRS) = ndims(typeof(coords))
 
 """
+    CoordRefSystems.lentype(coords)
+Length unit type of `coords`.
+"""
+lentype(coords::CRS) = lentype(typeof(coords))
+
+"""
+    CoordRefSystems.constructor(coords)
+CRS type of `coords` that can be used to construct 
+a new instance or in conversions.
+"""
+constructor(coords::CRS) = constructor(typeof(coords))
+
+"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`
@@ -68,13 +81,6 @@ Absolute tolerance for the underlying machine type (e.g. `Float64`) used to repr
 The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
-
-"""
-    CoordRefSystems.lentype(coords)
-
-Length unit type of `coords`.
-"""
-lentype(coords::CRS) = lentype(typeof(coords))
 
 # ------
 # DATUM

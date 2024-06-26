@@ -46,7 +46,9 @@ GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLon{Datum,D}}, coords::GeodeticLatLon{Datum}) where {Datum,D} =
   GeodeticLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:GeodeticLatLon{Datum}}) where {Datum} = GeodeticLatLon{Datum}
 
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
@@ -116,7 +118,9 @@ GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLonAlt{Datum,D,M}}, coords::GeodeticLatLonAlt{Datum}) where {Datum,D,M} =
   GeodeticLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
 
-lentype(::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+
+constructor(::Type{<:GeodeticLatLonAlt{Datum}}) where {Datum} = GeodeticLatLonAlt{Datum}
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
@@ -179,7 +183,9 @@ GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeocentricLatLon{Datum,D}}, coords::GeocentricLatLon{Datum}) where {Datum,D} =
   GeocentricLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:GeocentricLatLon{Datum}}) where {Datum} = GeocentricLatLon{Datum}
 
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
@@ -222,7 +228,9 @@ AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 Base.convert(::Type{AuthalicLatLon{Datum,D}}, coords::AuthalicLatLon{Datum}) where {Datum,D} =
   AuthalicLatLon{Datum,D}(coords.lat, coords.lon)
 
-lentype(::Type{AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
+
+constructor(::Type{<:AuthalicLatLon{Datum}}) where {Datum} = AuthalicLatLon{Datum}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon

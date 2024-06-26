@@ -71,6 +71,10 @@ names(C::Type{<:Cartesian}) = _fnames(C)
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
+lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+
+constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
+
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
 Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =
@@ -92,8 +96,6 @@ function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
   atol(numtype(Q)) * unit(Q)
 end
-
-lentype(::Type{Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
@@ -160,6 +162,8 @@ ndims(::Type{<:Polar}) = 2
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
+constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
+
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
@@ -216,6 +220,8 @@ ndims(::Type{<:Cylindrical}) = 3
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
+constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
+
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
@@ -268,6 +274,8 @@ Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datu
 ndims(::Type{<:Spherical}) = 3
 
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
+
+constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
