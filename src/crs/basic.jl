@@ -71,6 +71,8 @@ names(C::Type{<:Cartesian}) = _fnames(C)
 
 ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
+==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
+
 Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =
   isapprox(coords₁, convert(Cartesian{Datum₁}, coords₂); kwargs...)
 
@@ -158,6 +160,8 @@ ndims(::Type{<:Polar}) = 2
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
+==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
   Polar{Datum}(rand(rng), 2π * rand(rng))
 
@@ -212,6 +216,9 @@ ndims(::Type{<:Cylindrical}) = 3
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
+==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
+  coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
   Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
 
@@ -261,6 +268,9 @@ Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datu
 ndims(::Type{<:Spherical}) = 3
 
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
+
+==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
+  coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
   Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))

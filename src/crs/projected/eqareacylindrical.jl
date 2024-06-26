@@ -31,6 +31,11 @@ Base.convert(
 
 lentype(::Type{EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
 
+==(
+  coords₁::EqualAreaCylindrical{latₜₛ,lonₒ,Datum},
+  coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+) where {latₜₛ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 """
     Lambert(x, y)
     Lambert{Datum}(x, y)

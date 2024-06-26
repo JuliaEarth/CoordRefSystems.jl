@@ -19,6 +19,9 @@ Base.convert(::Type{Winkel{lat₁,Datum,M}}, coords::Winkel{lat₁,Datum}) where
 
 lentype(::Type{Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
 
+==(coords₁::Winkel{lat₁,Datum}, coords₂::Winkel{lat₁,Datum}) where {lat₁,Datum} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 """
     WinkelTripel(x, y)
     WinkelTripel{Datum}(x, y)

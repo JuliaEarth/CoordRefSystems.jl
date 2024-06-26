@@ -37,3 +37,13 @@ function isapproxtest3D(CRS)
   c2 = convert(CRS, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
   @test c1 ≈ c2
 end
+
+equaltest(CRS) = equaltest(CRS, CoordRefSystems.ncoords(CRS))
+
+function equaltest(CRS, n)
+  c1 = CRS(ntuple(_ -> T(1), n)...)
+  c2 = CRS(ntuple(_ -> 1.0, n)...)
+  c3 = CRS(ntuple(_ -> 1.0f0, n)...)
+  @test c1 == c2
+  @test c1 == c3
+end

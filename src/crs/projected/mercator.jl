@@ -37,6 +37,8 @@ Base.convert(::Type{Mercator{Datum,M}}, coords::Mercator{Datum}) where {Datum,M}
 
 lentype(::Type{Mercator{Datum,M}}) where {Datum,M} = M
 
+==(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 # ------------
 # CONVERSIONS
 # ------------

@@ -31,6 +31,9 @@ Base.convert(
 
 lentype(::Type{Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
 
+==(coords₁::Orthographic{latₒ,lonₒ,S,Datum}, coords₂::Orthographic{latₒ,lonₒ,S,Datum}) where {latₒ,lonₒ,S,Datum} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 """
     OrthoNorth(x, y)
     OrthoNorth{Datum}(x, y)

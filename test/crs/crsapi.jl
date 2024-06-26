@@ -86,6 +86,28 @@
     @test CoordRefSystems.ndims(c) == 2
   end
 
+  @testset "equality operator" begin
+    equaltest(Cartesian, 2)
+    equaltest(Cartesian, 3)
+    equaltest(Polar)
+    equaltest(Cylindrical)
+    equaltest(Spherical)
+    equaltest(LatLon)
+    equaltest(LatLonAlt)
+    equaltest(GeocentricLatLon)
+    equaltest(AuthalicLatLon)
+    equaltest(Mercator)
+    equaltest(WebMercator)
+    equaltest(PlateCarree)
+    equaltest(Lambert)
+    equaltest(WinkelTripel)
+    equaltest(Robinson)
+    equaltest(OrthoNorth)
+    equaltest(UTMNorth{38})
+    equaltest(TransverseMercator)
+    equaltest(ShiftedMercator)
+  end
+
   @testset "isapprox" begin
     isapproxtest2D(Cartesian)
     isapproxtest3D(Cartesian)
