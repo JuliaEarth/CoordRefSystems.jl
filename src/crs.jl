@@ -45,12 +45,14 @@ ndims(coords::CRS) = ndims(typeof(coords))
 
 """
     CoordRefSystems.lentype(coords)
+
 Length unit type of `coords`.
 """
 lentype(coords::CRS) = lentype(typeof(coords))
 
 """
     CoordRefSystems.constructor(coords)
+
 CRS type of `coords` that can be used to construct 
 a new instance or in conversions.
 """
