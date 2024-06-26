@@ -30,6 +30,9 @@ Base.convert(
 
 lentype(::Type{EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
 
+==(coords₁::EquidistantCylindrical{latₜₛ,Datum}, coords₂::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 """
     PlateCarree(x, y)
     PlateCarree{Datum}(x, y)

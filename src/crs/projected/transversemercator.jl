@@ -31,6 +31,11 @@ Base.convert(
 
 lentype(::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,latₒ,lonₒ,Datum,M} = M
 
+==(
+  coords₁::TransverseMercator{k₀,latₒ,lonₒ,Datum},
+  coords₂::TransverseMercator{k₀,latₒ,lonₒ,Datum}
+) where {k₀,latₒ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 # ------------
 # CONVERSIONS
 # ------------

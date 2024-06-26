@@ -37,6 +37,8 @@ Base.convert(::Type{Robinson{Datum,M}}, coords::Robinson{Datum}) where {Datum,M}
 
 lentype(::Type{Robinson{Datum,M}}) where {Datum,M} = M
 
+==(coords₁::Robinson{Datum}, coords₂::Robinson{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 # ------------
 # CONVERSIONS
 # ------------

@@ -37,8 +37,10 @@ names(::Type{<:ShiftedCRS{CRS}}) where {CRS} = names(CRS)
 
 ndims(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ndims(CRS)
 
-Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
-  isapprox(_coords(coords₁), _coords(coords₂); kwargs...)
+==(
+  coords₁::ShiftedCRS{CRS₁,lonₒ,xₒ,yₒ,Datum},
+  coords₂::ShiftedCRS{CRS₂,lonₒ,xₒ,yₒ,Datum}
+) where {CRS₁,CRS₂,lonₒ,xₒ,yₒ,Datum} = _coords(coords₁) == _coords(coords₂)
 
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   allapprox(_coords(coords₁), _coords(coords₂); kwargs...)

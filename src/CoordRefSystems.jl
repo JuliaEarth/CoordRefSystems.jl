@@ -11,6 +11,7 @@ using Rotations: RotXYZ
 using StaticArrays: SVector
 
 import Random
+import Base: ==
 
 include("utils.jl")
 include("ioutils.jl")

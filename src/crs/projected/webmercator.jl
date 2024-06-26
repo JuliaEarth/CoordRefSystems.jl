@@ -38,6 +38,9 @@ Base.convert(::Type{WebMercator{Datum,M}}, coords::WebMercator{Datum}) where {Da
 
 lentype(::Type{WebMercator{Datum,M}}) where {Datum,M} = M
 
+==(coords₁::WebMercator{Datum}, coords₂::WebMercator{Datum}) where {Datum} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
+
 # ------------
 # CONVERSIONS
 # ------------
