@@ -36,7 +36,6 @@ Coordinate names of `coords`.
 names(coords::CRS) = names(typeof(coords))
 names(C::Type{<:CRS}) = fieldnames(C)
 
-
 """
     CoordRefSystems.values(coords)
 
