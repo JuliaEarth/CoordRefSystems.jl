@@ -44,6 +44,13 @@ Coordinate values of `coords` as tuple.
 values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
+    CoordRefSystems.rawvalues(coords)
+
+Unitless coordinate values of `coords` as tuple.
+"""
+rawvalues(coords::CRS) = ustrip.(values(coords))
+
+"""
     CoordRefSystems.units(coords)
 
 Units of coordinates of `coords`.
@@ -65,6 +72,16 @@ CRS type of `coords` that can be used to construct
 a new instance or in conversions.
 """
 constructor(coords::CRS) = constructor(typeof(coords))
+
+"""
+    CoordRefSystems.reconstruct(CRS, rawvalues)
+
+Reconstruct an instance of `CRS` using `rawvalues`.
+"""
+function reconstruct(C::Type{<:CRS}, rawvalues)
+  coords = rawvalues .* units(C)
+  constructor(C)(coords...)
+end
 
 """
     isapprox(coords₁, coords₂; kwargs...)
