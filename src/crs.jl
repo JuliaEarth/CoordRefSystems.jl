@@ -20,11 +20,13 @@ ncoords(coords::CRS) = ncoords(typeof(coords))
 ncoords(C::Type{<:CRS}) = fieldcount(C)
 
 """
-    CoordRefSystems.values(coords)
+    CoordRefSystems.ndims(coords)
 
-Coordinate values of `coords` as tuple.
+Number of embedding dimensions of `coords`.
+
+See also [`ncoords`](@ref).
 """
-values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
+ndims(coords::CRS) = ndims(typeof(coords))
 
 """
     CoordRefSystems.names(coords)
@@ -34,14 +36,21 @@ Coordinate names of `coords`.
 names(coords::CRS) = names(typeof(coords))
 names(C::Type{<:CRS}) = fieldnames(C)
 
-"""
-    CoordRefSystems.ndims(coords)
 
-Number of embedding dimensions of `coords`.
-
-See also [`ncoords`](@ref).
 """
-ndims(coords::CRS) = ndims(typeof(coords))
+    CoordRefSystems.values(coords)
+
+Coordinate values of `coords` as tuple.
+"""
+values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
+
+"""
+    CoordRefSystems.units(coords)
+
+Units of coordinates of `coords`.
+"""
+units(coords::CRS) = units(typeof(coords))
+units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
 
 """
     CoordRefSystems.lentype(coords)

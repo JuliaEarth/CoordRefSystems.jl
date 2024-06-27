@@ -31,11 +31,17 @@ Base.getproperty(coords::ShiftedCRS, name::Symbol) = getproperty(_coords(coords)
 
 ncoords(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ncoords(CRS)
 
-values(coords::ShiftedCRS) = values(_coords(coords))
+ndims(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ndims(CRS)
 
 names(::Type{<:ShiftedCRS{CRS}}) where {CRS} = names(CRS)
 
-ndims(::Type{<:ShiftedCRS{CRS}}) where {CRS} = ndims(CRS)
+values(coords::ShiftedCRS) = values(_coords(coords))
+
+units(::Type{<:ShiftedCRS{CRS}}) where {CRS} = units(CRS)
+
+lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
+
+constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{constructor(CRS),lonₒ,xₒ,yₒ}
 
 ==(
   coords₁::ShiftedCRS{CRS₁,lonₒ,xₒ,yₒ,Datum},
@@ -46,10 +52,6 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
   allapprox(_coords(coords₁), _coords(coords₂); kwargs...)
 
 tol(coords::ShiftedCRS) = tol(_coords(coords))
-
-lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
-
-constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{constructor(CRS),lonₒ,xₒ,yₒ}
 
 prettyname(::Type{<:ShiftedCRS{CRS}}) where {CRS} = "Shifted$(prettyname(CRS))"
 
