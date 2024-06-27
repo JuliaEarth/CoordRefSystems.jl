@@ -65,15 +65,15 @@ end
 
 ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
-values(coords::Cartesian) = _coords(coords)
+ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
 
 names(C::Type{<:Cartesian}) = _fnames(C)
 
-ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
-
-lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+values(coords::Cartesian) = _coords(coords)
 
 units(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = ntuple(_ -> unit(L), N)
+
+lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
