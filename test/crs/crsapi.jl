@@ -86,6 +86,47 @@
     @test CoordRefSystems.values(c) == (T(1) * u"m", T(2) * u"m")
   end
 
+  @testset "rawvalues" begin
+    c = Cartesian(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = Cartesian(T(1) * u"cm", T(1) * u"cm", T(1) * u"cm")
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1), T(1))
+    c = Polar(T(1) * u"km", T(1) * u"rad")
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = Cylindrical(T(1) * u"cm", T(1) * u"rad", T(1) * u"cm")
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1), T(1))
+    c = Spherical(T(1) * u"mm", T(1) * u"rad", T(1) * u"rad")
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1), T(1))
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.rawvalues(c) == (T(30), T(60))
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(30), T(60), T(1))
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.rawvalues(c) == (T(30), T(60))
+    c = AuthalicLatLon(T(30), T(60))
+    @test CoordRefSystems.rawvalues(c) == (T(30), T(60))
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = WebMercator(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = PlateCarree(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = Lambert(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = WinkelTripel(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = Robinson(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = OrthoNorth(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = TransverseMercator(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = UTMNorth{32}(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+    c = ShiftedMercator(T(1), T(1))
+    @test CoordRefSystems.rawvalues(c) == (T(1), T(1))
+  end
+
   @testset "units" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.units(c) == (u"m", u"m")
@@ -204,6 +245,66 @@
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.constructor(c) ===
           CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+  end
+
+  @testset "reconstruct" begin
+    c = Cartesian(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Cartesian(T(1) * u"cm", T(1) * u"cm", T(1) * u"cm")
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Polar(T(1) * u"km", T(1) * u"rad")
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Cylindrical(T(1) * u"cm", T(1) * u"rad", T(1) * u"cm")
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Spherical(T(1) * u"mm", T(1) * u"rad", T(1) * u"rad")
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = LatLon(T(30), T(60))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = LatLonAlt(T(30), T(60), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = GeocentricLatLon(T(30), T(60))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = AuthalicLatLon(T(30), T(60))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Mercator(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = WebMercator(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = PlateCarree(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Lambert(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = WinkelTripel(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Robinson(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = OrthoNorth(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = TransverseMercator(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = UTMNorth{32}(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = ShiftedMercator(T(1), T(1))
+    rv = CoordRefSystems.rawvalues(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "equality operator" begin
