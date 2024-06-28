@@ -14,27 +14,29 @@ function isapproxtest2D(CRS)
   @test c1 ≈ c3
 end
 
-function isapproxtest3D(CRS)
-  c1 = convert(CRS, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
+isapproxtest3D(CRS) = isapproxtest3D(CRS{WGS84Latest}, CRS{ITRF{2008}})
+
+function isapproxtest3D(CRS1, CRS2)
+  c1 = convert(CRS1, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
 
   τ = CoordRefSystems.atol(Float64) * u"m"
-  c2 = convert(CRS, Cartesian{WGS84Latest}(3.2e6u"m" + τ, 3.2e6u"m", 4.5e6u"m"))
-  c3 = convert(CRS, Cartesian{WGS84Latest}(3.2e6u"m", 3.2e6u"m" + τ, 4.5e6u"m"))
-  c4 = convert(CRS, Cartesian{WGS84Latest}(3.2e6u"m", 3.2e6u"m", 4.5e6u"m" + τ))
+  c2 = convert(CRS1, Cartesian{WGS84Latest}(3.2e6u"m" + τ, 3.2e6u"m", 4.5e6u"m"))
+  c3 = convert(CRS1, Cartesian{WGS84Latest}(3.2e6u"m", 3.2e6u"m" + τ, 4.5e6u"m"))
+  c4 = convert(CRS1, Cartesian{WGS84Latest}(3.2e6u"m", 3.2e6u"m", 4.5e6u"m" + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
 
   τ = CoordRefSystems.atol(Float32) * u"m"
-  c2 = convert(CRS, Cartesian{WGS84Latest}(3.2f6u"m" + τ, 3.2f6u"m", 4.5f6u"m"))
-  c3 = convert(CRS, Cartesian{WGS84Latest}(3.2f6u"m", 3.2f6u"m" + τ, 4.5f6u"m"))
-  c4 = convert(CRS, Cartesian{WGS84Latest}(3.2f6u"m", 3.2f6u"m", 4.5f6u"m" + τ))
+  c2 = convert(CRS1, Cartesian{WGS84Latest}(3.2f6u"m" + τ, 3.2f6u"m", 4.5f6u"m"))
+  c3 = convert(CRS1, Cartesian{WGS84Latest}(3.2f6u"m", 3.2f6u"m" + τ, 4.5f6u"m"))
+  c4 = convert(CRS1, Cartesian{WGS84Latest}(3.2f6u"m", 3.2f6u"m", 4.5f6u"m" + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
 
-  c1 = convert(CRS, Cartesian{ITRF{2008}}(T(3.2e6), T(3.2e6), T(4.5e6)))
-  c2 = convert(CRS, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
+  c1 = convert(CRS2, Cartesian{ITRF{2008}}(T(3.2e6), T(3.2e6), T(4.5e6)))
+  c2 = convert(CRS1, Cartesian{WGS84Latest}(T(3.2e6), T(3.2e6), T(4.5e6)))
   @test c1 ≈ c2
 end
 
