@@ -95,8 +95,10 @@ Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = conver
 Base.convert(::Type{Cartesian{Datum,2}}, coords::Projected{Datum}) where {Datum} = Cartesian{Datum}(coords.x, coords.y)
 Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = C(coords.x, coords.y)
 
-Base.convert(::Type{Cartesian{Datum,3}}, coords::Projected{Datum}) where {Datum} = convert(Cartesian, convert(LatLon, coords))
-Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,3}) where {Datum} = convert(C, convert(LatLon, coords))
+Base.convert(::Type{Cartesian{Datum,3}}, coords::Projected{Datum}) where {Datum} =
+  convert(Cartesian, convert(LatLon, coords))
+Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,3}) where {Datum} =
+  convert(C, convert(LatLon, coords))
 
 # projection conversion with same datum
 function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}
