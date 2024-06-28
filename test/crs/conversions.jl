@@ -950,26 +950,47 @@
     end
 
     @testset "Cartesian <> Projected" begin
-      c1 = convert(Mercator, LatLon(T(30), T(40)))
+      # conversion to cartesian 2D (default)
+      c1 = Mercator(T(1), T(1))
       c2 = convert(Cartesian, c1)
+      @test allapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
+      c3 = convert(Mercator{WGS84Latest}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = OrthoNorth(T(1), T(1))
+      c2 = convert(Cartesian, c1)
+      @test allapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
+      c3 = convert(OrthoNorth{WGS84Latest}, c2)
+      @test allapprox(c3, c1)
+
+      # conversion to cartesian 3D
+      c1 = convert(Mercator, LatLon(T(30), T(40)))
+      c2 = convert(Cartesian{WGS84Latest,3}, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
-      c3 = convert(Mercator, c2)
+      c3 = convert(Mercator{WGS84Latest}, c2)
+      @test allapprox(c3, c1)
 
       c1 = convert(OrthoNorth, LatLon(T(30), T(40)))
-      c2 = convert(Cartesian, c1)
+      c2 = convert(Cartesian{WGS84Latest,3}, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
-      c3 = convert(OrthoNorth, c2)
+      c3 = convert(OrthoNorth{WGS84Latest}, c2)
       @test allapprox(c3, c1)
 
       # type stability
-      c1 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c3 = Mercator(T(0), T(0))
-      c4 = OrthoNorth(T(0), T(0))
-      @inferred convert(Mercator, c1)
-      @inferred convert(OrthoNorth, c2)
-      @inferred convert(Cartesian, c3)
-      @inferred convert(Cartesian, c4)
+      c1 = Cartesian{WGS84Latest}(T(1), T(1))
+      c2 = Cartesian{WGS84Latest}(T(1), T(1))
+      c3 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c4 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
+      c5 = Mercator(T(0), T(0))
+      c6 = OrthoNorth(T(0), T(0))
+      @inferred convert(Mercator{WGS84Latest}, c1)
+      @inferred convert(OrthoNorth{WGS84Latest}, c2)
+      @inferred convert(Mercator{WGS84Latest}, c3)
+      @inferred convert(OrthoNorth{WGS84Latest}, c4)
+      @inferred convert(Cartesian, c5)
+      @inferred convert(Cartesian, c6)
+      @inferred convert(Cartesian{WGS84Latest,3}, c5)
+      @inferred convert(Cartesian{WGS84Latest,3}, c6)
     end
 
     @testset "Projection conversion" begin
