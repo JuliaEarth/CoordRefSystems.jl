@@ -33,6 +33,12 @@ Checks whether `latlon` coordinates are within the `CRS` domain.
 """
 indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
 
+Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
+  isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
+
+Base.isapprox(coords₁::Projected{Datum₁}, coords₂::Projected{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(convert(Cartesian{Datum₁,3}, coords₁), convert(Cartesian{Datum₂,3}, coords₂); kwargs...)
+
 function Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{C}) where {C<:Projected}
   try
     convert(C, rand(rng, LatLon))
@@ -84,8 +90,13 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
-Base.convert(C::Type{<:Cartesian}, coords::Projected) = convert(C, convert(LatLon, coords))
-Base.convert(C::Type{<:Projected}, coords::Cartesian) = convert(C, convert(LatLon, coords))
+Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
+
+Base.convert(::Type{Cartesian{Datum,2}}, coords::Projected{Datum}) where {Datum} = Cartesian{Datum}(coords.x, coords.y)
+Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = C(coords.x, coords.y)
+
+Base.convert(::Type{Cartesian{Datum,3}}, coords::Projected{Datum}) where {Datum} = convert(Cartesian, convert(LatLon, coords))
+Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,3}) where {Datum} = convert(C, convert(LatLon, coords))
 
 # projection conversion with same datum
 function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}

@@ -104,3 +104,9 @@ function Base.convert(C::Type{<:LatLon}, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ
   latlon = convert(C, pcoords)
   C(latlon.lat, latlon.lon + lon)
 end
+
+Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,2}) where {Datum} =
+  C(coords.x, coords.y)
+
+Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,3}) where {Datum} =
+  convert(C, convert(LatLon, coords))
