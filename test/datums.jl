@@ -56,7 +56,7 @@
     @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
   end
 
-@testset "GRS80S" begin
+  @testset "GRS80S" begin
     @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎
   end
 
