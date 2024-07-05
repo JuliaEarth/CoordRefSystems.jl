@@ -56,6 +56,10 @@
     @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
   end
 
+@testset "GRS80S" begin
+    @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎
+  end
+
   @testset "ShiftedDatum" begin
     ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
     @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎

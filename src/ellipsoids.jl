@@ -136,6 +136,17 @@ const _GRS80 = ellipfromaf⁻¹(6378137.0u"m", 298.257222101)
 ellipsoidparams(::Type{GRS80🌎}) = _GRS80
 
 """
+  GRS80S🌎
+
+GRS 1980 (IUGG, 1980) Authalic Sphere.
+"""
+abstract type GRS80S🌎 <: RevolutionEllipsoid end
+
+const _GRS80S = ellipfromab(6371007.0u"m", 6371007.0u"m")
+
+ellipsoidparams(::Type{GRS80S🌎}) = _GRS80S
+
+"""
   MERIT🌎
 
 MERIT 1983 ellipsoid.
