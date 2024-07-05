@@ -47,6 +47,7 @@ export
   Ire65,
   NZGD1949,
   OSGB36,
+  GRS80S,
   ellipsoid,
   epoch,
 

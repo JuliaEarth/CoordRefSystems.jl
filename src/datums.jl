@@ -176,3 +176,12 @@ Airy 1830 datum.
 abstract type OSGB36 <: Datum end
 
 ellipsoid(::Type{OSGB36}) = Airy🌎
+
+"""
+    GRS80S
+
+GRS 1980 Authalic Sphere datum.
+"""
+abstract type GRS80S <: Datum end
+
+ellipsoid(::Type{GRS80S}) = GRS80S🌎
