@@ -95,7 +95,7 @@ function Base.convert(C::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}, coords::LatLo
   C(pcoords.x + x, pcoords.y + y)
 end
 
-function Base.convert(C::Type{<:LatLon}, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ}
+function Base.convert(C::Type{LatLon{Datum}}, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ}) where {CRS,lonₒ,xₒ,yₒ,Datum}
   T = numtype(coords.x)
   x = numconvert(T, xₒ)
   y = numconvert(T, yₒ)
@@ -104,6 +104,12 @@ function Base.convert(C::Type{<:LatLon}, coords::ShiftedCRS{CRS,lonₒ,xₒ,yₒ
   latlon = convert(C, pcoords)
   C(latlon.lat, latlon.lon + lon)
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+Base.convert(::Type{LatLon}, coords::ShiftedCRS) = convert(LatLon{datum(coords)}, coords)
 
 Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,2}) where {Datum} =
   C(coords.x, coords.y)

@@ -952,11 +952,11 @@
     @testset "LatLon <> Projected (different datums)" begin
       # WGS84 (G1762) to ITRF2008
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Mercator{ITRF{2008}}, c2)
+      c2 = convert(Mercator{ITRF{2008}}, c1)
       @test allapprox(c2, Mercator{ITRF{2008}}(T(10018754.171394622), T(5591295.9185533915)))
 
       c1 = Mercator(T(10018754.171394622), T(5591295.9185533915))
-      c2 = convert(LatLon{ITRF{2008}}, c2)
+      c2 = convert(LatLon{ITRF{2008}}, c1)
       @test allapprox(c2, LatLon{ITRF{2008}}(T(45), T(90)))
 
       # ITRF2008 to ITRF2020
@@ -967,8 +967,8 @@
 
       ShiftedMercator = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
       c1 = ShiftedMercator(T(8349161.8090374395), T(5591495.918071649))
-      # c2 = convert(LatLon{ITRFLatest}, c1)
-      # @test allapprox(c2, LatLon{ITRFLatest}(...))
+      c2 = convert(LatLon{ITRFLatest}, c1)
+      @test allapprox(c2, LatLon{ITRFLatest}(T(44.99999999574679), T(89.99999999177004)))
 
       # type stability
       c1 = LatLon(T(45), T(90))
