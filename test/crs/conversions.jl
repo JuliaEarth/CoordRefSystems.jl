@@ -949,6 +949,52 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> Projected (different datums)" begin
+      # WGS84 (G1762) to ITRF2008
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(Mercator{ITRF{2008}}, c1)
+      @test allapprox(c2, Mercator{ITRF{2008}}(T(10018754.171394622), T(5591295.9185533915)))
+
+      c1 = Mercator(T(10018754.171394622), T(5591295.9185533915))
+      c2 = convert(LatLon{ITRF{2008}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2008}}(T(45), T(90)))
+
+      # ITRF2008 to ITRF2020
+      ShiftedMercator = CoordRefSystems.shift(Mercator{ITRFLatest}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      c1 = LatLon{ITRF{2008}}(T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.8090374395), T(5591495.918071649)))
+
+      ShiftedMercator = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+      c1 = ShiftedMercator(T(8349161.8090374395), T(5591495.918071649))
+      c2 = convert(LatLon{ITRFLatest}, c1)
+      @test allapprox(c2, LatLon{ITRFLatest}(T(44.99999999574679), T(89.99999999177004)))
+
+      # GGRS87 to WGS84
+      c1 = LatLon{GGRS87}(T(45), T(90))
+      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      @test allapprox(c2, PlateCarree(T(10019036.352134585), T(5009498.78549335)))
+
+      c1 = PlateCarree{GGRS87}(T(10019036.352134585), T(5009498.78549335))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test allapprox(c2, LatLon(T(45.002186400242984), T(90.00506975166428)))
+
+      # NAD83 to WGS84
+      c1 = LatLon{NAD83}(T(45), T(90))
+      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      @test allapprox(c2, WinkelTripel(T(7044801.698007298), T(5231448.051441181)))
+
+      c1 = WinkelTripel{NAD83}(T(7044801.698007298), T(5231448.051441181))
+      c2 = convert(LatLon{WGS84Latest}, c1)
+      @test allapprox(c2, LatLon(T(45), T(90)))
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = Mercator(T(10018754.171394622), T(5591295.9185533915))
+      @inferred convert(Mercator{ITRF{2008}}, c1)
+      @inferred convert(LatLon{ITRF{2008}}, c2)
+    end
+
     @testset "Cartesian <> Projected" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
 

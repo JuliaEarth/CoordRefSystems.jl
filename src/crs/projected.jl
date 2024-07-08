@@ -90,6 +90,12 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
 end
 
+Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ} =
+  convert(C, convert(LatLon{Datumₜ}, coords))
+
+Base.convert(C::Type{LatLon{Datumₜ}}, coords::Projected{Datumₛ}) where {Datumₜ,Datumₛ} =
+  convert(C, convert(LatLon, coords))
+
 Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
 
 Base.convert(::Type{Cartesian{Datum,2}}, coords::Projected{Datum}) where {Datum} = Cartesian{Datum}(coords.x, coords.y)
