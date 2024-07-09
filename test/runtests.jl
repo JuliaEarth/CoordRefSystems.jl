@@ -2,6 +2,7 @@ using CoordRefSystems
 using Unitful
 using StableRNGs
 using ArchGDAL
+using ArchGDAL.GDAL
 using Test
 
 using CoordRefSystems: Met, Deg, Rad
