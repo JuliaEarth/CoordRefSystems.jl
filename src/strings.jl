@@ -12,7 +12,7 @@ function string2code(crsstr)
   wktregex = r"([A-Z_]+)\[(.*)\]"s
   wktmatch = match(wktregex, crsstr)
   if isnothing(wktmatch)
-    error("CRS file format not supported")
+    throw(ArgumentError("CRS format not supported"))
   end
   keyword, content = wktmatch
   # remove extra white spaces from content
@@ -25,7 +25,7 @@ function string2code(crsstr)
     idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
     idmatch = match(idregex, content)
     if isnothing(idmatch)
-      error("CRS ID not found in the WKT2 file")
+      throw(ArgumentError("CRS ID not found in the WKT2 string"))
     end
     type, codestr = idmatch
     code = parse(Int, codestr)
@@ -35,12 +35,12 @@ function string2code(crsstr)
     strregex = r"\"(.*?)\""
     strmatch = match(strregex, content)
     if isnothing(strmatch)
-      error("ESRI ID of the CRS not found in the ESRI WKT file")
+      throw(ArgumentError("ESRI ID of the CRS not found in the ESRI WKT string"))
     end
     esriid = strmatch.captures[1]
     esriid2code[esriid]
   else
-    error("invalid WKT file")
+    throw(ArgumentError("invalid WKT string"))
   end
 end
 
