@@ -42,8 +42,8 @@ function string2code(crsstr)
     else
       throw(ArgumentError("""
       EPSG/ESRI code for the ESRI ID \"$esriid\" not found in dictionary.
-      Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/strings.jl. 
-      If you know the EPSG/ESRI code of a given ESRI WKT string, please submit a pull request" 
+      Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/strings.jl
+      If you know the EPSG/ESRI code of a given ESRI WKT string, please submit a pull request.
       """))
     end
   else
