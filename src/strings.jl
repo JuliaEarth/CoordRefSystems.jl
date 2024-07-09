@@ -15,15 +15,14 @@ function string2code(crsstr)
     throw(ArgumentError("CRS format not supported"))
   end
   keyword, content = wktmatch
-  # remove extra white spaces from content
-  content = strip(content)
   # to differentiate WKT1 from WKT2, see Annex B.8 of the OGC specification:
   # https://docs.ogc.org/is/18-010r11/18-010r11.pdf
   if endswith(keyword, "CRS") # WKT2
     # match the last EPSG/ESRI ID
     # the last ID comes with the CRS code
     idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
-    idmatch = match(idregex, content)
+    # removing all extra spaces for safe matching
+    idmatch = match(idregex, filter(isspace, content))
     if isnothing(idmatch)
       throw(ArgumentError("CRS ID not found in the WKT2 string"))
     end
