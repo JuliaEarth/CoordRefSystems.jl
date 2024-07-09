@@ -29,4 +29,7 @@
   # ESRI ID of the CRS not found in the ESRI WKT string
   str = "PROJCS[]"
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+  # CRS for the ESRI ID "test" not found
+  str = "PROJCS[\"test\"]"
+  @test_throws ArgumentError CoordRefSystems.string2code(str)
 end

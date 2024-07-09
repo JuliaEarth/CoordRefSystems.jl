@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------
 
 """
-    CoordRefSystems.string2code(crsstr)
+    CoordRefSystems.string2code(string)
 
-Get the EPSG/ESRI code from the CRS string `crsstr`.
+Get the EPSG/ESRI code from the CRS `string`.
 """
 function string2code(crsstr)
   # regex for WKT formats: "KEYWORD[content]"
@@ -37,7 +37,11 @@ function string2code(crsstr)
       throw(ArgumentError("ESRI ID of the CRS not found in the ESRI WKT string"))
     end
     esriid = strmatch.captures[1]
-    esriid2code[esriid]
+    if haskey(esriid2code, esriid)
+      esriid2code[esriid]
+    else
+      throw(ArgumentError("CRS for the ESRI ID \"$esriid\" not found"))
+    end
   else
     throw(ArgumentError("invalid WKT string"))
   end
