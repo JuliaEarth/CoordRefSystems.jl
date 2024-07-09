@@ -1,4 +1,5 @@
-@testset "EPSG/ESRI Codes" begin
+@testset "get" begin
+  # EPSG/ESRI code
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4326}) === LatLon{WGS84Latest}

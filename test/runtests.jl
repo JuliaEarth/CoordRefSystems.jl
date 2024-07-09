@@ -9,7 +9,7 @@ using CoordRefSystems: Met, Deg, Rad
 
 include("testutils.jl")
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "strings.jl", "misc.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION
