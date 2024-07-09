@@ -40,7 +40,11 @@ function string2code(crsstr)
     if haskey(esriid2code, esriid)
       esriid2code[esriid]
     else
-      throw(ArgumentError("CRS for the ESRI ID \"$esriid\" not found"))
+      throw(ArgumentError("""
+      EPSG/ESRI code for the ESRI ID \"$esriid\" not found in dictionary.
+      Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/strings.jl. 
+      If you know the EPSG/ESRI code of a given ESRI WKT string, please submit a pull request" 
+      """))
     end
   else
     throw(ArgumentError("invalid WKT string"))
