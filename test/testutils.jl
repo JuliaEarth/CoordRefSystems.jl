@@ -54,7 +54,7 @@ function wktstring(code; format="WKT2", multiline=false)
   spref = ArchGDAL.importUserInput(codestring(code))
   options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
   wktptr = Ref{Cstring}()
-  GDAL.osrexporttowktex(spref, wktptr, options)
+  ArchGDAL.GDAL.osrexporttowktex(spref, wktptr, options)
   unsafe_string(wktptr[])
 end
 
