@@ -1,13 +1,15 @@
 using CoordRefSystems
 using Unitful
 using StableRNGs
+using ArchGDAL
+using ArchGDAL.GDAL
 using Test
 
 using CoordRefSystems: Met, Deg, Rad
 
 include("testutils.jl")
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "misc.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "codes.jl", "strings.jl", "misc.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION
