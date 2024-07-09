@@ -3,24 +3,24 @@
 # ------------------------------------------------------------------
 
 """
+    CoordRefSystems.get(string)
+
+Get the CRS type from the CRS `string`.
+"""
+get(crsstr::AbstractString) = get(string2code(crsstr))
+
+"""
     CoordRefSystems.get(code)
 
 Get the CRS type from the EPSG/ESRI `code`.
 """
-function get(code)
+function get(code::Type{<:CRSCode})
   throw(ArgumentError("""
   The provided code $code is not mapped to a CRS type yet. 
   Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/get.jl
   If you know the CRS type of a given code, please submit a pull request.
   """))
 end
-
-"""
-    CoordRefSystems.get(string)
-
-Get the CRS type from the CRS `string`.
-"""
-get(crsstr::AbstractString) = get(string2code(crsstr))
 
 # ----------------
 # IMPLEMENTATIONS
