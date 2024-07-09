@@ -22,7 +22,7 @@ function string2code(crsstr)
     # the last ID comes with the CRS code
     idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
     # removing all extra spaces for safe matching
-    idmatch = match(idregex, filter(isspace, content))
+    idmatch = match(idregex, filter(!isspace, content))
     if isnothing(idmatch)
       throw(ArgumentError("CRS ID not found in the WKT2 string"))
     end
