@@ -1,0 +1,59 @@
+# ------------------------------------------------------------------
+# Licensed under the MIT License. See LICENSE in the project root.
+# ------------------------------------------------------------------
+
+"""
+    CoordRefSystems.string2code(crsstr)
+
+Get the EPSG/ESRI code from the `crsstr`.
+"""
+function string2code(crsstr)
+  # regex for WKT formats: "KEYWORD[content]"
+  wktregex = r"([A-Z_]+)\[(.*)\]"s
+  wktmatch = match(wktregex, crsstr)
+  if isnothing(wktmatch)
+    error("CRS file format not supported")
+  end
+  keyword, content = wktmatch
+  # remove extra white spaces from content
+  content = strip(content)
+  # to differentiate WKT1 from WKT2, see Annex B.8 of the OGC specification:
+  # https://docs.ogc.org/is/18-010r11/18-010r11.pdf
+  if endswith(keyword, "CRS") # WKT2
+    # match the last EPSG/ESRI ID
+    # the last ID comes with the CRS code
+    idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
+    idmatch = match(idregex, content)
+    if isnothing(idmatch)
+      error("CRS ID not found in the WKT2 file")
+    end
+    type, codestr = idmatch
+    code = parse(Int, codestr)
+    type == "EPSG" ? EPSG{code} : ESRI{code}
+  elseif endswith(keyword, "CS") # ESRI WKT
+    # the content of the first string comes with the ESRI ID of the CRS
+    strregex = r"\"(.*?)\""
+    strmatch = match(strregex, content)
+    if isnothing(strmatch)
+      error("ESRI ID of the CRS not found in the ESRI WKT file")
+    end
+    esriid = strmatch.captures[1]
+    esriid2code[esriid]
+  else
+    error("invalid WKT file")
+  end
+end
+
+const esriid2code = Dict(
+  "WGS_1984_World_Mercator" => EPSG{3395},
+  "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
+  "GCS_WGS_1984" => EPSG{4326},
+  "WGS_1984_Plate_Carree" => EPSG{32662},
+  "WGS_1984_UTM_Zone_33N" => EPSG{32633},
+  "World_Behrmann" => ESRI{54017},
+  "World_Robinson" => ESRI{54030},
+  "World_Cylindrical_Equal_Area" => ESRI{54034},
+  "World_Winkel_Tripel_NGS" => ESRI{54042},
+  "North_Pole_Orthographic" => ESRI{102035},
+  "South_Pole_Orthographic" => ESRI{102037}
+)
