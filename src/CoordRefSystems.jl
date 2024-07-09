@@ -21,6 +21,7 @@ include("helmert.jl")
 include("crs.jl")
 include("shift.jl")
 include("codes.jl")
+include("crsstrings.jl")
 
 export
   # revolution ellipsoids
