@@ -11,4 +11,8 @@
   @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
   @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
   @test_throws ArgumentError CoordRefSystems.get(EPSG{1})
+
+  # CRS string
+  str = wktstring(EPSG{3395})
+  @test CoordRefSystems.get(str) === Mercator{WGS84Latest}
 end

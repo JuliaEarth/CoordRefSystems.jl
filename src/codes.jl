@@ -23,7 +23,7 @@ abstract type ESRI{Code} end
     CoordRefSystems.get(::Type{EPSG{code}})
     CoordRefSystems.get(::Type{ESRI{code}})
 
-Returns a CRS type that has the EPSG/ESRI `code`.
+Get the CRS type from the EPSG/ESRI `code`.
 """
 function get(code)
   throw(ArgumentError("""
@@ -32,6 +32,13 @@ function get(code)
   If you know the CRS type of a given code, please submit a pull request.
   """))
 end
+
+"""
+    CoordRefSystems.get(string)
+
+Get the CRS type from the CRS `string`.
+"""
+get(crsstr::AbstractString) = get(string2code(crsstr))
 
 # ----------------
 # IMPLEMENTATIONS
