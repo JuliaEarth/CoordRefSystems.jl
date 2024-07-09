@@ -5,7 +5,7 @@
 """
     CoordRefSystems.string2code(crsstr)
 
-Get the EPSG/ESRI code from the `crsstr`.
+Get the EPSG/ESRI code from the CRS string `crsstr`.
 """
 function string2code(crsstr)
   # regex for WKT formats: "KEYWORD[content]"
