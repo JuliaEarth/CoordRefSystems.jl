@@ -49,3 +49,25 @@ function equaltest(CRS, n)
   @test c1 == c2
   @test c1 == c3
 end
+
+function wktstring(code; format="WKT2", multiline=false)
+  spref = ArchGDAL.importUserInput(codestring(code))
+  options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
+  wktptr = Ref{Cstring}()
+  GDAL.osrexporttowktex(spref, wktptr, options)
+  unsafe_string(wktptr[])
+end
+
+codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
+codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
+
+function crsstringtest(code)
+  str = wktstring(code)
+  @test CoordRefSystems.string2code(str) === code
+  str = wktstring(code, multiline=true)
+  @test CoordRefSystems.string2code(str) === code
+  str = wktstring(code, format="WKT1_ESRI")
+  @test CoordRefSystems.string2code(str) === code
+  str = wktstring(code, format="WKT1_ESRI", multiline=true)
+  @test CoordRefSystems.string2code(str) === code
+end
