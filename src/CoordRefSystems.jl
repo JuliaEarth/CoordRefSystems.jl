@@ -41,6 +41,7 @@ export
   WGS84Latest,
   ITRF,
   ITRFLatest,
+  Aratu,
   Carthage,
   GGRS87,
   GRS80S,
