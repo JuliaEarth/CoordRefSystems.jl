@@ -26,14 +26,19 @@ end
 # IMPLEMENTATIONS
 # ----------------
 
-get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
-get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
-get(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
-get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
-get(::Type{EPSG{32633}}) = UTM{North,33,WGS84Latest}
-get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
-get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
-get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
-get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
-get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
-get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+get(::Type{EPSG{3395}}) = Mercator{WGS84{1762}}
+get(::Type{EPSG{3857}}) = WebMercator{WGS84{1762}}
+get(::Type{EPSG{4208}}) = LatLon{Aratu}
+get(::Type{EPSG{4326}}) = LatLon{WGS84{1762}}
+get(::Type{EPSG{4988}}) = Cartesian{shift(ITRF{2000},2000.4),3}
+get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000},2000.4)}
+get(::Type{EPSG{9988}}) = Cartesian{ITRF{2020},3}
+get(::Type{EPSG{10176}}) = Cartesian{IGS20,3}
+get(::Type{EPSG{32633}}) = UTM{North,33,WGS84{1762}}
+get(::Type{EPSG{32662}}) = PlateCarree{WGS84{1762}}
+get(::Type{ESRI{54017}}) = Behrmann{WGS84{1762}}
+get(::Type{ESRI{54030}}) = Robinson{WGS84{1762}}
+get(::Type{ESRI{54034}}) = Lambert{WGS84{1762}}
+get(::Type{ESRI{54042}}) = WinkelTripel{WGS84{1762}}
+get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84{1762}}
+get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84{1762}}

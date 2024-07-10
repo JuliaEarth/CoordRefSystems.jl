@@ -106,6 +106,15 @@ epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
 
 """
+    Aratu
+
+Aratu datum.
+"""
+abstract type Aratu <: Datum end
+
+ellipsoid(::Type{Aratu}) = Intl🌎
+
+"""
     Carthage
 
 Carthage 1934 Tunisia datum.
@@ -140,6 +149,15 @@ Hermannskogel datum.
 abstract type Hermannskogel <: Datum end
 
 ellipsoid(::Type{Hermannskogel}) = Bessel🌎
+
+"""
+    IGS20
+
+IGS20 datum.
+"""
+abstract type IGS20 <: Datum end
+
+ellipsoid(::Type{IGS20}) = GRS80🌎
 
 """
     Ire65
