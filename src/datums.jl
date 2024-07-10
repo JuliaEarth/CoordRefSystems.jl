@@ -106,6 +106,15 @@ epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
 
 """
+    AmericaS2000
+
+Sistema de Referencia Geocentrico para las AmericaS 2000
+"""
+abstract type AmericaS2000 <: Datum end
+
+ellipsoid(::Type{AmericaS2000}) = GRS80🌎
+
+"""
     Carthage
 
 Carthage 1934 Tunisia datum.
