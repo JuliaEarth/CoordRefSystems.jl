@@ -6,6 +6,8 @@
   @test epoch(WGS84{1150}) == 2001.0
   @test epoch(WGS84{1674}) == 2005.0
   @test epoch(WGS84{1762}) == 2005.0
+  @test epoch(WGS84{2139}) == 2016.0
+  @test epoch(WGS84{2296}) == 2020.0
 
   @test ellipsoid(ITRFLatest) === CoordRefSystems.GRS80🌎
   @test epoch(ITRF{1991}) == 1988.0
