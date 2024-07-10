@@ -133,6 +133,15 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
+    Chua
+
+Chua datum.
+"""
+abstract type Chua <: Datum end
+
+ellipsoid(::Type{Chua}) = Intl🌎
+
+"""
     GGRS87
 
 Greek Geodetic Reference System 1987 datum.

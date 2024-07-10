@@ -43,6 +43,7 @@ export
   ITRFLatest,
   AmericaS2000,
   Carthage,
+  Chua,
   GGRS87,
   GRS80S,
   Hermannskogel,

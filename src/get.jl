@@ -29,6 +29,7 @@ end
 get(::Type{EPSG{3395}}) = Mercator{WGS84{1762}}
 get(::Type{EPSG{3857}}) = WebMercator{WGS84{1762}}
 get(::Type{EPSG{4208}}) = LatLon{Aratu}
+get(::Type{EPSG{4224}}) = LatLon{Chua}
 get(::Type{EPSG{4326}}) = LatLon{WGS84{1762}}
 get(::Type{EPSG{4988}}) = Cartesian{AmericaS2000,3}
 get(::Type{EPSG{9988}}) = Cartesian{ITRF{2020},3}
