@@ -20,5 +20,5 @@
 
   # CRS string
   str = wktstring(EPSG{3395})
-  @test CoordRefSystems.get(str) === Mercator{WGS84Latest}
+  @test CoordRefSystems.get(str) === Mercator{WGS84{1762}}
 end
