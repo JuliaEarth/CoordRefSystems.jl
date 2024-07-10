@@ -115,6 +115,15 @@ abstract type AmericaS2000 <: Datum end
 ellipsoid(::Type{AmericaS2000}) = GRS80🌎
 
 """
+    Aratu
+
+Aratu datum.
+"""
+abstract type Aratu <: Datum end
+
+ellipsoid(::Type{Aratu}) = Intl🌎
+
+"""
     Carthage
 
 Carthage 1934 Tunisia datum.
