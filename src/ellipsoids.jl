@@ -70,116 +70,6 @@ flattening⁻¹(E::Type{<:RevolutionEllipsoid}) = ellipsoidparams(E).f⁻¹
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/ellps.cpp
 
 """
-  WGS60🌎
-
-WGS 60 ellipsoid.
-"""
-abstract type WGS60🌎 <: RevolutionEllipsoid end
-
-const _WGS60 = ellipfromaf⁻¹(6378165.0u"m", 298.3)
-
-ellipsoidparams(::Type{WGS60🌎}) = _WGS60
-
-"""
-  WGS66🌎
-
-WGS 66 ellipsoid.
-"""
-abstract type WGS66🌎 <: RevolutionEllipsoid end
-
-const _WGS66 = ellipfromaf⁻¹(6378145.0u"m", 298.25)
-
-ellipsoidparams(::Type{WGS66🌎}) = _WGS66
-
-"""
-  WGS72🌎
-
-WGS 72 ellipsoid.
-"""
-abstract type WGS72🌎 <: RevolutionEllipsoid end
-
-const _WGS72 = ellipfromaf⁻¹(6378135.0u"m", 298.26)
-
-ellipsoidparams(::Type{WGS72🌎}) = _WGS72
-
-"""
-  WGS84🌎
-
-WGS 84 ellipsoid.
-"""
-abstract type WGS84🌎 <: RevolutionEllipsoid end
-
-const _WGS84 = ellipfromaf⁻¹(6378137.0u"m", 298.257223563)
-
-ellipsoidparams(::Type{WGS84🌎}) = _WGS84
-
-"""
-  GRS67🌎
-
-GRS 67(IUGG 1967) ellipsoid.
-"""
-abstract type GRS67🌎 <: RevolutionEllipsoid end
-
-const _GRS67 = ellipfromaf⁻¹(6378160.0u"m", 298.2471674270)
-
-ellipsoidparams(::Type{GRS67🌎}) = _GRS67
-
-"""
-  GRS80🌎
-
-GRS 1980(IUGG, 1980) ellipsoid.
-"""
-abstract type GRS80🌎 <: RevolutionEllipsoid end
-
-const _GRS80 = ellipfromaf⁻¹(6378137.0u"m", 298.257222101)
-
-ellipsoidparams(::Type{GRS80🌎}) = _GRS80
-
-"""
-  GRS80S🌎
-
-GRS 1980 (IUGG, 1980) Authalic Sphere.
-"""
-abstract type GRS80S🌎 <: RevolutionEllipsoid end
-
-const _GRS80S = ellipfromab(6371007.0u"m", 6371007.0u"m")
-
-ellipsoidparams(::Type{GRS80S🌎}) = _GRS80S
-
-"""
-  MERIT🌎
-
-MERIT 1983 ellipsoid.
-"""
-abstract type MERIT🌎 <: RevolutionEllipsoid end
-
-const _MERIT = ellipfromaf⁻¹(6378137.0u"m", 298.257)
-
-ellipsoidparams(::Type{MERIT🌎}) = _MERIT
-
-"""
-  SGS85🌎
-
-Soviet Geodetic System 85 ellipsoid.
-"""
-abstract type SGS85🌎 <: RevolutionEllipsoid end
-
-const _SGS85 = ellipfromaf⁻¹(6378136.0u"m", 298.257)
-
-ellipsoidparams(::Type{SGS85🌎}) = _SGS85
-
-"""
-  IAU76🌎
-
-IAU 1976 ellipsoid.
-"""
-abstract type IAU76🌎 <: RevolutionEllipsoid end
-
-const _IAU76 = ellipfromaf⁻¹(6378140.0u"m", 298.257)
-
-ellipsoidparams(::Type{IAU76🌎}) = _IAU76
-
-"""
   Airy🌎
 
 Airy 1830 ellipsoid.
@@ -189,28 +79,6 @@ abstract type Airy🌎 <: RevolutionEllipsoid end
 const _Airy = ellipfromaf⁻¹(6377563.396u"m", 299.3249646)
 
 ellipsoidparams(::Type{Airy🌎}) = _Airy
-
-"""
-  APL🌎
-
-Appl. Physics. 1965 ellipsoid.
-"""
-abstract type APL🌎 <: RevolutionEllipsoid end
-
-const _APL = ellipfromaf⁻¹(6378137.0u"m", 298.25)
-
-ellipsoidparams(::Type{APL🌎}) = _APL
-
-"""
-  NWL9D🌎
-
-Naval Weapons Lab., 1965 ellipsoid.
-"""
-abstract type NWL9D🌎 <: RevolutionEllipsoid end
-
-const _NWL9D = ellipfromaf⁻¹(6378145.0u"m", 298.25)
-
-ellipsoidparams(::Type{NWL9D🌎}) = _NWL9D
 
 """
   Andrae🌎
@@ -224,15 +92,15 @@ const _Andrae = ellipfromaf⁻¹(6377104.43u"m", 300.0)
 ellipsoidparams(::Type{Andrae🌎}) = _Andrae
 
 """
-  Danish🌎
+  APL🌎
 
-Andrae 1876 (Denmark, Iceland) ellipsoid.
+Appl. Physics. 1965 ellipsoid.
 """
-abstract type Danish🌎 <: RevolutionEllipsoid end
+abstract type APL🌎 <: RevolutionEllipsoid end
 
-const _Danish = ellipfromaf⁻¹(6377019.2563u"m", 300.0)
+const _APL = ellipfromaf⁻¹(6378137.0u"m", 298.25)
 
-ellipsoidparams(::Type{Danish🌎}) = _Danish
+ellipsoidparams(::Type{APL🌎}) = _APL
 
 """
   AustSA🌎
@@ -244,17 +112,6 @@ abstract type AustSA🌎 <: RevolutionEllipsoid end
 const _AustSA = ellipfromaf⁻¹(6378160.0u"m", 298.25)
 
 ellipsoidparams(::Type{AustSA🌎}) = _AustSA
-
-"""
-  GSK2011🌎
-
-GSK-2011 ellipsoid.
-"""
-abstract type GSK2011🌎 <: RevolutionEllipsoid end
-
-const _GSK2011 = ellipfromaf⁻¹(6378136.5u"m", 298.2564151)
-
-ellipsoidparams(::Type{GSK2011🌎}) = _GSK2011
 
 """
   Bessel🌎
@@ -277,6 +134,17 @@ abstract type BessNam🌎 <: RevolutionEllipsoid end
 const _BessNam = ellipfromaf⁻¹(6377483.865u"m", 299.1528128)
 
 ellipsoidparams(::Type{BessNam🌎}) = _BessNam
+
+"""
+  Clrk66🌎
+
+Clarke 1866 ellipsoid.
+"""
+abstract type Clrk66🌎 <: RevolutionEllipsoid end
+
+const _Clrk66 = ellipfromab(6378206.4u"m", 6356583.8u"m")
+
+ellipsoidparams(::Type{Clrk66🌎}) = _Clrk66
 
 """
   Clrk80🌎
@@ -310,6 +178,17 @@ abstract type CPM🌎 <: RevolutionEllipsoid end
 const _CPM = ellipfromaf⁻¹(6375738.7u"m", 334.29)
 
 ellipsoidparams(::Type{CPM🌎}) = _CPM
+
+"""
+  Danish🌎
+
+Andrae 1876 (Denmark, Iceland) ellipsoid.
+"""
+abstract type Danish🌎 <: RevolutionEllipsoid end
+
+const _Danish = ellipfromaf⁻¹(6377019.2563u"m", 300.0)
+
+ellipsoidparams(::Type{Danish🌎}) = _Danish
 
 """
   Delmbr🌎
@@ -422,6 +301,50 @@ const _Fschr68 = ellipfromaf⁻¹(6378150.0u"m", 298.3)
 ellipsoidparams(::Type{Fschr68🌎}) = _Fschr68
 
 """
+  GRS67🌎
+
+GRS 67(IUGG 1967) ellipsoid.
+"""
+abstract type GRS67🌎 <: RevolutionEllipsoid end
+
+const _GRS67 = ellipfromaf⁻¹(6378160.0u"m", 298.2471674270)
+
+ellipsoidparams(::Type{GRS67🌎}) = _GRS67
+
+"""
+  GRS80🌎
+
+GRS 1980(IUGG, 1980) ellipsoid.
+"""
+abstract type GRS80🌎 <: RevolutionEllipsoid end
+
+const _GRS80 = ellipfromaf⁻¹(6378137.0u"m", 298.257222101)
+
+ellipsoidparams(::Type{GRS80🌎}) = _GRS80
+
+"""
+  GRS80S🌎
+
+GRS 1980 (IUGG, 1980) Authalic Sphere.
+"""
+abstract type GRS80S🌎 <: RevolutionEllipsoid end
+
+const _GRS80S = ellipfromab(6371007.0u"m", 6371007.0u"m")
+
+ellipsoidparams(::Type{GRS80S🌎}) = _GRS80S
+
+"""
+  GSK2011🌎
+
+GSK-2011 ellipsoid.
+"""
+abstract type GSK2011🌎 <: RevolutionEllipsoid end
+
+const _GSK2011 = ellipfromaf⁻¹(6378136.5u"m", 298.2564151)
+
+ellipsoidparams(::Type{GSK2011🌎}) = _GSK2011
+
+"""
   Helmert🌎
 
 Helmert 1906 ellipsoid.
@@ -442,6 +365,17 @@ abstract type Hough🌎 <: RevolutionEllipsoid end
 const _Hough = ellipfromaf⁻¹(6378270.0u"m", 297.0)
 
 ellipsoidparams(::Type{Hough🌎}) = _Hough
+
+"""
+  IAU76🌎
+
+IAU 1976 ellipsoid.
+"""
+abstract type IAU76🌎 <: RevolutionEllipsoid end
+
+const _IAU76 = ellipfromaf⁻¹(6378140.0u"m", 298.257)
+
+ellipsoidparams(::Type{IAU76🌎}) = _IAU76
 
 """
   Intl🌎
@@ -488,28 +422,6 @@ const _Lerch = ellipfromaf⁻¹(6378139.0u"m", 298.257)
 ellipsoidparams(::Type{Lerch🌎}) = _Lerch
 
 """
-  Mprts🌎
-
-Maupertius 1738 ellipsoid.
-"""
-abstract type Mprts🌎 <: RevolutionEllipsoid end
-
-const _Mprts = ellipfromaf⁻¹(6397300.0u"m", 191.0)
-
-ellipsoidparams(::Type{Mprts🌎}) = _Mprts
-
-"""
-  PZ90🌎
-
-PZ-90 ellipsoid.
-"""
-abstract type PZ90🌎 <: RevolutionEllipsoid end
-
-const _PZ90 = ellipfromaf⁻¹(6378136.0u"m", 298.25784)
-
-ellipsoidparams(::Type{PZ90🌎}) = _PZ90
-
-"""
   ModAiry🌎
 
 Modified Airy ellipsoid.
@@ -521,15 +433,26 @@ const _ModAiry = ellipfromab(6377340.189u"m", 6356034.446u"m")
 ellipsoidparams(::Type{ModAiry🌎}) = _ModAiry
 
 """
-  Clrk66🌎
+  MERIT🌎
 
-Clarke 1866 ellipsoid.
+MERIT 1983 ellipsoid.
 """
-abstract type Clrk66🌎 <: RevolutionEllipsoid end
+abstract type MERIT🌎 <: RevolutionEllipsoid end
 
-const _Clrk66 = ellipfromab(6378206.4u"m", 6356583.8u"m")
+const _MERIT = ellipfromaf⁻¹(6378137.0u"m", 298.257)
 
-ellipsoidparams(::Type{Clrk66🌎}) = _Clrk66
+ellipsoidparams(::Type{MERIT🌎}) = _MERIT
+
+"""
+  Mprts🌎
+
+Maupertius 1738 ellipsoid.
+"""
+abstract type Mprts🌎 <: RevolutionEllipsoid end
+
+const _Mprts = ellipfromaf⁻¹(6397300.0u"m", 191.0)
+
+ellipsoidparams(::Type{Mprts🌎}) = _Mprts
 
 """
   NewIntl🌎
@@ -543,6 +466,17 @@ const _NewIntl = ellipfromab(6378157.5u"m", 6356772.2u"m")
 ellipsoidparams(::Type{NewIntl🌎}) = _NewIntl
 
 """
+  NWL9D🌎
+
+Naval Weapons Lab., 1965 ellipsoid.
+"""
+abstract type NWL9D🌎 <: RevolutionEllipsoid end
+
+const _NWL9D = ellipfromaf⁻¹(6378145.0u"m", 298.25)
+
+ellipsoidparams(::Type{NWL9D🌎}) = _NWL9D
+
+"""
   Plessis🌎
 
 Plessis 1817 (France) ellipsoid.
@@ -552,6 +486,17 @@ abstract type Plessis🌎 <: RevolutionEllipsoid end
 const _Plessis = ellipfromab(6376523.0u"m", 6355863.0u"m")
 
 ellipsoidparams(::Type{Plessis🌎}) = _Plessis
+
+"""
+  PZ90🌎
+
+PZ-90 ellipsoid.
+"""
+abstract type PZ90🌎 <: RevolutionEllipsoid end
+
+const _PZ90 = ellipfromaf⁻¹(6378136.0u"m", 298.25784)
+
+ellipsoidparams(::Type{PZ90🌎}) = _PZ90
 
 """
   SEAsia🌎
@@ -565,6 +510,17 @@ const _SEAsia = ellipfromab(6378155.0u"m", 6356773.3205u"m")
 ellipsoidparams(::Type{SEAsia🌎}) = _SEAsia
 
 """
+  SGS85🌎
+
+Soviet Geodetic System 85 ellipsoid.
+"""
+abstract type SGS85🌎 <: RevolutionEllipsoid end
+
+const _SGS85 = ellipfromaf⁻¹(6378136.0u"m", 298.257)
+
+ellipsoidparams(::Type{SGS85🌎}) = _SGS85
+
+"""
   Walbeck🌎
 
 Walbeck ellipsoid.
@@ -574,3 +530,47 @@ abstract type Walbeck🌎 <: RevolutionEllipsoid end
 const _Walbeck = ellipfromab(6376896.0u"m", 6355834.8467u"m")
 
 ellipsoidparams(::Type{Walbeck🌎}) = _Walbeck
+
+"""
+  WGS60🌎
+
+WGS 60 ellipsoid.
+"""
+abstract type WGS60🌎 <: RevolutionEllipsoid end
+
+const _WGS60 = ellipfromaf⁻¹(6378165.0u"m", 298.3)
+
+ellipsoidparams(::Type{WGS60🌎}) = _WGS60
+
+"""
+  WGS66🌎
+
+WGS 66 ellipsoid.
+"""
+abstract type WGS66🌎 <: RevolutionEllipsoid end
+
+const _WGS66 = ellipfromaf⁻¹(6378145.0u"m", 298.25)
+
+ellipsoidparams(::Type{WGS66🌎}) = _WGS66
+
+"""
+  WGS72🌎
+
+WGS 72 ellipsoid.
+"""
+abstract type WGS72🌎 <: RevolutionEllipsoid end
+
+const _WGS72 = ellipfromaf⁻¹(6378135.0u"m", 298.26)
+
+ellipsoidparams(::Type{WGS72🌎}) = _WGS72
+
+"""
+  WGS84🌎
+
+WGS 84 ellipsoid.
+"""
+abstract type WGS84🌎 <: RevolutionEllipsoid end
+
+const _WGS84 = ellipfromaf⁻¹(6378137.0u"m", 298.257223563)
+
+ellipsoidparams(::Type{WGS84🌎}) = _WGS84

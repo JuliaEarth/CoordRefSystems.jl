@@ -106,6 +106,15 @@ epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
 
 """
+    Carthage
+
+Carthage 1934 Tunisia datum.
+"""
+abstract type Carthage <: Datum end
+
+ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
+
+"""
     GGRS87
 
 Greek Geodetic Reference System 1987 datum.
@@ -115,31 +124,13 @@ abstract type GGRS87 <: Datum end
 ellipsoid(::Type{GGRS87}) = GRS80🌎
 
 """
-    NAD83
+    GRS80S
 
-North American Datum 1983.
+GRS 1980 Authalic Sphere datum.
 """
-abstract type NAD83 <: Datum end
+abstract type GRS80S <: Datum end
 
-ellipsoid(::Type{NAD83}) = GRS80🌎
-
-"""
-    Potsdam
-
-Potsdam Rauenberg 1950 DHDN datum.
-"""
-abstract type Potsdam <: Datum end
-
-ellipsoid(::Type{Potsdam}) = Bessel🌎
-
-"""
-    Carthage
-
-Carthage 1934 Tunisia datum.
-"""
-abstract type Carthage <: Datum end
-
-ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
+ellipsoid(::Type{GRS80S}) = GRS80S🌎
 
 """
     Hermannskogel
@@ -160,6 +151,15 @@ abstract type Ire65 <: Datum end
 ellipsoid(::Type{Ire65}) = ModAiry🌎
 
 """
+    NAD83
+
+North American Datum 1983.
+"""
+abstract type NAD83 <: Datum end
+
+ellipsoid(::Type{NAD83}) = GRS80🌎
+
+"""
     Nzgd49
 
 New Zealand Geodetic Datum 1949.
@@ -178,10 +178,10 @@ abstract type OSGB36 <: Datum end
 ellipsoid(::Type{OSGB36}) = Airy🌎
 
 """
-    GRS80S
+    Potsdam
 
-GRS 1980 Authalic Sphere datum.
+Potsdam Rauenberg 1950 DHDN datum.
 """
-abstract type GRS80S <: Datum end
+abstract type Potsdam <: Datum end
 
-ellipsoid(::Type{GRS80S}) = GRS80S🌎
+ellipsoid(::Type{Potsdam}) = Bessel🌎
