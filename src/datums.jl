@@ -151,6 +151,15 @@ abstract type Hermannskogel <: Datum end
 ellipsoid(::Type{Hermannskogel}) = Bessel🌎
 
 """
+    IGS20
+
+IGS20 datum.
+"""
+abstract type IGS20 <: Datum end
+
+ellipsoid(::Type{IGS20}) = GRS80🌎
+
+"""
     Ire65
 
 Ireland 1965 datum.

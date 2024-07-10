@@ -46,6 +46,7 @@ export
   GGRS87,
   GRS80S,
   Hermannskogel,
+  IGS20,
   Ire65,
   NAD83,
   NZGD1949,
