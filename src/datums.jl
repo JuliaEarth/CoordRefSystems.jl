@@ -106,15 +106,6 @@ epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
 
 """
-    AmericaS2000
-
-Sistema de Referencia Geocentrico para las AmericaS 2000
-"""
-abstract type AmericaS2000 <: Datum end
-
-ellipsoid(::Type{AmericaS2000}) = GRS80🌎
-
-"""
     Aratu
 
 Aratu datum.
@@ -131,15 +122,6 @@ Carthage 1934 Tunisia datum.
 abstract type Carthage <: Datum end
 
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
-
-"""
-    Chua
-
-Chua datum.
-"""
-abstract type Chua <: Datum end
-
-ellipsoid(::Type{Chua}) = Intl🌎
 
 """
     GGRS87
