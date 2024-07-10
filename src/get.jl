@@ -29,8 +29,9 @@ end
 get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
 get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
 get(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
-get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
+get(::Type{EPSG{9988}}) = Cartesian{AmericaS2000,3}
 get(::Type{EPSG{32633}}) = UTM{North,33,WGS84Latest}
+get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
 get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
