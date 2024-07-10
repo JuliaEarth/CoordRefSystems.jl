@@ -88,6 +88,10 @@ scale(::Type{T}, s) where {T} = T(s) * u"ppm"
 # EPSG Database: https://epsg.org/search/by-name
 # PROJ source code: https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 
+helmertparams(::Type{WGS84{2296}}, ::Type{ITRF{2020}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
+
+helmertparams(::Type{WGS84{2139}}, ::Type{ITRF{2014}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
+
 helmertparams(::Type{WGS84{1762}}, ::Type{ITRF{2008}}) = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 0.0
 
 helmertparams(::Type{ITRF{2008}}, ::Type{ITRF{2020}}) = (-0.2e-3, -1e-3, -3.3e-3), (0.0, 0.0, 0.0), 0.29e-3

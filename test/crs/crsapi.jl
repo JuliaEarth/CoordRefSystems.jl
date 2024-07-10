@@ -346,7 +346,7 @@
     isapproxtest3D(OrthoNorth)
     isapproxtest3D(UTMNorth{38})
     isapproxtest3D(TransverseMercator)
-    ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+    ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
     isapproxtest3D(ShiftedMercatorWGS, ShiftedMercatorITRF)
   end

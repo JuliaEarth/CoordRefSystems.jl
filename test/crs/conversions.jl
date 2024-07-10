@@ -171,11 +171,11 @@
 
     @testset "Cartesian: Datum conversion" begin
       # WGS84 (G1762) to ITRF2008
-      c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
+      c1 = Cartesian{WGS84{1762}}(T(0), T(0), T(0))
       c2 = convert(Cartesian{ITRF{2008}}, c1)
       @test allapprox(c2, Cartesian{ITRF{2008}}(T(0), T(0), T(0)))
 
-      c1 = Cartesian{WGS84Latest}(T(1), T(1), T(1))
+      c1 = Cartesian{WGS84{1762}}(T(1), T(1), T(1))
       c2 = convert(Cartesian{ITRF{2008}}, c1)
       @test allapprox(c2, Cartesian{ITRF{2008}}(T(1), T(1), T(1)))
 
@@ -197,7 +197,7 @@
       c2 = convert(Cartesian{WGS84Latest}, c1)
       @test c1 === c2
 
-      c1 = Cartesian{WGS84Latest}(T(0), T(0), T(0))
+      c1 = Cartesian{WGS84{1762}}(T(0), T(0), T(0))
       c2 = Cartesian{ITRF{2008}}(T(0), T(0), T(0))
       @inferred convert(Cartesian{ITRF{2008}}, c1)
       @inferred convert(Cartesian{ITRFLatest}, c2)
@@ -951,11 +951,11 @@
 
     @testset "LatLon <> Projected (different datums)" begin
       # WGS84 (G1762) to ITRF2008
-      c1 = LatLon(T(45), T(90))
+      c1 = LatLon{WGS84{1762}}(T(45), T(90))
       c2 = convert(Mercator{ITRF{2008}}, c1)
       @test allapprox(c2, Mercator{ITRF{2008}}(T(10018754.171394622), T(5591295.9185533915)))
 
-      c1 = Mercator(T(10018754.171394622), T(5591295.9185533915))
+      c1 = Mercator{WGS84{1762}}(T(10018754.171394622), T(5591295.9185533915))
       c2 = convert(LatLon{ITRF{2008}}, c1)
       @test allapprox(c2, LatLon{ITRF{2008}}(T(45), T(90)))
 
@@ -972,20 +972,20 @@
 
       # GGRS87 to WGS84
       c1 = LatLon{GGRS87}(T(45), T(90))
-      c2 = convert(PlateCarree{WGS84Latest}, c1)
+      c2 = convert(PlateCarree{WGS84{1762}}, c1)
       @test allapprox(c2, PlateCarree(T(10019036.352134585), T(5009498.78549335)))
 
       c1 = PlateCarree{GGRS87}(T(10019036.352134585), T(5009498.78549335))
-      c2 = convert(LatLon{WGS84Latest}, c1)
+      c2 = convert(LatLon{WGS84{1762}}, c1)
       @test allapprox(c2, LatLon(T(45.002186400242984), T(90.00506975166428)))
 
       # NAD83 to WGS84
       c1 = LatLon{NAD83}(T(45), T(90))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel{WGS84{1762}}, c1)
       @test allapprox(c2, WinkelTripel(T(7044801.698007298), T(5231448.051441181)))
 
       c1 = WinkelTripel{NAD83}(T(7044801.698007298), T(5231448.051441181))
-      c2 = convert(LatLon{WGS84Latest}, c1)
+      c2 = convert(LatLon{WGS84{1762}}, c1)
       @test allapprox(c2, LatLon(T(45), T(90)))
 
       # type stability
