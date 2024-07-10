@@ -802,8 +802,8 @@
     end
 
     @testset "LatLon <> OrthoSpherical" begin
-      OrthoNorthSpherical = CoordRefSystems.Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
-      OrthoSouthSpherical = CoordRefSystems.Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+      OrthoNorthSpherical = CoordRefSystems.get(ESRI{102035})
+      OrthoSouthSpherical = CoordRefSystems.get(ESRI{102037})
 
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorthSpherical, c1)
