@@ -30,8 +30,8 @@ end
 """
 function rotation(::Type{T}, transform::SimpleHelmert) where {T}
   θx = numconvert(T, transform.θx)
-  θy = numconvert(T, transform.θx)
-  θz = numconvert(T, transform.θx)
+  θy = numconvert(T, transform.θy)
+  θz = numconvert(T, transform.θz)
   RotXYZ(θx, θy, θz)
 end
 
