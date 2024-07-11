@@ -312,7 +312,7 @@ Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {D
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
   x = SVector(_coords(coords))
 
-  x′ = geoctransform(Datumₛ, Datumₜ)(x)
+  x′ = geocapply(geoctransform(Datumₛ, Datumₜ), x)
 
   Cartesian{Datumₜ}(Tuple(x′))
 end
