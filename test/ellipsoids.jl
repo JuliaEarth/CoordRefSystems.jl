@@ -219,6 +219,16 @@
     @test flattening⁻¹(🌎) == 298.247167427
   end
 
+  @testset "GRS67Modified🌎" begin
+    🌎 = CoordRefSystems.GRS67Modified🌎
+    @test majoraxis(🌎) == 6.37816e6u"m"
+    @test minoraxis(🌎) == 6.356774719195305e6u"m"
+    @test eccentricity(🌎) == 0.08182017999605988
+    @test eccentricity²(🌎) == 0.006694541854587638
+    @test flattening(🌎) == 0.003352891869237217
+    @test flattening⁻¹(🌎) == 298.25
+  end
+
   @testset "GRS80🌎" begin
     🌎 = CoordRefSystems.GRS80🌎
     @test majoraxis(🌎) == 6.378137e6u"m"

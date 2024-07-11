@@ -2,6 +2,8 @@
   crsstringtest(EPSG{3395})
   crsstringtest(EPSG{3857})
   crsstringtest(EPSG{4326})
+  crsstringtest(EPSG{4618})
+  crsstringtest(EPSG{5527})
   crsstringtest(EPSG{32662})
   crsstringtest(EPSG{32633})
   crsstringtest(ESRI{54017})

@@ -312,6 +312,19 @@ const _GRS67 = ellipfromaf⁻¹(6378160.0u"m", 298.2471674270)
 ellipsoidparams(::Type{GRS67🌎}) = _GRS67
 
 """
+  GRS67Modified🌎
+
+Geodetic Reference System 1967 Modified ellipsoid.
+
+See <https://epsg.org/ellipsoid_7050/GRS-1967-Modified.html>
+"""
+abstract type GRS67Modified🌎 <: RevolutionEllipsoid end
+
+const _GRS67Modified = ellipfromaf⁻¹(6378160.0u"m", 298.25)
+
+ellipsoidparams(::Type{GRS67Modified🌎}) = _GRS67Modified
+
+"""
   GRS80🌎
 
 GRS 1980(IUGG, 1980) ellipsoid.
