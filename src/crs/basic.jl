@@ -312,9 +312,7 @@ Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {D
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
   x = SVector(_coords(coords))
 
-  δ, R, s = helmert(numtype(eltype(x)), Datumₛ, Datumₜ)
-
-  x′ = (1 + s) * R * x + δ
+  x′ = geoctransform(Datumₛ, Datumₜ)(x)
 
   Cartesian{Datumₜ}(Tuple(x′))
 end
