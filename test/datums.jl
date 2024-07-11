@@ -44,6 +44,10 @@
 
   @test ellipsoid(Potsdam) === CoordRefSystems.Bessel🌎
 
+  @test ellipsoid(SAD69) === CoordRefSystems.GRS67Modified🌎
+
+  @test ellipsoid(SAD96) === CoordRefSystems.GRS67Modified🌎
+
   ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
   @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
   @test epoch(ShiftedWGS84) == 2024.0

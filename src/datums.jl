@@ -211,3 +211,25 @@ Potsdam Rauenberg 1950 DHDN datum.
 abstract type Potsdam <: Datum end
 
 ellipsoid(::Type{Potsdam}) = Bessel🌎
+
+"""
+    SAD69
+
+South American Datum 1969.
+
+See <https://epsg.org/datum_6618/South-American-Datum-1969.html>
+"""
+abstract type SAD69 <: Datum end
+
+ellipsoid(::Type{SAD69}) = GRS67Modified🌎
+
+"""
+    SAD96
+
+South American Datum 1969(96).
+
+See <https://epsg.org/datum_1075/South-American-Datum-1969-96.html>
+"""
+abstract type SAD96 <: Datum end
+
+ellipsoid(::Type{SAD96}) = GRS67Modified🌎

@@ -52,6 +52,8 @@ export
   NZGD1949,
   OSGB36,
   Potsdam,
+  SAD69,
+  SAD96,
   ellipsoid,
   epoch,
 
