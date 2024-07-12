@@ -65,29 +65,26 @@ include("transforms/helmert.jl")
 # EPSG Database: https://epsg.org/search/by-name
 # PROJ source code: https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 
-# https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
-@reversible WGS84 SAD69 GeocentricTranslation(δx=-57.0, δy=1.0, δz=-41.0)
-
-# https://epsg.org/transformation_10608/WGS-84-G2296-to-ITRF2020-1.html
-@reversible WGS84{2296} ITRF{2020} Identity()
-
-# https://epsg.org/transformation_9757/WGS-84-G2139-to-ITRF2014-1.html
-@reversible WGS84{2139} ITRF{2014} Identity()
+# https://epsg.org/transformation_1188/NAD83-to-WGS-84-1.html
+@reversible NAD83 WGS84 Identity()
 
 # https://epsg.org/transformation_7666/WGS-84-G1762-to-ITRF2008-1.html
 @reversible WGS84{1762} ITRF{2008} Identity()
 
-# https://epsg.org/transformation_1272/GGRS87-to-WGS-84-1.html
-@reversible GGRS87 WGS84 GeocentricTranslation(δx=-199.87, δy=74.79, δz=246.62)
+# https://epsg.org/transformation_9757/WGS-84-G2139-to-ITRF2014-1.html
+@reversible WGS84{2139} ITRF{2014} Identity()
 
-# https://epsg.org/transformation_1188/NAD83-to-WGS-84-1.html
-@reversible NAD83 WGS84 Identity()
-
-# https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
-@reversible Potsdam WGS84 HelmertTransform(δx=598.1, δy=73.7, δz=418.2, θx=0.202, θy=0.045, θz=-2.455, s=6.7)
+# https://epsg.org/transformation_10608/WGS-84-G2296-to-ITRF2020-1.html
+@reversible WGS84{2296} ITRF{2020} Identity()
 
 # https://epsg.org/transformation_1130/Carthage-to-WGS-84-1.html
 @reversible Carthage WGS84 GeocentricTranslation(δx=-263.0, δy=6.0, δz=431.0)
+
+# https://epsg.org/transformation_1272/GGRS87-to-WGS-84-1.html
+@reversible GGRS87 WGS84 GeocentricTranslation(δx=-199.87, δy=74.79, δz=246.62)
+
+# https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
+@reversible SAD69 WGS84 GeocentricTranslation(δx=-57.0, δy=1.0, δz=-41.0)
 
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @reversible Hermannskogel WGS84 HelmertTransform(
@@ -116,6 +113,9 @@ include("transforms/helmert.jl")
   θz=0.8421,
   s=-20.4894
 )
+
+# https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
+@reversible Potsdam WGS84 HelmertTransform(δx=598.1, δy=73.7, δz=418.2, θx=0.202, θy=0.045, θz=-2.455, s=6.7)
 
 # https://epsg.org/transformation_9992/ITRF2008-to-ITRF2020-1.html
 @reversible ITRF{2008} ITRF{2020} timedephelmert(

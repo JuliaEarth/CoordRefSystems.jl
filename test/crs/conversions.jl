@@ -401,21 +401,11 @@
     end
 
     @testset "LatLon: Datum conversion" begin
-      # WGS84 to SAD69
-      # note: the results differ from PROJ because we use the default transformation listed in EPSG.io,
-      # which does not appear to be the case in PROJ
-      # transformation list: https://epsg.io/4618
-      # default transformation: https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
-      c1 = LatLon{WGS84{1762}}(T(5), T(-45))
-      c2 = convert(LatLon{SAD69}, c1)
-      @test allapprox(c2, LatLon{SAD69}(T(4.999663900419541), T(-45.000357066702385)))
-      c3 = convert(LatLon{WGS84{1762}}, c2)
-      @test allapprox(c3, c1)
-    
-      c1 = LatLon{WGS84{1762}}(T(10), T(-40))
-      c2 = convert(LatLon{SAD69}, c1)
-      @test allapprox(c2, LatLon{SAD69}(T(9.99970634433271), T(-40.00032719181321)))
-      c3 = convert(LatLon{WGS84{1762}}, c2)
+      # NAD83 to WGS84
+      c1 = LatLon{NAD83}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(30), T(40)))
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       # WGS84 (G1762) to ITRF2008
@@ -431,17 +421,43 @@
       c3 = convert(LatLon{WGS84{1762}}, c2)
       @test allapprox(c3, c1)
 
-      # ITRF2008 to ITRF2020
-      c1 = LatLon{ITRF{2008}}(T(30), T(40))
-      c2 = convert(LatLon{ITRF{2020}}, c1)
-      @test allapprox(c2, LatLon{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356)))
-      c3 = convert(LatLon{ITRF{2008}}, c2)
+      # WGS84 (G2139) to ITRF2014
+      c1 = LatLon{WGS84{2139}}(T(30), T(40))
+      c2 = convert(LatLon{ITRF{2014}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2014}}(T(30), T(40)))
+      c3 = convert(LatLon{WGS84{2139}}, c2)
       @test allapprox(c3, c1)
 
-      c1 = LatLon{ITRF{2008}}(T(35), T(45))
+      c1 = LatLon{WGS84{2139}}(T(35), T(45))
+      c2 = convert(LatLon{ITRF{2014}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2014}}(T(35), T(45)))
+      c3 = convert(LatLon{WGS84{2139}}, c2)
+      @test allapprox(c3, c1)
+
+      # WGS84 (G2296) to ITRF2020
+      c1 = LatLon{WGS84{2296}}(T(30), T(40))
       c2 = convert(LatLon{ITRF{2020}}, c1)
-      @test allapprox(c2, LatLon{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742)))
-      c3 = convert(LatLon{ITRF{2008}}, c2)
+      @test allapprox(c2, LatLon{ITRF{2020}}(T(30), T(40)))
+      c3 = convert(LatLon{WGS84{2296}}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{WGS84{2296}}(T(35), T(45))
+      c2 = convert(LatLon{ITRF{2020}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2020}}(T(35), T(45)))
+      c3 = convert(LatLon{WGS84{2296}}, c2)
+      @test allapprox(c3, c1)
+
+      # Carthage to WGS84
+      c1 = LatLon{Carthage}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(30.00153253176913), T(40.00179973969016)))
+      c3 = convert(LatLon{Carthage}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{Carthage}(T(35), T(45))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(35.001164857937006), T(45.00208363872234)))
+      c3 = convert(LatLon{Carthage}, c2)
       @test allapprox(c3, c1)
 
       # GGRS87 to WGS84
@@ -457,43 +473,21 @@
       c3 = convert(LatLon{GGRS87}, c2)
       @test allapprox(c3, c1)
 
-      # NAD83 to WGS84
-      c1 = LatLon{NAD83}(T(30), T(40))
+      # SAD69 to WGS84
+      # note: the results differ from PROJ because we use the default transformation listed in EPSG.io,
+      # which does not appear to be the case in PROJ
+      # transformation list: https://epsg.io/4618
+      # default transformation: https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
+      c1 = LatLon{SAD69}(T(5), T(-45))
       c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(30), T(40)))
-      c3 = convert(LatLon{NAD83}, c2)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(4.999662038651082), T(-45.000357065414555)))
+      c3 = convert(LatLon{SAD69}, c2)
       @test allapprox(c3, c1)
 
-      c1 = LatLon{NAD83}(T(35), T(45))
+      c1 = LatLon{SAD69}(T(10), T(-40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(35), T(45)))
-      c3 = convert(LatLon{NAD83}, c2)
-      @test allapprox(c3, c1)
-
-      # Potsdam to WGS84
-      c1 = LatLon{Potsdam}(T(30), T(40))
-      c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(30.001530921141082), T(39.99588940866917)))
-      c3 = convert(LatLon{Potsdam}, c2)
-      @test allapprox(c3, c1)
-
-      c1 = LatLon{Potsdam}(T(35), T(45))
-      c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(35.00122407077783), T(44.995222349198244)))
-      c3 = convert(LatLon{Potsdam}, c2)
-      @test allapprox(c3, c1)
-
-      # Carthage to WGS84
-      c1 = LatLon{Carthage}(T(30), T(40))
-      c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(30.00153253176913), T(40.00179973969016)))
-      c3 = convert(LatLon{Carthage}, c2)
-      @test allapprox(c3, c1)
-
-      c1 = LatLon{Carthage}(T(35), T(45))
-      c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test allapprox(c2, LatLon{WGS84{1762}}(T(35.001164857937006), T(45.00208363872234)))
-      c3 = convert(LatLon{Carthage}, c2)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(9.999702676265935), T(-40.00032719063254)))
+      c3 = convert(LatLon{SAD69}, c2)
       @test allapprox(c3, c1)
 
       # Hermannskogel to WGS84
@@ -522,6 +516,19 @@
       c3 = convert(LatLon{Ire65}, c2)
       @test allapprox(c3, c1)
 
+      # Potsdam to WGS84
+      c1 = LatLon{Potsdam}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(30.001530921141082), T(39.99588940866917)))
+      c3 = convert(LatLon{Potsdam}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{Potsdam}(T(35), T(45))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(35.00122407077783), T(44.995222349198244)))
+      c3 = convert(LatLon{Potsdam}, c2)
+      @test allapprox(c3, c1)
+
       # NZGD1949 to WGS84
       c1 = LatLon{NZGD1949}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
@@ -546,6 +553,25 @@
       c2 = convert(LatLon{WGS84{1762}}, c1)
       @test allapprox(c2, LatLon{WGS84{1762}}(T(35.003474099905354), T(44.99575175081459)))
       c3 = convert(LatLon{OSGB36}, c2)
+      @test allapprox(c3, c1)
+
+      # ITRF2008 to ITRF2020
+      c1 = LatLon{ITRF{2008}}(T(30), T(40))
+      c2 = convert(LatLon{ITRF{2020}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356)))
+      c3 = convert(LatLon{ITRF{2008}}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{ITRF{2008}}(T(35), T(45))
+      c2 = convert(LatLon{ITRF{2020}}, c1)
+      @test allapprox(c2, LatLon{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742)))
+      c3 = convert(LatLon{ITRF{2008}}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD83}(T(35), T(45))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(35), T(45)))
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon{WGS84{1762}}(T(30), T(40))
