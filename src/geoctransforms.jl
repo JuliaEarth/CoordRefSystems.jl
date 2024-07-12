@@ -2,14 +2,29 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    GeocentricTransform
+
+Transform that convert coordinates between different datums.  
+"""
 abstract type GeocentricTransform end
 
+"""
+    Reverse(transform)
+
+Reversed version of geocentric `transform`.
+"""
 struct Reverse{T<:GeocentricTransform} <: GeocentricTransform
   transform::T
 end
 
 Base.getproperty(transform::Reverse, name::Symbol) = getproperty(getfield(transform, :transform), name)
 
+"""
+    @reversible Datum₁ Datum₂ transform
+
+Define the methods for apply and reverse the `transform` with `Datum₁` and `Datum₂`.
+"""
 macro reversible(Datum₁, Datum₂, transform)
   expr = quote
     geoctransform(::Type{<:$Datum₁}, ::Type{<:$Datum₂}) = $transform
@@ -18,8 +33,18 @@ macro reversible(Datum₁, Datum₂, transform)
   esc(expr)
 end
 
+"""
+    geoctransform(Datumₛ, Datumₜ)
+
+Geocentric transform that converts the source datum `Datumₛ` to target datum `Datumₜ`.
+"""
 function geoctransform end
 
+"""
+    geocapply(transform, x)
+
+Apply the geocentric `transform` in a vector of coordinates `x`.
+"""
 function geocapply end
 
 include("geoctransforms/utils.jl")
