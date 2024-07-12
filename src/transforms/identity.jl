@@ -3,12 +3,12 @@
 # ------------------------------------------------------------------
 
 """
-    GeocentricIdentity()
+    Identity()
 
-Geocentric Identity transform.
+Identity transform.
 """
-struct GeocentricIdentity <: GeocentricTransform end
+struct Identity <: Transform end
 
-geocapply(::GeocentricIdentity, x) = x
+apply(::Identity, x) = x
 
-geocapply(::Reverse{<:GeocentricIdentity}, x) = x
+apply(::Reverse{<:Identity}, x) = x

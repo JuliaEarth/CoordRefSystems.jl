@@ -11,7 +11,7 @@ Geocentric translation with parameters `δx, δy, δz` in meters.
 
 * Section 4.3.4 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
 """
-struct GeocentricTranslation{T} <: GeocentricTransform
+struct GeocentricTranslation{T} <: Transform
   δx::T
   δy::T
   δz::T
@@ -19,12 +19,12 @@ end
 
 GeocentricTranslation(; δx=0.0, δy=0.0, δz=0.0) = GeocentricTranslation(δx * u"m", δy * u"m", δz * u"m")
 
-function geocapply(transform::GeocentricTranslation, x)
+function apply(transform::GeocentricTranslation, x)
   δ = translation(numtype(eltype(x)), transform)
   x + δ
 end
 
-function geocapply(transform::Reverse{<:GeocentricTranslation}, x)
+function apply(transform::Reverse{<:GeocentricTranslation}, x)
   δ = translation(numtype(eltype(x)), transform)
   x - δ
 end
