@@ -6,8 +6,7 @@
     GeocentricHelmert(; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
 
 Geocentric Helmert transform with translation parameters `δx, δy, δz` in meters, 
-rotation parameters `θx, θy, θz` in arc seconds 
-and scale parameter `s` in ppm (parts per million).
+rotation parameters `θx, θy, θz` in arc seconds, and scale parameter `s` in ppm (parts per million).
 
 ## References
 

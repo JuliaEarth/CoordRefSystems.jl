@@ -5,7 +5,7 @@
 """
     GeocentricTranslation(; δx=0.0, δy=0.0, δz=0.0)
 
-Geocentric Translation transform with parameters `δx, δy, δz` in meters.
+Geocentric translation with parameters `δx, δy, δz` in meters.
 
 ## References
 

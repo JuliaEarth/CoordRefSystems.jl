@@ -5,14 +5,14 @@
 """
     GeocentricTransform
 
-Transform that convert coordinates between different datums.  
+Transform that converts geocentric coordinates between datums.  
 """
 abstract type GeocentricTransform end
 
 """
     Reverse(transform)
 
-Reversed version of geocentric `transform`.
+Reverse of geocentric `transform`.
 """
 struct Reverse{T<:GeocentricTransform} <: GeocentricTransform
   transform::T
@@ -23,7 +23,7 @@ Base.getproperty(transform::Reverse, name::Symbol) = getproperty(getfield(transf
 """
     @reversible Datum₁ Datum₂ transform
 
-Define the methods for apply and reverse the `transform` with `Datum₁` and `Datum₂`.
+Define the methods to apply and reverse the `transform` with `Datum₁` and `Datum₂`.
 """
 macro reversible(Datum₁, Datum₂, transform)
   expr = quote
