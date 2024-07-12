@@ -48,6 +48,8 @@
 
   @test ellipsoid(SAD96) === CoordRefSystems.GRS67Modified🌎
 
+  @test ellipsoid(SIRGAS2000) === CoordRefSystems.GRS80🌎
+
   ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
   @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
   @test epoch(ShiftedWGS84) == 2024.0

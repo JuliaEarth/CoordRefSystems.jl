@@ -83,6 +83,9 @@ include("transforms/helmert.jl")
 # https://epsg.org/transformation_1272/GGRS87-to-WGS-84-1.html
 @reversible GGRS87 WGS84 GeocentricTranslation(δx=-199.87, δy=74.79, δz=246.62)
 
+# https://epsg.org/transformation_15485/SAD69-to-SIRGAS-2000-1.html
+@reversible SAD69 SIRGAS2000 GeocentricTranslation(δx=-67.35, δy=3.88, δz=-38.22)
+
 # https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
 @reversible SAD69 WGS84 GeocentricTranslation(δx=-57.0, δy=1.0, δz=-41.0)
 

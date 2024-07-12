@@ -233,3 +233,14 @@ See <https://epsg.org/datum_1075/South-American-Datum-1969-96.html>
 abstract type SAD96 <: Datum end
 
 ellipsoid(::Type{SAD96}) = GRS67Modified🌎
+
+"""
+    SIRGAS2000
+
+Sistema de Referencia Geocentrico para las AmericaS 2000.
+
+See <https://epsg.org/datum_6674/Sistema-de-Referencia-Geocentrico-para-las-AmericaS-2000.html>
+"""
+abstract type SIRGAS2000 <: Datum end
+
+ellipsoid(::Type{SIRGAS2000}) = GRS80🌎

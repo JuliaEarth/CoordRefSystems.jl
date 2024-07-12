@@ -490,6 +490,19 @@
       c3 = convert(LatLon{SAD69}, c2)
       @test allapprox(c3, c1)
 
+      # SAD69 to SIRGAS2000
+      c1 = LatLon{SAD69}(T(5), T(-45))
+      c2 = convert(LatLon{SIRGAS2000}, c1)
+      @test allapprox(c2, LatLon{SIRGAS2000}(T(4.99969445550929), T(-45.00040469598622)))
+      c3 = convert(LatLon{SAD69}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{SAD69}(T(-10), T(-40))
+      c2 = convert(LatLon{SIRGAS2000}, c1)
+      @test allapprox(c2, LatLon{SIRGAS2000}(T(-10.00042337668094), T(-40.00036774834545)))
+      c3 = convert(LatLon{SAD69}, c2)
+      @test allapprox(c3, c1)
+
       # Hermannskogel to WGS84
       c1 = LatLon{Hermannskogel}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
