@@ -54,6 +54,7 @@ export
   Potsdam,
   SAD69,
   SAD96,
+  SIRGAS2000,
   ellipsoid,
   epoch,
 

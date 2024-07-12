@@ -30,6 +30,7 @@ get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
 get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
 get(::Type{EPSG{4208}}) = LatLon{Aratu}
 get(::Type{EPSG{4618}}) = LatLon{SAD69}
+get(::Type{EPSG{4674}}) = LatLon{SIRGAS2000}
 get(::Type{EPSG{4326}}) = LatLon{WGS84Latest}
 get(::Type{EPSG{4988}}) = Cartesian{shift(ITRF{2000}, 2000.4),3}
 get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}

@@ -56,6 +56,7 @@ const esriid2code = Dict(
   "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
   "GCS_WGS_1984" => EPSG{4326},
   "GCS_South_American_1969" => EPSG{4618},
+  "GCS_SIRGAS_2000" => EPSG{4674},
   "GCS_SAD_1969_96" => EPSG{5527},
   "WGS_1984_Plate_Carree" => EPSG{32662},
   "WGS_1984_UTM_Zone_33N" => EPSG{32633},
