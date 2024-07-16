@@ -37,6 +37,7 @@ get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}
 get(::Type{EPSG{5527}}) = LatLon{SAD96}
 get(::Type{EPSG{9988}}) = Cartesian{ITRF{2020},3}
 get(::Type{EPSG{10176}}) = Cartesian{IGS20,3}
+get(::Type{EPSG{32611}}) = UTM{North,11,WGS84Latest}
 get(::Type{EPSG{32633}}) = UTM{North,33,WGS84Latest}
 get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}

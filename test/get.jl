@@ -11,6 +11,7 @@
   @test CoordRefSystems.get(EPSG{5527}) === LatLon{SAD96}
   @test CoordRefSystems.get(EPSG{9988}) === Cartesian{ITRF{2020},3}
   @test CoordRefSystems.get(EPSG{10176}) === Cartesian{IGS20,3}
+  @test CoordRefSystems.get(EPSG{32611}) === UTM{North,11,WGS84Latest}
   @test CoordRefSystems.get(EPSG{32633}) === UTM{North,33,WGS84Latest}
   @test CoordRefSystems.get(EPSG{32662}) === PlateCarree{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54017}) === Behrmann{WGS84Latest}
