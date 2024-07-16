@@ -151,6 +151,10 @@ end
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian2D}) = rand(rng, Cartesian2D{NoDatum})
+
+Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian3D}) = rand(rng, Cartesian3D{NoDatum})
+
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
 function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}

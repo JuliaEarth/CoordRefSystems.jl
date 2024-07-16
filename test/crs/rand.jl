@@ -5,6 +5,8 @@
     @test rand(rng, Cartesian{NoDatum,1}) isa Cartesian
     @test rand(rng, Cartesian{NoDatum,2}) isa Cartesian
     @test rand(rng, Cartesian{NoDatum,3}) isa Cartesian
+    @test rand(rng, Cartesian2D) isa Cartesian
+    @test rand(rng, Cartesian3D) isa Cartesian
 
     @test rand(rng, Polar{NoDatum}) isa Polar
     @test rand(rng, Polar) isa Polar
