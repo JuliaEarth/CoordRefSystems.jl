@@ -61,6 +61,8 @@ export
   # coordinates
   CRS,
   Cartesian,
+  Cartesian2D,
+  Cartesian3D,
   Polar,
   Cylindrical,
   Spherical,
