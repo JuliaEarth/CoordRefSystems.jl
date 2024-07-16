@@ -11,8 +11,6 @@
   @test CoordRefSystems.get(EPSG{5527}) === LatLon{SAD96}
   @test CoordRefSystems.get(EPSG{9988}) === Cartesian{ITRF{2020},3}
   @test CoordRefSystems.get(EPSG{10176}) === Cartesian{IGS20,3}
-  @test CoordRefSystems.get(EPSG{32611}) === UTM{North,11,WGS84Latest}
-  @test CoordRefSystems.get(EPSG{32633}) === UTM{North,33,WGS84Latest}
   @test CoordRefSystems.get(EPSG{32662}) === PlateCarree{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54017}) === Behrmann{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
@@ -20,7 +18,13 @@
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
   @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
   @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
-  @test_throws ArgumentError CoordRefSystems.get(EPSG{1})
+
+  for Zone in 1:60
+    NorthCode = 32600 + Zone
+    SouthCode = 32700 + Zone
+    @test CoordRefSystems.get(EPSG{NorthCode}) === UTM{North,Zone,WGS84Latest}
+    @test CoordRefSystems.get(EPSG{SouthCode}) === UTM{South,Zone,WGS84Latest}
+  end
 
   # CRS string
   str = wktstring(EPSG{3395})
