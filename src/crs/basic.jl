@@ -12,12 +12,10 @@ abstract type Basic{Datum} <: CRS{Datum} end
 """
     Cartesian(x₁, x₂, ..., xₙ)
     Cartesian{Datum}(x₁, x₂, ..., xₙ)
-    Cartesian{Datum,N}(x₁, x₂, ..., xₙ)
     Cartesian((x₁, x₂, ..., xₙ))
     Cartesian{Datum}((x₁, x₂, ..., xₙ))
-    Cartesian{Datum,N}((x₁, x₂, ..., xₙ))
 
-`N`-dimensional Cartesian coordinates `x₁, x₂, ..., xₙ` in length units (default to meter)
+N-dimensional Cartesian coordinates `x₁, x₂, ..., xₙ` in length units (default to meter)
 with a given `Datum` (default to `NoDatum`).
 The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, respectively.
 
