@@ -37,8 +37,6 @@ get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}
 get(::Type{EPSG{5527}}) = LatLon{SAD96}
 get(::Type{EPSG{9988}}) = Cartesian{ITRF{2020},3}
 get(::Type{EPSG{10176}}) = Cartesian{IGS20,3}
-get(::Type{EPSG{32611}}) = UTM{North,11,WGS84Latest}
-get(::Type{EPSG{32633}}) = UTM{North,33,WGS84Latest}
 get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
@@ -46,3 +44,10 @@ get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
 get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
 get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
 get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+
+for Zone in 1:60
+  NorthCode = 32600 + Zone
+  SouthCode = 32700 + Zone
+  @eval get(::Type{EPSG{$NorthCode}}) = UTM{North,$Zone,WGS84Latest}
+  @eval get(::Type{EPSG{$SouthCode}}) = UTM{South,$Zone,WGS84Latest}
+end
