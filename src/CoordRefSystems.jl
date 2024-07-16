@@ -64,6 +64,8 @@ export
   Polar,
   Cylindrical,
   Spherical,
+  Cartesian2D,
+  Cartesian3D,
   GeodeticLatLon,
   GeodeticLatLonAlt,
   GeocentricLatLon,
