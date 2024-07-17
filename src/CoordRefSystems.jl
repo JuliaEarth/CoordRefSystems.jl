@@ -9,14 +9,14 @@ using Unitful: numtype
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using ManifoldsBase: AbstractManifold
+using ManifoldsBase: DefaultManifold
+using ManifoldsBase: ℝ
+
+import ManifoldsBase: manifold_dimension
 
 import Random
 import Base: ==
-
-import ManifoldsBase: AbstractManifold
-import ManifoldsBase: manifold_dimension
-import ManifoldsBase: DefaultManifold
-import ManifoldsBase: ℝ
 
 include("utils.jl")
 include("ioutils.jl")
