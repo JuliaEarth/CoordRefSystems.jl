@@ -11,8 +11,6 @@ abstract type Projected{Datum} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
 
-manifold(::Type{<:Projected}) = DefaultManifold(2)
-
 """
     formulas(CRS::Type{<:Projected}, T)
 

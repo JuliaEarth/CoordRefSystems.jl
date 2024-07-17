@@ -97,8 +97,7 @@ datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
 Abstract manifold of the coordinates `coords`.
 """
 manifold(coords::CRS) = manifold(typeof(coords))
-manifold(C::Type{<:CRS}) = ellipsoid(datum(C))
-manifold(C::Type{<:CRS{NoDatum}}) = DefaultManifold(ndims(C))
+manifold(C::Type{<:CRS}) = DefaultManifold(ndims(C))
 
 """
     isapprox(coords₁, coords₂; kwargs...)
