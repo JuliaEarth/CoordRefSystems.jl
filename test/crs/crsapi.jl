@@ -5,8 +5,10 @@
   @testset "ncoords" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
+    @test CoordRefSystems.ncoords(Cartesian2D) == 2
     c = Cartesian(T(1), T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 3
+    @test CoordRefSystems.ncoords(Cartesian3D) == 3
     c = Polar(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
     c = Cylindrical(T(1), T(1), T(1))
@@ -26,8 +28,10 @@
   @testset "ndims" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ndims(c) == 2
+    @test CoordRefSystems.ndims(Cartesian2D) == 2
     c = Cartesian(T(1), T(1), T(1))
     @test CoordRefSystems.ndims(c) == 3
+    @test CoordRefSystems.ndims(Cartesian3D) == 3
     c = Polar(T(1), T(1))
     @test CoordRefSystems.ndims(c) == 2
     c = Cylindrical(T(1), T(1), T(1))
