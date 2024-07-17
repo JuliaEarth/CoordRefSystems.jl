@@ -13,9 +13,11 @@ using StaticArrays: SVector
 import Random
 import Base: ==
 
-import ManifoldsBase: AbstractManifold, ℝ
+import ManifoldsBase: AbstractManifold
 import ManifoldsBase: manifold_dimension
 import ManifoldsBase: representation_size
+import ManifoldsBase: DefaultManifold
+import ManifoldsBase: ℝ
 
 include("utils.jl")
 include("ioutils.jl")

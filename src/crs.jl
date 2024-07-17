@@ -84,6 +84,23 @@ function reconstruct(C::Type{<:CRS}, rawvalues)
 end
 
 """
+    datum(coords)
+
+Datum of the coordinates `coords`.
+"""
+datum(coords::CRS) = datum(typeof(coords))
+datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
+
+"""
+    manifold(coords)
+
+Abstract manifold of the coordinates `coords`.
+"""
+manifold(coords::CRS) = manifold(typeof(coords))
+manifold(C::Type{<:CRS}) = ellipsoid(datum(C))
+manifold(C::Type{<:CRS{NoDatum}}) = DefaultManifold(ndims(C))
+
+"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`
@@ -108,26 +125,6 @@ Absolute tolerance for the underlying machine type (e.g. `Float64`) used to repr
 The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
-
-# ------
-# DATUM
-# ------
-
-"""
-    datum(coords)
-
-Returns the datum of the coordinates `coords`.
-"""
-datum(coords::CRS) = datum(typeof(coords))
-datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
-
-"""
-    manifold(coords)
-
-Returns the abstract manifold of the coordinates `coords`.
-"""
-manifold(coords::CRS) = manifold(typeof(coords))
-manifold(C::Type{<:CRS}) = ellipsoid(datum(C))
 
 # -----------
 # IO METHODS
