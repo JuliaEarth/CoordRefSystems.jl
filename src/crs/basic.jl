@@ -112,9 +112,9 @@ end
 
 prettyname(::Type{<:Cartesian}) = "Cartesian"
 
-ncoords(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+ncoords(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
-ndims(::Type{<:Cartesian{Datum,N}}) where {Datum,N} = N
+ndims(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
 names(C::Type{<:Cartesian}) = _fnames(C)
 
