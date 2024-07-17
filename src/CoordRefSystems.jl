@@ -15,7 +15,6 @@ import Base: ==
 
 import ManifoldsBase: AbstractManifold
 import ManifoldsBase: manifold_dimension
-import ManifoldsBase: representation_size
 import ManifoldsBase: DefaultManifold
 import ManifoldsBase: ℝ
 
