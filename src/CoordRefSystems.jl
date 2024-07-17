@@ -13,6 +13,10 @@ using StaticArrays: SVector
 import Random
 import Base: ==
 
+import ManifoldsBase: AbstractManifold, ℝ
+import ManifoldsBase: manifold_dimension
+import ManifoldsBase: representation_size
+
 include("utils.jl")
 include("ioutils.jl")
 include("ellipsoids.jl")

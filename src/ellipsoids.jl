@@ -7,7 +7,11 @@
 
 Parent type of all revolution ellipsoids.
 """
-abstract type RevolutionEllipsoid end
+abstract type RevolutionEllipsoid <: AbstractManifold{ℝ} end
+
+# ManifoldsBase.jl interface
+manifold_dimension(::Type{<:RevolutionEllipsoid}) = 2
+representation_size(::Type{<:RevolutionEllipsoid}) = (3,)
 
 """
     ellipsoidparams(E)
