@@ -91,6 +91,7 @@ export
   UTMSouth,
   allapprox,
   datum,
+  manifold,
   indomain,
 
   # hemispheres

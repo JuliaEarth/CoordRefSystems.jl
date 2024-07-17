@@ -122,12 +122,12 @@ datum(coords::CRS) = datum(typeof(coords))
 datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
 
 """
-    ellipsoid(coords)
+    manifold(coords)
 
-Returns the ellipsoid of the coordinates `coords`.
+Returns the abstract manifold of the coordinates `coords`.
 """
-ellipsoid(coords::CRS) = ellipsoid(typeof(coords))
-ellipsoid(C::Type{<:CRS}) = ellipsoid(datum(C))
+manifold(coords::CRS) = manifold(typeof(coords))
+manifold(C::Type{<:CRS}) = ellipsoid(datum(C))
 
 # -----------
 # IO METHODS
