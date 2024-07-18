@@ -6,7 +6,6 @@ using ArchGDAL.GDAL
 using Test
 
 using CoordRefSystems: Met, Deg, Rad
-using ManifoldsBase: DefaultManifold
 
 include("testutils.jl")
 

@@ -92,14 +92,6 @@ datum(coords::CRS) = datum(typeof(coords))
 datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
 
 """
-    manifold(coords)
-
-Abstract manifold of the coordinates `coords`.
-"""
-manifold(coords::CRS) = manifold(typeof(coords))
-manifold(C::Type{<:CRS}) = DefaultManifold(ndims(C))
-
-"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`

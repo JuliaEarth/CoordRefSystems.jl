@@ -318,38 +318,6 @@
     @test datum(c) === WGS84Latest
   end
 
-  @testset "manifold" begin
-    # basic
-    c = Cartesian(T(0), T(0))
-    @test manifold(c) === DefaultManifold(2)
-    c = Polar(T(0), T(0))
-    @test manifold(c) === DefaultManifold(2)
-    c = Cartesian(T(0), T(0), T(0))
-    @test manifold(c) === DefaultManifold(3)
-    c = Cylindrical(T(0), T(0), T(0))
-    @test manifold(c) === DefaultManifold(3)
-    c = Spherical(T(0), T(0), T(0))
-    @test manifold(c) === DefaultManifold(3)
-
-    # geographic
-    c = GeodeticLatLon(T(0), T(0))
-    @test manifold(c) === ellipsoid(datum(c))
-    c = GeocentricLatLon(T(0), T(0))
-    @test manifold(c) === ellipsoid(datum(c))
-    c = AuthalicLatLon(T(0), T(0))
-    @test manifold(c) === ellipsoid(datum(c))
-    c = GeodeticLatLonAlt(T(0), T(0), T(0))
-    @test manifold(c) === DefaultManifold(3)
-
-    # projected
-    c = PlateCarree(T(0), T(0))
-    @test manifold(c) === DefaultManifold(2)
-    c = Mercator(T(0), T(0))
-    @test manifold(c) === DefaultManifold(2)
-    c = WebMercator(T(0), T(0))
-    @test manifold(c) === DefaultManifold(2)
-  end
-
   @testset "equality operator" begin
     equaltest(Cartesian, 2)
     equaltest(Cartesian, 3)

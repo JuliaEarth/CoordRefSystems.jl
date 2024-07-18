@@ -9,11 +9,6 @@ using Unitful: numtype
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
-using ManifoldsBase: AbstractManifold
-using ManifoldsBase: DefaultManifold
-using ManifoldsBase: ℝ
-
-import ManifoldsBase: manifold_dimension
 
 import Random
 import Base: ==
@@ -92,7 +87,6 @@ export
   UTMSouth,
   allapprox,
   datum,
-  manifold,
   indomain,
 
   # hemispheres
