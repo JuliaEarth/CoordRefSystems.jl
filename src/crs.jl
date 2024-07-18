@@ -84,6 +84,14 @@ function reconstruct(C::Type{<:CRS}, rawvalues)
 end
 
 """
+    datum(coords)
+
+Datum of the coordinates `coords`.
+"""
+datum(coords::CRS) = datum(typeof(coords))
+datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
+
+"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`
@@ -108,26 +116,6 @@ Absolute tolerance for the underlying machine type (e.g. `Float64`) used to repr
 The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
-
-# ------
-# DATUM
-# ------
-
-"""
-    datum(coords)
-
-Returns the datum of the coordinates `coords`.
-"""
-datum(coords::CRS) = datum(typeof(coords))
-datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
-
-"""
-    ellipsoid(coords)
-
-Returns the ellipsoid of the coordinates `coords`.
-"""
-ellipsoid(coords::CRS) = ellipsoid(typeof(coords))
-ellipsoid(C::Type{<:CRS}) = ellipsoid(datum(C))
 
 # -----------
 # IO METHODS

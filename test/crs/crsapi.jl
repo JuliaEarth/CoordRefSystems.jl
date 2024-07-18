@@ -311,6 +311,13 @@
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
+  @testset "datum" begin
+    c = Cartesian(T(1), T(1))
+    @test datum(c) === NoDatum
+    c = LatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
+  end
+
   @testset "equality operator" begin
     equaltest(Cartesian, 2)
     equaltest(Cartesian, 3)
