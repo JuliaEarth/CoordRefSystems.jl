@@ -48,9 +48,6 @@ constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,y
   coords₂::ShiftedCRS{CRS₂,lonₒ,xₒ,yₒ,Datum}
 ) where {CRS₁,CRS₂,lonₒ,xₒ,yₒ,Datum} = _coords(coords₁) == _coords(coords₂)
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:ShiftedCRS} =
-  allapprox(_coords(coords₁), _coords(coords₂); kwargs...)
-
 tol(coords::ShiftedCRS) = tol(_coords(coords))
 
 prettyname(::Type{<:ShiftedCRS{CRS}}) where {CRS} = "Shifted$(prettyname(CRS))"
