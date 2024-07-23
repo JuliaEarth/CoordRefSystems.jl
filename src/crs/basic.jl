@@ -137,12 +137,6 @@ Base.isapprox(coords₁::Cartesian{Datum,3}, coords₂::Cartesian{Datum,3}; kwar
 Base.isapprox(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}; kwargs...) where {Datum,N} =
   _isapprox(coords₁, coords₂; kwargs...)
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
-  c₁ = _coords(coords₁)
-  c₂ = _coords(coords₂)
-  all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
-end
-
 function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
   atol(numtype(Q)) * unit(Q)
@@ -221,6 +215,9 @@ constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
+Base.isapprox(coords₁::Polar{Datum}, coords₂::Polar{Datum}; kwargs...) where {Datum} =
+  isapprox(coords₁.ρ, coords₂.ρ; kwargs...) && isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...)
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
   Polar{Datum}(rand(rng), 2π * rand(rng))
 
@@ -280,6 +277,11 @@ constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
+Base.isapprox(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}; kwargs...) where {Datum} =
+  isapprox(coords₁.ρ, coords₂.ρ; kwargs...) &&
+  isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...) &&
+  isapprox(coords₁.z, coords₂.z; kwargs...)
+
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
   Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
 
@@ -334,6 +336,11 @@ constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
+
+Base.isapprox(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}; kwargs...) where {Datum} =
+  isapprox(coords₁.r, coords₂.r; kwargs...) &&
+  isapprox(coords₁.θ, coords₂.θ; kwargs...) &&
+  isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...)
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
   Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))
