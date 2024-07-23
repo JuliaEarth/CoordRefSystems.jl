@@ -199,7 +199,7 @@ Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon}) = r
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
 
-Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
+Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples
