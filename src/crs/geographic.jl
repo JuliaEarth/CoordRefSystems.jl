@@ -15,7 +15,7 @@ ndims(::Type{<:Geographic}) = 3
     GeodeticLatLon(lat, lon)
     GeodeticLatLon{Datum}(lat, lon)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
 with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -82,7 +82,7 @@ const LatLon = GeodeticLatLon
     GeodeticLatLonAlt(lat, lon, alt)
     GeodeticLatLonAlt{Datum}(lat, lon, alt)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
 and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -154,7 +154,7 @@ const LatLonAlt = GeodeticLatLonAlt
     GeocentricLatLon(lat, lon)
     GeocentricLatLon{Datum}(lat, lon)
 
-Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
+Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples

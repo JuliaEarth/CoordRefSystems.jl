@@ -40,7 +40,7 @@ end
 """
     fixlon(lon)
 
-Fix the longitude to be in the range `[-180°,180°[`.
+Fix the longitude to be in the range `[-180°,180°)`.
 """
 fixlon(lon) = (lon % 360u"°" + 540u"°") % 360u"°" - 180u"°"
 
