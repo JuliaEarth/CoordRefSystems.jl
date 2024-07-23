@@ -15,7 +15,7 @@ ndims(::Type{<:Geographic}) = 3
     GeodeticLatLon(lat, lon)
     GeodeticLatLon{Datum}(lat, lon)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
 with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -35,7 +35,7 @@ struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(lat, lon)
+GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeodeticLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeodeticLatLon{Datum}(promote(lat, lon)...)
 GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
@@ -82,7 +82,7 @@ const LatLon = GeodeticLatLon
     GeodeticLatLonAlt(lat, lon, alt)
     GeodeticLatLonAlt{Datum}(lat, lon, alt)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
 and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -103,7 +103,7 @@ struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
 end
 
 GeodeticLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
-  GeodeticLatLonAlt{Datum,float(D),float(M)}(lat, lon, alt)
+  GeodeticLatLonAlt{Datum,float(D),float(M)}(checklat(lat), fixlon(lon), alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
   GeodeticLatLonAlt{Datum}(promote(lat, lon)..., alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
@@ -154,7 +154,7 @@ const LatLonAlt = GeodeticLatLonAlt
     GeocentricLatLon(lat, lon)
     GeocentricLatLon{Datum}(lat, lon)
 
-Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples
@@ -172,7 +172,8 @@ struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(lat, lon)
+GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} =
+  GeocentricLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeocentricLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeocentricLatLon{Datum}(promote(lat, lon)...)
 GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
@@ -199,7 +200,7 @@ Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon}) = r
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
 
-Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°[` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples
@@ -217,7 +218,7 @@ struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(lat, lon)
+AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 AuthalicLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = AuthalicLatLon{Datum}(promote(lat, lon)...)
 AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =

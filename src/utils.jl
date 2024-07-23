@@ -38,6 +38,25 @@ function atanpos(y, x)
 end
 
 """
+    checklat(lat)
+
+Checks if the latitude is in the range `[-90°,90°]` and returns it if yes or throws an error otherwise.
+"""
+function checklat(lat)
+  if abs(lat) > 90u"°"
+    throw(ArgumentError("the latitude must be in the range [-90°,90°]"))
+  end
+  lat
+end
+
+"""
+    fixlon(lon)
+
+Fix the longitude to be in the range `[-180°,180°[`.
+"""
+fixlon(lon) = (lon % 360u"°" + 540u"°") % 360u"°" - 180u"°"
+
+"""
     numconvert(T, x)
 
 Converts the number type of quantity `x` to `T`.
