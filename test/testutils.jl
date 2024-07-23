@@ -1,10 +1,12 @@
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
-  c₁ = CoordRefSystems._coords(coords₁)
-  c₂ = CoordRefSystems._coords(coords₂)
-  all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
+function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian2D}
+  isapprox(coords₁.x, coords₂.x, kwargs...) && isapprox(coords₁.y, coords₂.y, kwargs...)
+end
+
+function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian3D}
+  isapprox(coords₁.x, coords₂.x, kwargs...) && isapprox(coords₁.y, coords₂.y, kwargs...) && isapprox(coords₁.z, coords₂.z, kwargs...)
 end
 
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
