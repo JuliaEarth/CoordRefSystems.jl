@@ -82,7 +82,7 @@
 
     @testset "Polar" begin
       @test Polar(T(1), T(1)) == Polar(T(1) * u"m", T(1) * u"rad")
-      @test allapprox(Polar(T(1) * u"m", T(45) * u"°"), Polar(T(1) * u"m", T(π / 4) * u"rad"))
+      @test isapprox(Polar(T(1) * u"m", T(45) * u"°"), Polar(T(1) * u"m", T(π / 4) * u"rad"))
 
       c = Polar(T(1), T(1))
       @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 1.0 rad)"
@@ -108,7 +108,7 @@
     @testset "Cylindrical" begin
       @test Cylindrical(T(1), T(1), T(1)) == Cylindrical(T(1) * u"m", T(1) * u"rad", T(1) * u"m")
       @test Cylindrical(T(1) * u"m", T(1) * u"rad", 1 * u"m") == Cylindrical(T(1) * u"m", T(1) * u"rad", T(1) * u"m")
-      @test allapprox(
+      @test isapprox(
         Cylindrical(T(1) * u"m", T(45) * u"°", T(1) * u"m"),
         Cylindrical(T(1) * u"m", T(π / 4) * u"rad", T(1) * u"m")
       )
@@ -140,7 +140,7 @@
     @testset "Spherical" begin
       @test Spherical(T(1), T(1), T(1)) == Spherical(T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
       @test Spherical(T(1) * u"m", T(1) * u"rad", 1 * u"rad") == Spherical(T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
-      @test allapprox(
+      @test isapprox(
         Spherical(T(1) * u"m", T(45) * u"°", T(45) * u"°"),
         Spherical(T(1) * u"m", T(π / 4) * u"rad", T(π / 4) * u"rad")
       )
@@ -174,7 +174,7 @@
     @testset "GeodeticLatLon" begin
       @test LatLon(T(1), T(1)) == LatLon(T(1) * u"°", T(1) * u"°")
       @test LatLon(T(1) * u"°", 1 * u"°") == LatLon(T(1) * u"°", T(1) * u"°")
-      @test allapprox(LatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), LatLon(T(45) * u"°", T(45) * u"°"))
+      @test isapprox(LatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), LatLon(T(45) * u"°", T(45) * u"°"))
 
       c = LatLon(T(1), T(1))
       @test sprint(show, c) == "GeodeticLatLon{WGS84Latest}(lat: 1.0°, lon: 1.0°)"
@@ -200,7 +200,7 @@
     @testset "GeodeticLatLonAlt" begin
       @test LatLonAlt(T(1), T(1), T(1)) == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
       @test LatLonAlt(T(1) * u"°", 1 * u"°", T(1) * u"m") == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
-      @test allapprox(
+      @test isapprox(
         LatLonAlt(T(π / 4) * u"rad", T(π / 4) * u"rad", T(1) * u"km"),
         LatLonAlt(T(45) * u"°", T(45) * u"°", T(1000) * u"m")
       )
@@ -232,7 +232,7 @@
     @testset "GeocentricLatLon" begin
       @test GeocentricLatLon(T(1), T(1)) == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
       @test GeocentricLatLon(T(1) * u"°", 1 * u"°") == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
-      @test allapprox(
+      @test isapprox(
         GeocentricLatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"),
         GeocentricLatLon(T(45) * u"°", T(45) * u"°")
       )
@@ -261,7 +261,7 @@
     @testset "AuthalicLatLon" begin
       @test AuthalicLatLon(T(1), T(1)) == AuthalicLatLon(T(1) * u"°", T(1) * u"°")
       @test AuthalicLatLon(T(1) * u"°", 1 * u"°") == AuthalicLatLon(T(1) * u"°", T(1) * u"°")
-      @test allapprox(AuthalicLatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), AuthalicLatLon(T(45) * u"°", T(45) * u"°"))
+      @test isapprox(AuthalicLatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), AuthalicLatLon(T(45) * u"°", T(45) * u"°"))
 
       c = AuthalicLatLon(T(1), T(1))
       @test sprint(show, c) == "AuthalicLatLon{WGS84Latest}(lat: 1.0°, lon: 1.0°)"

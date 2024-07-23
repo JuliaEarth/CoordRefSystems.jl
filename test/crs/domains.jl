@@ -7,7 +7,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       else
         @test_throws ArgumentError convert(Mercator, c1)
       end
@@ -22,7 +22,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       else
         @test_throws ArgumentError convert(WebMercator, c1)
       end
@@ -37,7 +37,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       else
         @test_throws ArgumentError convert(PlateCarree, c1)
       end
@@ -53,7 +53,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       else
         @test_throws ArgumentError convert(Lambert, c1)
       end
@@ -69,7 +69,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       else
         @test_throws ArgumentError convert(Behrmann, c1)
       end
@@ -85,7 +85,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       else
         @test_throws ArgumentError convert(GallPeters, c1)
       end
@@ -100,7 +100,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       else
         @test_throws ArgumentError convert(WinkelTripel, c1)
       end
@@ -116,7 +116,7 @@
         @test isfinite(c2.x)
         @test isfinite(c2.y)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       else
         @test_throws ArgumentError convert(Robinson, c1)
       end
@@ -143,7 +143,7 @@
       if indomain(OrthoNorth, c1)
         c2 = convert(OrthoNorth, c1)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       end
     end
 
@@ -155,7 +155,7 @@
       if indomain(OrthoNorth, c1)
         c2 = convert(OrthoNorth, c1)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       end
     end
   end
@@ -180,7 +180,7 @@
       if indomain(OrthoSouth, c1)
         c2 = convert(OrthoSouth, c1)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+        @test isapprox(c3, c1)
       end
     end
 
@@ -192,7 +192,7 @@
       if indomain(OrthoSouth, c1)
         c2 = convert(OrthoSouth, c1)
         c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+        @test isapprox(c3, c1; atol)
       end
     end
   end

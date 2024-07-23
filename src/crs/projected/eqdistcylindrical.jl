@@ -37,7 +37,8 @@ constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,
 
 Base.isapprox(
   coords₁::EquidistantCylindrical{latₜₛ,Datum},
-  coords₂::EquidistantCylindrical{latₜₛ,Datum}
+  coords₂::EquidistantCylindrical{latₜₛ,Datum};
+  kwargs...
 ) where {latₜₛ,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 """

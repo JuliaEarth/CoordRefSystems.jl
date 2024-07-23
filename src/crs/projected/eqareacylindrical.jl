@@ -41,7 +41,8 @@ constructor(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}) where {lat�
 
 Base.isapprox(
   coords₁::EqualAreaCylindrical{latₜₛ,lonₒ,Datum},
-  coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+  coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum};
+  kwargs...
 ) where {latₜₛ,lonₒ,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 """

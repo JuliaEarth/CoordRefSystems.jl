@@ -38,7 +38,8 @@ constructor(::Type{<:Orthographic{latₒ,lonₒ,S,Datum}}) where {latₒ,lonₒ,
 
 Base.isapprox(
   coords₁::Orthographic{latₒ,lonₒ,S,Datum},
-  coords₂::Orthographic{latₒ,lonₒ,S,Datum}
+  coords₂::Orthographic{latₒ,lonₒ,S,Datum};
+  kwargs...
 ) where {latₒ,lonₒ,S,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 """

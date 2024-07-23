@@ -41,7 +41,7 @@ constructor(::Type{<:Mercator{Datum}}) where {Datum} = Mercator{Datum}
 
 ==(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
-Base.isapprox(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}) where {Datum} =
+Base.isapprox(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 # ------------
