@@ -41,6 +41,9 @@ constructor(::Type{<:Robinson{Datum}}) where {Datum} = Robinson{Datum}
 
 ==(coords₁::Robinson{Datum}, coords₂::Robinson{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(coords₁::Robinson{Datum}, coords₂::Robinson{Datum}) where {Datum} =
+  isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 # ------------
 # CONVERSIONS
 # ------------

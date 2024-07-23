@@ -35,6 +35,11 @@ constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,
 ==(coords₁::EquidistantCylindrical{latₜₛ,Datum}, coords₂::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(
+  coords₁::EquidistantCylindrical{latₜₛ,Datum},
+  coords₂::EquidistantCylindrical{latₜₛ,Datum}
+) where {latₜₛ,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 """
     PlateCarree(x, y)
     PlateCarree{Datum}(x, y)

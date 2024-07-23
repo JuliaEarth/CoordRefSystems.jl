@@ -36,6 +36,11 @@ constructor(::Type{<:Orthographic{latₒ,lonₒ,S,Datum}}) where {latₒ,lonₒ,
 ==(coords₁::Orthographic{latₒ,lonₒ,S,Datum}, coords₂::Orthographic{latₒ,lonₒ,S,Datum}) where {latₒ,lonₒ,S,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(
+  coords₁::Orthographic{latₒ,lonₒ,S,Datum},
+  coords₂::Orthographic{latₒ,lonₒ,S,Datum}
+) where {latₒ,lonₒ,S,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 """
     OrthoNorth(x, y)
     OrthoNorth{Datum}(x, y)

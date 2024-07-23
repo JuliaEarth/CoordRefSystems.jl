@@ -24,6 +24,9 @@ constructor(::Type{<:Winkel{lat₁,Datum}}) where {lat₁,Datum} = Winkel{lat₁
 ==(coords₁::Winkel{lat₁,Datum}, coords₂::Winkel{lat₁,Datum}) where {lat₁,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(coords₁::Winkel{lat₁,Datum}, coords₂::Winkel{lat₁,Datum}) where {lat₁,Datum} =
+  isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 """
     WinkelTripel(x, y)
     WinkelTripel{Datum}(x, y)

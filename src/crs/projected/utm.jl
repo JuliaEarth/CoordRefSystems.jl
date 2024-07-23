@@ -58,6 +58,9 @@ constructor(::Type{<:UTM{Hemisphere,Zone,Datum}}) where {Hemisphere,Zone,Datum} 
 ==(coords₁::UTM{Hemisphere,Zone,Datum}, coords₂::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(coords₁::UTM{Hemisphere,Zone,Datum}, coords₂::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum} =
+  isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 """
     UTMNorth{zone}(x, y)
     UTMNorth{zone,Datum}(x, y)

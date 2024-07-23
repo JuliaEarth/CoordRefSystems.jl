@@ -39,6 +39,11 @@ constructor(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}) where {lat�
   coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
 ) where {latₜₛ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(
+  coords₁::EqualAreaCylindrical{latₜₛ,lonₒ,Datum},
+  coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+) where {latₜₛ,lonₒ,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 """
     Lambert(x, y)
     Lambert{Datum}(x, y)

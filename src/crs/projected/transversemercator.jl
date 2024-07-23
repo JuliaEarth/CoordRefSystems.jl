@@ -39,6 +39,11 @@ constructor(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}) where {k₀,
   coords₂::TransverseMercator{k₀,latₒ,lonₒ,Datum}
 ) where {k₀,latₒ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(
+  coords₁::TransverseMercator{k₀,latₒ,lonₒ,Datum},
+  coords₂::TransverseMercator{k₀,latₒ,lonₒ,Datum}
+) where {k₀,latₒ,lonₒ,Datum} = isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 # ------------
 # CONVERSIONS
 # ------------

@@ -43,6 +43,9 @@ constructor(::Type{<:WebMercator{Datum}}) where {Datum} = WebMercator{Datum}
 ==(coords₁::WebMercator{Datum}, coords₂::WebMercator{Datum}) where {Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+Base.isapprox(coords₁::WebMercator{Datum}, coords₂::WebMercator{Datum}) where {Datum} =
+  isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
+
 # ------------
 # CONVERSIONS
 # ------------
