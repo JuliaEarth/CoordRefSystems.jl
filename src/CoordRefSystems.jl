@@ -85,7 +85,6 @@ export
   UTM,
   UTMNorth,
   UTMSouth,
-  allapprox,
   datum,
   indomain,
 

@@ -137,12 +137,6 @@ Base.isapprox(coords₁::Cartesian{Datum,3}, coords₂::Cartesian{Datum,3}; kwar
 Base.isapprox(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}; kwargs...) where {Datum,N} =
   _isapprox(coords₁, coords₂; kwargs...)
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
-  c₁ = _coords(coords₁)
-  c₂ = _coords(coords₂)
-  all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
-end
-
 function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
   atol(numtype(Q)) * unit(Q)

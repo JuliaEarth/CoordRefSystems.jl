@@ -52,13 +52,6 @@ Checks if the longitude is `180°` or `-180°`.
 islon180(lon) = abs(lon) == 180u"°"
 
 """
-    isapproxlon180(lon; kwargs...)
-
-Checks if the longitude is approximate of `180°` or `-180°`.
-"""
-isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180u"°"; kwargs...)
-
-"""
     numconvert(T, x)
 
 Converts the number type of quantity `x` to `T`.

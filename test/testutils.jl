@@ -1,3 +1,23 @@
+allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
+  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+
+function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
+  c₁ = CoordRefSystems._coords(coords₁)
+  c₂ = CoordRefSystems._coords(coords₂)
+  all(ntuple(i -> isapprox(c₁[i], c₂[i]; kwargs...), length(c₁)))
+end
+
+allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
+  isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
+    isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
+    (isapproxlon180(coords₁.lon; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
+  )
+
+allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CoordRefSystems.ShiftedCRS} =
+  allapprox(CoordRefSystems._coords(coords₁), CoordRefSystems._coords(coords₂); kwargs...)
+
+isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180u"°"; kwargs...)
+
 function isapproxtest2D(CRS)
   c1 = convert(CRS, Cartesian{WGS84{1762}}(T(1), T(1)))
 
