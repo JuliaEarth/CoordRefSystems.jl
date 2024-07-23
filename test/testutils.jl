@@ -6,7 +6,9 @@ function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian2D}
 end
 
 function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian3D}
-  isapprox(coords₁.x, coords₂.x, kwargs...) && isapprox(coords₁.y, coords₂.y, kwargs...) && isapprox(coords₁.z, coords₂.z, kwargs...)
+  isapprox(coords₁.x, coords₂.x, kwargs...) &&
+    isapprox(coords₁.y, coords₂.y, kwargs...) &&
+    isapprox(coords₁.z, coords₂.z, kwargs...)
 end
 
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
