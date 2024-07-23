@@ -15,7 +15,7 @@ ndims(::Type{<:Geographic}) = 3
     GeodeticLatLon(lat, lon)
     GeodeticLatLon{Datum}(lat, lon)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -51,7 +51,7 @@ lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 constructor(::Type{<:GeodeticLatLon{Datum}}) where {Datum} = GeodeticLatLon{Datum}
 
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
+  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
   GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -82,7 +82,7 @@ const LatLon = GeodeticLatLon
     GeodeticLatLonAlt(lat, lon, alt)
     GeodeticLatLonAlt{Datum}(lat, lon, alt)
 
-Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
+Geodetic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
 
 ## Examples
@@ -123,7 +123,9 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 constructor(::Type{<:GeodeticLatLonAlt{Datum}}) where {Datum} = GeodeticLatLonAlt{Datum}
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
+  coords₁.lat == coords₂.lat &&
+  (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon)) &&
+  coords₁.alt == coords₂.alt
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
   GeodeticLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
@@ -154,7 +156,7 @@ const LatLonAlt = GeodeticLatLonAlt
     GeocentricLatLon(lat, lon)
     GeocentricLatLon{Datum}(lat, lon)
 
-Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
+Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples
@@ -188,7 +190,7 @@ lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 constructor(::Type{<:GeocentricLatLon{Datum}}) where {Datum} = GeocentricLatLon{Datum}
 
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
+  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
   GeocentricLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -199,7 +201,7 @@ Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon}) = r
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
 
-Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°)` in angular units (default to degree)
+Authalic latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 with a given `Datum` (default to `WGS84`).
 
 ## Examples
@@ -233,7 +235,7 @@ lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 constructor(::Type{<:AuthalicLatLon{Datum}}) where {Datum} = AuthalicLatLon{Datum}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
+  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon{Datum}}) where {Datum} =
   AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))

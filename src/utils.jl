@@ -40,9 +40,23 @@ end
 """
     fixlon(lon)
 
-Fix the longitude to be in the range `[-180°,180°)`.
+Fix the longitude to be in the range `[-180°,180°]`.
 """
-fixlon(lon) = (lon % 360u"°" + 540u"°") % 360u"°" - 180u"°"
+fixlon(lon) = ifelse(-180u"°" ≤ lon ≤ 180u"°", lon, (lon % 360u"°" + 540u"°") % 360u"°" - 180u"°")
+
+"""
+    islon180(lon)
+
+Checks if the longitude is `180°` or `-180°`.
+"""
+islon180(lon) = abs(lon) == 180u"°"
+
+"""
+    isapproxlon180(lon; kwargs...)
+
+Checks if the longitude is approximate of `180°` or `-180°`.
+"""
+isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180u"°"; kwargs...)
 
 """
     numconvert(T, x)
