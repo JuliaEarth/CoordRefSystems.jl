@@ -41,35 +41,33 @@ names(C::Type{<:CRS}) = fieldnames(C)
 
 Coordinate values of `coords` as a tuple.
 
-See also [`rawvalues`](@ref).
-
-### Notes
-
-The order of coordinates may change depending on the
-coordinate reference system. For instance, `LatLon`
-values are reversed to produce the tuple `(lon, lat)`.
+See also [`raw`](@ref).
 """
 values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
-    CoordRefSystems.rawvalues(coords)
+    CoordRefSystems.raw(coords)
 
 Unitless coordinate values of `coords` as a tuple.
 
-This function is equivalent to calling `ustrip` on
-the `values` of `coords`.
+See also [`reconstruct`](@ref).
 
-See also [`values`](@ref), [`reconstruct`](@ref)
+### Notes
+
+The order of coordinate values may change depending
+on the coordinate reference system. For instance,
+`LatLon` values are reversed to produce the tuple
+`(lon, lat)`.
 """
-rawvalues(coords::CRS) = ustrip.(values(coords))
+raw(coords::CRS) = ustrip.(values(coords))
 
 """
     CoordRefSystems.units(coords)
 
 Units of `coords` as a tuple, in the same order
-of `values` and `rawvalues`.
+of `raw` values.
 
-See also [`values`](@ref), [`rawvalues`](@ref)
+See also [`reconstruct`](@ref).
 """
 units(coords::CRS) = units(typeof(coords))
 units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
@@ -79,18 +77,20 @@ units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
 
 CRS type of `coords` that can be used to construct 
 a new instance or in conversions.
+
+See also [`reconstruct`](@ref)
 """
 constructor(coords::CRS) = constructor(typeof(coords))
 
 """
-    CoordRefSystems.reconstruct(CRS, rawvalues)
+    CoordRefSystems.reconstruct(CRS, raw)
 
-Reconstruct an instance of `CRS` using `rawvalues`.
+Reconstruct an instance of `CRS` using `raw` values.
 
-See also [`rawvalues`](@ref).
+See also [`raw`](@ref), [`units`](@ref), [`constructor`](@ref).
 """
-function reconstruct(C::Type{<:CRS}, rawvalues)
-  coords = rawvalues .* units(C)
+function reconstruct(C::Type{<:CRS}, raw)
+  coords = raw .* units(C)
   constructor(C)(coords...)
 end
 

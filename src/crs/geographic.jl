@@ -46,12 +46,12 @@ GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLon{Datum,D}}, coords::GeodeticLatLon{Datum}) where {Datum,D} =
   GeodeticLatLon{Datum,D}(coords.lat, coords.lon)
 
-values(coords::GeodeticLatLon) = (coords.lon, coords.lat) # reverse order
+raw(coords::GeodeticLatLon) = ustrip(coords.lon), ustrip(coords.lat) # reverse order
 
 constructor(::Type{<:GeodeticLatLon{Datum}}) where {Datum} = GeodeticLatLon{Datum}
 
-function reconstruct(C::Type{<:GeodeticLatLon}, rawvalues)
-  lon, lat = rawvalues .* units(C)
+function reconstruct(C::Type{<:GeodeticLatLon}, raw)
+  lon, lat = raw .* units(C)
   constructor(C)(lat, lon) # reverse order
 end
 
@@ -125,12 +125,12 @@ GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 Base.convert(::Type{GeodeticLatLonAlt{Datum,D,M}}, coords::GeodeticLatLonAlt{Datum}) where {Datum,D,M} =
   GeodeticLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
 
-values(coords::GeodeticLatLonAlt) = (coords.lon, coords.lat, coords.alt) # reverse order
+raw(coords::GeodeticLatLonAlt) = ustrip(coords.lon), ustrip(coords.lat), ustrip(coords.alt) # reverse order
 
 constructor(::Type{<:GeodeticLatLonAlt{Datum}}) where {Datum} = GeodeticLatLonAlt{Datum}
 
-function reconstruct(C::Type{<:GeodeticLatLonAlt}, rawvalues)
-  lon, lat, alt = rawvalues .* units(C)
+function reconstruct(C::Type{<:GeodeticLatLonAlt}, raw)
+  lon, lat, alt = raw .* units(C)
   constructor(C)(lat, lon, alt) # reverse order
 end
 
@@ -199,12 +199,12 @@ GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 Base.convert(::Type{GeocentricLatLon{Datum,D}}, coords::GeocentricLatLon{Datum}) where {Datum,D} =
   GeocentricLatLon{Datum,D}(coords.lat, coords.lon)
 
-values(coords::GeocentricLatLon) = (coords.lon, coords.lat) # reverse order
+raw(coords::GeocentricLatLon) = ustrip(coords.lon), ustrip(coords.lat) # reverse order
 
 constructor(::Type{<:GeocentricLatLon{Datum}}) where {Datum} = GeocentricLatLon{Datum}
 
-function reconstruct(C::Type{<:GeocentricLatLon}, rawvalues)
-  lon, lat = rawvalues .* units(C)
+function reconstruct(C::Type{<:GeocentricLatLon}, raw)
+  lon, lat = raw .* units(C)
   constructor(C)(lat, lon) # reverse order
 end
 
@@ -251,12 +251,12 @@ AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 Base.convert(::Type{AuthalicLatLon{Datum,D}}, coords::AuthalicLatLon{Datum}) where {Datum,D} =
   AuthalicLatLon{Datum,D}(coords.lat, coords.lon)
 
-values(coords::AuthalicLatLon) = (coords.lon, coords.lat) # reverse order
+raw(coords::AuthalicLatLon) = ustrip(coords.lon), ustrip(coords.lat) # reverse order
 
 constructor(::Type{<:AuthalicLatLon{Datum}}) where {Datum} = AuthalicLatLon{Datum}
 
-function reconstruct(C::Type{<:AuthalicLatLon}, rawvalues)
-  lon, lat = rawvalues .* units(C)
+function reconstruct(C::Type{<:AuthalicLatLon}, raw)
+  lon, lat = raw .* units(C)
   constructor(C)(lat, lon) # reverse order
 end
 
