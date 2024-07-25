@@ -2,16 +2,16 @@
   @testset "Basic" begin
     @testset "Cartesian" begin
       @test Cartesian(T(1)) == Cartesian(T(1) * u"m")
-      @test Cartesian(T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m")
-      @test Cartesian(T(1), T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m", T(1) * u"m")
-      @test Cartesian(T(1) * u"m", 1 * u"m") == Cartesian(T(1) * u"m", T(1) * u"m")
-      @test Cartesian((T(1), T(1))) == Cartesian((T(1) * u"m", T(1) * u"m"))
-      @test Cartesian((T(1), T(1), T(1))) == Cartesian((T(1) * u"m", T(1) * u"m", T(1) * u"m"))
-      @test Cartesian((T(1) * u"m", 1 * u"m")) == Cartesian((T(1) * u"m", T(1) * u"m"))
-      @test Cartesian2D(T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m")
-      @test Cartesian2D(T(1) * u"m", 1 * u"m") == Cartesian(T(1) * u"m", T(1) * u"m")
-      @test Cartesian3D(T(1), T(1), T(1)) == Cartesian(T(1) * u"m", T(1) * u"m", T(1) * u"m")
-      @test Cartesian3D(T(1) * u"m", T(1) * u"m", 1 * u"m") == Cartesian(T(1) * u"m", T(1) * u"m", T(1) * u"m")
+      @test Cartesian(T(1), T(2)) == Cartesian(T(1) * u"m", T(2) * u"m")
+      @test Cartesian(T(1), T(2), T(3)) == Cartesian(T(1) * u"m", T(2) * u"m", T(3) * u"m")
+      @test Cartesian(T(1) * u"m", 2 * u"m") == Cartesian(T(1) * u"m", T(2) * u"m")
+      @test Cartesian((T(1), T(2))) == Cartesian((T(1) * u"m", T(2) * u"m"))
+      @test Cartesian((T(1), T(2), T(3))) == Cartesian((T(1) * u"m", T(2) * u"m", T(3) * u"m"))
+      @test Cartesian((T(1) * u"m", 2 * u"m")) == Cartesian((T(1) * u"m", T(2) * u"m"))
+      @test Cartesian2D(T(1), T(2)) == Cartesian(T(1) * u"m", T(2) * u"m")
+      @test Cartesian2D(T(1) * u"m", 2 * u"m") == Cartesian(T(1) * u"m", T(2) * u"m")
+      @test Cartesian3D(T(1), T(2), T(3)) == Cartesian(T(1) * u"m", T(2) * u"m", T(3) * u"m")
+      @test Cartesian3D(T(1) * u"m", T(2) * u"m", 3 * u"m") == Cartesian(T(1) * u"m", T(2) * u"m", T(3) * u"m")
 
       c = Cartesian(T(1))
       @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m)"
@@ -25,52 +25,52 @@
         └─ x: 1.0 m"""
       end
 
-      c = Cartesian(T(1), T(1))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 1.0 m)"
+      c = Cartesian(T(1), T(2))
+      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x: 1.0f0 m
-        └─ y: 1.0f0 m"""
+        └─ y: 2.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x: 1.0 m
-        └─ y: 1.0 m"""
+        └─ y: 2.0 m"""
       end
 
-      c = Cartesian(T(1), T(1), T(1))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 1.0 m, z: 1.0 m)"
+      c = Cartesian(T(1), T(2), T(3))
+      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m, z: 3.0 m)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x: 1.0f0 m
-        ├─ y: 1.0f0 m
-        └─ z: 1.0f0 m"""
+        ├─ y: 2.0f0 m
+        └─ z: 3.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x: 1.0 m
-        ├─ y: 1.0 m
-        └─ z: 1.0 m"""
+        ├─ y: 2.0 m
+        └─ z: 3.0 m"""
       end
 
-      c = Cartesian(T(1), T(1), T(1), T(1))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x1: 1.0 m, x2: 1.0 m, x3: 1.0 m, x4: 1.0 m)"
+      c = Cartesian(T(1), T(2), T(3), T(4))
+      @test sprint(show, c) == "Cartesian{NoDatum}(x1: 1.0 m, x2: 2.0 m, x3: 3.0 m, x4: 4.0 m)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x1: 1.0f0 m
-        ├─ x2: 1.0f0 m
-        ├─ x3: 1.0f0 m
-        └─ x4: 1.0f0 m"""
+        ├─ x2: 2.0f0 m
+        ├─ x3: 3.0f0 m
+        └─ x4: 4.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Cartesian{NoDatum} coordinates
         ├─ x1: 1.0 m
-        ├─ x2: 1.0 m
-        ├─ x3: 1.0 m
-        └─ x4: 1.0 m"""
+        ├─ x2: 2.0 m
+        ├─ x3: 3.0 m
+        └─ x4: 4.0 m"""
       end
 
       # error: invalid units for coordinates
@@ -81,21 +81,21 @@
     end
 
     @testset "Polar" begin
-      @test Polar(T(1), T(1)) == Polar(T(1) * u"m", T(1) * u"rad")
+      @test Polar(T(1), T(2)) == Polar(T(1) * u"m", T(2) * u"rad")
       @test allapprox(Polar(T(1) * u"m", T(45) * u"°"), Polar(T(1) * u"m", T(π / 4) * u"rad"))
 
-      c = Polar(T(1), T(1))
-      @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 1.0 rad)"
+      c = Polar(T(1), T(2))
+      @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Polar{NoDatum} coordinates
         ├─ ρ: 1.0f0 m
-        └─ ϕ: 1.0f0 rad"""
+        └─ ϕ: 2.0f0 rad"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Polar{NoDatum} coordinates
         ├─ ρ: 1.0 m
-        └─ ϕ: 1.0 rad"""
+        └─ ϕ: 2.0 rad"""
       end
 
       # error: invalid units for coordinates
@@ -106,27 +106,27 @@
     end
 
     @testset "Cylindrical" begin
-      @test Cylindrical(T(1), T(1), T(1)) == Cylindrical(T(1) * u"m", T(1) * u"rad", T(1) * u"m")
-      @test Cylindrical(T(1) * u"m", T(1) * u"rad", 1 * u"m") == Cylindrical(T(1) * u"m", T(1) * u"rad", T(1) * u"m")
+      @test Cylindrical(T(1), T(2), T(3)) == Cylindrical(T(1) * u"m", T(2) * u"rad", T(3) * u"m")
+      @test Cylindrical(T(1) * u"m", T(2) * u"rad", 3 * u"m") == Cylindrical(T(1) * u"m", T(2) * u"rad", T(3) * u"m")
       @test allapprox(
         Cylindrical(T(1) * u"m", T(45) * u"°", T(1) * u"m"),
         Cylindrical(T(1) * u"m", T(π / 4) * u"rad", T(1) * u"m")
       )
 
-      c = Cylindrical(T(1), T(1), T(1))
-      @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 1.0 rad, z: 1.0 m)"
+      c = Cylindrical(T(1), T(2), T(3))
+      @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad, z: 3.0 m)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Cylindrical{NoDatum} coordinates
         ├─ ρ: 1.0f0 m
-        ├─ ϕ: 1.0f0 rad
-        └─ z: 1.0f0 m"""
+        ├─ ϕ: 2.0f0 rad
+        └─ z: 3.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Cylindrical{NoDatum} coordinates
         ├─ ρ: 1.0 m
-        ├─ ϕ: 1.0 rad
-        └─ z: 1.0 m"""
+        ├─ ϕ: 2.0 rad
+        └─ z: 3.0 m"""
       end
 
       # error: invalid units for coordinates
@@ -138,27 +138,27 @@
     end
 
     @testset "Spherical" begin
-      @test Spherical(T(1), T(1), T(1)) == Spherical(T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
-      @test Spherical(T(1) * u"m", T(1) * u"rad", 1 * u"rad") == Spherical(T(1) * u"m", T(1) * u"rad", T(1) * u"rad")
+      @test Spherical(T(1), T(2), T(3)) == Spherical(T(1) * u"m", T(2) * u"rad", T(3) * u"rad")
+      @test Spherical(T(1) * u"m", T(2) * u"rad", 3 * u"rad") == Spherical(T(1) * u"m", T(2) * u"rad", T(3) * u"rad")
       @test allapprox(
         Spherical(T(1) * u"m", T(45) * u"°", T(45) * u"°"),
         Spherical(T(1) * u"m", T(π / 4) * u"rad", T(π / 4) * u"rad")
       )
 
-      c = Spherical(T(1), T(1), T(1))
-      @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 1.0 rad, ϕ: 1.0 rad)"
+      c = Spherical(T(1), T(2), T(3))
+      @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 2.0 rad, ϕ: 3.0 rad)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         Spherical{NoDatum} coordinates
         ├─ r: 1.0f0 m
-        ├─ θ: 1.0f0 rad
-        └─ ϕ: 1.0f0 rad"""
+        ├─ θ: 2.0f0 rad
+        └─ ϕ: 3.0f0 rad"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         Spherical{NoDatum} coordinates
         ├─ r: 1.0 m
-        ├─ θ: 1.0 rad
-        └─ ϕ: 1.0 rad"""
+        ├─ θ: 2.0 rad
+        └─ ϕ: 3.0 rad"""
       end
 
       # error: invalid units for coordinates
@@ -172,22 +172,22 @@
 
   @testset "Geographic" begin
     @testset "GeodeticLatLon" begin
-      @test LatLon(T(1), T(1)) == LatLon(T(1) * u"°", T(1) * u"°")
-      @test LatLon(T(1) * u"°", 1 * u"°") == LatLon(T(1) * u"°", T(1) * u"°")
+      @test LatLon(T(1), T(2)) == LatLon(T(1) * u"°", T(2) * u"°")
+      @test LatLon(T(1) * u"°", 2 * u"°") == LatLon(T(1) * u"°", T(2) * u"°")
       @test allapprox(LatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), LatLon(T(45) * u"°", T(45) * u"°"))
 
-      c = LatLon(T(1), T(1))
-      @test sprint(show, c) == "GeodeticLatLon{WGS84Latest}(lat: 1.0°, lon: 1.0°)"
+      c = LatLon(T(1), T(2))
+      @test sprint(show, c) == "GeodeticLatLon{WGS84Latest}(lat: 1.0°, lon: 2.0°)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         GeodeticLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0f0°
-        └─ lon: 1.0f0°"""
+        └─ lon: 2.0f0°"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         GeodeticLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0°
-        └─ lon: 1.0°"""
+        └─ lon: 2.0°"""
       end
 
       # error: invalid units for coordinates
@@ -198,27 +198,27 @@
     end
 
     @testset "GeodeticLatLonAlt" begin
-      @test LatLonAlt(T(1), T(1), T(1)) == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
-      @test LatLonAlt(T(1) * u"°", 1 * u"°", T(1) * u"m") == LatLonAlt(T(1) * u"°", T(1) * u"°", T(1) * u"m")
+      @test LatLonAlt(T(1), T(2), T(3)) == LatLonAlt(T(1) * u"°", T(2) * u"°", T(3) * u"m")
+      @test LatLonAlt(T(1) * u"°", 2 * u"°", T(3) * u"m") == LatLonAlt(T(1) * u"°", T(2) * u"°", T(3) * u"m")
       @test allapprox(
         LatLonAlt(T(π / 4) * u"rad", T(π / 4) * u"rad", T(1) * u"km"),
         LatLonAlt(T(45) * u"°", T(45) * u"°", T(1000) * u"m")
       )
 
-      c = LatLonAlt(T(1), T(1), T(1))
-      @test sprint(show, c) == "GeodeticLatLonAlt{WGS84Latest}(lat: 1.0°, lon: 1.0°, alt: 1.0 m)"
+      c = LatLonAlt(T(1), T(2), T(3))
+      @test sprint(show, c) == "GeodeticLatLonAlt{WGS84Latest}(lat: 1.0°, lon: 2.0°, alt: 3.0 m)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         GeodeticLatLonAlt{WGS84Latest} coordinates
         ├─ lat: 1.0f0°
-        ├─ lon: 1.0f0°
-        └─ alt: 1.0f0 m"""
+        ├─ lon: 2.0f0°
+        └─ alt: 3.0f0 m"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         GeodeticLatLonAlt{WGS84Latest} coordinates
         ├─ lat: 1.0°
-        ├─ lon: 1.0°
-        └─ alt: 1.0 m"""
+        ├─ lon: 2.0°
+        └─ alt: 3.0 m"""
       end
 
       # error: invalid units for coordinates
@@ -230,25 +230,25 @@
     end
 
     @testset "GeocentricLatLon" begin
-      @test GeocentricLatLon(T(1), T(1)) == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
-      @test GeocentricLatLon(T(1) * u"°", 1 * u"°") == GeocentricLatLon(T(1) * u"°", T(1) * u"°")
+      @test GeocentricLatLon(T(1), T(2)) == GeocentricLatLon(T(1) * u"°", T(2) * u"°")
+      @test GeocentricLatLon(T(1) * u"°", 2 * u"°") == GeocentricLatLon(T(1) * u"°", T(2) * u"°")
       @test allapprox(
         GeocentricLatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"),
         GeocentricLatLon(T(45) * u"°", T(45) * u"°")
       )
 
-      c = GeocentricLatLon(T(1), T(1))
-      @test sprint(show, c) == "GeocentricLatLon{WGS84Latest}(lat: 1.0°, lon: 1.0°)"
+      c = GeocentricLatLon(T(1), T(2))
+      @test sprint(show, c) == "GeocentricLatLon{WGS84Latest}(lat: 1.0°, lon: 2.0°)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         GeocentricLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0f0°
-        └─ lon: 1.0f0°"""
+        └─ lon: 2.0f0°"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         GeocentricLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0°
-        └─ lon: 1.0°"""
+        └─ lon: 2.0°"""
       end
 
       # error: invalid units for coordinates
@@ -259,22 +259,22 @@
     end
 
     @testset "AuthalicLatLon" begin
-      @test AuthalicLatLon(T(1), T(1)) == AuthalicLatLon(T(1) * u"°", T(1) * u"°")
-      @test AuthalicLatLon(T(1) * u"°", 1 * u"°") == AuthalicLatLon(T(1) * u"°", T(1) * u"°")
+      @test AuthalicLatLon(T(1), T(2)) == AuthalicLatLon(T(1) * u"°", T(2) * u"°")
+      @test AuthalicLatLon(T(1) * u"°", 2 * u"°") == AuthalicLatLon(T(1) * u"°", T(2) * u"°")
       @test allapprox(AuthalicLatLon(T(π / 4) * u"rad", T(π / 4) * u"rad"), AuthalicLatLon(T(45) * u"°", T(45) * u"°"))
 
-      c = AuthalicLatLon(T(1), T(1))
-      @test sprint(show, c) == "AuthalicLatLon{WGS84Latest}(lat: 1.0°, lon: 1.0°)"
+      c = AuthalicLatLon(T(1), T(2))
+      @test sprint(show, c) == "AuthalicLatLon{WGS84Latest}(lat: 1.0°, lon: 2.0°)"
       if T === Float32
         @test sprint(show, MIME("text/plain"), c) == """
         AuthalicLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0f0°
-        └─ lon: 1.0f0°"""
+        └─ lon: 2.0f0°"""
       else
         @test sprint(show, MIME("text/plain"), c) == """
         AuthalicLatLon{WGS84Latest} coordinates
         ├─ lat: 1.0°
-        └─ lon: 1.0°"""
+        └─ lon: 2.0°"""
       end
 
       # error: invalid units for coordinates
