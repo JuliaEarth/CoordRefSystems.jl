@@ -35,9 +35,9 @@ Mercator(args...) = Mercator{WGS84Latest}(args...)
 
 Base.convert(::Type{Mercator{Datum,M}}, coords::Mercator{Datum}) where {Datum,M} = Mercator{Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:Mercator{Datum,M}}) where {Datum,M} = M
-
 constructor(::Type{<:Mercator{Datum}}) where {Datum} = Mercator{Datum}
+
+lentype(::Type{<:Mercator{Datum,M}}) where {Datum,M} = M
 
 ==(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 

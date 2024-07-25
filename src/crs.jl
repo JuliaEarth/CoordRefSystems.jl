@@ -39,24 +39,60 @@ names(C::Type{<:CRS}) = fieldnames(C)
 """
     CoordRefSystems.values(coords)
 
-Coordinate values of `coords` as tuple.
+Coordinate values of `coords` as a tuple.
+
+See also [`raw`](@ref).
 """
 values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
-    CoordRefSystems.rawvalues(coords)
+    CoordRefSystems.raw(coords)
 
-Unitless coordinate values of `coords` as tuple.
+Unitless coordinate values of `coords` as a tuple.
+
+See also [`reconstruct`](@ref).
+
+### Notes
+
+The order of coordinate values may change depending
+on the coordinate reference system. For instance,
+`LatLon` values are reversed to produce the tuple
+`(lon, lat)`.
 """
-rawvalues(coords::CRS) = ustrip.(values(coords))
+raw(coords::CRS) = ustrip.(values(coords))
 
 """
     CoordRefSystems.units(coords)
 
-Units of coordinates of `coords`.
+Units of `coords` as a tuple, in the same order
+of `raw` values.
+
+See also [`reconstruct`](@ref).
 """
 units(coords::CRS) = units(typeof(coords))
 units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
+
+"""
+    CoordRefSystems.constructor(coords)
+
+CRS type of `coords` that can be used to construct 
+a new instance or in conversions.
+
+See also [`reconstruct`](@ref)
+"""
+constructor(coords::CRS) = constructor(typeof(coords))
+
+"""
+    CoordRefSystems.reconstruct(CRS, raw)
+
+Reconstruct an instance of `CRS` using `raw` values.
+
+See also [`raw`](@ref), [`units`](@ref), [`constructor`](@ref).
+"""
+function reconstruct(C::Type{<:CRS}, raw)
+  coords = raw .* units(C)
+  constructor(C)(coords...)
+end
 
 """
     CoordRefSystems.lentype(coords)
@@ -64,24 +100,6 @@ units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
 Length unit type of `coords`.
 """
 lentype(coords::CRS) = lentype(typeof(coords))
-
-"""
-    CoordRefSystems.constructor(coords)
-
-CRS type of `coords` that can be used to construct 
-a new instance or in conversions.
-"""
-constructor(coords::CRS) = constructor(typeof(coords))
-
-"""
-    CoordRefSystems.reconstruct(CRS, rawvalues)
-
-Reconstruct an instance of `CRS` using `rawvalues`.
-"""
-function reconstruct(C::Type{<:CRS}, rawvalues)
-  coords = rawvalues .* units(C)
-  constructor(C)(coords...)
-end
 
 """
     datum(coords)

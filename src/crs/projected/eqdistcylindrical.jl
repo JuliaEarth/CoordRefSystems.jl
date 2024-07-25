@@ -28,9 +28,9 @@ Base.convert(
   coords::EquidistantCylindrical{latₜₛ,Datum}
 ) where {latₜₛ,Datum,M} = EquidistantCylindrical{latₜₛ,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
-
 constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,Datum} = EquidistantCylindrical{latₜₛ,Datum}
+
+lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
 
 ==(coords₁::EquidistantCylindrical{latₜₛ,Datum}, coords₂::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
