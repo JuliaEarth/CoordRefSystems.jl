@@ -39,31 +39,40 @@ names(C::Type{<:CRS}) = fieldnames(C)
 """
     CoordRefSystems.values(coords)
 
-Coordinate values of `coords` as tuple.
+Coordinate values of `coords` as a tuple.
+
+See also [`rawvalues`](@ref).
+
+### Notes
+
+The order of coordinates may change depending on the
+coordinate reference system. For instance, `LatLon`
+values are reversed to produce the tuple `(lon, lat)`.
 """
 values(coords::CRS) = ntuple(i -> getfield(coords, i), nfields(coords))
 
 """
     CoordRefSystems.rawvalues(coords)
 
-Unitless coordinate values of `coords` as tuple.
+Unitless coordinate values of `coords` as a tuple.
+
+This function is equivalent to calling `ustrip` on
+the `values` of `coords`.
+
+See also [`values`](@ref), [`reconstruct`](@ref)
 """
 rawvalues(coords::CRS) = ustrip.(values(coords))
 
 """
     CoordRefSystems.units(coords)
 
-Units of coordinates of `coords`.
+Units of `coords` as a tuple, in the same order
+of `values` and `rawvalues`.
+
+See also [`values`](@ref), [`rawvalues`](@ref)
 """
 units(coords::CRS) = units(typeof(coords))
 units(C::Type{<:CRS}) = ntuple(i -> unit(fieldtype(C, i)), fieldcount(C))
-
-"""
-    CoordRefSystems.lentype(coords)
-
-Length unit type of `coords`.
-"""
-lentype(coords::CRS) = lentype(typeof(coords))
 
 """
     CoordRefSystems.constructor(coords)
@@ -77,11 +86,20 @@ constructor(coords::CRS) = constructor(typeof(coords))
     CoordRefSystems.reconstruct(CRS, rawvalues)
 
 Reconstruct an instance of `CRS` using `rawvalues`.
+
+See also [`rawvalues`](@ref).
 """
 function reconstruct(C::Type{<:CRS}, rawvalues)
   coords = rawvalues .* units(C)
   constructor(C)(coords...)
 end
+
+"""
+    CoordRefSystems.lentype(coords)
+
+Length unit type of `coords`.
+"""
+lentype(coords::CRS) = lentype(typeof(coords))
 
 """
     datum(coords)

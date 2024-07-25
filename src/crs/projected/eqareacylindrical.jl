@@ -29,10 +29,10 @@ Base.convert(
   coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
 ) where {latₜₛ,lonₒ,Datum,M} = EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
-
 constructor(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}) where {latₜₛ,lonₒ,Datum} =
   EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+
+lentype(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
 
 ==(
   coords₁::EqualAreaCylindrical{latₜₛ,lonₒ,Datum},

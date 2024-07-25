@@ -39,9 +39,9 @@ values(coords::ShiftedCRS) = values(_coords(coords))
 
 units(::Type{<:ShiftedCRS{CRS}}) where {CRS} = units(CRS)
 
-lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
-
 constructor(::Type{<:ShiftedCRS{CRS,lonₒ,xₒ,yₒ}}) where {CRS,lonₒ,xₒ,yₒ} = ShiftedCRS{constructor(CRS),lonₒ,xₒ,yₒ}
+
+lentype(::Type{<:ShiftedCRS{CRS}}) where {CRS} = lentype(CRS)
 
 ==(
   coords₁::ShiftedCRS{CRS₁,lonₒ,xₒ,yₒ,Datum},

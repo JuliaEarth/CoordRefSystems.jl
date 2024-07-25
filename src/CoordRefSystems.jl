@@ -9,7 +9,7 @@ using Unitful: numtype
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
-
+°
 import Random
 import Base: ==
 

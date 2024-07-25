@@ -51,9 +51,9 @@ UTM{Hemisphere,Zone}(args...) where {Hemisphere,Zone} = UTM{Hemisphere,Zone,WGS8
 Base.convert(::Type{UTM{Hemisphere,Zone,Datum,M}}, coords::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum,M} =
   UTM{Hemisphere,Zone,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:UTM{Hemisphere,Zone,Datum,M}}) where {Hemisphere,Zone,Datum,M} = M
-
 constructor(::Type{<:UTM{Hemisphere,Zone,Datum}}) where {Hemisphere,Zone,Datum} = UTM{Hemisphere,Zone,Datum}
+
+lentype(::Type{<:UTM{Hemisphere,Zone,Datum,M}}) where {Hemisphere,Zone,Datum,M} = M
 
 ==(coords₁::UTM{Hemisphere,Zone,Datum}, coords₂::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y

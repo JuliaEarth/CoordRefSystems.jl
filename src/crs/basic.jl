@@ -122,9 +122,9 @@ values(coords::Cartesian) = _coords(coords)
 
 units(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = ntuple(_ -> unit(L), N)
 
-lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
-
 constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
+
+lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
@@ -209,9 +209,9 @@ Base.convert(::Type{Polar{Datum,L,R}}, coords::Polar{Datum}) where {Datum,L,R} =
 
 ndims(::Type{<:Polar}) = 2
 
-lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
-
 constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
+
+lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
@@ -267,9 +267,9 @@ Base.convert(::Type{Cylindrical{Datum,L,R}}, coords::Cylindrical{Datum}) where {
 
 ndims(::Type{<:Cylindrical}) = 3
 
-lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
-
 constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
+
+lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
@@ -322,9 +322,9 @@ Base.convert(::Type{Spherical{Datum,L,R}}, coords::Spherical{Datum}) where {Datu
 
 ndims(::Type{<:Spherical}) = 3
 
-lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
-
 constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
+
+lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
