@@ -29,22 +29,45 @@ function string2code(crsstr)
     type, codestr = idmatch
     code = parse(Int, codestr)
     type == "EPSG" ? EPSG{code} : ESRI{code}
-  elseif endswith(keyword, "CS") # ESRI WKT
-    # the content of the first string comes with the ESRI ID of the CRS
-    strregex = r"\"(.*?)\""
-    strmatch = match(strregex, content)
-    if isnothing(strmatch)
-      throw(ArgumentError("ESRI ID of the CRS not found in the ESRI WKT string"))
+  elseif endswith(keyword, "CS") # WKT1
+    # use the datum name to differentiate ESRI WKT1 from OGC WKT1
+    # if the datum name starts with "D_", the format is ESRI WKT1 
+    datumregex = r"DATUM\[\"(.*?)\""
+    datummatch = match(datumregex, content)
+    if isnothing(datummatch)
+      throw(ArgumentError("datum not found in the WKT1 string"))
     end
-    esriid = strmatch.captures[1]
-    if haskey(esriid2code, esriid)
-      esriid2code[esriid]
-    else
-      throw(ArgumentError("""
-      EPSG/ESRI code for the ESRI ID \"$esriid\" not found in dictionary.
-      Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/strings.jl
-      If you know the EPSG/ESRI code of a given ESRI WKT string, please submit a pull request.
-      """))
+    datumname = datummatch.captures[1]
+    if startswith(datumname, "D_") # ESRI WKT1
+      # the content of the first string comes with the ESRI ID of the CRS
+      strregex = r"^\"(.*?)\""
+      # removing all leading extra spaces for safe matching
+      strmatch = match(strregex, lstrip(content))
+      if isnothing(strmatch)
+        throw(ArgumentError("ESRI ID of the CRS not found in the ESRI WKT string"))
+      end
+      esriid = strmatch.captures[1]
+      if haskey(esriid2code, esriid)
+        esriid2code[esriid]
+      else
+        throw(ArgumentError("""
+        EPSG/ESRI code for the ESRI ID \"$esriid\" not found in dictionary.
+        Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/strings.jl
+        If you know the EPSG/ESRI code of a given ESRI WKT string, please submit a pull request.
+        """))
+      end
+    else # OGC WKT1
+      # match the last EPSG/ESRI AUTHORITY
+      # the last AUTHORITY comes with the CRS code
+      authregex = r"AUTHORITY\[\"(EPSG|ESRI)\",\"([0-9]+)\"\]$"
+      # removing all extra spaces for safe matching
+      authmatch = match(authregex, filter(!isspace, content))
+      if isnothing(authmatch)
+        throw(ArgumentError("CRS AUTHORITY not found in the WKT1 string"))
+      end
+      type, codestr = authmatch
+      code = parse(Int, codestr)
+      type == "EPSG" ? EPSG{code} : ESRI{code}
     end
   else
     throw(ArgumentError("invalid WKT string"))

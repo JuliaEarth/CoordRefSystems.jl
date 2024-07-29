@@ -90,6 +90,10 @@ function crsstringtest(code)
   @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, multiline=true)
   @test CoordRefSystems.string2code(str) === code
+  str = wktstring(code, format="WKT1")
+  @test CoordRefSystems.string2code(str) === code
+  str = wktstring(code, format="WKT1", multiline=true)
+  @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, format="WKT1_ESRI")
   @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, format="WKT1_ESRI", multiline=true)
