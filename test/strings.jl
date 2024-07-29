@@ -29,10 +29,44 @@
   # CRS ID not found in the WKT2 string
   str = "PROJCRS[]"
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+  # datum not found in the WKT1 string
+  str = """
+  GEOGCS["GCS_WGS_1984",
+    PRIMEM["Greenwich",0.0],
+    UNIT["Degree",0.0174532925199433]]
+  """
+  @test_throws ArgumentError CoordRefSystems.string2code(str)
   # ESRI ID of the CRS not found in the ESRI WKT string
-  str = "PROJCS[]"
+  str = """
+  GEOGCS[
+    DATUM["D_WGS_1984",
+        SPHEROID["WGS_1984",6378137.0,298.257223563]],
+    PRIMEM["Greenwich",0.0],
+    UNIT["Degree",0.0174532925199433]]
+  """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
   # CRS for the ESRI ID "test" not found in dictionary
-  str = "PROJCS[\"test\"]"
+  str = """
+  GEOGCS["test",
+    DATUM["D_WGS_1984",
+        SPHEROID["WGS_1984",6378137.0,298.257223563]],
+    PRIMEM["Greenwich",0.0],
+    UNIT["Degree",0.0174532925199433]]
+  """
+  @test_throws ArgumentError CoordRefSystems.string2code(str)
+  # CRS AUTHORITY not found in the WKT1 string
+  str = """
+  GEOGCS["WGS 84",
+    DATUM["WGS_1984",
+        SPHEROID["WGS 84",6378137,298.257223563,
+            AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,
+        AUTHORITY["EPSG","8901"]],
+    UNIT["degree",0.0174532925199433,
+        AUTHORITY["EPSG","9122"]],
+    AXIS["Latitude",NORTH],
+    AXIS["Longitude",EAST]]
+  """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
 end
