@@ -63,7 +63,6 @@ function parseerror()
   throw(ArgumentError("""
   Malformed CRS string.
   Please make sure that the string follows any of the following Well-Known-Text formats: OGC WKT1, ESRI WKT1, WKT2.
-  You can correct the string using resources such as epsg.io or external software such as QGIS.org
   """))
 end
 
