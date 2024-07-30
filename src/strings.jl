@@ -10,10 +10,7 @@ Get the EPSG/ESRI code from the CRS `string`.
 function string2code(crsstr)
   # regex for WKT formats: "KEYWORD[content]"
   wktregex = r"([A-Z_]+)\[(.*)\]"s
-  wktmatch = match(wktregex, crsstr)
-  if isnothing(wktmatch)
-    throw(ArgumentError("CRS format not supported"))
-  end
+  wktmatch = match(wktregex, crsstr) |> checkmatch
   keyword, content = wktmatch
   # to differentiate WKT1 from WKT2, see Annex B.8 of the OGC specification:
   # https://docs.ogc.org/is/18-010r11/18-010r11.pdf
@@ -22,10 +19,7 @@ function string2code(crsstr)
     # the last ID comes with the CRS code
     idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
     # removing all extra spaces for safe matching
-    idmatch = match(idregex, filter(!isspace, content))
-    if isnothing(idmatch)
-      throw(ArgumentError("CRS ID not found in the WKT2 string"))
-    end
+    idmatch = match(idregex, filter(!isspace, content)) |> checkmatch
     type, codestr = idmatch
     code = parse(Int, codestr)
     type == "EPSG" ? EPSG{code} : ESRI{code}
@@ -33,19 +27,13 @@ function string2code(crsstr)
     # use the datum name to differentiate ESRI WKT1 from OGC WKT1
     # if the datum name starts with "D_", the format is ESRI WKT1 
     datumregex = r"DATUM\[\"(.*?)\""
-    datummatch = match(datumregex, content)
-    if isnothing(datummatch)
-      throw(ArgumentError("datum not found in the WKT1 string"))
-    end
+    datummatch = match(datumregex, content) |> checkmatch
     datumname = datummatch.captures[1]
     if startswith(datumname, "D_") # ESRI WKT1
       # the content of the first string comes with the ESRI ID of the CRS
       strregex = r"^\"(.*?)\""
       # removing all leading extra spaces for safe matching
-      strmatch = match(strregex, lstrip(content))
-      if isnothing(strmatch)
-        throw(ArgumentError("ESRI ID of the CRS not found in the ESRI WKT string"))
-      end
+      strmatch = match(strregex, lstrip(content)) |> checkmatch
       esriid = strmatch.captures[1]
       if haskey(esriid2code, esriid)
         esriid2code[esriid]
@@ -61,18 +49,25 @@ function string2code(crsstr)
       # the last AUTHORITY comes with the CRS code
       authregex = r"AUTHORITY\[\"(EPSG|ESRI)\",\"([0-9]+)\"\]$"
       # removing all extra spaces for safe matching
-      authmatch = match(authregex, filter(!isspace, content))
-      if isnothing(authmatch)
-        throw(ArgumentError("CRS AUTHORITY not found in the WKT1 string"))
-      end
+      authmatch = match(authregex, filter(!isspace, content)) |> checkmatch
       type, codestr = authmatch
       code = parse(Int, codestr)
       type == "EPSG" ? EPSG{code} : ESRI{code}
     end
   else
-    throw(ArgumentError("invalid WKT string"))
+    parseerror()
   end
 end
+
+function parseerror()
+  throw(ArgumentError("""
+  Malformed CRS string.
+  Please make sure that the string follows any of the following Well-Known-Text formats: OGC WKT1, ESRI WKT1, WKT2.
+  You can correct the string using resources such as epsg.io or external software such as QGIS.org
+  """))
+end
+
+checkmatch(m) = isnothing(m) ? parseerror() : m
 
 const esriid2code = Dict(
   "WGS_1984_World_Mercator" => EPSG{3395},
