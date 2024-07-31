@@ -38,8 +38,7 @@ end
 GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(lat, fixlon(lon))
 GeodeticLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeodeticLatLon{Datum}(promote(lat, lon)...)
 GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(rad2deg(lat), rad2deg(lon))
-GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
-  GeodeticLatLon{Datum}(addunit(lat, °), addunit(lon, °))
+GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} = GeodeticLatLon{Datum}(addunit(lat, °), addunit(lon, °))
 
 GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
@@ -243,8 +242,7 @@ end
 AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(lat, fixlon(lon))
 AuthalicLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = AuthalicLatLon{Datum}(promote(lat, lon)...)
 AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(rad2deg(lat), rad2deg(lon))
-AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
-  AuthalicLatLon{Datum}(addunit(lat, °), addunit(lon, °))
+AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} = AuthalicLatLon{Datum}(addunit(lat, °), addunit(lon, °))
 
 AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 
