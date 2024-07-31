@@ -16,9 +16,10 @@
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54034}) === Lambert{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
+  @test CoordRefSystems.get(EPSG{27700}) === Cartesian2D{OSGB36}
   @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
   @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
-
+  
   for Zone in 1:60
     NorthCode = 32600 + Zone
     SouthCode = 32700 + Zone
