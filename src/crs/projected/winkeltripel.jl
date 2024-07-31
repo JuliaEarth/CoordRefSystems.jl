@@ -91,6 +91,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Winkel{lat₁}}, coords::LatLon{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::Winkel{lat₁,Datum}) where {lat₁,Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{Winkel{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)

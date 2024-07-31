@@ -135,11 +135,8 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{UTM{Hemisphere,Zone}}, coords::LatLon{Datum}) where {Hemisphere,Zone,Datum} =
+Base.convert(::Type{UTM{Hemisphere,Zone}}, coords::CRS{Datum}) where {Hemisphere,Zone,Datum} =
   convert(UTM{Hemisphere,Zone,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::UTM{Hemisphere,Zone,Datum}) where {Hemisphere,Zone,Datum} =
-  convert(LatLon{Datum}, coords)
 
 # -----------------
 # HELPER FUNCTIONS

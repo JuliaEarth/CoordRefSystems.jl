@@ -1155,14 +1155,20 @@
     end
 
     @testset "Projection conversion" begin
+      ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+
       # same datum
       c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
-      c2 = convert(WinkelTripel{WGS84Latest}, c1)
+      c2 = convert(WinkelTripel, c1)
       @test allapprox(c2, WinkelTripel(T(7044801.69820402), T(5231448.051016482)))
 
       c1 = WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
-      c2 = convert(Robinson{WGS84Latest}, c1)
+      c2 = convert(Robinson, c1)
       @test allapprox(c2, Robinson(T(7620313.9259500755), T(4805073.646653474)))
+
+      c1 = PlateCarree(T(10018754.171394622), T(5009377.085697311))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), T(5591495.9185533915)))
 
       # different datums
       c1 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
@@ -1175,7 +1181,7 @@
 
       c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
       c2 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
-      @inferred convert(WinkelTripel{WGS84Latest}, c1)
+      @inferred convert(WinkelTripel, c1)
       @inferred convert(WinkelTripel{ITRF{2020}}, c2)
     end
   end
