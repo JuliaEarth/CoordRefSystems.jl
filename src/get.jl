@@ -37,6 +37,7 @@ get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}
 get(::Type{EPSG{5527}}) = LatLon{SAD96}
 get(::Type{EPSG{9988}}) = Cartesian3D{ITRF{2020}}
 get(::Type{EPSG{10176}}) = Cartesian3D{IGS20}
+get(::Type{EPSG{27700}}) = shift(TransverseMercator{0.9996012717,49u"°",-2u"°",OSGB36}, xₒ=400000u"m", yₒ=-100000u"m")
 get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
