@@ -13,10 +13,10 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 WebMercator(1, 1) # add default units
-WebMercator(1u"m", 1u"m") # integers are converted converted to floats
-WebMercator(1.0u"km", 1.0u"km") # length quantities are converted to meters
-WebMercator(1.0u"m", 1.0u"m")
-WebMercator{WGS84Latest}(1.0u"m", 1.0u"m")
+WebMercator(1m, 1m) # integers are converted converted to floats
+WebMercator(1.0km, 1.0km) # length quantities are converted to meters
+WebMercator(1.0m, 1.0m)
+WebMercator{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [EPSG:3857](https://epsg.io/3857).
@@ -28,8 +28,8 @@ end
 
 WebMercator{Datum}(x::M, y::M) where {Datum,M<:Met} = WebMercator{Datum,float(M)}(x, y)
 WebMercator{Datum}(x::Met, y::Met) where {Datum} = WebMercator{Datum}(promote(x, y)...)
-WebMercator{Datum}(x::Len, y::Len) where {Datum} = WebMercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
-WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))
+WebMercator{Datum}(x::Len, y::Len) where {Datum} = WebMercator{Datum}(uconvert(m, x), uconvert(m, y))
+WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addunit(x, m), addunit(y, m))
 
 WebMercator(args...) = WebMercator{WGS84Latest}(args...)
 
@@ -67,7 +67,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::WebMercator{Datum}) where {
   a = oftype(x, majoraxis(🌎))
   λ = x / a
   ϕ = atan(sinh(y / a))
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

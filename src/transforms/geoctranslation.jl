@@ -17,7 +17,7 @@ struct GeocentricTranslation{T} <: Transform
   δz::T
 end
 
-GeocentricTranslation(; δx=0.0, δy=0.0, δz=0.0) = GeocentricTranslation(δx * u"m", δy * u"m", δz * u"m")
+GeocentricTranslation(; δx=0.0, δy=0.0, δz=0.0) = GeocentricTranslation(δx * m, δy * m, δz * m)
 
 function apply(transform::GeocentricTranslation, x)
   δ = translation(numtype(eltype(x)), transform)

@@ -6,6 +6,7 @@ using ArchGDAL.GDAL
 using Test
 
 using CoordRefSystems: Met, Deg, Rad
+using Unitful: m, mm, cm, km, rad, °, s
 
 include("testutils.jl")
 

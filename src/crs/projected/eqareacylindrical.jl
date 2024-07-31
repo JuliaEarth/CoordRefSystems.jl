@@ -18,9 +18,9 @@ EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::M, y::M) where {latₜₛ,lonₒ
 EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Met, y::Met) where {latₜₛ,lonₒ,Datum} =
   EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(promote(x, y)...)
 EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Len, y::Len) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(uconvert(m, x), uconvert(m, y))
 EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Number, y::Number) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(addunit(x, m), addunit(y, m))
 
 EqualAreaCylindrical{latₜₛ,lonₒ}(args...) where {latₜₛ,lonₒ} = EqualAreaCylindrical{latₜₛ,lonₒ,WGS84Latest}(args...)
 
@@ -50,15 +50,15 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 Lambert(1, 1) # add default units
-Lambert(1u"m", 1u"m") # integers are converted converted to floats
-Lambert(1.0u"km", 1.0u"km") # length quantities are converted to meters
-Lambert(1.0u"m", 1.0u"m")
-Lambert{WGS84Latest}(1.0u"m", 1.0u"m")
+Lambert(1m, 1m) # integers are converted converted to floats
+Lambert(1.0km, 1.0km) # length quantities are converted to meters
+Lambert(1.0m, 1.0m)
+Lambert{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [ESRI:54034](https://epsg.io/54034).
 """
-const Lambert{Datum} = EqualAreaCylindrical{0.0u"°",0.0u"°",Datum}
+const Lambert{Datum} = EqualAreaCylindrical{0.0°,0.0°,Datum}
 
 """
     Behrmann(x, y)
@@ -71,15 +71,15 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 Behrmann(1, 1) # add default units
-Behrmann(1u"m", 1u"m") # integers are converted converted to floats
-Behrmann(1.0u"km", 1.0u"km") # length quantities are converted to meters
-Behrmann(1.0u"m", 1.0u"m")
-Behrmann{WGS84Latest}(1.0u"m", 1.0u"m")
+Behrmann(1m, 1m) # integers are converted converted to floats
+Behrmann(1.0km, 1.0km) # length quantities are converted to meters
+Behrmann(1.0m, 1.0m)
+Behrmann{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [ESRI:54017](https://epsg.io/54017).
 """
-const Behrmann{Datum} = EqualAreaCylindrical{30.0u"°",0.0u"°",Datum}
+const Behrmann{Datum} = EqualAreaCylindrical{30.0°,0.0°,Datum}
 
 """
     GallPeters(x, y)
@@ -92,13 +92,13 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 GallPeters(1, 1) # add default units
-GallPeters(1u"m", 1u"m") # integers are converted converted to floats
-GallPeters(1.0u"km", 1.0u"km") # length quantities are converted to meters
-GallPeters(1.0u"m", 1.0u"m")
-GallPeters{WGS84Latest}(1.0u"m", 1.0u"m")
+GallPeters(1m, 1m) # integers are converted converted to floats
+GallPeters(1.0km, 1.0km) # length quantities are converted to meters
+GallPeters(1.0m, 1.0m)
+GallPeters{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const GallPeters{Datum} = EqualAreaCylindrical{45.0u"°",0.0u"°",Datum}
+const GallPeters{Datum} = EqualAreaCylindrical{45.0°,0.0°,Datum}
 
 # ------------
 # CONVERSIONS
@@ -153,7 +153,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜ
   β = asin(q / qₚ)
   ϕ = auth2geod(β, e²)
 
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

@@ -20,20 +20,20 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CoordRefSystems.ShiftedCRS} =
   allapprox(CoordRefSystems._coords(coords₁), CoordRefSystems._coords(coords₂); kwargs...)
 
-isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180u"°"; kwargs...)
+isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
 function isapproxtest2D(CRS)
   c1 = convert(CRS, Cartesian{WGS84{1762}}(T(1), T(1)))
 
-  τ = CoordRefSystems.atol(Float64) * u"m"
-  c2 = convert(CRS, Cartesian{WGS84{1762}}(1u"m" + τ, 1u"m"))
-  c3 = convert(CRS, Cartesian{WGS84{1762}}(1u"m", 1u"m" + τ))
+  τ = CoordRefSystems.atol(Float64) * m
+  c2 = convert(CRS, Cartesian{WGS84{1762}}(1m + τ, 1m))
+  c3 = convert(CRS, Cartesian{WGS84{1762}}(1m, 1m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 
-  τ = CoordRefSystems.atol(Float32) * u"m"
-  c2 = convert(CRS, Cartesian{WGS84{1762}}(1u"m" + τ, 1u"m"))
-  c3 = convert(CRS, Cartesian{WGS84{1762}}(1u"m", 1u"m" + τ))
+  τ = CoordRefSystems.atol(Float32) * m
+  c2 = convert(CRS, Cartesian{WGS84{1762}}(1m + τ, 1m))
+  c3 = convert(CRS, Cartesian{WGS84{1762}}(1m, 1m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 end
@@ -43,18 +43,18 @@ isapproxtest3D(CRS) = isapproxtest3D(CRS{WGS84{1762}}, CRS{ITRF{2008}})
 function isapproxtest3D(CRS1, CRS2)
   c1 = convert(CRS1, Cartesian{WGS84{1762}}(T(3.2e6), T(3.2e6), T(4.5e6)))
 
-  τ = CoordRefSystems.atol(Float64) * u"m"
-  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6u"m" + τ, 3.2e6u"m", 4.5e6u"m"))
-  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6u"m", 3.2e6u"m" + τ, 4.5e6u"m"))
-  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6u"m", 3.2e6u"m", 4.5e6u"m" + τ))
+  τ = CoordRefSystems.atol(Float64) * m
+  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m + τ, 3.2e6m, 4.5e6m))
+  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m, 3.2e6m + τ, 4.5e6m))
+  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m, 3.2e6m, 4.5e6m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
 
-  τ = CoordRefSystems.atol(Float32) * u"m"
-  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6u"m" + τ, 3.2f6u"m", 4.5f6u"m"))
-  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6u"m", 3.2f6u"m" + τ, 4.5f6u"m"))
-  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6u"m", 3.2f6u"m", 4.5f6u"m" + τ))
+  τ = CoordRefSystems.atol(Float32) * m
+  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m + τ, 3.2f6m, 4.5f6m))
+  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m, 3.2f6m + τ, 4.5f6m))
+  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m, 3.2f6m, 4.5f6m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4

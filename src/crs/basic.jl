@@ -23,9 +23,9 @@ The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, re
 
 ```julia
 Cartesian(1, 1) # add default units
-Cartesian(1u"m", 1u"m") # integers are converted converted to floats
-Cartesian(1.0u"km", 1.0u"km", 1.0u"km")
-Cartesian{WGS84Latest}(1.0u"m", 1.0u"m")
+Cartesian(1m, 1m) # integers are converted converted to floats
+Cartesian(1.0km, 1.0km, 1.0km)
+Cartesian{WGS84Latest}(1.0m, 1.0m)
 ```
 
 ## References
@@ -40,12 +40,12 @@ end
 
 Cartesian{Datum,N}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
 Cartesian{Datum,N}(coords::NTuple{N,Len}) where {Datum,N} = Cartesian{Datum,N}(promote(coords...))
-Cartesian{Datum,N}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum,N}(addunit.(coords, u"m"))
+Cartesian{Datum,N}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum,N}(addunit.(coords, m))
 Cartesian{Datum,N}(coords::Vararg{Number,N}) where {Datum,N} = Cartesian{Datum,N}(coords)
 
 Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
 Cartesian{Datum}(coords::NTuple{N,Len}) where {Datum,N} = Cartesian{Datum}(promote(coords...))
-Cartesian{Datum}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum}(addunit.(coords, u"m"))
+Cartesian{Datum}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum}(addunit.(coords, m))
 Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(coords)
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
@@ -62,9 +62,9 @@ Alias to [`Cartesian`](@ref) with 2 coordinates.
 
 ```julia
 Cartesian2D(1, 1) # add default units
-Cartesian2D(1u"m", 1u"m") # integers are converted converted to floats
-Cartesian2D(1.0u"km", 1.0u"km")
-Cartesian2D{WGS84Latest}(1.0u"m", 1.0u"m")
+Cartesian2D(1m, 1m) # integers are converted converted to floats
+Cartesian2D(1.0km, 1.0km)
+Cartesian2D{WGS84Latest}(1.0m, 1.0m)
 ```
 """
 const Cartesian2D{Datum} = Cartesian{Datum,2}
@@ -83,9 +83,9 @@ Alias to [`Cartesian`](@ref) with 3 coordinates.
 
 ```julia
 Cartesian3D(1, 1, 1) # add default units
-Cartesian3D(1u"m", 1u"m", 1u"m") # integers are converted converted to floats
-Cartesian3D(1.0u"km", 1.0u"km", 1.0u"km")
-Cartesian3D{WGS84Latest}(1.0u"m", 1.0u"m", 1.0u"m")
+Cartesian3D(1m, 1m, 1m) # integers are converted converted to floats
+Cartesian3D(1.0km, 1.0km, 1.0km)
+Cartesian3D{WGS84Latest}(1.0m, 1.0m, 1.0m)
 ```
 """
 const Cartesian3D{Datum} = Cartesian{Datum,3}
@@ -182,10 +182,10 @@ and a given `Datum` (default to `NoDatum`).
 
 ```julia
 Polar(1, π/4) # add default units
-Polar(1u"m", (π/4)u"rad") # integers are converted converted to floats
-Polar(1.0u"m", 45u"°") # degrees are converted to radians
-Polar(1.0u"km", (π/4)u"rad")
-Polar{WGS84Latest}(1.0u"m", (π/4)u"rad")
+Polar(1m, (π/4)rad) # integers are converted converted to floats
+Polar(1.0m, 45°) # degrees are converted to radians
+Polar(1.0km, (π/4)rad)
+Polar{WGS84Latest}(1.0m, (π/4)rad)
 ```
 
 ## References
@@ -201,7 +201,7 @@ end
 
 Polar{Datum}(ρ::L, ϕ::R) where {Datum,L<:Len,R<:Rad} = Polar{Datum,float(L),float(R)}(ρ, ϕ)
 Polar{Datum}(ρ::Len, ϕ::Deg) where {Datum} = Polar{Datum}(ρ, deg2rad(ϕ))
-Polar{Datum}(ρ::Number, ϕ::Number) where {Datum} = Polar{Datum}(addunit(ρ, u"m"), addunit(ϕ, u"rad"))
+Polar{Datum}(ρ::Number, ϕ::Number) where {Datum} = Polar{Datum}(addunit(ρ, m), addunit(ϕ, rad))
 
 Polar(args...) = Polar{NoDatum}(args...)
 
@@ -233,10 +233,10 @@ and a given `Datum` (default to `NoDatum`).
 
 ```julia
 Cylindrical(1, π/4, 1) # add default units
-Cylindrical(1u"m", (π/4)u"rad", 1u"m") # integers are converted converted to floats
-Cylindrical(1.0u"m", 45u"°", 1.0u"m") # degrees are converted to radians
-Cylindrical(1.0u"km", (π/4)u"rad", 1.0u"km")
-Cylindrical{WGS84Latest}(1.0u"m", (π/4)u"rad", 1.0u"m")
+Cylindrical(1m, (π/4)rad, 1m) # integers are converted converted to floats
+Cylindrical(1.0m, 45°, 1.0m) # degrees are converted to radians
+Cylindrical(1.0km, (π/4)rad, 1.0km)
+Cylindrical{WGS84Latest}(1.0m, (π/4)rad, 1.0m)
 ```
 
 ## References
@@ -258,7 +258,7 @@ function Cylindrical{Datum}(ρ::Len, ϕ::Rad, z::Len) where {Datum}
 end
 Cylindrical{Datum}(ρ::Len, ϕ::Deg, z::Len) where {Datum} = Cylindrical{Datum}(ρ, deg2rad(ϕ), z)
 Cylindrical{Datum}(ρ::Number, ϕ::Number, z::Number) where {Datum} =
-  Cylindrical{Datum}(addunit(ρ, u"m"), addunit(ϕ, u"rad"), addunit(z, u"m"))
+  Cylindrical{Datum}(addunit(ρ, m), addunit(ϕ, rad), addunit(z, m))
 
 Cylindrical(args...) = Cylindrical{NoDatum}(args...)
 
@@ -291,10 +291,10 @@ and a given `Datum` (default to `NoDatum`).
 
 ```julia
 Spherical(1, π/4, π/4) # add default units
-Spherical(1u"m", (π/4)u"rad", (π/4)u"rad") # integers are converted converted to floats
-Spherical(1.0u"m", 45u"°", 45u"°") # degrees are converted to radians
-Spherical(1.0u"km", (π/4)u"rad", (π/4)u"rad")
-Spherical{WGS84Latest}(1.0u"m", (π/4)u"rad", (π/4)u"rad")
+Spherical(1m, (π/4)rad, (π/4)rad) # integers are converted converted to floats
+Spherical(1.0m, 45°, 45°) # degrees are converted to radians
+Spherical(1.0km, (π/4)rad, (π/4)rad)
+Spherical{WGS84Latest}(1.0m, (π/4)rad, (π/4)rad)
 ```
 
 ## References
@@ -313,7 +313,7 @@ Spherical{Datum}(r::L, θ::R, ϕ::R) where {Datum,L<:Len,R<:Rad} = Spherical{Dat
 Spherical{Datum}(r::Len, θ::Rad, ϕ::Rad) where {Datum} = Spherical{Datum}(r, promote(θ, ϕ)...)
 Spherical{Datum}(r::Len, θ::Deg, ϕ::Deg) where {Datum} = Spherical{Datum}(r, deg2rad(θ), deg2rad(ϕ))
 Spherical{Datum}(r::Number, θ::Number, ϕ::Number) where {Datum} =
-  Spherical{Datum}(addunit(r, u"m"), addunit(θ, u"rad"), addunit(ϕ, u"rad"))
+  Spherical{Datum}(addunit(r, m), addunit(θ, rad), addunit(ϕ, rad))
 
 Spherical(args...) = Spherical{NoDatum}(args...)
 
@@ -341,19 +341,19 @@ Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical}) = rand(rng
 # Cartesian <> Polar
 Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ)::Polar{Datum}) where {Datum} = Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ))
 Base.convert(::Type{Polar{Datum}}, (; x, y)::Cartesian{Datum,2}) where {Datum} =
-  Polar{Datum}(hypot(x, y), atanpos(y, x) * u"rad")
+  Polar{Datum}(hypot(x, y), atanpos(y, x) * rad)
 
 # Cartesian <> Cylindrical
 Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ, z)::Cylindrical{Datum}) where {Datum} =
   Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ), z)
 Base.convert(::Type{Cylindrical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
-  Cylindrical{Datum}(hypot(x, y), atanpos(y, x) * u"rad", z)
+  Cylindrical{Datum}(hypot(x, y), atanpos(y, x) * rad, z)
 
 # Cartesian <> Spherical
 Base.convert(::Type{Cartesian{Datum}}, (; r, θ, ϕ)::Spherical{Datum}) where {Datum} =
   Cartesian{Datum}(r * sin(θ) * cos(ϕ), r * sin(θ) * sin(ϕ), r * cos(θ))
 Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
-  Spherical{Datum}(hypot(x, y, z), atan(hypot(x, y), z) * u"rad", atanpos(y, x) * u"rad")
+  Spherical{Datum}(hypot(x, y, z), atan(hypot(x, y), z) * rad, atanpos(y, x) * rad)
 
 # datum conversion
 function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}

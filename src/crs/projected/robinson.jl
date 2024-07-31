@@ -13,10 +13,10 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 Robinson(1, 1) # add default units
-Robinson(1u"m", 1u"m") # integers are converted converted to floats
-Robinson(1.0u"km", 1.0u"km") # length quantities are converted to meters
-Robinson(1.0u"m", 1.0u"m")
-Robinson{WGS84Latest}(1.0u"m", 1.0u"m")
+Robinson(1m, 1m) # integers are converted converted to floats
+Robinson(1.0km, 1.0km) # length quantities are converted to meters
+Robinson(1.0m, 1.0m)
+Robinson{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [ESRI:54030](https://epsg.io/54030).
@@ -28,8 +28,8 @@ end
 
 Robinson{Datum}(x::M, y::M) where {Datum,M<:Met} = Robinson{Datum,float(M)}(x, y)
 Robinson{Datum}(x::Met, y::Met) where {Datum} = Robinson{Datum}(promote(x, y)...)
-Robinson{Datum}(x::Len, y::Len) where {Datum} = Robinson{Datum}(uconvert(u"m", x), uconvert(u"m", y))
-Robinson{Datum}(x::Number, y::Number) where {Datum} = Robinson{Datum}(addunit(x, u"m"), addunit(y, u"m"))
+Robinson{Datum}(x::Len, y::Len) where {Datum} = Robinson{Datum}(uconvert(m, x), uconvert(m, y))
+Robinson{Datum}(x::Number, y::Number) where {Datum} = Robinson{Datum}(addunit(x, m), addunit(y, m))
 
 Robinson(args...) = Robinson{WGS84Latest}(args...)
 
@@ -162,7 +162,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Dat
     ϕ = deg2rad(5 * (i - 1) + z) * sign(y)
   end
 
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

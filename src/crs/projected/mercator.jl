@@ -13,10 +13,10 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 Mercator(1, 1) # add default units
-Mercator(1u"m", 1u"m") # integers are converted converted to floats
-Mercator(1.0u"km", 1.0u"km") # length quantities are converted to meters
-Mercator(1.0u"m", 1.0u"m")
-Mercator{WGS84Latest}(1.0u"m", 1.0u"m")
+Mercator(1m, 1m) # integers are converted converted to floats
+Mercator(1.0km, 1.0km) # length quantities are converted to meters
+Mercator(1.0m, 1.0m)
+Mercator{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [EPSG:3395](https://epsg.io/3395).
@@ -28,8 +28,8 @@ end
 
 Mercator{Datum}(x::M, y::M) where {Datum,M<:Met} = Mercator{Datum,float(M)}(x, y)
 Mercator{Datum}(x::Met, y::Met) where {Datum} = Mercator{Datum}(promote(x, y)...)
-Mercator{Datum}(x::Len, y::Len) where {Datum} = Mercator{Datum}(uconvert(u"m", x), uconvert(u"m", y))
-Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x, u"m"), addunit(y, u"m"))
+Mercator{Datum}(x::Len, y::Len) where {Datum} = Mercator{Datum}(uconvert(m, x), uconvert(m, y))
+Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x, m), addunit(y, m))
 
 Mercator(args...) = Mercator{WGS84Latest}(args...)
 
@@ -84,7 +84,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Dat
   λ = x / a
   ϕ = atan(τ)
 
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

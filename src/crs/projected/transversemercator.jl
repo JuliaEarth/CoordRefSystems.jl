@@ -18,9 +18,9 @@ TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::M, y::M) where {k₀,latₒ,lon�
 TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Met, y::Met) where {k₀,latₒ,lonₒ,Datum} =
   TransverseMercator{k₀,latₒ,lonₒ,Datum}(promote(x, y)...)
 TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Len, y::Len) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+  TransverseMercator{k₀,latₒ,lonₒ,Datum}(uconvert(m, x), uconvert(m, y))
 TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Number, y::Number) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+  TransverseMercator{k₀,latₒ,lonₒ,Datum}(addunit(x, m), addunit(y, m))
 
 TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = TransverseMercator{k₀,latₒ,lonₒ,WGS84Latest}(args...)
 
@@ -150,7 +150,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{k₀,lat
   λ = Ce + λₒ
   ϕ = gatg(cgb, Cn)
 
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

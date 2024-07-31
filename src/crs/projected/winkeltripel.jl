@@ -9,8 +9,8 @@ end
 
 Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = Winkel{lat₁,Datum,float(M)}(x, y)
 Winkel{lat₁,Datum}(x::Met, y::Met) where {lat₁,Datum} = Winkel{lat₁,Datum}(promote(x, y)...)
-Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(u"m", x), uconvert(u"m", y))
-Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(m, x), uconvert(m, y))
+Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, m), addunit(y, m))
 
 Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 
@@ -35,15 +35,15 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 WinkelTripel(1, 1) # add default units
-WinkelTripel(1u"m", 1u"m") # integers are converted converted to floats
-WinkelTripel(1.0u"km", 1.0u"km") # length quantities are converted to meters
-WinkelTripel(1.0u"m", 1.0u"m")
-WinkelTripel{WGS84Latest}(1.0u"m", 1.0u"m")
+WinkelTripel(1m, 1m) # integers are converted converted to floats
+WinkelTripel(1.0km, 1.0km) # length quantities are converted to meters
+WinkelTripel(1.0m, 1.0m)
+WinkelTripel{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [ESRI:54042](https://epsg.io/54042).
 """
-const WinkelTripel{Datum} = Winkel{50.467u"°",Datum}
+const WinkelTripel{Datum} = Winkel{50.467°,Datum}
 
 # ------------
 # CONVERSIONS
@@ -84,7 +84,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₁,Datum,C<:W
     fx, fy = formulas(C, T)
     projinv(fx, fy, x, y, x, y; tol)
   end
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------
