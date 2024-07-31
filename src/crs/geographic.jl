@@ -425,17 +425,10 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{GeocentricLatLon}, coords::LatLon{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
-Base.convert(::Type{LatLon}, coords::GeocentricLatLon{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{LatLon}, coords::CRS{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
 
-Base.convert(::Type{AuthalicLatLon}, coords::LatLon{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)
-Base.convert(::Type{LatLon}, coords::AuthalicLatLon{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{LatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(LatLonAlt{Datum}, coords)
 
-Base.convert(::Type{Cartesian}, coords::LatLon{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
-Base.convert(::Type{LatLon}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{GeocentricLatLon}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
 
-Base.convert(::Type{Cartesian}, coords::LatLonAlt{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
-Base.convert(::Type{LatLonAlt}, coords::Cartesian{Datum,3}) where {Datum} = convert(LatLonAlt{Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::LatLonAlt{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
-Base.convert(::Type{LatLonAlt}, coords::LatLon{Datum}) where {Datum} = convert(LatLonAlt{Datum}, coords)
+Base.convert(::Type{AuthalicLatLon}, coords::CRS{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)

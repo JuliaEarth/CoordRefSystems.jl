@@ -176,8 +176,5 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Orthographic{latₒ,lonₒ,S}}, coords::LatLon{Datum}) where {latₒ,lonₒ,S,Datum} =
+Base.convert(::Type{Orthographic{latₒ,lonₒ,S}}, coords::CRS{Datum}) where {latₒ,lonₒ,S,Datum} =
   convert(Orthographic{latₒ,lonₒ,S,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::Orthographic{latₒ,lonₒ,S,Datum}) where {latₒ,lonₒ,S,Datum} =
-  convert(LatLon{Datum}, coords)

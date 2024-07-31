@@ -160,8 +160,5 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EqualAreaCylindrical{latₜₛ,lonₒ}}, coords::LatLon{Datum}) where {latₜₛ,lonₒ,Datum} =
+Base.convert(::Type{EqualAreaCylindrical{latₜₛ,lonₒ}}, coords::CRS{Datum}) where {latₜₛ,lonₒ,Datum} =
   convert(EqualAreaCylindrical{latₜₛ,lonₒ,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}) where {latₜₛ,lonₒ,Datum} =
-  convert(LatLon{Datum}, coords)

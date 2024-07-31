@@ -157,11 +157,8 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{TransverseMercator{k₀,latₒ,lonₒ}}, coords::LatLon{Datum}) where {k₀,latₒ,lonₒ,Datum} =
+Base.convert(::Type{TransverseMercator{k₀,latₒ,lonₒ}}, coords::CRS{Datum}) where {k₀,latₒ,lonₒ,Datum} =
   convert(TransverseMercator{k₀,latₒ,lonₒ,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::TransverseMercator{k₀,latₒ,lonₒ,Datum}) where {k₀,latₒ,lonₒ,Datum} =
-  convert(LatLon{Datum}, coords)
 
 # -----------------
 # HELPER FUNCTIONS

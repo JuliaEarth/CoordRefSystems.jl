@@ -91,6 +91,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Mercator}, coords::LatLon{Datum}) where {Datum} = convert(Mercator{Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::Mercator{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{Mercator}, coords::CRS{Datum}) where {Datum} = convert(Mercator{Datum}, coords)

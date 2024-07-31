@@ -371,11 +371,10 @@ Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Cartesian}, coords::Polar{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
-Base.convert(::Type{Polar}, coords::Cartesian{Datum,2}) where {Datum} = convert(Polar{Datum}, coords)
+Base.convert(::Type{Cartesian}, coords::CRS{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
 
-Base.convert(::Type{Cartesian}, coords::Cylindrical{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
-Base.convert(::Type{Cylindrical}, coords::Cartesian{Datum,3}) where {Datum} = convert(Cylindrical{Datum}, coords)
+Base.convert(::Type{Polar}, coords::CRS{Datum}) where {Datum} = convert(Polar{Datum}, coords)
 
-Base.convert(::Type{Cartesian}, coords::Spherical{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
-Base.convert(::Type{Spherical}, coords::Cartesian{Datum,3}) where {Datum} = convert(Spherical{Datum}, coords)
+Base.convert(::Type{Cylindrical}, coords::CRS{Datum}) where {Datum} = convert(Cylindrical{Datum}, coords)
+
+Base.convert(::Type{Spherical}, coords::CRS{Datum}) where {Datum} = convert(Spherical{Datum}, coords)

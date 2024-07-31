@@ -169,6 +169,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Robinson}, coords::LatLon{Datum}) where {Datum} = convert(Robinson{Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::Robinson{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
+Base.convert(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum}, coords)

@@ -87,8 +87,5 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EquidistantCylindrical{latₜₛ}}, coords::LatLon{Datum}) where {latₜₛ,Datum} =
+Base.convert(::Type{EquidistantCylindrical{latₜₛ}}, coords::CRS{Datum}) where {latₜₛ,Datum} =
   convert(EquidistantCylindrical{latₜₛ,Datum}, coords)
-
-Base.convert(::Type{LatLon}, coords::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
-  convert(LatLon{Datum}, coords)

@@ -106,7 +106,7 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{LatLon}, coords::ShiftedCRS) = convert(LatLon{datum(coords)}, coords)
+Base.convert(C::Type{<:ShiftedCRS}, coords::CRS) = convert(C, convert(LatLon, coords))
 
 Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,2}) where {Datum} =
   C(coords.x, coords.y)
