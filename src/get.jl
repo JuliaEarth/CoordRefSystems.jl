@@ -37,6 +37,7 @@ get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}
 get(::Type{EPSG{5527}}) = LatLon{SAD96}
 get(::Type{EPSG{9988}}) = Cartesian3D{ITRF{2020}}
 get(::Type{EPSG{10176}}) = Cartesian3D{IGS20}
+get(::Type{EPSG{27700}}) = Cartesian2D{OSGB36}
 get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
@@ -44,7 +45,7 @@ get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
 get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
 get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
 get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
-get(::Type{EPSG{27700}}) = Cartesian2D{OSGB36}
+
 
 for Zone in 1:60
   NorthCode = 32600 + Zone
