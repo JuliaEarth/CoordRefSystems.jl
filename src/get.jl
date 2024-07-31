@@ -44,6 +44,7 @@ get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
 get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
 get(::Type{ESRI{102035}}) = Orthographic{90.0u"°",0.0u"°",true,WGS84Latest}
 get(::Type{ESRI{102037}}) = Orthographic{-90.0u"°",0.0u"°",true,WGS84Latest}
+get(::Type{EPSG{27700}}) = Cartesian2D{OSGB36}
 
 for Zone in 1:60
   NorthCode = 32600 + Zone
