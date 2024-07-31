@@ -23,7 +23,7 @@ struct HelmertTransform{T,R,S} <: Transform
 end
 
 HelmertTransform(; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0) =
-  HelmertTransform(δx * u"m", δy * u"m", δz * u"m", θx / 3600 * u"°", θy / 3600 * u"°", θz / 3600 * u"°", s * u"ppm")
+  HelmertTransform(δx * m, δy * m, δz * m, θx / 3600 * °, θy / 3600 * °, θz / 3600 * °, s * u"ppm")
 
 function apply(transform::HelmertTransform, x)
   T = numtype(eltype(x))

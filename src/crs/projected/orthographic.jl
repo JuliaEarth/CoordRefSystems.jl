@@ -18,9 +18,9 @@ Orthographic{latₒ,lonₒ,S,Datum}(x::M, y::M) where {latₒ,lonₒ,S,Datum,M<:
 Orthographic{latₒ,lonₒ,S,Datum}(x::Met, y::Met) where {latₒ,lonₒ,S,Datum} =
   Orthographic{latₒ,lonₒ,S,Datum}(promote(x, y)...)
 Orthographic{latₒ,lonₒ,S,Datum}(x::Len, y::Len) where {latₒ,lonₒ,S,Datum} =
-  Orthographic{latₒ,lonₒ,S,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+  Orthographic{latₒ,lonₒ,S,Datum}(uconvert(m, x), uconvert(m, y))
 Orthographic{latₒ,lonₒ,S,Datum}(x::Number, y::Number) where {latₒ,lonₒ,S,Datum} =
-  Orthographic{latₒ,lonₒ,S,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+  Orthographic{latₒ,lonₒ,S,Datum}(addunit(x, m), addunit(y, m))
 
 Orthographic{latₒ,lonₒ,S}(args...) where {latₒ,lonₒ,S} = Orthographic{latₒ,lonₒ,S,WGS84Latest}(args...)
 
@@ -47,13 +47,13 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 OrthoNorth(1, 1) # add default units
-OrthoNorth(1u"m", 1u"m") # integers are converted converted to floats
+OrthoNorth(1m, 1m) # integers are converted converted to floats
 OrthoNorth(1.0u"km", 1.0u"km") # length quantities are converted to meters
-OrthoNorth(1.0u"m", 1.0u"m")
-OrthoNorth{WGS84Latest}(1.0u"m", 1.0u"m")
+OrthoNorth(1.0m, 1.0m)
+OrthoNorth{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const OrthoNorth{Datum} = Orthographic{90.0u"°",0.0u"°",false,Datum}
+const OrthoNorth{Datum} = Orthographic{90.0°,0.0°,false,Datum}
 
 """
     OrthoSouth(x, y)
@@ -66,13 +66,13 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 OrthoSouth(1, 1) # add default units
-OrthoSouth(1u"m", 1u"m") # integers are converted converted to floats
+OrthoSouth(1m, 1m) # integers are converted converted to floats
 OrthoSouth(1.0u"km", 1.0u"km") # length quantities are converted to meters
-OrthoSouth(1.0u"m", 1.0u"m")
-OrthoSouth{WGS84Latest}(1.0u"m", 1.0u"m")
+OrthoSouth(1.0m, 1.0m)
+OrthoSouth{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const OrthoSouth{Datum} = Orthographic{-90.0u"°",0.0u"°",false,Datum}
+const OrthoSouth{Datum} = Orthographic{-90.0°,0.0°,false,Datum}
 
 # ------------
 # CONVERSIONS
@@ -156,7 +156,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Dat
   λₒ = T(ustrip(deg2rad(lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
   λ, ϕ = sphericalinv(x, y, λₒ, ϕₒ)
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,false,Datum}}
@@ -169,7 +169,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Dat
   λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
   fx, fy = formulas(C, T)
   λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

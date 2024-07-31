@@ -17,9 +17,9 @@ EquidistantCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Me
 EquidistantCylindrical{latₜₛ,Datum}(x::Met, y::Met) where {latₜₛ,Datum} =
   EquidistantCylindrical{latₜₛ,Datum}(promote(x, y)...)
 EquidistantCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} =
-  EquidistantCylindrical{latₜₛ,Datum}(uconvert(u"m", x), uconvert(u"m", y))
+  EquidistantCylindrical{latₜₛ,Datum}(uconvert(m, x), uconvert(m, y))
 EquidistantCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,Datum} =
-  EquidistantCylindrical{latₜₛ,Datum}(addunit(x, u"m"), addunit(y, u"m"))
+  EquidistantCylindrical{latₜₛ,Datum}(addunit(x, m), addunit(y, m))
 
 EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84Latest}(args...)
 
@@ -46,15 +46,15 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 PlateCarree(1, 1) # add default units
-PlateCarree(1u"m", 1u"m") # integers are converted converted to floats
+PlateCarree(1m, 1m) # integers are converted converted to floats
 PlateCarree(1.0u"km", 1.0u"km") # length quantities are converted to meters
-PlateCarree(1.0u"m", 1.0u"m")
-PlateCarree{WGS84Latest}(1.0u"m", 1.0u"m")
+PlateCarree(1.0m, 1.0m)
+PlateCarree{WGS84Latest}(1.0m, 1.0m)
 ```
 
 See [EPSG:32662](https://epsg.io/32662).
 """
-const PlateCarree{Datum} = EquidistantCylindrical{0.0u"°",Datum}
+const PlateCarree{Datum} = EquidistantCylindrical{0.0°,Datum}
 
 # ------------
 # CONVERSIONS
@@ -80,7 +80,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EquidistantCylindrical{lat�
   λ = x / (cos(ϕₜₛ) * a)
   ϕ = y / a
 
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 # ----------

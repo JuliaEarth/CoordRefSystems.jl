@@ -87,7 +87,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projecte
   y = coords.y / a
   fx, fy = formulas(C, T)
   λ, ϕ = projinv(fx, fy, x, y, x, y)
-  LatLon{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°")
+  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
 end
 
 Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ} =

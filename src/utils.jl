@@ -4,9 +4,9 @@
 
 # helper type alias
 const Len{T} = Quantity{T,u"𝐋"}
-const Met{T} = Quantity{T,u"𝐋",typeof(u"m")}
-const Deg{T} = Quantity{T,NoDims,typeof(u"°")}
-const Rad{T} = Quantity{T,NoDims,typeof(u"rad")}
+const Met{T} = Quantity{T,u"𝐋",typeof(m)}
+const Deg{T} = Quantity{T,NoDims,typeof(°)}
+const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
 """
     atol(T)
@@ -42,14 +42,14 @@ end
 
 Fix the longitude to be in the range `[-180°,180°]`.
 """
-fixlon(lon) = ifelse(-180u"°" ≤ lon ≤ 180u"°", lon, (lon % 360u"°" + 540u"°") % 360u"°" - 180u"°")
+fixlon(lon) = ifelse(-180° ≤ lon ≤ 180°, lon, (lon % 360° + 540°) % 360° - 180°)
 
 """
     islon180(lon)
 
 Checks if the longitude is `180°` or `-180°`.
 """
-islon180(lon) = abs(lon) == 180u"°"
+islon180(lon) = abs(lon) == 180°
 
 """
     numconvert(T, x)

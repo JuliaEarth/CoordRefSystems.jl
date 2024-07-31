@@ -22,10 +22,10 @@ with a given `Datum` (default to `WGS84Latest`).
 
 ```julia
 GeodeticLatLon(45, 45) # add default units
-GeodeticLatLon(45u"°", 45u"°") # integers are converted converted to floats
-GeodeticLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-GeodeticLatLon(45.0u"°", 45.0u"°")
-GeodeticLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+GeodeticLatLon(45°, 45°) # integers are converted converted to floats
+GeodeticLatLon((π/4)rad, (π/4)rad) # radians are converted to degrees
+GeodeticLatLon(45.0°, 45.0°)
+GeodeticLatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 
 See [EPSG:4326](https://epsg.io/4326).
@@ -39,7 +39,7 @@ GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datu
 GeodeticLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeodeticLatLon{Datum}(promote(lat, lon)...)
 GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
-  GeodeticLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
+  GeodeticLatLon{Datum}(addunit(lat, °), addunit(lon, °))
 
 GeodeticLatLon(args...) = GeodeticLatLon{WGS84Latest}(args...)
 
@@ -75,10 +75,10 @@ Alias to [`GeodeticLatLon`](@ref).
 
 ```julia
 LatLon(45, 45) # add default units
-LatLon(45u"°", 45u"°") # integers are converted converted to floats
-LatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-LatLon(45.0u"°", 45.0u"°")
-LatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+LatLon(45°, 45°) # integers are converted converted to floats
+LatLon((π/4)rad, (π/4)rad) # radians are converted to degrees
+LatLon(45.0°, 45.0°)
+LatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 
 See [EPSG:4326](https://epsg.io/4326).
@@ -96,11 +96,11 @@ and altitude in length units (default to meter) with a given `Datum` (default to
 
 ```julia
 GeodeticLatLonAlt(45, 45, 1) # add default units
-GeodeticLatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
-GeodeticLatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-GeodeticLatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
-GeodeticLatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
-GeodeticLatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
+GeodeticLatLonAlt(45°, 45°, 1m) # integers are converted converted to floats
+GeodeticLatLonAlt((π/4)rad, (π/4)rad) # radians are converted to degrees
+GeodeticLatLonAlt(45.0°, 45.0°, 1.0u"km") # length quantities are converted to meters
+GeodeticLatLonAlt(45.0°, 45.0°, 1.0m)
+GeodeticLatLonAlt{WGS84Latest}(45.0°, 45.0°, 1.0m)
 ```
 """
 struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
@@ -114,11 +114,11 @@ GeodeticLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
   GeodeticLatLonAlt{Datum}(promote(lat, lon)..., alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
-  GeodeticLatLonAlt{Datum}(lat, lon, uconvert(u"m", alt))
+  GeodeticLatLonAlt{Datum}(lat, lon, uconvert(m, alt))
 GeodeticLatLonAlt{Datum}(lat::Rad, lon::Rad, alt::Len) where {Datum} =
   GeodeticLatLonAlt{Datum}(rad2deg(lat), rad2deg(lon), alt)
 GeodeticLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
-  GeodeticLatLonAlt{Datum}(addunit(lat, u"°"), addunit(lon, u"°"), addunit(alt, u"m"))
+  GeodeticLatLonAlt{Datum}(addunit(lat, °), addunit(lon, °), addunit(alt, m))
 
 GeodeticLatLonAlt(args...) = GeodeticLatLonAlt{WGS84Latest}(args...)
 
@@ -157,11 +157,11 @@ Alias to [`GeodeticLatLonAlt`](@ref).
 
 ```julia
 LatLonAlt(45, 45, 1) # add default units
-LatLonAlt(45u"°", 45u"°", 1u"m") # integers are converted converted to floats
-LatLonAlt((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-LatLonAlt(45.0u"°", 45.0u"°", 1.0u"km") # length quantities are converted to meters
-LatLonAlt(45.0u"°", 45.0u"°", 1.0u"m")
-LatLonAlt{WGS84Latest}(45.0u"°", 45.0u"°", 1.0u"m")
+LatLonAlt(45°, 45°, 1m) # integers are converted converted to floats
+LatLonAlt((π/4)rad, (π/4)rad) # radians are converted to degrees
+LatLonAlt(45.0°, 45.0°, 1.0u"km") # length quantities are converted to meters
+LatLonAlt(45.0°, 45.0°, 1.0m)
+LatLonAlt{WGS84Latest}(45.0°, 45.0°, 1.0m)
 ```
 """
 const LatLonAlt = GeodeticLatLonAlt
@@ -177,10 +177,10 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 GeocentricLatLon(45, 45) # add default units
-GeocentricLatLon(45u"°", 45u"°") # integers are converted converted to floats
-GeocentricLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-GeocentricLatLon(45.0u"°", 45.0u"°")
-GeocentricLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+GeocentricLatLon(45°, 45°) # integers are converted converted to floats
+GeocentricLatLon((π/4)rad, (π/4)rad) # radians are converted to degrees
+GeocentricLatLon(45.0°, 45.0°)
+GeocentricLatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 """
 struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
@@ -192,7 +192,7 @@ GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{
 GeocentricLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeocentricLatLon{Datum}(promote(lat, lon)...)
 GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
-  GeocentricLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
+  GeocentricLatLon{Datum}(addunit(lat, °), addunit(lon, °))
 
 GeocentricLatLon(args...) = GeocentricLatLon{WGS84Latest}(args...)
 
@@ -229,10 +229,10 @@ with a given `Datum` (default to `WGS84`).
 
 ```julia
 AuthalicLatLon(45, 45) # add default units
-AuthalicLatLon(45u"°", 45u"°") # integers are converted converted to floats
-AuthalicLatLon((π/4)u"rad", (π/4)u"rad") # radians are converted to degrees
-AuthalicLatLon(45.0u"°", 45.0u"°")
-AuthalicLatLon{WGS84Latest}(45.0u"°", 45.0u"°")
+AuthalicLatLon(45°, 45°) # integers are converted converted to floats
+AuthalicLatLon((π/4)rad, (π/4)rad) # radians are converted to degrees
+AuthalicLatLon(45.0°, 45.0°)
+AuthalicLatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 """
 struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
@@ -244,7 +244,7 @@ AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datu
 AuthalicLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = AuthalicLatLon{Datum}(promote(lat, lon)...)
 AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
-  AuthalicLatLon{Datum}(addunit(lat, u"°"), addunit(lon, u"°"))
+  AuthalicLatLon{Datum}(addunit(lat, °), addunit(lon, °))
 
 AuthalicLatLon(args...) = AuthalicLatLon{WGS84Latest}(args...)
 
@@ -285,14 +285,14 @@ function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::LatLon{Datum}) wh
   ϕ = ustrip(deg2rad(coords.lat))
   e² = oftype(ϕ, eccentricity²(ellipsoid(Datum)))
   ϕ′ = atan((1 - e²) * tan(ϕ))
-  GeocentricLatLon{Datum}(rad2deg(ϕ′) * u"°", coords.lon)
+  GeocentricLatLon{Datum}(rad2deg(ϕ′) * °, coords.lon)
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
   ϕ′ = ustrip(deg2rad(coords.lat))
   e² = oftype(ϕ′, eccentricity²(ellipsoid(Datum)))
   ϕ = atan(1 / (1 - e²) * tan(ϕ′))
-  LatLon{Datum}(rad2deg(ϕ) * u"°", coords.lon)
+  LatLon{Datum}(rad2deg(ϕ) * °, coords.lon)
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/healpix.cpp#L230
@@ -318,7 +318,7 @@ function Base.convert(::Type{AuthalicLatLon{Datum}}, coords::LatLon{Datum}) wher
   end
 
   β = asin(qqₚ⁻¹)
-  AuthalicLatLon{Datum}(rad2deg(β) * u"°", coords.lon)
+  AuthalicLatLon{Datum}(rad2deg(β) * °, coords.lon)
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/auth.cpp
@@ -348,7 +348,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
   β = ustrip(deg2rad(coords.lat))
   e² = oftype(β, eccentricity²(ellipsoid(Datum)))
   ϕ = auth2geod(β, e²)
-  LatLon{Datum}(rad2deg(ϕ) * u"°", coords.lon)
+  LatLon{Datum}(rad2deg(ϕ) * °, coords.lon)
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/conversions/cart.cpp
@@ -360,7 +360,7 @@ Base.convert(::Type{LatLon{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = La
 
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum}) where {Datum}
   T = numtype(coords.lon)
-  LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * u"m")
+  LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * m)
 end
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
@@ -391,15 +391,15 @@ function Base.convert(::Type{Cartesian{Datum}}, coords::LatLonAlt{Datum}) where 
   y = Nph * cosϕ * sin(λ)
   z = (N * (1 - e²) + h) * sinϕ
 
-  Cartesian{Datum}(x * u"m", y * u"m", z * u"m")
+  Cartesian{Datum}(x * m, y * m, z * m)
 end
 
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
   T = numtype(coords.x)
   🌎 = ellipsoid(Datum)
-  x = ustrip(uconvert(u"m", coords.x))
-  y = ustrip(uconvert(u"m", coords.y))
-  z = ustrip(uconvert(u"m", coords.z))
+  x = ustrip(uconvert(m, coords.x))
+  y = ustrip(uconvert(m, coords.y))
+  z = ustrip(uconvert(m, coords.z))
   a = T(ustrip(majoraxis(🌎)))
   b = T(ustrip(minoraxis(🌎)))
   e² = T(eccentricity²(🌎))
@@ -413,7 +413,7 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) wher
   N = a / sqrt(1 - e² * sin(ϕ)^2)
   h = p / cos(ϕ) - N
 
-  LatLonAlt{Datum}(rad2deg(ϕ) * u"°", rad2deg(λ) * u"°", h * u"m")
+  LatLonAlt{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °, h * m)
 end
 
 # datum conversion

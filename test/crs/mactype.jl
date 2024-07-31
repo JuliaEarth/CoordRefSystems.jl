@@ -124,7 +124,7 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    TransverseMercator = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",45.0u"°"}
+    TransverseMercator = CoordRefSystems.TransverseMercator{0.9996,15.0°,45.0°}
     C = TransverseMercator{WGS84Latest,Met{T}}
     c1 = TransverseMercator(1.0, 1.0)
     c2 = convert(C, c1)
@@ -141,7 +141,7 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0u"°", xₒ=200.0u"m", yₒ=200.0u"m")
+    ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     C = typeof(ShiftedMercator(T(1), T(1)))
     c1 = ShiftedMercator(1.0, 1.0)
     c2 = convert(C, c1)
