@@ -108,10 +108,7 @@
     @testset "Cylindrical" begin
       @test Cylindrical(T(1), T(2), T(3)) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
       @test Cylindrical(T(1) * m, T(2) * rad, 3 * m) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
-      @test allapprox(
-        Cylindrical(T(1) * m, T(45) * °, T(1) * m),
-        Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m)
-      )
+      @test allapprox(Cylindrical(T(1) * m, T(45) * °, T(1) * m), Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m))
 
       c = Cylindrical(T(1), T(2), T(3))
       @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad, z: 3.0 m)"
@@ -140,10 +137,7 @@
     @testset "Spherical" begin
       @test Spherical(T(1), T(2), T(3)) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
       @test Spherical(T(1) * m, T(2) * rad, 3 * rad) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
-      @test allapprox(
-        Spherical(T(1) * m, T(45) * °, T(45) * °),
-        Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad)
-      )
+      @test allapprox(Spherical(T(1) * m, T(45) * °, T(45) * °), Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad))
 
       c = Spherical(T(1), T(2), T(3))
       @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 2.0 rad, ϕ: 3.0 rad)"
@@ -232,10 +226,7 @@
     @testset "GeocentricLatLon" begin
       @test GeocentricLatLon(T(1), T(2)) == GeocentricLatLon(T(1) * °, T(2) * °)
       @test GeocentricLatLon(T(1) * °, 2 * °) == GeocentricLatLon(T(1) * °, T(2) * °)
-      @test allapprox(
-        GeocentricLatLon(T(π / 4) * rad, T(π / 4) * rad),
-        GeocentricLatLon(T(45) * °, T(45) * °)
-      )
+      @test allapprox(GeocentricLatLon(T(π / 4) * rad, T(π / 4) * rad), GeocentricLatLon(T(45) * °, T(45) * °))
 
       c = GeocentricLatLon(T(1), T(2))
       @test sprint(show, c) == "GeocentricLatLon{WGS84Latest}(lat: 1.0°, lon: 2.0°)"
