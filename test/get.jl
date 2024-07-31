@@ -1,4 +1,6 @@
 @testset "get" begin
+  TM = CoordRefSystems.TransverseMercator
+
   # EPSG/ESRI code
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
@@ -11,6 +13,7 @@
   @test CoordRefSystems.get(EPSG{5527}) === LatLon{SAD96}
   @test CoordRefSystems.get(EPSG{9988}) === Cartesian{ITRF{2020},3}
   @test CoordRefSystems.get(EPSG{10176}) === Cartesian{IGS20,3}
+  @test CoordRefSystems.get(EPSG{27700}) === CoordRefSystems.shift(TM{0.9996012717,49u"°",-2u"°",OSGB36}, xₒ=400000u"m", yₒ=-100000u"m")
   @test CoordRefSystems.get(EPSG{32662}) === PlateCarree{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54017}) === Behrmann{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
