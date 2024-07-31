@@ -98,7 +98,7 @@ and altitude in length units (default to meter) with a given `Datum` (default to
 GeodeticLatLonAlt(45, 45, 1) # add default units
 GeodeticLatLonAlt(45°, 45°, 1m) # integers are converted converted to floats
 GeodeticLatLonAlt((π/4)rad, (π/4)rad) # radians are converted to degrees
-GeodeticLatLonAlt(45.0°, 45.0°, 1.0u"km") # length quantities are converted to meters
+GeodeticLatLonAlt(45.0°, 45.0°, 1.0km) # length quantities are converted to meters
 GeodeticLatLonAlt(45.0°, 45.0°, 1.0m)
 GeodeticLatLonAlt{WGS84Latest}(45.0°, 45.0°, 1.0m)
 ```
@@ -159,7 +159,7 @@ Alias to [`GeodeticLatLonAlt`](@ref).
 LatLonAlt(45, 45, 1) # add default units
 LatLonAlt(45°, 45°, 1m) # integers are converted converted to floats
 LatLonAlt((π/4)rad, (π/4)rad) # radians are converted to degrees
-LatLonAlt(45.0°, 45.0°, 1.0u"km") # length quantities are converted to meters
+LatLonAlt(45.0°, 45.0°, 1.0km) # length quantities are converted to meters
 LatLonAlt(45.0°, 45.0°, 1.0m)
 LatLonAlt{WGS84Latest}(45.0°, 45.0°, 1.0m)
 ```

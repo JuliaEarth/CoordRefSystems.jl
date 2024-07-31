@@ -14,7 +14,7 @@ with a given `Datum` (default to `WGS84`).
 ```julia
 WebMercator(1, 1) # add default units
 WebMercator(1m, 1m) # integers are converted converted to floats
-WebMercator(1.0u"km", 1.0u"km") # length quantities are converted to meters
+WebMercator(1.0km, 1.0km) # length quantities are converted to meters
 WebMercator(1.0m, 1.0m)
 WebMercator{WGS84Latest}(1.0m, 1.0m)
 ```

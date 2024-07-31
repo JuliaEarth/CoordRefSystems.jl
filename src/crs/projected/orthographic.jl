@@ -48,7 +48,7 @@ with a given `Datum` (default to `WGS84`).
 ```julia
 OrthoNorth(1, 1) # add default units
 OrthoNorth(1m, 1m) # integers are converted converted to floats
-OrthoNorth(1.0u"km", 1.0u"km") # length quantities are converted to meters
+OrthoNorth(1.0km, 1.0km) # length quantities are converted to meters
 OrthoNorth(1.0m, 1.0m)
 OrthoNorth{WGS84Latest}(1.0m, 1.0m)
 ```
@@ -67,7 +67,7 @@ with a given `Datum` (default to `WGS84`).
 ```julia
 OrthoSouth(1, 1) # add default units
 OrthoSouth(1m, 1m) # integers are converted converted to floats
-OrthoSouth(1.0u"km", 1.0u"km") # length quantities are converted to meters
+OrthoSouth(1.0km, 1.0km) # length quantities are converted to meters
 OrthoSouth(1.0m, 1.0m)
 OrthoSouth{WGS84Latest}(1.0m, 1.0m)
 ```

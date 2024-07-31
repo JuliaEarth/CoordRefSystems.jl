@@ -36,7 +36,7 @@ with a given `Datum` (default to `WGS84`).
 ```julia
 WinkelTripel(1, 1) # add default units
 WinkelTripel(1m, 1m) # integers are converted converted to floats
-WinkelTripel(1.0u"km", 1.0u"km") # length quantities are converted to meters
+WinkelTripel(1.0km, 1.0km) # length quantities are converted to meters
 WinkelTripel(1.0m, 1.0m)
 WinkelTripel{WGS84Latest}(1.0m, 1.0m)
 ```

@@ -70,7 +70,7 @@ with `zone` (1 ≤ zone ≤ 60) and a given `Datum` (default to `WGS84`).
 ```julia
 UTMNorth{1}(1, 1) # add default units
 UTMNorth{1}(1m, 1m) # integers are converted converted to floats
-UTMNorth{1}(1.0u"km", 1.0u"km") # length quantities are converted to meters
+UTMNorth{1}(1.0km, 1.0km) # length quantities are converted to meters
 UTMNorth{1}(1.0m, 1.0m)
 UTMNorth{1,WGS84Latest}(1.0m, 1.0m)
 ```
@@ -89,7 +89,7 @@ with `zone` (1 ≤ zone ≤ 60) and a given `Datum` (default to `WGS84`).
 ```julia
 UTMSouth{1}(1, 1) # add default units
 UTMSouth{1}(1m, 1m) # integers are converted converted to floats
-UTMSouth{1}(1.0u"km", 1.0u"km") # length quantities are converted to meters
+UTMSouth{1}(1.0km, 1.0km) # length quantities are converted to meters
 UTMSouth{1}(1.0m, 1.0m)
 UTMSouth{1,WGS84Latest}(1.0m, 1.0m)
 ```

@@ -24,7 +24,7 @@ The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, re
 ```julia
 Cartesian(1, 1) # add default units
 Cartesian(1m, 1m) # integers are converted converted to floats
-Cartesian(1.0u"km", 1.0u"km", 1.0u"km")
+Cartesian(1.0km, 1.0km, 1.0km)
 Cartesian{WGS84Latest}(1.0m, 1.0m)
 ```
 
@@ -63,7 +63,7 @@ Alias to [`Cartesian`](@ref) with 2 coordinates.
 ```julia
 Cartesian2D(1, 1) # add default units
 Cartesian2D(1m, 1m) # integers are converted converted to floats
-Cartesian2D(1.0u"km", 1.0u"km")
+Cartesian2D(1.0km, 1.0km)
 Cartesian2D{WGS84Latest}(1.0m, 1.0m)
 ```
 """
@@ -84,7 +84,7 @@ Alias to [`Cartesian`](@ref) with 3 coordinates.
 ```julia
 Cartesian3D(1, 1, 1) # add default units
 Cartesian3D(1m, 1m, 1m) # integers are converted converted to floats
-Cartesian3D(1.0u"km", 1.0u"km", 1.0u"km")
+Cartesian3D(1.0km, 1.0km, 1.0km)
 Cartesian3D{WGS84Latest}(1.0m, 1.0m, 1.0m)
 ```
 """
@@ -184,7 +184,7 @@ and a given `Datum` (default to `NoDatum`).
 Polar(1, π/4) # add default units
 Polar(1m, (π/4)rad) # integers are converted converted to floats
 Polar(1.0m, 45°) # degrees are converted to radians
-Polar(1.0u"km", (π/4)rad)
+Polar(1.0km, (π/4)rad)
 Polar{WGS84Latest}(1.0m, (π/4)rad)
 ```
 
@@ -235,7 +235,7 @@ and a given `Datum` (default to `NoDatum`).
 Cylindrical(1, π/4, 1) # add default units
 Cylindrical(1m, (π/4)rad, 1m) # integers are converted converted to floats
 Cylindrical(1.0m, 45°, 1.0m) # degrees are converted to radians
-Cylindrical(1.0u"km", (π/4)rad, 1.0u"km")
+Cylindrical(1.0km, (π/4)rad, 1.0km)
 Cylindrical{WGS84Latest}(1.0m, (π/4)rad, 1.0m)
 ```
 
@@ -293,7 +293,7 @@ and a given `Datum` (default to `NoDatum`).
 Spherical(1, π/4, π/4) # add default units
 Spherical(1m, (π/4)rad, (π/4)rad) # integers are converted converted to floats
 Spherical(1.0m, 45°, 45°) # degrees are converted to radians
-Spherical(1.0u"km", (π/4)rad, (π/4)rad)
+Spherical(1.0km, (π/4)rad, (π/4)rad)
 Spherical{WGS84Latest}(1.0m, (π/4)rad, (π/4)rad)
 ```
 
