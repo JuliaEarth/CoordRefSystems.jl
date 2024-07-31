@@ -75,6 +75,7 @@ const esriid2code = Dict(
   "GCS_South_American_1969" => EPSG{4618},
   "GCS_SIRGAS_2000" => EPSG{4674},
   "GCS_SAD_1969_96" => EPSG{5527},
+  "British_National_Grid" => EPSG{27700},
   "WGS_1984_Plate_Carree" => EPSG{32662},
   "WGS_1984_UTM_Zone_33N" => EPSG{32633},
   "World_Behrmann" => ESRI{54017},
