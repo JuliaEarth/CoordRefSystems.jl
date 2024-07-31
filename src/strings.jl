@@ -68,20 +68,21 @@ end
 
 checkmatch(m) = isnothing(m) ? parseerror() : m
 
+# ESRI IDs in alphabetical order
 const esriid2code = Dict(
-  "WGS_1984_World_Mercator" => EPSG{3395},
-  "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
-  "GCS_WGS_1984" => EPSG{4326},
-  "GCS_South_American_1969" => EPSG{4618},
-  "GCS_SIRGAS_2000" => EPSG{4674},
-  "GCS_SAD_1969_96" => EPSG{5527},
   "British_National_Grid" => EPSG{27700},
+  "GCS_SAD_1969_96" => EPSG{5527},
+  "GCS_SIRGAS_2000" => EPSG{4674},
+  "GCS_South_American_1969" => EPSG{4618},
+  "GCS_WGS_1984" => EPSG{4326},
+  "North_Pole_Orthographic" => ESRI{102035},
+  "South_Pole_Orthographic" => ESRI{102037},
   "WGS_1984_Plate_Carree" => EPSG{32662},
   "WGS_1984_UTM_Zone_33N" => EPSG{32633},
+  "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
+  "WGS_1984_World_Mercator" => EPSG{3395},
   "World_Behrmann" => ESRI{54017},
-  "World_Robinson" => ESRI{54030},
   "World_Cylindrical_Equal_Area" => ESRI{54034},
-  "World_Winkel_Tripel_NGS" => ESRI{54042},
-  "North_Pole_Orthographic" => ESRI{102035},
-  "South_Pole_Orthographic" => ESRI{102037}
+  "World_Robinson" => ESRI{54030},
+  "World_Winkel_Tripel_NGS" => ESRI{54042}
 )
