@@ -5,9 +5,10 @@
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4208}) === LatLon{Aratu}
+  @test CoordRefSystems.get(EPSG{4269}) === LatLon{NAD83}
+  @test CoordRefSystems.get(EPSG{4326}) === LatLon{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4618}) === LatLon{SAD69}
   @test CoordRefSystems.get(EPSG{4674}) === LatLon{SIRGAS2000}
-  @test CoordRefSystems.get(EPSG{4326}) === LatLon{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4988}) === Cartesian{CoordRefSystems.shift(ITRF{2000}, 2000.4),3}
   @test CoordRefSystems.get(EPSG{4989}) === LatLonAlt{CoordRefSystems.shift(ITRF{2000}, 2000.4)}
   @test CoordRefSystems.get(EPSG{5527}) === LatLon{SAD96}
