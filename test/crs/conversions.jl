@@ -201,6 +201,24 @@
       @inferred convert(Cartesian{ITRF{2008}}, c1)
       @inferred convert(Cartesian{ITRF{2020}}, c2)
     end
+
+    @testset "Cartesian: reinterpretation" begin
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(LatLon, c1)
+      @test allapprox(c2, LatLon(T(2), T(1)))
+
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(LatLon{ITRFLatest}, c1)
+      @test allapprox(c2, LatLon{ITRFLatest}(T(2), T(1)))
+
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(Mercator, c1)
+      @test allapprox(c2, Mercator(T(1), T(2)))
+
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(Mercator{ITRFLatest}, c1)
+      @test allapprox(c2, Mercator{ITRFLatest}(T(1), T(2)))
+    end
   end
 
   @testset "Geographic" begin
