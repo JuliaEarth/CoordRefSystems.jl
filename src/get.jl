@@ -19,6 +19,8 @@ function get(code::Type{<:CRSCode})
   The provided code $code is not mapped to a CRS type yet. 
   Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/get.jl
   If you know the CRS type of a given code, please submit a pull request.
+  See https://discourse.julialang.org/t/esri-code-for-british-national-grid-not-known-by-geoio/117641
+  for a practical example.
   """))
 end
 
