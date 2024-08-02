@@ -196,11 +196,21 @@ The package provides `EPSG{code}` and `ERSI{code}`, and the
 utility `CoordRefSystems.get` function to query the database:
 
 ```julia
-julia> CoordRefSystems.get(EPSG{3395})
+julia> CRS1 = CoordRefSystems.get(EPSG{4326})
+GeodeticLatLon{WGS84Latest}
+
+julia> CRS2 = CoordRefSystems.get(EPSG{3395})
 Mercator{WGS84Latest}
 
-julia> CoordRefSystems.get(ESRI{54030})
-Robinson{WGS84Latest}
+julia> CRS1(0, 90)
+GeodeticLatLon{WGS84Latest} coordinates
+├─ lat: 0.0°
+└─ lon: 90.0°
+
+julia> convert(CRS2, CRS1(0, 90))
+Mercator{WGS84Latest} coordinates
+├─ x: 1.0018754171394622e7 m
+└─ y: 0.0 m
 ```
 
 ## Credits
