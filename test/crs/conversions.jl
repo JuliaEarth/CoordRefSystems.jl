@@ -1134,24 +1134,41 @@
       c3 = convert(ShiftedMercator, c2)
       @test allapprox(c3, c1)
 
+      # cartesian without datum
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(Mercator{WGS84Latest}, c1)
+      @test allapprox(c2, Mercator(T(1), T(2)))
+
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(OrthoNorth{WGS84Latest}, c1)
+      @test allapprox(c2, OrthoNorth(T(1), T(2)))
+
+      c1 = Cartesian(T(1), T(2))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(1), T(2)))
+
       # type stability
       c1 = Cartesian{WGS84Latest}(T(1), T(1))
       c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
-      c3 = Mercator(T(0), T(0))
-      c4 = OrthoNorth(T(0), T(0))
-      c5 = ShiftedMercator(T(0), T(0))
+      c3 = Cartesian(T(1), T(2))
+      c4 = Mercator(T(0), T(0))
+      c5 = OrthoNorth(T(0), T(0))
+      c6 = ShiftedMercator(T(0), T(0))
       @inferred convert(Mercator{WGS84Latest}, c1)
       @inferred convert(OrthoNorth{WGS84Latest}, c1)
       @inferred convert(ShiftedMercator, c1)
       @inferred convert(Mercator{WGS84Latest}, c2)
       @inferred convert(OrthoNorth{WGS84Latest}, c2)
       @inferred convert(ShiftedMercator, c2)
-      @inferred convert(Cartesian, c3)
+      @inferred convert(Mercator{WGS84Latest}, c3)
+      @inferred convert(OrthoNorth{WGS84Latest}, c3)
+      @inferred convert(ShiftedMercator, c3)
       @inferred convert(Cartesian, c4)
       @inferred convert(Cartesian, c5)
-      @inferred convert(Cartesian{WGS84Latest,3}, c3)
+      @inferred convert(Cartesian, c6)
       @inferred convert(Cartesian{WGS84Latest,3}, c4)
       @inferred convert(Cartesian{WGS84Latest,3}, c5)
+      @inferred convert(Cartesian{WGS84Latest,3}, c6)
     end
 
     @testset "Projection conversion" begin
