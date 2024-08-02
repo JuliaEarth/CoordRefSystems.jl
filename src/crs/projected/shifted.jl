@@ -111,5 +111,8 @@ Base.convert(C::Type{<:ShiftedCRS}, coords::CRS) = convert(C, convert(LatLon, co
 Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,2}) where {Datum} =
   C(coords.x, coords.y)
 
+Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{NoDatum,2}) where {Datum} =
+  C(coords.x, coords.y)
+
 Base.convert(C::Type{<:ShiftedCRS{<:Projected{Datum}}}, coords::Cartesian{Datum,3}) where {Datum} =
   convert(C, convert(LatLon, coords))

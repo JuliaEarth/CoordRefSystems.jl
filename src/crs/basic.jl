@@ -378,6 +378,3 @@ Base.convert(::Type{Polar}, coords::CRS{Datum}) where {Datum} = convert(Polar{Da
 Base.convert(::Type{Cylindrical}, coords::CRS{Datum}) where {Datum} = convert(Cylindrical{Datum}, coords)
 
 Base.convert(::Type{Spherical}, coords::CRS{Datum}) where {Datum} = convert(Spherical{Datum}, coords)
-
-# special case: reinterpret the CRS type
-Base.convert(C::Type{<:CRS}, coords::Cartesian{NoDatum}) = C(raw(coords)...)
