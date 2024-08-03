@@ -28,6 +28,7 @@ end
 # IMPLEMENTATIONS
 # ----------------
 
+get(::Type{EPSG{2157}}) = shift(TransverseMercator{0.99982,53.5°,-8.0°,Irenet95}, xₒ=600000.0m, yₒ=750000.0m)
 get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
 get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
 get(::Type{EPSG{4208}}) = LatLon{Aratu}
