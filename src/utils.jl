@@ -50,7 +50,7 @@ function checklat(lat)
   if abslat > (90 + 1e-6) * u"°"
     throw(ArgumentError("the latitude must be in the range [-90°,90°], while $lat was provided"))
   end
-  ifelse(abslat > 90u"°", sign(abslat) * T(90), lat)
+  ifelse(abslat > 90u"°", sign(lat) * T(90), lat)
 end
 """
     fixlon(lon)
