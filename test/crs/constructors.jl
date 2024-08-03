@@ -189,6 +189,10 @@
       @test_throws ArgumentError LatLon(T(1) * s, T(1) * °)
       @test_throws ArgumentError LatLon(T(1) * °, T(1) * s)
       @test_throws ArgumentError LatLon(T(1) * s, T(1) * s)
+
+      # error: latitude above 90° or below -90°
+      @test_throws ArgumentError LatLon(91, 0)
+      @test_throws ArgumentError LatLon(-91, 0)
     end
 
     @testset "GeodeticLatLonAlt" begin
