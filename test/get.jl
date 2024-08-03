@@ -3,7 +3,7 @@
 
   # EPSG/ESRI code
   @test CoordRefSystems.get(EPSG{2157}) ===
-        CoordRefSystems.shift(TM{0.99982,53.5°,-8.0°,Irenet95}, xₒ=600000.0m, yₒ=750000.0m)
+        CoordRefSystems.shift(TM{0.99982,53.5°,-8.0°,IRENET95}, xₒ=600000.0m, yₒ=750000.0m)
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4208}) === LatLon{Aratu}
