@@ -143,15 +143,15 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{T}) where {T <: GeodeticLatLon} =
   T(-90° + 180° * rand(rng), -180° + 360° * rand(rng))
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where Datum = 
+Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}) where Datum = 
   rand(rng, GeodeticLatLon{WGS84Latest, Deg{Float64}})
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}, dims::Dims) where Datum = 
   rand(rng, GeodeticLatLon{WGS84Latest, Deg{Float64}}, dims)
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon}) = 
-  rand(rng, GeodeticLatLon{WGS84Latest})
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon}, dims::Dims) = 
   rand(rng, GeodeticLatLon{WGS84Latest}, dims)
+Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon}) = 
+  rand(rng, GeodeticLatLon{WGS84Latest})
 
 """
     LatLonAlt(lat, lon, alt)
