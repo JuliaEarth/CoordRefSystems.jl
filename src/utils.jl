@@ -50,16 +50,12 @@ end
 """
     fixlon(lon)
 
-Fix the longitude to be in the range `[-180°,180°]`.
+Fix the longitude to be in the range `(-180°,180°]`.
 """
-fixlon(lon) = ifelse(-180° ≤ lon ≤ 180°, lon, (lon % 360° + 540°) % 360° - 180°)
-
-"""
-    islon180(lon)
-
-Checks if the longitude is `180°` or `-180°`.
-"""
-islon180(lon) = abs(lon) == 180°
+function fixlon(lon) 
+    lon = rem(lon, 360°, RoundNearest)
+    ifelse(lon == -180°, 180°, lon)
+end
 
 """
     numconvert(T, x)

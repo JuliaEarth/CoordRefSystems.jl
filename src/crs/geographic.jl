@@ -60,7 +60,7 @@ end
 lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
   GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -143,7 +143,7 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat &&
-  (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon)) &&
+  coords₁.lon == coords₂.lon &&
   coords₁.alt == coords₂.alt
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
@@ -219,7 +219,7 @@ end
 lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
   GeocentricLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -273,7 +273,7 @@ end
 lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon{Datum}}) where {Datum} =
   AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
