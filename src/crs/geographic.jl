@@ -33,12 +33,9 @@ See [EPSG:4326](https://epsg.io/4326).
 struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
-  function GeodeticLatLon{Datum, D}(lat, lon) where {Datum,D<:Deg} 
-    new{Datum,D}(checklat(lat), fixlon(lon))
-  end
 end
 
-GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(lat, lon)
+GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeodeticLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeodeticLatLon{Datum}(promote(lat, lon)...)
 GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} = GeodeticLatLon{Datum}(addunit(lat, °), addunit(lon, °))
@@ -109,13 +106,10 @@ struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
   lat::D
   lon::D
   alt::M
-  function GeodeticLatLonAlt{Datum,D,M}(lat, lon, alt) where {Datum,D<:Deg,M<:Met}
-    new(checklat(lat), fixlon(lon), alt)
-  end
 end
 
 GeodeticLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
-  GeodeticLatLonAlt{Datum,float(D),float(M)}(lat, lon, alt)
+  GeodeticLatLonAlt{Datum,float(D),float(M)}(checklat(lat), fixlon(lon), alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
   GeodeticLatLonAlt{Datum}(promote(lat, lon)..., alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
@@ -191,12 +185,9 @@ GeocentricLatLon{WGS84Latest}(45.0°, 45.0°)
 struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
-  function GeocentricLatLon{Datum, D}(lat, lon) where {Datum,D<:Deg}
-    new(checklat(lat), fixlon(lon))
-  end
 end
 
-GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(lat, lon)
+GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeocentricLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeocentricLatLon{Datum}(promote(lat, lon)...)
 GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
@@ -246,12 +237,9 @@ AuthalicLatLon{WGS84Latest}(45.0°, 45.0°)
 struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lat::D
   lon::D
-  function AuthalicLatLon{Datum,D}(lat, lon) where {Datum,D<:Deg} 
-    new(checklat(lat), fixlon(lon))
-  end
 end
 
-AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(lat, lon)
+AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 AuthalicLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = AuthalicLatLon{Datum}(promote(lat, lon)...)
 AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} = AuthalicLatLon{Datum}(addunit(lat, °), addunit(lon, °))
