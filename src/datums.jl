@@ -177,6 +177,15 @@ abstract type Ire65 <: Datum end
 ellipsoid(::Type{Ire65}) = ModAiry🌎
 
 """
+    IRENET95
+
+Ireland 1995 datum.
+"""
+abstract type IRENET95 <: Datum end
+
+ellipsoid(::Type{IRENET95}) = GRS80🌎
+
+"""
     NAD83
 
 North American Datum 1983.

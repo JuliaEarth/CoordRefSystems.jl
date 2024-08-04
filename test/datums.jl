@@ -36,6 +36,8 @@
 
   @test ellipsoid(Ire65) === CoordRefSystems.ModAiry🌎
 
+  @test ellipsoid(IRENET95) === CoordRefSystems.GRS80🌎
+
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
