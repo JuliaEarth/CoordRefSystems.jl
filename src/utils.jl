@@ -41,16 +41,15 @@ end
     checklat(lat)
 Checks if the latitude is in the range `[-90°,90°]` and returns it if yes or throws an error otherwise.
 
-!!! note
 The check has a tolerance of `1e-6°` around +90° and -90°, so if `90° < abs(lat) < 90.000001°` the function returns either +90° or -90° depending on the sign of the input.
 """
 function checklat(lat)
   abslat = abs(lat)
   T = typeof(abslat)
-  if abslat > (90 + 1e-6) * u"°"
+  if abslat > 90° + 1e-6°
     throw(ArgumentError("the latitude must be in the range [-90°,90°], while $lat was provided"))
   end
-  ifelse(abslat > 90u"°", sign(lat) * T(90), lat)
+  ifelse(abslat > 90°, sign(lat) * T(90), lat)
 end
 """
     fixlon(lon)
@@ -58,8 +57,8 @@ end
 Fix the longitude to be in the range `(-180°,180°]`.
 """
 function fixlon(lon) 
-    lon = rem(lon, 360°, RoundNearest)
-    ifelse(lon == -180°, 180°, lon)
+  lon = rem(lon, 360°, RoundNearest)
+  ifelse(lon == -180°, 180°, lon)
 end
 
 """
