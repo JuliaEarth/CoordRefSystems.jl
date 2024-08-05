@@ -39,6 +39,14 @@ Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs..
 Base.isapprox(coords₁::Projected{Datum₁}, coords₂::Projected{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
   isapprox(convert(Cartesian{Datum₁,3}, coords₁), convert(Cartesian{Datum₂,3}, coords₂); kwargs...)
 
+function Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{C}) where {C<:Projected}
+  try
+    convert(C, rand(rng, LatLon))
+  catch
+    rand(rng, C)
+  end
+end
+
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
