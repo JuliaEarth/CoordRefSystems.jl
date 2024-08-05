@@ -342,11 +342,6 @@ makeconcrete(::Type{Spherical{Datum}}) where {Datum} =
 makeconcrete(::Type{Spherical}) = 
   Spherical{NoDatum} |> makeconcrete
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
-  Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))
-
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical}) = rand(rng, Spherical{NoDatum})
-
 # ------------
 # CONVERSIONS
 # ------------
