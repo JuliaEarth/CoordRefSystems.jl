@@ -49,8 +49,7 @@ end
 Checks if the latitude is in the range `[-90°,90°]`.
 """
 function checklat(lat)
-  abslat = abs(lat)
-  if abslat > 90°
+  if abs(lat) > 90°
     throw(ArgumentError("the latitude must be in the range [-90°,90°], while $lat was provided"))
   end
   lat
