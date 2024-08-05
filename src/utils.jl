@@ -84,13 +84,6 @@ Converts the unitless `λ` to longitude.
 lam2lon(λ) = rad2deg(λ) * °
 
 """
-    islon180(lon)
-
-Checks if the longitude is `180°` or `-180°`.
-"""
-islon180(lon) = abs(lon) == 180°
-
-"""
     newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
 
 Newton's method approximates the root of the function `f` using its derivative `df`, 
