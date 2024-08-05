@@ -61,7 +61,7 @@ end
 
 Fix the longitude to be in the range `(-180°,180°]`.
 """
-function fixlon(lon) 
+function fixlon(lon)
   lon = rem(lon, 360°, RoundNearest)
   ifelse(lon == -180°, oftype(lon, 180°), lon)
 end

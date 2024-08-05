@@ -136,9 +136,7 @@ end
 lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat &&
-  coords₁.lon == coords₂.lon &&
-  coords₁.alt == coords₂.alt
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
   GeodeticLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
@@ -187,7 +185,8 @@ struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
+GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} =
+  GeocentricLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeocentricLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeocentricLatLon{Datum}(promote(lat, lon)...)
 GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
