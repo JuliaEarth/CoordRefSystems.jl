@@ -74,6 +74,20 @@ function equaltest(CRS, n)
   @test c1 == c3
 end
 
+function randtest(CRS)
+  rng = StableRNG(123)
+
+  @test rand(CRS) isa CRS
+  @test rand(rng, CRS) isa CRS
+  @test eltype(rand(CRS, 10)) <: CRS
+  @test eltype(rand(rng, CRS, 10)) <: CRS
+
+  @inferred rand(CRS)
+  @inferred rand(rng, CRS)
+  @inferred rand(CRS, 10)
+  @inferred rand(rng, CRS, 10)
+end
+
 function wktstring(code; format="WKT2", multiline=false)
   spref = ArchGDAL.importUserInput(codestring(code))
   options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
