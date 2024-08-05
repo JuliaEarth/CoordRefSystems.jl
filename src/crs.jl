@@ -130,11 +130,11 @@ tol(coords::CRS) = tol(convert(Cartesian, coords))
 # RAND METHODS
 # -------------
 
-Random.rand(C::Type{<:CRS}) = rand(Random.default_rng(), C)
+Random.rand(::Type{C}) where {C<:CRS} = rand(Random.default_rng(), C)
 
-Random.rand(C::Type{<:CRS}, n::Int) = rand(Random.default_rng(), C, n)
+Random.rand(::Type{C}, n::Int) where {C<:CRS} = rand(Random.default_rng(), C, n)
 
-Random.rand(rng::Random.AbstractRNG, C::Type{<:CRS}, n::Int) = [rand(rng, C) for _ in 1:n]
+Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(rng, C) for _ in 1:n]
 
 # -----------
 # IO METHODS
