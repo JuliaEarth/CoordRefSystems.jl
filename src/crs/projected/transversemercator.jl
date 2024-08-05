@@ -150,7 +150,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{k₀,lat
   λ = Ce + λₒ
   ϕ = gatg(cgb, Cn)
 
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

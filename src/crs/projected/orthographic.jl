@@ -156,7 +156,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Dat
   λₒ = T(ustrip(deg2rad(lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
   λ, ϕ = sphericalinv(x, y, λₒ, ϕₒ)
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,false,Datum}}
@@ -169,7 +169,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Dat
   λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
   fx, fy = formulas(C, T)
   λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------
