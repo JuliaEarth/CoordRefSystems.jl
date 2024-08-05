@@ -80,7 +80,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EquidistantCylindrical{lat�
   λ = x / (cos(ϕₜₛ) * a)
   ϕ = y / a
 
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

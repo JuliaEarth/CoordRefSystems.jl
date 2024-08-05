@@ -45,6 +45,21 @@ Fix the longitude to be in the range `[-180°,180°]`.
 fixlon(lon) = ifelse(-180° ≤ lon ≤ 180°, lon, (lon % 360° + 540°) % 360° - 180°)
 
 """
+    phi2lat(ϕ)
+
+Converts the unitless `ϕ` to latitude and adjusts it to the range `[-90,90]`
+to fix floating-point errors.
+"""
+phi2lat(ϕ) = clamp(rad2deg(ϕ) * °, -90°, 90°)
+
+"""
+    lam2lon(λ)
+
+Converts the unitless `λ` to longitude.
+"""
+lam2lon(λ) = rad2deg(λ) * °
+
+"""
     islon180(lon)
 
 Checks if the longitude is `180°` or `-180°`.

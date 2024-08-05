@@ -67,7 +67,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::WebMercator{Datum}) where {
   a = oftype(x, majoraxis(🌎))
   λ = x / a
   ϕ = atan(sinh(y / a))
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

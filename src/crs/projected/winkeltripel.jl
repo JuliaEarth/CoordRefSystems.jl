@@ -84,7 +84,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₁,Datum,C<:W
     fx, fy = formulas(C, T)
     projinv(fx, fy, x, y, x, y; tol)
   end
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------
