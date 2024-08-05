@@ -57,3 +57,9 @@ _rand(rng::Random.AbstractRNG, C::Type{<:Union{LatLon, GeocentricLatLon, Authali
 
 _rand(rng::Random.AbstractRNG, C::Type{<:LatLonAlt}) =
   makeconcrete(C)(-90° + 180° * rand(rng), -180° + 360° * rand(rng), rand(rng) * 1m)
+
+_rand(rng::Random.AbstractRNG, C::Type{<:Projected}) = try
+  convert(C, rand(LatLon))
+catch
+  rand(rng, C)
+end
