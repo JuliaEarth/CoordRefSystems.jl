@@ -162,7 +162,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Dat
     ϕ = deg2rad(5 * (i - 1) + z) * sign(y)
   end
 
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

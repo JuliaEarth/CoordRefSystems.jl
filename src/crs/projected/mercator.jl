@@ -84,7 +84,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Dat
   λ = x / a
   ϕ = atan(τ)
 
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------
