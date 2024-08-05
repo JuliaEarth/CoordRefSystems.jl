@@ -142,10 +142,3 @@ function ellipfromab(a, b)
   e = √e²
   (; a, b, e, e², f, f⁻¹)
 end
-
-"""
-    makeconcrete(T::Type)
-Returns a fully concrete type for parametric types, providing defaults 
-for input types with partially specified type parameters.
-"""
-function makeconcrete end
