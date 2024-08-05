@@ -59,6 +59,12 @@ lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
+makeconcrete(T::Type{GeodeticLatLon{Datum,D}}) where {Datum,D<:Deg} = T
+makeconcrete(::Type{GeodeticLatLon{Datum}}) where {Datum} = 
+  GeodeticLatLon{Datum,Deg{Float64}} |> makeconcrete
+makeconcrete(::Type{GeodeticLatLon}) = 
+  GeodeticLatLon{WGS84Latest} |> makeconcrete
+
 """
     LatLon(lat, lon)
     LatLon{Datum}(lat, lon)
@@ -135,6 +141,14 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
   (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon)) &&
   coords₁.alt == coords₂.alt
 
+makeconcrete(T::Type{GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D<:Deg,M<:Met} = T
+makeconcrete(::Type{GeodeticLatLonAlt{Datum,D}}) where {Datum,D<:Deg} =
+  GeodeticLatLonAlt{Datum,D,Met{Float64}} |> makeconcrete
+makeconcrete(::Type{GeodeticLatLonAlt{Datum}}) where {Datum} = 
+  GeodeticLatLonAlt{Datum,Deg{Float64}} |> makeconcrete
+makeconcrete(::Type{GeodeticLatLonAlt}) = 
+  GeodeticLatLonAlt{WGS84Latest} |> makeconcrete
+
 """
     LatLonAlt(lat, lon, alt)
     LatLonAlt{Datum}(lat, lon, alt)
@@ -201,6 +215,12 @@ lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
+makeconcrete(T::Type{GeocentricLatLon{Datum,D}}) where {Datum,D<:Deg} = T
+makeconcrete(::Type{GeocentricLatLon{Datum}}) where {Datum} = 
+  GeocentricLatLon{Datum,Deg{Float64}} |> makeconcrete
+makeconcrete(::Type{GeocentricLatLon}) = 
+  GeocentricLatLon{WGS84Latest} |> makeconcrete
+
 """
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
@@ -246,6 +266,12 @@ lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+
+makeconcrete(T::Type{AuthalicLatLon{Datum,D}}) where {Datum,D<:Deg} = T
+makeconcrete(::Type{AuthalicLatLon{Datum}}) where {Datum} = 
+  AuthalicLatLon{Datum,Deg{Float64}} |> makeconcrete
+makeconcrete(::Type{AuthalicLatLon}) = 
+  AuthalicLatLon{WGS84Latest} |> makeconcrete
 
 # ------------
 # CONVERSIONS

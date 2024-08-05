@@ -13,6 +13,7 @@ optionally passing a random number generator `rng`.
 ```julia
 rand(LatLon)
 rand(Cartesian)
+rand(Spherical)
 ```
 """
 Random.rand(C::Type{<:CRS}; kwargs...) = rand(Random.default_rng(), C; kwargs...)
@@ -29,17 +30,30 @@ optionally passing a random number generator `rng`.
 ```julia
 rand(LatLon, 10)
 rand(Cartesian, 10)
+rand(Spherical, 10)
 ```
 """
-Random.rand(::Type{C}, n::Int; kwargs...) where C <: CRS = rand(Random.default_rng(), C, n; kwargs...)
-Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int; kwargs...) where C <: CRS= [rand(rng, C; kwargs...) for _ in 1:n]
+Random.rand(C::Type{<:CRS}, n::Int; kwargs...) = rand(Random.default_rng(), C, n; kwargs...)
+Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int; kwargs...) where C <: CRS = [rand(rng, C; kwargs...) for _ in 1:n]
 
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
 
-_rand(rng::Random.AbstractRNG, ::Type{C}) where C <: Union{LatLon, GeocentricLatLon, AuthalicLatLon} =
-  C(-90° + 180° * rand(rng), -180° + 360° * rand(rng))
+_rand(rng::Random.AbstractRNG, C::Type{<:Cartesian}) = 
+  makeconcrete(C)(ntuple(i -> rand(rng) * 1m, ndims(C)))
 
-_rand(rng::Random.AbstractRNG, ::Type{C}) where C <: LatLonAlt =
-  C(-90° + 180° * rand(rng), -180° + 360° * rand(rng), rand(rng) * 1m)
+_rand(rng::Random.AbstractRNG, C::Type{<:Polar}) =
+  makeconcrete(C)(rand(rng) * 1m, rand(rng) * 2π * rad)
+
+_rand(rng::Random.AbstractRNG, C::Type{<:Cylindrical}) =
+  makeconcrete(C)(rand(rng) * 1m, rand(rng) * 2π * rad, rand(rng) * 1m)
+
+_rand(rng::Random.AbstractRNG, C::Type{<:Spherical}) =
+  makeconcrete(C)(rand(rng) * 1m, rand(rng) * 2π * rad, rand(rng) * 2π * rad)
+
+_rand(rng::Random.AbstractRNG, C::Type{<:Union{LatLon, GeocentricLatLon, AuthalicLatLon}}) =
+  makeconcrete(C)(-90° + 180° * rand(rng), -180° + 360° * rand(rng))
+
+_rand(rng::Random.AbstractRNG, C::Type{<:LatLonAlt}) =
+  makeconcrete(C)(-90° + 180° * rand(rng), -180° + 360° * rand(rng), rand(rng) * 1m)
