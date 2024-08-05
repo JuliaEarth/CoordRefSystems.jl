@@ -290,7 +290,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::GeocentricLatLon{Datum}) wh
   ϕ′ = ustrip(deg2rad(coords.lat))
   e² = oftype(ϕ′, eccentricity²(ellipsoid(Datum)))
   ϕ = atan(1 / (1 - e²) * tan(ϕ′))
-  LatLon{Datum}(rad2deg(ϕ) * °, coords.lon)
+  LatLon{Datum}(phi2lat(ϕ), coords.lon)
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/healpix.cpp#L230
@@ -346,7 +346,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
   β = ustrip(deg2rad(coords.lat))
   e² = oftype(β, eccentricity²(ellipsoid(Datum)))
   ϕ = auth2geod(β, e²)
-  LatLon{Datum}(rad2deg(ϕ) * °, coords.lon)
+  LatLon{Datum}(phi2lat(ϕ), coords.lon)
 end
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/conversions/cart.cpp
@@ -411,7 +411,7 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) wher
   N = a / sqrt(1 - e² * sin(ϕ)^2)
   h = p / cos(ϕ) - N
 
-  LatLonAlt{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °, h * m)
+  LatLonAlt{Datum}(phi2lat(ϕ), lam2lon(λ), h * m)
 end
 
 # datum conversion

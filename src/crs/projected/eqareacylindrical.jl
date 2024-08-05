@@ -153,7 +153,7 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜ
   β = asin(q / qₚ)
   ϕ = auth2geod(β, e²)
 
-  LatLon{Datum}(rad2deg(ϕ) * °, rad2deg(λ) * °)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

@@ -28,6 +28,13 @@ addunit(x::Number, u) = x * u
 addunit(x::Quantity, u) = throw(ArgumentError("invalid units for coordinates, please check the documentation"))
 
 """
+    numconvert(T, x)
+
+Converts the number type of quantity `x` to `T`.
+"""
+numconvert(::Type{T}, x::Quantity{S,D,U}) where {T,S,D,U} = convert(Quantity{T,D,U}, x)
+
+"""
     atanpos(x, y)
 
 Adjusts the interval of values returned by the `atan(y, x)` function from `[-π,π]` to `[0,2π]`.
@@ -50,6 +57,7 @@ function checklat(lat)
   end
   ifelse(abslat > 90°, oftype(lat, sign(lat) * 90°), lat)
 end
+
 """
     fixlon(lon)
 
@@ -61,11 +69,26 @@ function fixlon(lon)
 end
 
 """
-    numconvert(T, x)
+    phi2lat(ϕ)
 
-Converts the number type of quantity `x` to `T`.
+Converts the unitless `ϕ` to latitude and adjusts it to the range `[-90,90]`
+to fix floating-point errors.
 """
-numconvert(::Type{T}, x::Quantity{S,D,U}) where {T,S,D,U} = convert(Quantity{T,D,U}, x)
+phi2lat(ϕ) = clamp(rad2deg(ϕ) * °, -90°, 90°)
+
+"""
+    lam2lon(λ)
+
+Converts the unitless `λ` to longitude.
+"""
+lam2lon(λ) = rad2deg(λ) * °
+
+"""
+    islon180(lon)
+
+Checks if the longitude is `180°` or `-180°`.
+"""
+islon180(lon) = abs(lon) == 180°
 
 """
     newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
