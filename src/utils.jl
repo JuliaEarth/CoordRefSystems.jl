@@ -46,6 +46,7 @@ end
 
 """
     checklat(lat)
+
 Checks if the latitude is in the range `[-90°,90°]`.
 """
 function checklat(lat)
