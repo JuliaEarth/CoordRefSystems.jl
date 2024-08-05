@@ -170,6 +170,16 @@
       @test LatLon(T(1) * °, 2 * °) == LatLon(T(1) * °, T(2) * °)
       @test allapprox(LatLon(T(π / 4) * rad, T(π / 4) * rad), LatLon(T(45) * °, T(45) * °))
 
+      # fix longitude
+      @test LatLon(T(0), T(225)) == LatLon(T(0), T(-135))
+      @test LatLon(T(0), T(270)) == LatLon(T(0), T(-90))
+      @test LatLon(T(0), T(315)) == LatLon(T(0), T(-45))
+      @test LatLon(T(0), T(-225)) == LatLon(T(0), T(135))
+      @test LatLon(T(0), T(-270)) == LatLon(T(0), T(90))
+      @test LatLon(T(0), T(-315)) == LatLon(T(0), T(45))
+      @test LatLon(T(0), T(405)) == LatLon(T(0), T(45))
+      @test LatLon(T(0), T(765)) == LatLon(T(0), T(45))
+
       c = LatLon(T(1), T(2))
       @test sprint(show, c) == "GeodeticLatLon{WGS84Latest}(lat: 1.0°, lon: 2.0°)"
       if T === Float32
@@ -189,6 +199,10 @@
       @test_throws ArgumentError LatLon(T(1) * s, T(1) * °)
       @test_throws ArgumentError LatLon(T(1) * °, T(1) * s)
       @test_throws ArgumentError LatLon(T(1) * s, T(1) * s)
+
+      # error: latitude above 90° or below -90°
+      @test_throws ArgumentError LatLon(91, 0)
+      @test_throws ArgumentError LatLon(-91, 0)
     end
 
     @testset "GeodeticLatLonAlt" begin

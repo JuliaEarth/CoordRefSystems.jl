@@ -35,7 +35,7 @@ struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(lat, fixlon(lon))
+GeodeticLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeodeticLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeodeticLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeodeticLatLon{Datum}(promote(lat, lon)...)
 GeodeticLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeodeticLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeodeticLatLon{Datum}(lat::Number, lon::Number) where {Datum} = GeodeticLatLon{Datum}(addunit(lat, °), addunit(lon, °))
@@ -57,7 +57,7 @@ end
 lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLon{Datum}}) where {Datum} =
   GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -109,7 +109,7 @@ struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
 end
 
 GeodeticLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
-  GeodeticLatLonAlt{Datum,float(D),float(M)}(lat, fixlon(lon), alt)
+  GeodeticLatLonAlt{Datum,float(D),float(M)}(checklat(lat), fixlon(lon), alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
   GeodeticLatLonAlt{Datum}(promote(lat, lon)..., alt)
 GeodeticLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
@@ -137,7 +137,7 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat &&
-  (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon)) &&
+  coords₁.lon == coords₂.lon &&
   coords₁.alt == coords₂.alt
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeodeticLatLonAlt{Datum}}) where {Datum} =
@@ -187,7 +187,7 @@ struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(lat, fixlon(lon))
+GeocentricLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = GeocentricLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 GeocentricLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = GeocentricLatLon{Datum}(promote(lat, lon)...)
 GeocentricLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = GeocentricLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 GeocentricLatLon{Datum}(lat::Number, lon::Number) where {Datum} =
@@ -210,7 +210,7 @@ end
 lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{GeocentricLatLon{Datum}}) where {Datum} =
   GeocentricLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
@@ -239,7 +239,7 @@ struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
   lon::D
 end
 
-AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(lat, fixlon(lon))
+AuthalicLatLon{Datum}(lat::D, lon::D) where {Datum,D<:Deg} = AuthalicLatLon{Datum,float(D)}(checklat(lat), fixlon(lon))
 AuthalicLatLon{Datum}(lat::Deg, lon::Deg) where {Datum} = AuthalicLatLon{Datum}(promote(lat, lon)...)
 AuthalicLatLon{Datum}(lat::Rad, lon::Rad) where {Datum} = AuthalicLatLon{Datum}(rad2deg(lat), rad2deg(lon))
 AuthalicLatLon{Datum}(lat::Number, lon::Number) where {Datum} = AuthalicLatLon{Datum}(addunit(lat, °), addunit(lon, °))
@@ -261,7 +261,7 @@ end
 lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
-  coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
 Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{AuthalicLatLon{Datum}}) where {Datum} =
   AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))

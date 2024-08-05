@@ -45,11 +45,26 @@ function atanpos(y, x)
 end
 
 """
+    checklat(lat)
+
+Checks if the latitude is in the range `[-90°,90°]`.
+"""
+function checklat(lat)
+  if abs(lat) > 90°
+    throw(ArgumentError("the latitude must be in the range [-90°,90°], while $lat was provided"))
+  end
+  lat
+end
+
+"""
     fixlon(lon)
 
-Fix the longitude to be in the range `[-180°,180°]`.
+Fix the longitude to be in the range `(-180°,180°]`.
 """
-fixlon(lon) = ifelse(-180° ≤ lon ≤ 180°, lon, (lon % 360° + 540°) % 360° - 180°)
+function fixlon(lon) 
+  lon = rem(lon, 360°, RoundNearest)
+  ifelse(lon == -180°, oftype(lon, 180°), lon)
+end
 
 """
     phi2lat(ϕ)
@@ -65,13 +80,6 @@ phi2lat(ϕ) = clamp(rad2deg(ϕ) * °, -90°, 90°)
 Converts the unitless `λ` to longitude.
 """
 lam2lon(λ) = rad2deg(λ) * °
-
-"""
-    islon180(lon)
-
-Checks if the longitude is `180°` or `-180°`.
-"""
-islon180(lon) = abs(lon) == 180°
 
 """
     newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
