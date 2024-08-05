@@ -28,6 +28,13 @@ addunit(x::Number, u) = x * u
 addunit(x::Quantity, u) = throw(ArgumentError("invalid units for coordinates, please check the documentation"))
 
 """
+    numconvert(T, x)
+
+Converts the number type of quantity `x` to `T`.
+"""
+numconvert(::Type{T}, x::Quantity{S,D,U}) where {T,S,D,U} = convert(Quantity{T,D,U}, x)
+
+"""
     atanpos(x, y)
 
 Adjusts the interval of values returned by the `atan(y, x)` function from `[-π,π]` to `[0,2π]`.
@@ -65,13 +72,6 @@ lam2lon(λ) = rad2deg(λ) * °
 Checks if the longitude is `180°` or `-180°`.
 """
 islon180(lon) = abs(lon) == 180°
-
-"""
-    numconvert(T, x)
-
-Converts the number type of quantity `x` to `T`.
-"""
-numconvert(::Type{T}, x::Quantity{S,D,U}) where {T,S,D,U} = convert(Quantity{T,D,U}, x)
 
 """
     newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
