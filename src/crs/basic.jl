@@ -142,12 +142,12 @@ function tol(coords::Cartesian)
   atol(numtype(Q)) * unit(Q)
 end
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian{Datum,N}}) where {Datum,N} =
+Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian2D}) = rand(rng, Cartesian2D{NoDatum})
+Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian2D}) = rand(rng, Cartesian2D{NoDatum})
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cartesian3D}) = rand(rng, Cartesian3D{NoDatum})
+Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian3D}) = rand(rng, Cartesian3D{NoDatum})
 
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
@@ -215,10 +215,9 @@ lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar{Datum}}) where {Datum} =
-  Polar{Datum}(rand(rng), 2π * rand(rng))
+Random.rand(rng::Random.AbstractRNG, ::Type{Polar{Datum}}) where {Datum} = Polar{Datum}(rand(rng), 2π * rand(rng))
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Polar}) = rand(rng, Polar{NoDatum})
+Random.rand(rng::Random.AbstractRNG, ::Type{Polar}) = rand(rng, Polar{NoDatum})
 
 """
     Cylindrical(ρ, ϕ, z)
@@ -274,10 +273,10 @@ lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical{Datum}}) where {Datum} =
+Random.rand(rng::Random.AbstractRNG, ::Type{Cylindrical{Datum}}) where {Datum} =
   Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Cylindrical}) = rand(rng, Cylindrical{NoDatum})
+Random.rand(rng::Random.AbstractRNG, ::Type{Cylindrical}) = rand(rng, Cylindrical{NoDatum})
 
 """
     Spherical(r, θ, ϕ)
@@ -329,10 +328,10 @@ lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical{Datum}}) where {Datum} =
+Random.rand(rng::Random.AbstractRNG, ::Type{Spherical{Datum}}) where {Datum} =
   Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{Spherical}) = rand(rng, Spherical{NoDatum})
+Random.rand(rng::Random.AbstractRNG, ::Type{Spherical}) = rand(rng, Spherical{NoDatum})
 
 # ------------
 # CONVERSIONS

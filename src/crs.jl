@@ -126,6 +126,16 @@ The result inherits the unit of the `coords` after conversion to [`Cartesian`](@
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
+# -------------
+# RAND METHODS
+# -------------
+
+Random.rand(::Type{C}) where {C<:CRS} = rand(Random.default_rng(), C)
+
+Random.rand(::Type{C}, n::Int) where {C<:CRS} = rand(Random.default_rng(), C, n)
+
+Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(rng, C) for _ in 1:n]
+
 # -----------
 # IO METHODS
 # -----------
