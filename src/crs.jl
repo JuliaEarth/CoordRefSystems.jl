@@ -156,3 +156,4 @@ end
 include("crs/basic.jl")
 include("crs/geographic.jl")
 include("crs/projected.jl")
+include("crs/rand.jl")
