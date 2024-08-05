@@ -59,18 +59,15 @@ lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && (coords₁.lon == coords₂.lon || (islon180(coords₁.lon) && coords₁.lon == -coords₂.lon))
 
-Random.rand(rng::Random.AbstractRNG, ::Random.SamplerType{T}) where {T <: GeodeticLatLon} =
-  T(-90° + 180° * rand(rng), -180° + 360° * rand(rng))
-
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}) where Datum = 
-  rand(rng, GeodeticLatLon{WGS84Latest, Deg{Float64}})
-Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}, dims::Dims) where Datum = 
-  rand(rng, GeodeticLatLon{WGS84Latest, Deg{Float64}}, dims)
-
-Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon}, dims::Dims) = 
-  rand(rng, GeodeticLatLon{WGS84Latest}, dims)
+  GeodeticLatLon{Datum, Deg{Float64}}(-90° + 180° * rand(rng), -180° + 360° * rand(rng))
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon}) = 
   rand(rng, GeodeticLatLon{WGS84Latest})
+
+Random.rand(::Type{T}, dims::Dims) where {Datum, T <: Union{GeodeticLatLon,GeodeticLatLon{Datum}}} =
+  rand(Random.default_rng(), T, dims)
+Random.rand(rng::Random.AbstractRNG, ::Type{T}, dims::Dims) where {Datum, T <: Union{GeodeticLatLon,GeodeticLatLon{Datum}}} = 
+  [rand(rng, T) for _ in CartesianIndices(dims)]
 
 
 """
