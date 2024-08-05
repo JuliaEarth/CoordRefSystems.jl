@@ -64,11 +64,6 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}) where Datum 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon}) = 
   rand(rng, GeodeticLatLon{WGS84Latest})
 
-Random.rand(::Type{T}, dims::Dims) where {Datum, T <: Union{GeodeticLatLon,GeodeticLatLon{Datum}}} =
-  rand(Random.default_rng(), T, dims)
-Random.rand(rng::Random.AbstractRNG, ::Type{T}, dims::Dims) where {Datum, T <: Union{GeodeticLatLon,GeodeticLatLon{Datum}}} = 
-  [rand(rng, T) for _ in CartesianIndices(dims)]
-
 
 """
     LatLon(lat, lon)

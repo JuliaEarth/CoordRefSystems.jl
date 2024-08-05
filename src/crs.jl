@@ -126,6 +126,9 @@ The result inherits the unit of the `coords` after conversion to [`Cartesian`](@
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
+Random.rand(rng::Random.AbstractRNG, ::Type{C}, dims::Dims) where C <: CRS =
+  [rand(rng, C) for _ in CartesianIndices(dims)]
+
 # -----------
 # IO METHODS
 # -----------
