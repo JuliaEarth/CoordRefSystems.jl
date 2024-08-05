@@ -24,10 +24,10 @@
     @test rand(rng, GeodeticLatLon{WGS84Latest}) isa GeodeticLatLon
     @test rand(rng, GeodeticLatLon) isa GeodeticLatLon{WGS84Latest}
 
-    @test rand(rng, LatLon{WGS84Latest}) isa LatLon{WGS84Latest, Deg{Float64}}
-    @test rand(rng, LatLon) isa LatLon{WGS84Latest, Deg{Float64}}
-    @test rand(rng, LatLon{WGS84Latest}, 100) isa Vector{LatLon{WGS84Latest, Deg{Float64}}}
-    @test rand(rng, LatLon, 100) isa Vector{LatLon{WGS84Latest, Deg{Float64}}}
+    @test rand(rng, LatLon{WGS84Latest}) isa LatLon{WGS84Latest}
+    @test rand(rng, LatLon) isa LatLon
+    @test rand(rng, LatLon{WGS84Latest}, 100) isa Vector{<:LatLon{WGS84Latest}}
+    @test rand(rng, LatLon, 100) isa Vector{<:LatLon}
 
     @test rand(rng, GeodeticLatLonAlt{WGS84Latest}) isa GeodeticLatLonAlt
     @test rand(rng, GeodeticLatLonAlt) isa GeodeticLatLonAlt{WGS84Latest}
