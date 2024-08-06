@@ -1115,6 +1115,10 @@
       c3 = convert(ShiftedMercator, c2)
       @test allapprox(c3, c1)
 
+      # converting using Cartesian is equivalent to converting using Cartesian2D
+      c1 = Mercator(T(1), T(1))
+      @test convert(Cartesian, c1) == convert(Cartesian2D, c1)
+
       # conversion to cartesian 3D
       c1 = convert(Mercator, LatLon(T(30), T(40)))
       c2 = convert(Cartesian3D, c1)
