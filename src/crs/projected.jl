@@ -96,7 +96,7 @@ Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Da
 Base.convert(C::Type{LatLon{Datumₜ}}, coords::Projected{Datumₛ}) where {Datumₜ,Datumₛ} =
   convert(C, convert(LatLon, coords))
 
-Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
+Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian2D, coords)
 
 Base.convert(::Type{Cartesian2D}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
 Base.convert(::Type{Cartesian{Datum,2}}, coords::Projected{Datum}) where {Datum} = Cartesian{Datum}(coords.x, coords.y)
