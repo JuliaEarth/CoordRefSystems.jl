@@ -1096,40 +1096,40 @@
     @testset "Cartesian <> Projected" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
 
-      # conversion to cartesian 2D (default)
+      # conversion to cartesian 2D
       c1 = Mercator(T(1), T(1))
-      c2 = convert(Cartesian, c1)
+      c2 = convert(Cartesian2D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(Mercator{WGS84Latest}, c2)
       @test allapprox(c3, c1)
 
       c1 = OrthoNorth(T(1), T(1))
-      c2 = convert(Cartesian, c1)
+      c2 = convert(Cartesian2D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(OrthoNorth{WGS84Latest}, c2)
       @test allapprox(c3, c1)
 
       c1 = ShiftedMercator(T(1), T(1))
-      c2 = convert(Cartesian, c1)
+      c2 = convert(Cartesian2D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(ShiftedMercator, c2)
       @test allapprox(c3, c1)
 
       # conversion to cartesian 3D
       c1 = convert(Mercator, LatLon(T(30), T(40)))
-      c2 = convert(Cartesian{WGS84Latest,3}, c1)
+      c2 = convert(Cartesian3D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(Mercator{WGS84Latest}, c2)
       @test allapprox(c3, c1)
 
       c1 = convert(OrthoNorth, LatLon(T(30), T(40)))
-      c2 = convert(Cartesian{WGS84Latest,3}, c1)
+      c2 = convert(Cartesian3D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(OrthoNorth{WGS84Latest}, c2)
       @test allapprox(c3, c1)
 
       c1 = convert(ShiftedMercator, LatLon(T(30), T(40)))
-      c2 = convert(Cartesian{WGS84Latest,3}, c1)
+      c2 = convert(Cartesian3D, c1)
       @test allapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(ShiftedMercator, c2)
       @test allapprox(c3, c1)
@@ -1163,12 +1163,12 @@
       @inferred convert(Mercator{WGS84Latest}, c3)
       @inferred convert(OrthoNorth{WGS84Latest}, c3)
       @inferred convert(ShiftedMercator, c3)
-      @inferred convert(Cartesian, c4)
-      @inferred convert(Cartesian, c5)
-      @inferred convert(Cartesian, c6)
-      @inferred convert(Cartesian{WGS84Latest,3}, c4)
-      @inferred convert(Cartesian{WGS84Latest,3}, c5)
-      @inferred convert(Cartesian{WGS84Latest,3}, c6)
+      @inferred convert(Cartesian2D, c4)
+      @inferred convert(Cartesian2D, c5)
+      @inferred convert(Cartesian2D, c6)
+      @inferred convert(Cartesian3D, c4)
+      @inferred convert(Cartesian3D, c5)
+      @inferred convert(Cartesian3D, c6)
     end
 
     @testset "Projection conversion" begin
