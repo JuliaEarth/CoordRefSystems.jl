@@ -1117,7 +1117,11 @@
 
       # converting using Cartesian is equivalent to converting using Cartesian2D
       c1 = Mercator(T(1), T(1))
+      c2 = OrthoNorth(T(1), T(1))
+      c3 = ShiftedMercator(T(1), T(1))
       @test convert(Cartesian, c1) == convert(Cartesian2D, c1)
+      @test convert(Cartesian, c2) == convert(Cartesian2D, c2)
+      @test convert(Cartesian, c3) == convert(Cartesian2D, c3)
 
       # conversion to cartesian 3D
       c1 = convert(Mercator, LatLon(T(30), T(40)))
