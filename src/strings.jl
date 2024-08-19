@@ -86,5 +86,6 @@ const esriid2code = Dict(
   "World_Behrmann" => ESRI{54017},
   "World_Cylindrical_Equal_Area" => ESRI{54034},
   "World_Robinson" => ESRI{54030},
-  "World_Winkel_Tripel_NGS" => ESRI{54042}
+  "World_Winkel_Tripel_NGS" => ESRI{54042},
+  "GCS_MAGNA" => EPSG{4686}
 )
