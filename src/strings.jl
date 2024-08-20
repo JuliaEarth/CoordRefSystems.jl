@@ -71,6 +71,7 @@ checkmatch(m) = isnothing(m) ? parseerror() : m
 # ESRI IDs in alphabetical order
 const esriid2code = Dict(
   "British_National_Grid" => EPSG{27700},
+  "GCS_MAGNA" => EPSG{4686},
   "GCS_SAD_1969_96" => EPSG{5527},
   "GCS_SIRGAS_2000" => EPSG{4674},
   "GCS_South_American_1969" => EPSG{4618},
@@ -86,6 +87,5 @@ const esriid2code = Dict(
   "World_Behrmann" => ESRI{54017},
   "World_Cylindrical_Equal_Area" => ESRI{54034},
   "World_Robinson" => ESRI{54030},
-  "World_Winkel_Tripel_NGS" => ESRI{54042},
-  "GCS_MAGNA" => EPSG{4686}
+  "World_Winkel_Tripel_NGS" => ESRI{54042}
 )
