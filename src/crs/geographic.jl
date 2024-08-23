@@ -419,6 +419,9 @@ function Base.convert(::Type{LatLon{Datumₜ}}, coords::LatLon{Datumₛ}) where 
   convert(LatLon{Datumₜ}, cartₜ)
 end
 
+# avoid converting coordinates with the same datum as the first argument
+Base.convert(::Type{LatLon{Datum}}, coords::LatLon{Datum}) where {Datum} = coords
+
 # ----------
 # FALLBACKS
 # ----------
