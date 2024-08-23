@@ -379,6 +379,7 @@
   end
 
   @testset "convert fallback" begin
+    # concrete type
     C = typeof(Polar(T(0), T(0)))
     c1 = Cartesian(1.0, 1.0)
     c2 = Cartesian(1.0f0, 1.0f0)
@@ -395,9 +396,24 @@
     @test typeof(convert(C, c1)) === C
     @test typeof(convert(C, c2)) === C
 
+    # same type
+    c = Cartesian(T(1), T(1))
+    @test convert(Cartesian, c) === c
+    c = OrthoNorth(T(1), T(1))
+    @test convert(OrthoNorth, c) === c
+
     # error: conversion not defined
     C = typeof(Spherical(T(0), T(0), T(0)))
     c = Mercator(T(1), T(1))
     @test_throws ArgumentError convert(C, c)
+
+    # type stability
+    C = typeof(Mercator(T(0), T(0)))
+    c1 = LatLon(45.0, 90.0)
+    c2 = LatLon(45.0f0, 90.0f0)
+    c3 = Cartesian(T(1), T(1))
+    @inferred convert(C, c1)
+    @inferred convert(C, c2)
+    @inferred convert(Cartesian, c3)
   end
 end
