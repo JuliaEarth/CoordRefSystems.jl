@@ -377,4 +377,57 @@
     c = ShiftedMercator(T(1), T(1))
     @test CoordRefSystems.tol(c) == tol
   end
+
+  @testset "convert fallback" begin
+    # concrete type
+    C = typeof(Polar(T(0), T(0)))
+    c1 = Cartesian(1.0, 1.0)
+    c2 = Cartesian(1.0f0, 1.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+    C = typeof(Mercator(T(0), T(0)))
+    c1 = LatLon(45.0, 90.0)
+    c2 = LatLon(45.0f0, 90.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+    C = typeof(PlateCarree(T(0), T(0)))
+    c1 = Cartesian(1.0, 1.0)
+    c2 = Cartesian(1.0f0, 1.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+
+    # unit conversion
+    c1 = Cartesian(T(1000) * mm, T(1000) * mm)
+    c2 = Cartesian(T(100) * cm, T(100) * cm)
+    c3 = Cartesian(T(1) * m, T(1) * m)
+    C = typeof(c1)
+    c4 = convert(C, c2)
+    c5 = convert(C, c3)
+    @test typeof(c4) === C
+    @test c4 ≈ c1
+    @test typeof(c5) === C
+    @test c5 ≈ c1
+
+    # same type
+    c = Cartesian(T(1), T(1))
+    @test convert(Cartesian, c) === c
+    c = LatLon(T(45), T(90))
+    @test convert(LatLon, c) === c
+    c = OrthoNorth(T(1), T(1))
+    @test convert(OrthoNorth, c) === c
+
+    # error: conversion not defined
+    C = typeof(Spherical(T(0), T(0), T(0)))
+    c = Mercator(T(1), T(1))
+    @test_throws ArgumentError convert(C, c)
+
+    # type stability
+    C = typeof(Mercator(T(0), T(0)))
+    c1 = LatLon(45.0, 90.0)
+    c2 = LatLon(45.0f0, 90.0f0)
+    c3 = Cartesian(T(1), T(1))
+    @inferred convert(C, c1)
+    @inferred convert(C, c2)
+    @inferred convert(Cartesian, c3)
+  end
 end
