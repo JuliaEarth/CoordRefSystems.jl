@@ -141,11 +141,15 @@ Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(r
 # ----------
 
 function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
-  if !isconcretetype(C)
-    throw(ArgumentError("conversion between `$C` and `$(typeof(coords))` is not defined"))
+  if C === constructor(coords)
+    coords
+  else
+    if !isconcretetype(C)
+      throw(ArgumentError("conversion between `$C` and `$(typeof(coords))` is not defined"))
+    end
+    coords′ = convert(constructor(C), coords)
+    convert(C, coords′)
   end
-  coords′ = convert(constructor(C), coords)
-  convert(C, coords′)
 end
 
 # -----------
