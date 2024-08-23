@@ -377,4 +377,27 @@
     c = ShiftedMercator(T(1), T(1))
     @test CoordRefSystems.tol(c) == tol
   end
+
+  @testset "convert fallback" begin
+    C = typeof(Polar(T(0), T(0)))
+    c1 = Cartesian(1.0, 1.0)
+    c2 = Cartesian(1.0f0, 1.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+    C = typeof(Mercator(T(0), T(0)))
+    c1 = LatLon(45.0, 90.0)
+    c2 = LatLon(45.0f0, 90.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+    C = typeof(PlateCarree(T(0), T(0)))
+    c1 = Cartesian(1.0, 1.0)
+    c2 = Cartesian(1.0f0, 1.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+
+    # error: conversion not defined
+    C = typeof(Spherical(T(0), T(0), T(0)))
+    c = Mercator(T(1), T(1))
+    @test_throws ArgumentError convert(C, c)
+  end
 end

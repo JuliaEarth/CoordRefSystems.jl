@@ -136,6 +136,18 @@ Random.rand(::Type{C}, n::Int) where {C<:CRS} = rand(Random.default_rng(), C, n)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(rng, C) for _ in 1:n]
 
+# ----------
+# FALLBACKS
+# ----------
+
+function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
+  if !isconcretetype(C)
+    throw(ArgumentError("conversion between `$C` and `$(typeof(coords))` is not defined"))
+  end
+  coords′ = convert(constructor(C), coords)
+  convert(C, coords′)
+end
+
 # -----------
 # IO METHODS
 # -----------
