@@ -141,18 +141,14 @@ Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(r
 # ----------
 
 function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
-  # if `C` has the same CRS and Datum as `coords`, 
-  # just return `coords`
+  # nothing to do if C has the same abstract type and datum
   C === constructor(coords) && return coords
-  # if `C` is not a concrete type, it means that 
-  # an appropriate conversion method is not defined
+  # C must be a concrete type with a conversion method defined
   isconcretetype(C) || throw(ArgumentError("conversion from `$(typeof(coords))` to `$C` is not defined"))
-  # call the appropriate method to convert
-  # `coords` to the same CRS type as `C`, 
-  # but the original machine type is preserved
+  # call the appropriate method to convert coords to C
+  # preserving the machine type, units, ...
   coords′ = convert(constructor(C), coords)
-  # with `coords′` with the same CRS type as `C`,
-  # call the machine type conversion
+  # convert machine type, units, ...
   convert(C, coords′)
 end
 
