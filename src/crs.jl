@@ -146,7 +146,7 @@ function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
   C === constructor(coords) && return coords
   # if `C` is not a concrete type, it means that 
   # an appropriate conversion method is not defined
-  isconcretetype(C) || throw(ArgumentError("conversion between `$C` and `$(typeof(coords))` is not defined"))
+  isconcretetype(C) || throw(ArgumentError("conversion from `$(typeof(coords))` to `$C` is not defined"))
   # call the appropriate method to convert
   # `coords` to the same CRS type as `C`, 
   # but the original machine type is preserved
