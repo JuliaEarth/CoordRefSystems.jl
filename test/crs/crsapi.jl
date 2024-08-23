@@ -399,6 +399,8 @@
     # same type
     c = Cartesian(T(1), T(1))
     @test convert(Cartesian, c) === c
+    c = LatLon(T(45), T(90))
+    @test convert(LatLon, c) === c
     c = OrthoNorth(T(1), T(1))
     @test convert(OrthoNorth, c) === c
 
