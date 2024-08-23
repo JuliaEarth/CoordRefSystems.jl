@@ -143,7 +143,7 @@ Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(r
 function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
   # if `C` has the same CRS and Datum as `coords`, 
   # just return `coords`
-  C === contructor(coords) && return coords
+  C === constructor(coords) && return coords
   # if `C` is not a concrete type, it means that 
   # an appropriate conversion method is not defined
   isconcretetype(C) || throw(ArgumentError("conversion between `$C` and `$(typeof(coords))` is not defined"))
