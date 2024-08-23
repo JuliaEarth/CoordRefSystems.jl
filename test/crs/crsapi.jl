@@ -396,6 +396,18 @@
     @test typeof(convert(C, c1)) === C
     @test typeof(convert(C, c2)) === C
 
+    # unit conversion
+    c1 = Cartesian(T(1000) * mm, T(1000) * mm)
+    c2 = Cartesian(T(100) * cm, T(100) * cm)
+    c3 = Cartesian(T(1) * m, T(1) * m)
+    C = typeof(c1)
+    c4 = convert(C, c2)
+    c5 = convert(C, c3)
+    @test typeof(c4) === C
+    @test c4 ≈ c1
+    @test typeof(c5) === C
+    @test c5 ≈ c1
+
     # same type
     c = Cartesian(T(1), T(1))
     @test convert(Cartesian, c) === c
