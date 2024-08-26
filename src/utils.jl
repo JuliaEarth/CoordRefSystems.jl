@@ -8,6 +8,14 @@ const Met{T} = Quantity{T,u"𝐋",typeof(m)}
 const Deg{T} = Quantity{T,NoDims,typeof(°)}
 const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
+asdeg(x::Deg) = x
+asdeg(x::Number) = x * °
+asdeg(::Quantity) = error("invalid unit, please pass a value with degree unit")
+
+asmet(x::Met) = x
+asmet(x::Number) = x * m
+asmet(::Quantity) = error("invalid unit, please pass a value with meter unit")
+
 """
     atol(T)
     atol(x::T)

@@ -3,41 +3,47 @@
 # ------------------------------------------------------------------
 
 """
-    EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+    EqualAreaCylindrical{Datum,Hyper,Shift}
 
 Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` and longitude origin `lonₒ`
 in degrees and a given `Datum`.
 """
-struct EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M<:Met} <: Projected{Datum}
+struct EqualAreaCylindrical{Datum,Hyper,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::M, y::M) where {latₜₛ,lonₒ,Datum,M<:Met} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum,float(M)}(x, y)
-EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Met, y::Met) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(promote(x, y)...)
-EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Len, y::Len) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(uconvert(m, x), uconvert(m, y))
-EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(x::Number, y::Number) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}(addunit(x, m), addunit(y, m))
+struct EACHyper{D}
+  latₜₛ::D
+end
 
-EqualAreaCylindrical{latₜₛ,lonₒ}(args...) where {latₜₛ,lonₒ} = EqualAreaCylindrical{latₜₛ,lonₒ,WGS84Latest}(args...)
+EACHyper(; latₜₛ=0.0°) = EACHyper(asdeg(latₜₛ))
+
+EqualAreaCylindrical{Datum,Hyper,Shift}(x::M, y::M) where {Datum,Hyper,Shift,M<:Met} =
+  EqualAreaCylindrical{Datum,Hyper,Shift,float(M)}(x, y)
+EqualAreaCylindrical{Datum,Hyper,Shift}(x::Met, y::Met) where {Datum,Hyper,Shift} =
+  EqualAreaCylindrical{Datum,Hyper,Shift}(promote(x, y)...)
+EqualAreaCylindrical{Datum,Hyper,Shift}(x::Len, y::Len) where {Datum,Hyper,Shift} =
+  EqualAreaCylindrical{Datum,Hyper,Shift}(uconvert(m, x), uconvert(m, y))
+EqualAreaCylindrical{Datum,Hyper,Shift}(x::Number, y::Number) where {Datum,Hyper,Shift} =
+  EqualAreaCylindrical{Datum,Hyper,Shift}(addunit(x, m), addunit(y, m))
+
+EqualAreaCylindrical{Datum,Hyper}(args...) where {Datum,Hyper} = EqualAreaCylindrical{Datum,Hyper,Shift()}(args...)
 
 Base.convert(
-  ::Type{EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}},
-  coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
-) where {latₜₛ,lonₒ,Datum,M} = EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}(coords.x, coords.y)
+  ::Type{EqualAreaCylindrical{Datum,Hyper,Shift,M}},
+  coords::EqualAreaCylindrical{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift,M} = EqualAreaCylindrical{Datum,Hyper,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}) where {latₜₛ,lonₒ,Datum} =
-  EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
+constructor(::Type{<:EqualAreaCylindrical{Datum,Hyper,Shift}}) where {Datum,Hyper,Shift} =
+  EqualAreaCylindrical{Datum,Hyper,Shift}
 
-lentype(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum,M}}) where {latₜₛ,lonₒ,Datum,M} = M
+lentype(::Type{<:EqualAreaCylindrical{Datum,Hyper,Shift,M}}) where {Datum,Hyper,Shift,M} = M
 
 ==(
-  coords₁::EqualAreaCylindrical{latₜₛ,lonₒ,Datum},
-  coords₂::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}
-) where {latₜₛ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::EqualAreaCylindrical{Datum,Hyper,Shift},
+  coords₂::EqualAreaCylindrical{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
     Lambert(x, y)
@@ -58,7 +64,9 @@ Lambert{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54034](https://epsg.io/54034).
 """
-const Lambert{Datum} = EqualAreaCylindrical{0.0°,0.0°,Datum}
+const Lambert{Datum} = EqualAreaCylindrical{Datum,EACHyper(latₜₛ=0.0°)}
+
+Lambert(args...) = Lambert{WGS84Latest}(args...)
 
 """
     Behrmann(x, y)
@@ -79,7 +87,9 @@ Behrmann{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54017](https://epsg.io/54017).
 """
-const Behrmann{Datum} = EqualAreaCylindrical{30.0°,0.0°,Datum}
+const Behrmann{Datum} = EqualAreaCylindrical{Datum,EACHyper(latₜₛ=30.0°)}
+
+Behrmann(args...) = Behrmann{WGS84Latest}(args...)
 
 """
     GallPeters(x, y)
@@ -98,7 +108,9 @@ GallPeters(1.0m, 1.0m)
 GallPeters{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const GallPeters{Datum} = EqualAreaCylindrical{45.0°,0.0°,Datum}
+const GallPeters{Datum} = EqualAreaCylindrical{Datum,EACHyper(latₜₛ=45.0°)}
+
+GallPeters(args...) = GallPeters{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS
@@ -112,16 +124,15 @@ const GallPeters{Datum} = EqualAreaCylindrical{45.0°,0.0°,Datum}
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/cea.cpp
 # reference formula: https://neacsu.net/docs/geodesy/snyder/3-cylindrical/sect_10/
 
-function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}, ::Type{T}) where {latₜₛ,lonₒ,Datum,T}
+function formulas(::Type{<:EqualAreaCylindrical{Datum,Hyper}}, ::Type{T}) where {Datum,Hyper,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₜₛ = T(ustrip(deg2rad(latₜₛ)))
+  ϕₜₛ = T(ustrip(deg2rad(Hyper.latₜₛ)))
 
   k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
 
-  fx(λ, ϕ) = k₀ * (λ - λₒ)
+  fx(λ, ϕ) = k₀ * λ
 
   function fy(λ, ϕ)
     sinϕ = sin(ϕ)
@@ -133,14 +144,10 @@ function formulas(::Type{<:EqualAreaCylindrical{latₜₛ,lonₒ,Datum}}, ::Type
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜₛ,lonₒ,Datum}) where {latₜₛ,lonₒ,Datum}
+function backward(::Type{<:EqualAreaCylindrical{Datum,Hyper}}, x, y) where {Datum,Hyper}
   🌎 = ellipsoid(Datum)
-  x = coords.x
-  y = coords.y
-  a = oftype(x, majoraxis(🌎))
   e = convert(numtype(x), eccentricity(🌎))
   e² = convert(numtype(x), eccentricity²(🌎))
-  λₒ = numconvert(numtype(x), deg2rad(lonₒ))
   ϕₜₛ = numconvert(numtype(x), deg2rad(latₜₛ))
 
   ome² = 1 - e²
@@ -148,17 +155,17 @@ function Base.convert(::Type{LatLon{Datum}}, coords::EqualAreaCylindrical{latₜ
   # same formula as q, but ϕ = 90°
   qₚ = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
 
-  λ = λₒ + x / (a * k₀)
-  q = 2y * k₀ / a
+  λ = x / k₀
+  q = 2y * k₀
   β = asin(q / qₚ)
   ϕ = auth2geod(β, e²)
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EqualAreaCylindrical{latₜₛ,lonₒ}}, coords::CRS{Datum}) where {latₜₛ,lonₒ,Datum} =
-  convert(EqualAreaCylindrical{latₜₛ,lonₒ,Datum}, coords)
+Base.convert(::Type{EqualAreaCylindrical{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
+  convert(EqualAreaCylindrical{Datum,Hyper,Shift()}, coords)

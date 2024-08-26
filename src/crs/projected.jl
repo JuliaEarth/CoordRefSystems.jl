@@ -7,9 +7,17 @@
 
 Projected CRS with a given `Datum`.
 """
-abstract type Projected{Datum} <: CRS{Datum} end
+abstract type Projected{Datum,Shift} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
+
+struct Shift{D,M}
+  lonₒ::D
+  xₒ::M
+  yₒ::M
+end
+
+Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(asdeg(lonₒ), asmet(xₒ), asmet(yₒ))
 
 """
     formulas(CRS::Type{<:Projected}, T)
@@ -18,6 +26,18 @@ Returns the forward formulas of the `CRS`: `fx(λ, ϕ)` and `fy(λ, ϕ)`,
 with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
+
+function forward(::Type{C}, λ, ϕ) where {C<:Projected}
+  fx, fy = formulas(C, T)
+  x = fx(λ, ϕ)
+  y = fy(λ, ϕ)
+  x, y
+end
+
+function backward(::Type{C}, x, y) where {C<:Projected}
+  fx, fy = formulas(C, T)
+  projinv(fx, fy, x, y, x, y)
+end
 
 """
     inbounds(CRS::Type{<:Projected}, λ, ϕ)
@@ -66,28 +86,31 @@ include("projected/shifted.jl")
 # FALLBACKS
 # ----------
 
-function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
+function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,Shift,C<:Projected{Datum,Shift}}
   T = numtype(coords.lon)
-  λ = ustrip(deg2rad(coords.lon))
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  xₒ = numconvert(T, Shift.xₒ)
+  yₒ = numconvert(T, Shift.yₒ)
+  lonₒ = numconvert(T, Shift.lonₒ)
+  λ = ustrip(deg2rad(coords.lon - lonₒ))
   ϕ = ustrip(deg2rad(coords.lat))
   if !inbounds(C, λ, ϕ)
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  fx, fy = formulas(C, T)
-  x = fx(λ, ϕ) * a
-  y = fy(λ, ϕ) * a
-  C(x, y)
+  x, y = forward(C, λ, ϕ)
+  C(x * a + xₒ, y * a + yₒ)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,Shift,C<:Projected{Datum,Shift}}
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
-  fx, fy = formulas(C, T)
-  λ, ϕ = projinv(fx, fy, x, y, x, y)
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  xₒ = numconvert(T, Shift.xₒ)
+  yₒ = numconvert(T, Shift.yₒ)
+  lonₒ = numconvert(T, Shift.lonₒ)
+  x = (coords.x - xₒ) / a
+  y = (coords.y - yₒ) / a
+  λ, ϕ = backward(C, x, y)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ) + lonₒ)
 end
 
 Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ} =
