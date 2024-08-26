@@ -2,26 +2,36 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-struct Winkel{lat₁,Datum,M<:Met} <: Projected{Datum}
+struct WinkelHyper{D<:Deg}
+  lat₁::D
+end
+
+WinkelHyper(; lat₁=0.0°) = WinkelHyper(asdeg(lat₁))
+
+struct Winkel{Hyper,Shift,Datum,M<:Met} <: Projected{Datum}
   x::M
   y::M
 end
 
-Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = Winkel{lat₁,Datum,float(M)}(x, y)
-Winkel{lat₁,Datum}(x::Met, y::Met) where {lat₁,Datum} = Winkel{lat₁,Datum}(promote(x, y)...)
-Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(m, x), uconvert(m, y))
-Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, m), addunit(y, m))
+Winkel{Hyper,Shift,Datum}(x::M, y::M) where {Hyper,Shift,Datum,M<:Met} = Winkel{Hyper,Shift,Datum,float(M)}(x, y)
+Winkel{Hyper,Shift,Datum}(x::Met, y::Met) where {Hyper,Shift,Datum} = Winkel{Hyper,Shift,Datum}(promote(x, y)...)
+Winkel{Hyper,Shift,Datum}(x::Len, y::Len) where {Hyper,Shift,Datum} =
+  Winkel{Hyper,Shift,Datum}(uconvert(m, x), uconvert(m, y))
+Winkel{Hyper,Shift,Datum}(x::Number, y::Number) where {Hyper,Shift,Datum} =
+  Winkel{Hyper,Shift,Datum}(addunit(x, m), addunit(y, m))
 
-Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
+Winkel{Hyper,Shift}(args...) where {Hyper,Shift} = Winkel{Hyper,Shift,WGS84Latest}(args...)
 
-Base.convert(::Type{Winkel{lat₁,Datum,M}}, coords::Winkel{lat₁,Datum}) where {lat₁,Datum,M} =
-  Winkel{lat₁,Datum,M}(coords.x, coords.y)
+Winkel{Hyper}(args...) where {Hyper} = Winkel{Hyper,Shift(),WGS84Latest}(args...)
 
-constructor(::Type{<:Winkel{lat₁,Datum}}) where {lat₁,Datum} = Winkel{lat₁,Datum}
+Base.convert(::Type{Winkel{Hyper,Shift,Datum,M}}, coords::Winkel{Hyper,Shift,Datum}) where {Hyper,Shift,Datum,M} =
+  Winkel{Hyper,Shift,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
+constructor(::Type{<:Winkel{Hyper,Shift,Datum}}) where {Hyper,Shift,Datum} = Winkel{Hyper,Shift,Datum}
 
-==(coords₁::Winkel{lat₁,Datum}, coords₂::Winkel{lat₁,Datum}) where {lat₁,Datum} =
+lentype(::Type{<:Winkel{Hyper,Shift,Datum,M}}) where {Hyper,Shift,Datum,M} = M
+
+==(coords₁::Winkel{Hyper,Shift,Datum}, coords₂::Winkel{Hyper,Shift,Datum}) where {Hyper,Shift,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
@@ -43,7 +53,7 @@ WinkelTripel{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54042](https://epsg.io/54042).
 """
-const WinkelTripel{Datum} = Winkel{50.467°,Datum}
+const WinkelTripel{Shift,Datum} = Winkel{WinkelHyper(lat₁ = 50.467°),Shift,Datum}
 
 # ------------
 # CONVERSIONS
@@ -57,8 +67,8 @@ const WinkelTripel{Datum} = Winkel{50.467°,Datum}
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aitoff.cpp
 # reference formula: https://en.wikipedia.org/wiki/Winkel_tripel_projection
 
-function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
-  ϕ₁ = T(ustrip(deg2rad(lat₁)))
+function formulas(::Type{<:Winkel{Hyper}}, ::Type{T}) where {Hyper,T}
+  ϕ₁ = T(ustrip(deg2rad(Hyper.lat₁)))
 
   function sincα(λ, ϕ)
     α = acos(cos(ϕ) * cos(λ / 2))
@@ -72,23 +82,22 @@ function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₁,Datum,C<:Winkel{lat₁,Datum}}
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
+function backward(::Type{<:Winkel{Hyper}}, x, y) where {Hyper}
+  T = typeof(x)
   tol = atol(T)
-  λ, ϕ = if abs(x) < tol && abs(y) < tol
+  if abs(x) < tol && abs(y) < tol
     zero(T), zero(T)
   else
     fx, fy = formulas(C, T)
     projinv(fx, fy, x, y, x, y; tol)
   end
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Winkel{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)
+Base.convert(::Type{Winkel{Hyper,Shift}}, coords::CRS{Datum}) where {Hyper,Shift,Datum} =
+  convert(Winkel{Hyper,Shift,Datum}, coords)
+
+Base.convert(::Type{Winkel{Hyper}}, coords::CRS) where {Hyper} = convert(Winkel{Hyper,Shift()}, coords)

@@ -21,26 +21,29 @@ WebMercator{WGS84Latest}(1.0m, 1.0m)
 
 See [EPSG:3857](https://epsg.io/3857).
 """
-struct WebMercator{Datum,M<:Met} <: Projected{Datum}
+struct WebMercator{Shift,Datum,M<:Met} <: Projected{Shift,Datum}
   x::M
   y::M
 end
 
-WebMercator{Datum}(x::M, y::M) where {Datum,M<:Met} = WebMercator{Datum,float(M)}(x, y)
-WebMercator{Datum}(x::Met, y::Met) where {Datum} = WebMercator{Datum}(promote(x, y)...)
-WebMercator{Datum}(x::Len, y::Len) where {Datum} = WebMercator{Datum}(uconvert(m, x), uconvert(m, y))
-WebMercator{Datum}(x::Number, y::Number) where {Datum} = WebMercator{Datum}(addunit(x, m), addunit(y, m))
+WebMercator{Shift,Datum}(x::M, y::M) where {Shift,Datum,M<:Met} = WebMercator{Shift,Datum,float(M)}(x, y)
+WebMercator{Shift,Datum}(x::Met, y::Met) where {Shift,Datum} = WebMercator{Shift,Datum}(promote(x, y)...)
+WebMercator{Shift,Datum}(x::Len, y::Len) where {Shift,Datum} = WebMercator{Shift,Datum}(uconvert(m, x), uconvert(m, y))
+WebMercator{Shift,Datum}(x::Number, y::Number) where {Shift,Datum} =
+  WebMercator{Shift,Datum}(addunit(x, m), addunit(y, m))
 
-WebMercator(args...) = WebMercator{WGS84Latest}(args...)
+WebMercator{Shift}(args...) where {Shift} = WebMercator{Shift,WGS84Latest}(args...)
 
-Base.convert(::Type{WebMercator{Datum,M}}, coords::WebMercator{Datum}) where {Datum,M} =
-  WebMercator{Datum,M}(coords.x, coords.y)
+WebMercator(args...) = WebMercator{Shift()}(args...)
 
-constructor(::Type{<:WebMercator{Datum}}) where {Datum} = WebMercator{Datum}
+Base.convert(::Type{WebMercator{Shift,Datum,M}}, coords::WebMercator{Shift,Datum}) where {Shift,Datum,M} =
+  WebMercator{Shift,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:WebMercator{Datum,M}}) where {Datum,M} = M
+constructor(::Type{<:WebMercator{Shift,Datum}}) where {Shift,Datum} = WebMercator{Shift,Datum}
 
-==(coords₁::WebMercator{Datum}, coords₂::WebMercator{Datum}) where {Datum} =
+lentype(::Type{<:WebMercator{Shift,Datum,M}}) where {Shift,Datum,M} = M
+
+==(coords₁::WebMercator{Shift,Datum}, coords₂::WebMercator{Shift,Datum}) where {Shift,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
@@ -52,7 +55,7 @@ function inbounds(::Type{<:WebMercator}, λ, ϕ)
   -π ≤ λ ≤ π && -θ ≤ ϕ ≤ θ
 end
 
-function formulas(::Type{<:WebMercator{Datum}}, ::Type{T}) where {Datum,T}
+function formulas(::Type{<:WebMercator}, ::Type{T}) where {T}
   fx(λ, ϕ) = λ
 
   fy(λ, ϕ) = asinh(tan(ϕ))
@@ -60,14 +63,10 @@ function formulas(::Type{<:WebMercator{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::WebMercator{Datum}) where {Datum}
-  🌎 = ellipsoid(Datum)
-  x = coords.x
-  y = coords.y
-  a = oftype(x, majoraxis(🌎))
-  λ = x / a
-  ϕ = atan(sinh(y / a))
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+function backward(::Type{<:WebMercator}, x, y)
+  λ = x
+  ϕ = atan(sinh(y))
+  λ, ϕ
 end
 
 # ----------

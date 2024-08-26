@@ -2,6 +2,14 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+struct Shift{D<:Deg,M<:Met}
+  lonₒ::D
+  xₒ::M
+  yₒ::M
+end
+
+Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(asdeg(lonₒ), asmet(xₒ), asmet(yₒ))
+
 """
     CoordRefSystems.shift(CRS::Type{<:Projected}; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m)
 

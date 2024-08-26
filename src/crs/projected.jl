@@ -7,17 +7,9 @@
 
 Projected CRS with a given `Datum`.
 """
-abstract type Projected{Datum,Shift} <: CRS{Datum} end
+abstract type Projected{Shift,Datum} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
-
-struct Shift{D,M}
-  lonₒ::D
-  xₒ::M
-  yₒ::M
-end
-
-Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(asdeg(lonₒ), asmet(xₒ), asmet(yₒ))
 
 """
     formulas(CRS::Type{<:Projected}, T)

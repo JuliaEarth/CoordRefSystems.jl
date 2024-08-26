@@ -2,42 +2,51 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+struct TMHyper{T,D<:Deg}
+  k₀::T
+  latₒ::D
+end
+
+TMHyper(; k₀=1.0, latₒ=0.0°) = TMHyper(k₀, asdeg(latₒ))
+
 """
-    TransverseMercator{k₀,latₒ,lonₒ,Datum}
+    TransverseMercator{Hyper,Shift,Datum}
 
 Transverse Mercator CRS with scale factor `k₀`, latitude origin `latₒ`
 and longitude origin `lonₒ` in degrees and a given `Datum`.
 """
-struct TransverseMercator{k₀,latₒ,lonₒ,Datum,M<:Met} <: Projected{Datum}
+struct TransverseMercator{Hyper,Shift,Datum,M<:Met} <: Projected{Shift,Datum}
   x::M
   y::M
 end
 
-TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::M, y::M) where {k₀,latₒ,lonₒ,Datum,M<:Met} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum,float(M)}(x, y)
-TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Met, y::Met) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(promote(x, y)...)
-TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Len, y::Len) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(uconvert(m, x), uconvert(m, y))
-TransverseMercator{k₀,latₒ,lonₒ,Datum}(x::Number, y::Number) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}(addunit(x, m), addunit(y, m))
+TransverseMercator{Hyper,Shift,Datum}(x::M, y::M) where {Hyper,Shift,Datum,M<:Met} =
+  TransverseMercator{Hyper,Shift,Datum,float(M)}(x, y)
+TransverseMercator{Hyper,Shift,Datum}(x::Met, y::Met) where {Hyper,Shift,Datum} =
+  TransverseMercator{Hyper,Shift,Datum}(promote(x, y)...)
+TransverseMercator{Hyper,Shift,Datum}(x::Len, y::Len) where {Hyper,Shift,Datum} =
+  TransverseMercator{Hyper,Shift,Datum}(uconvert(m, x), uconvert(m, y))
+TransverseMercator{Hyper,Shift,Datum}(x::Number, y::Number) where {Hyper,Shift,Datum} =
+  TransverseMercator{Hyper,Shift,Datum}(addunit(x, m), addunit(y, m))
 
-TransverseMercator{k₀,latₒ,lonₒ}(args...) where {k₀,latₒ,lonₒ} = TransverseMercator{k₀,latₒ,lonₒ,WGS84Latest}(args...)
+TransverseMercator{Hyper,Shift}(args...) where {Hyper,Shift} = TransverseMercator{Hyper,Shift,WGS84Latest}(args...)
+
+TransverseMercator{Hyper}(args...) where {Hyper} = TransverseMercator{Hyper,Shift(),WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum,M}},
-  coords::TransverseMercator{k₀,latₒ,lonₒ,Datum}
-) where {k₀,latₒ,lonₒ,Datum,M} = TransverseMercator{k₀,latₒ,lonₒ,Datum,M}(coords.x, coords.y)
+  ::Type{TransverseMercator{Hyper,Shift,Datum,M}},
+  coords::TransverseMercator{Hyper,Shift,Datum}
+) where {Hyper,Shift,Datum,M} = TransverseMercator{Hyper,Shift,Datum,M}(coords.x, coords.y)
 
-constructor(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}) where {k₀,latₒ,lonₒ,Datum} =
-  TransverseMercator{k₀,latₒ,lonₒ,Datum}
+constructor(::Type{<:TransverseMercator{Hyper,Shift,Datum}}) where {Hyper,Shift,Datum} =
+  TransverseMercator{Hyper,Shift,Datum}
 
-lentype(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,latₒ,lonₒ,Datum,M} = M
+lentype(::Type{<:TransverseMercator{Hyper,Shift,Datum,M}}) where {Hyper,Shift,Datum,M} = M
 
 ==(
-  coords₁::TransverseMercator{k₀,latₒ,lonₒ,Datum},
-  coords₂::TransverseMercator{k₀,latₒ,lonₒ,Datum}
-) where {k₀,latₒ,lonₒ,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::TransverseMercator{Hyper,Shift,Datum},
+  coords₂::TransverseMercator{Hyper,Shift,Datum}
+) where {Hyper,Shift,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -50,40 +59,36 @@ lentype(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum,M}}) where {k₀,la
 # Authors of the original algorithm: Knud Poder and Karsten Engsager
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
 
-function inbounds(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, λ, ϕ) where {k₀,latₒ,lonₒ,Datum}
+function inbounds(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where {Hyper,Shift,Datum}
   T = typeof(λ)
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
-  λₒ = T(ustrip(deg2rad(lonₒ)))
 
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
-  _, Ce = tmCnCe(λ - λₒ, ϕ, cbg, gtu)
+  _, Ce = tmCnCe(λ, ϕ, cbg, gtu)
 
   abs(Ce) ≤ T(2.623395162778)
 end
 
-function formulas(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, ::Type{T}) where {k₀,latₒ,lonₒ,Datum,T}
+function formulas(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, ::Type{T}) where {Hyper,Shift,Datum,T}
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
-  k = T(k₀)
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
+  k₀ = T(Hyper.k₀)
+  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
 
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
-  Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
+  Qn, Zb = tmQnZb(T, n, k₀, ϕₒ, cbg, gtu)
 
   function fx(λ, ϕ)
-    λ -= λₒ
     _, Ce = tmCnCe(λ, ϕ, cbg, gtu)
     Qn * Ce
   end
 
   function fy(λ, ϕ)
-    λ -= λₒ
     Cn, _ = tmCnCe(λ, ϕ, cbg, gtu)
     Qn * Cn + Zb
   end
@@ -91,18 +96,14 @@ function formulas(::Type{<:TransverseMercator{k₀,latₒ,lonₒ,Datum}}, ::Type
   fx, fy
 end
 
-function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coords::LatLon{Datum}) where {k₀,latₒ,lonₒ,Datum}
+function forward(C::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where {Hyper,Shift,Datum}
   🌎 = ellipsoid(Datum)
-  T = numtype(coords.lon)
-  λ = ustrip(deg2rad(coords.lon))
-  ϕ = ustrip(deg2rad(coords.lat))
-  k = T(k₀)
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
+  T = typeof(λ)
+  k = T(Hyper.k₀)
+  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
 
-  λ -= λₒ
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
   Qn, Zb = tmQnZb(T, n, k, ϕₒ, cbg, gtu)
@@ -112,22 +113,19 @@ function Base.convert(C::Type{TransverseMercator{k₀,latₒ,lonₒ,Datum}}, coo
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
 
-  x = (Qn * Ce) * a
-  y = (Qn * Cn + Zb) * a
+  x = (Qn * Ce)
+  y = (Qn * Cn + Zb)
 
   C(x, y)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{k₀,latₒ,lonₒ,Datum}) where {k₀,latₒ,lonₒ,Datum}
+function backward(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, x, y) where {Hyper,Shift,Datum}
   🌎 = ellipsoid(Datum)
-  T = numtype(coords.x)
+  T = typeof(x)
+  k = T(Hyper.k₀)
+  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
-  x = coords.x / a
-  y = coords.y / a
-  k = T(k₀)
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
 
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
@@ -147,18 +145,21 @@ function Base.convert(::Type{LatLon{Datum}}, coords::TransverseMercator{k₀,lat
   Ce = atan(sinhCe, cosCn)
   Cn = atan(sinCn, hypot(sinhCe, cosCn))
 
-  λ = Ce + λₒ
+  λ = Ce
   ϕ = gatg(cgb, Cn)
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{TransverseMercator{k₀,latₒ,lonₒ}}, coords::CRS{Datum}) where {k₀,latₒ,lonₒ,Datum} =
-  convert(TransverseMercator{k₀,latₒ,lonₒ,Datum}, coords)
+Base.convert(::Type{TransverseMercator{Hyper,Shift}}, coords::CRS{Datum}) where {Hyper,Shift,Datum} =
+  convert(TransverseMercator{Hyper,Shift,Datum}, coords)
+
+Base.convert(::Type{TransverseMercator{Hyper}}, coords::CRS) where {Hyper} =
+  convert(TransverseMercator{Hyper,Shift()}, coords)
 
 # -----------------
 # HELPER FUNCTIONS

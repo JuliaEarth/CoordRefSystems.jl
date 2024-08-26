@@ -2,38 +2,46 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+struct OrthoHyper{D<:Deg}
+  latₒ::D
+end
+
+OrthoHyper(; latₒ=0.0°) = OrthoHyper(asdeg(latₒ))
+
 """
-    Orthographic{latₒ,lonₒ,S,Datum}
+    Orthographic{S,Hyper,Shift,Datum}
 
 Orthographic CRS with latitude origin `latₒ` and longitude origin `lonₒ` in degrees,
 spherical mode `S` enabled or not and a given `Datum`.
 """
-struct Orthographic{latₒ,lonₒ,S,Datum,M<:Met} <: Projected{Datum}
+struct Orthographic{S,Hyper,Shift,Datum,M<:Met} <: Projected{Shift,Datum}
   x::M
   y::M
 end
 
-Orthographic{latₒ,lonₒ,S,Datum}(x::M, y::M) where {latₒ,lonₒ,S,Datum,M<:Met} =
-  Orthographic{latₒ,lonₒ,S,Datum,float(M)}(x, y)
-Orthographic{latₒ,lonₒ,S,Datum}(x::Met, y::Met) where {latₒ,lonₒ,S,Datum} =
-  Orthographic{latₒ,lonₒ,S,Datum}(promote(x, y)...)
-Orthographic{latₒ,lonₒ,S,Datum}(x::Len, y::Len) where {latₒ,lonₒ,S,Datum} =
-  Orthographic{latₒ,lonₒ,S,Datum}(uconvert(m, x), uconvert(m, y))
-Orthographic{latₒ,lonₒ,S,Datum}(x::Number, y::Number) where {latₒ,lonₒ,S,Datum} =
-  Orthographic{latₒ,lonₒ,S,Datum}(addunit(x, m), addunit(y, m))
+Orthographic{S,Hyper,Shift,Datum}(x::M, y::M) where {S,Hyper,Shift,Datum,M<:Met} =
+  Orthographic{S,Hyper,Shift,Datum,float(M)}(x, y)
+Orthographic{S,Hyper,Shift,Datum}(x::Met, y::Met) where {S,Hyper,Shift,Datum} =
+  Orthographic{S,Hyper,Shift,Datum}(promote(x, y)...)
+Orthographic{S,Hyper,Shift,Datum}(x::Len, y::Len) where {S,Hyper,Shift,Datum} =
+  Orthographic{S,Hyper,Shift,Datum}(uconvert(m, x), uconvert(m, y))
+Orthographic{S,Hyper,Shift,Datum}(x::Number, y::Number) where {S,Hyper,Shift,Datum} =
+  Orthographic{S,Hyper,Shift,Datum}(addunit(x, m), addunit(y, m))
 
-Orthographic{latₒ,lonₒ,S}(args...) where {latₒ,lonₒ,S} = Orthographic{latₒ,lonₒ,S,WGS84Latest}(args...)
+Orthographic{S,Hyper,Shift}(args...) where {S,Hyper,Shift} = Orthographic{S,Hyper,Shift,WGS84Latest}(args...)
+
+Orthographic{S,Hyper}(args...) where {S,Hyper} = Orthographic{S,Hyper,Shift(),WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{Orthographic{latₒ,lonₒ,S,Datum,M}},
-  coords::Orthographic{latₒ,lonₒ,S,Datum}
-) where {latₒ,lonₒ,S,Datum,M} = Orthographic{latₒ,lonₒ,S,Datum,M}(coords.x, coords.y)
+  ::Type{Orthographic{S,Hyper,Shift,Datum,M}},
+  coords::Orthographic{S,Hyper,Shift,Datum}
+) where {S,Hyper,Shift,Datum,M} = Orthographic{S,Hyper,Shift,Datum,M}(coords.x, coords.y)
 
-constructor(::Type{<:Orthographic{latₒ,lonₒ,S,Datum}}) where {latₒ,lonₒ,S,Datum} = Orthographic{latₒ,lonₒ,S,Datum}
+constructor(::Type{<:Orthographic{S,Hyper,Shift,Datum}}) where {S,Hyper,Shift,Datum} = Orthographic{S,Hyper,Shift,Datum}
 
-lentype(::Type{<:Orthographic{latₒ,lonₒ,S,Datum,M}}) where {latₒ,lonₒ,S,Datum,M} = M
+lentype(::Type{<:Orthographic{S,Hyper,Shift,Datum,M}}) where {S,Hyper,Shift,Datum,M} = M
 
-==(coords₁::Orthographic{latₒ,lonₒ,S,Datum}, coords₂::Orthographic{latₒ,lonₒ,S,Datum}) where {latₒ,lonₒ,S,Datum} =
+==(coords₁::Orthographic{S,Hyper,Shift,Datum}, coords₂::Orthographic{S,Hyper,Shift,Datum}) where {S,Hyper,Shift,Datum} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
@@ -53,7 +61,7 @@ OrthoNorth(1.0m, 1.0m)
 OrthoNorth{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const OrthoNorth{Datum} = Orthographic{90.0°,0.0°,false,Datum}
+const OrthoNorth{Shift,Datum} = Orthographic{false,OrthoHyper(latₒ = 90°),Shift,Datum}
 
 """
     OrthoSouth(x, y)
@@ -72,7 +80,7 @@ OrthoSouth(1.0m, 1.0m)
 OrthoSouth{WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const OrthoSouth{Datum} = Orthographic{-90.0°,0.0°,false,Datum}
+const OrthoSouth{Shift,Datum} = Orthographic{false,OrthoHyper(latₒ = -90°),Shift,Datum}
 
 # ------------
 # CONVERSIONS
@@ -87,10 +95,9 @@ const OrthoSouth{Datum} = Orthographic{-90.0°,0.0°,false,Datum}
 #                     https://mathworld.wolfram.com/OrthographicProjection.html
 #                     https://epsg.org/guidance-notes.html
 
-function inbounds(::Type{<:Orthographic{latₒ,lonₒ}}, λ, ϕ) where {latₒ,lonₒ}
-  λₒ = ustrip(deg2rad(lonₒ))
-  ϕₒ = ustrip(deg2rad(latₒ))
-  c = acos(sin(ϕₒ) * sin(ϕ) + cos(ϕₒ) * cos(ϕ) * cos(λ - λₒ))
+function inbounds(::Type{<:Orthographic{S,Hyper}}, λ, ϕ) where {S,Hyper}
+  ϕₒ = ustrip(deg2rad(Hyper.latₒ))
+  c = acos(sin(ϕₒ) * sin(ϕ) + cos(ϕₒ) * cos(ϕ) * cos(λ))
   -π / 2 < c < π / 2
 end
 
@@ -98,9 +105,8 @@ inbounds(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 
 
 inbounds(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
 
-function formulas(::Type{<:Orthographic{latₒ,lonₒ,false,Datum}}, ::Type{T}) where {latₒ,lonₒ,Datum,T}
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
+function formulas(::Type{<:Orthographic{false,Hyper,Shift,Datum}}, ::Type{T}) where {Hyper,Shift,Datum,T}
+  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
   e² = T(eccentricity²(ellipsoid(Datum)))
 
   sinϕₒ = sin(ϕₒ)
@@ -108,25 +114,24 @@ function formulas(::Type{<:Orthographic{latₒ,lonₒ,false,Datum}}, ::Type{T}) 
   ν(ϕ) = 1 / sqrt(1 - e² * sin(ϕ)^2)
   νₒ = ν(ϕₒ)
 
-  fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ - λₒ)
+  fx(λ, ϕ) = ν(ϕ) * cos(ϕ) * sin(λ)
 
   function fy(λ, ϕ)
     νϕ = ν(ϕ)
     sinϕ = sin(ϕ)
     cosϕ = cos(ϕ)
-    νϕ * (sinϕ * cosϕₒ - cosϕ * sinϕₒ * cos(λ - λₒ)) + e² * (νₒ * sinϕₒ - νϕ * sinϕ) * cosϕₒ
+    νϕ * (sinϕ * cosϕₒ - cosϕ * sinϕₒ * cos(λ)) + e² * (νₒ * sinϕₒ - νϕ * sinϕ) * cosϕₒ
   end
 
   fx, fy
 end
 
-function formulas(::Type{<:Orthographic{latₒ,lonₒ,true,Datum}}, ::Type{T}) where {latₒ,lonₒ,Datum,T}
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
+function formulas(::Type{<:Orthographic{true,Hyper,Shift,Datum}}, ::Type{T}) where {Hyper,Shift,Datum,T}
+  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
 
-  fx(λ, ϕ) = cos(ϕ) * sin(λ - λₒ)
+  fx(λ, ϕ) = cos(ϕ) * sin(λ)
 
-  fy(λ, ϕ) = sin(ϕ) * cos(ϕₒ) - cos(ϕ) * sin(ϕₒ) * cos(λ - λₒ)
+  fy(λ, ϕ) = sin(ϕ) * cos(ϕₒ) - cos(ϕ) * sin(ϕₒ) * cos(λ)
 
   fx, fy
 end
@@ -142,39 +147,32 @@ function sphericalinv(x, y, λₒ, ϕₒ)
     cosc = cos(c)
     sinϕₒ = sin(ϕₒ)
     cosϕₒ = cos(ϕₒ)
-    λ = λₒ + atan(x * sinc, ρ * cosϕₒ * cosc - y * sinϕₒ * sinc)
+    λ = atan(x * sinc, ρ * cosϕₒ * cosc - y * sinϕₒ * sinc)
     ϕ = asin(fix(cosc * sinϕₒ + (y * sinc * cosϕₒ / ρ)))
     λ, ϕ
   end
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,true,Datum}}
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
-  λ, ϕ = sphericalinv(x, y, λₒ, ϕₒ)
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+function backward(::Type{<:Orthographic{true,Hyper,Shift,Datum}}, x, y)
+  λₒ = oftype(x, ustrip(deg2rad(Shift.lonₒ)))
+  ϕₒ = oftype(x, ustrip(deg2rad(Hyper.latₒ)))
+  sphericalinv(x, y, λₒ, ϕₒ)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {latₒ,lonₒ,Datum,C<:Orthographic{latₒ,lonₒ,false,Datum}}
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
-  λₒ = T(ustrip(deg2rad(lonₒ)))
-  ϕₒ = T(ustrip(deg2rad(latₒ)))
+function backward(::Type{<:Orthographic{true,Hyper,Shift,Datum}}, x, y)
+  λₒ = oftype(x, ustrip(deg2rad(Shift.lonₒ)))
+  ϕₒ = oftype(x, ustrip(deg2rad(Hyper.latₒ)))
   λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
   fx, fy = formulas(C, T)
-  λ, ϕ = projinv(fx, fy, x, y, λₛ, ϕₛ)
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  projinv(fx, fy, x, y, λₛ, ϕₛ)
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Orthographic{latₒ,lonₒ,S}}, coords::CRS{Datum}) where {latₒ,lonₒ,S,Datum} =
-  convert(Orthographic{latₒ,lonₒ,S,Datum}, coords)
+Base.convert(::Type{Orthographic{S,Hyper,Shift}}, coords::CRS{Datum}) where {S,Hyper,Shift,Datum} =
+  convert(Orthographic{S,Hyper,Shift,Datum}, coords)
+
+Base.convert(::Type{Orthographic{S,Hyper}}, coords::CRS) where {S,Hyper} =
+  convert(Orthographic{S,Hyper,Shift()}, coords)

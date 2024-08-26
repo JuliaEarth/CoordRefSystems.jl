@@ -21,25 +21,29 @@ Robinson{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54030](https://epsg.io/54030).
 """
-struct Robinson{Datum,M<:Met} <: Projected{Datum}
+struct Robinson{Shift,Datum,M<:Met} <: Projected{Shift,Datum}
   x::M
   y::M
 end
 
-Robinson{Datum}(x::M, y::M) where {Datum,M<:Met} = Robinson{Datum,float(M)}(x, y)
-Robinson{Datum}(x::Met, y::Met) where {Datum} = Robinson{Datum}(promote(x, y)...)
-Robinson{Datum}(x::Len, y::Len) where {Datum} = Robinson{Datum}(uconvert(m, x), uconvert(m, y))
-Robinson{Datum}(x::Number, y::Number) where {Datum} = Robinson{Datum}(addunit(x, m), addunit(y, m))
+Robinson{Shift,Datum}(x::M, y::M) where {Shift,Datum,M<:Met} = Robinson{Shift,Datum,float(M)}(x, y)
+Robinson{Shift,Datum}(x::Met, y::Met) where {Shift,Datum} = Robinson{Shift,Datum}(promote(x, y)...)
+Robinson{Shift,Datum}(x::Len, y::Len) where {Shift,Datum} = Robinson{Shift,Datum}(uconvert(m, x), uconvert(m, y))
+Robinson{Shift,Datum}(x::Number, y::Number) where {Shift,Datum} = Robinson{Shift,Datum}(addunit(x, m), addunit(y, m))
 
-Robinson(args...) = Robinson{WGS84Latest}(args...)
+Robinson{Shift}(args...) where {Shift} = Robinson{Shift,WGS84Latest}(args...)
 
-Base.convert(::Type{Robinson{Datum,M}}, coords::Robinson{Datum}) where {Datum,M} = Robinson{Datum,M}(coords.x, coords.y)
+Robinson(args...) = Robinson{Shift()}(args...)
 
-constructor(::Type{<:Robinson{Datum}}) where {Datum} = Robinson{Datum}
+Base.convert(::Type{Robinson{Shift,Datum,M}}, coords::Robinson{Shift,Datum}) where {Shift,Datum,M} =
+  Robinson{Shift,Datum,M}(coords.x, coords.y)
 
-lentype(::Type{<:Robinson{Datum,M}}) where {Datum,M} = M
+constructor(::Type{<:Robinson{Shift,Datum}}) where {Shift,Datum} = Robinson{Shift,Datum}
 
-==(coords₁::Robinson{Datum}, coords₂::Robinson{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+lentype(::Type{<:Robinson{Shift,Datum,M}}) where {Shift,Datum,M} = M
+
+==(coords₁::Robinson{Shift,Datum}, coords₂::Robinson{Shift,Datum}) where {Shift,Datum} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -105,7 +109,7 @@ const _ONEEPS = 1.000001
 _V(C, z) = C.c₀ + z * (C.c₁ + z * (C.c₂ + z * C.c₃))
 _DV(C, z) = (C.c₁ + 2z * C.c₂ + z^2 * 3C.c₃)
 
-function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
+function formulas(::Type{<:Robinson}, ::Type{T}) where {T}
   FXC = T(_FXC)
   FYC = T(_FYC)
   C₁ = T(_C₁)
@@ -126,12 +130,8 @@ function formulas(::Type{<:Robinson{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Datum}
-  🌎 = ellipsoid(Datum)
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(🌎))
-  x = coords.x / a
-  y = coords.y / a
+function backward(::Type{<:Robinson}, x, y)
+  T = typeof(x)
 
   FXC = T(_FXC)
   FYC = T(_FYC)
@@ -162,11 +162,13 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Robinson{Datum}) where {Dat
     ϕ = deg2rad(5 * (i - 1) + z) * sign(y)
   end
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum}, coords)
+Base.convert(::Type{Robinson{Shift}}, coords::CRS{Datum}) where {Shift,Datum} = convert(Robinson{Shift,Datum}, coords)
+
+Base.convert(::Type{Robinson}, coords::CRS) = convert(Robinson{Shift()}, coords)
