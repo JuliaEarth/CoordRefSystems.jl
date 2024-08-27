@@ -34,8 +34,8 @@
   for Zone in 1:60
     NorthCode = 32600 + Zone
     SouthCode = 32700 + Zone
-    @test CoordRefSystems.get(EPSG{NorthCode}) === utm(North, Zone, WGS84Latest)
-    @test CoordRefSystems.get(EPSG{SouthCode}) === utm(South, Zone, WGS84Latest)
+    @test CoordRefSystems.get(EPSG{NorthCode}) === utm(North, Zone, datum=WGS84Latest)
+    @test CoordRefSystems.get(EPSG{SouthCode}) === utm(South, Zone, datum=WGS84Latest)
   end
 
   # CRS string

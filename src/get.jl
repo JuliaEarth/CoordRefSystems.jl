@@ -69,6 +69,6 @@ get(::Type{ESRI{102037}}) = Orthographic{true,WGS84Latest,OrthographicParams(lat
 for Zone in 1:60
   NorthCode = 32600 + Zone
   SouthCode = 32700 + Zone
-  @eval get(::Type{EPSG{$NorthCode}}) = utm(North, $Zone, WGS84Latest)
-  @eval get(::Type{EPSG{$SouthCode}}) = utm(South, $Zone, WGS84Latest)
+  @eval get(::Type{EPSG{$NorthCode}}) = utm(North, $Zone, datum=WGS84Latest)
+  @eval get(::Type{EPSG{$SouthCode}}) = utm(South, $Zone, datum=WGS84Latest)
 end

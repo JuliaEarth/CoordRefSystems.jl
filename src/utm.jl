@@ -24,11 +24,11 @@ Southern hemisphere.
 abstract type South <: Hemisphere end
 
 """
-    utm(H::Type{<:Hemisphere}, zone, datum=WGS84Latest)
+    utm(H::Type{<:Hemisphere}, zone; datum=WGS84Latest)
 
 UTM (Universal Transverse Mercator) CRS in hemisphere `H` with `zone` (1 ≤ zone ≤ 60) and a given `datum`.
 """
-function utm(H::Type{<:Hemisphere}, zone, datum=WGS84Latest)
+function utm(H::Type{<:Hemisphere}, zone; datum=WGS84Latest)
   if !(1 ≤ zone ≤ 60)
     throw(ArgumentError("the UTM zone must be an integer between 1 and 60"))
   end
@@ -37,7 +37,7 @@ function utm(H::Type{<:Hemisphere}, zone, datum=WGS84Latest)
   lonₒ = (6 * zone - 183) * °
   xₒ = falseeasting(H)
   yₒ = falsenorthing(H)
-  TransverseMercator{TransverseMercatorParams(; k₀, latₒ),Shift(; lonₒ, xₒ, yₒ),datum}
+  TransverseMercator{datum,TransverseMercatorParams(; k₀, latₒ),Shift(; lonₒ, xₒ, yₒ)}
 end
 
 # -----------------
