@@ -2,12 +2,22 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    WinkelParams(; lat₁=0.0°)
+
+Winkel parameters with a given first standard parallel `lat₁`.
+"""
 struct WinkelParams{D<:Deg}
   lat₁::D
 end
 
 WinkelParams(; lat₁=0.0°) = WinkelParams(asdeg(lat₁))
 
+"""
+    Winkel{Datum,Params,Shift}
+
+Winkel CRS with a given `Datum`, `Params` and `Shift`.
+"""
 struct Winkel{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M

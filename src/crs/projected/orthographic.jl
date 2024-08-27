@@ -2,6 +2,11 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    OrthographicParams(; latₒ=0.0°)
+
+Orthographic parameters with a given latitude origin `latₒ`.
+"""
 struct OrthographicParams{D<:Deg}
   latₒ::D
 end
@@ -11,8 +16,7 @@ OrthographicParams(; latₒ=0.0°) = OrthographicParams(asdeg(latₒ))
 """
     Orthographic{S,Datum,Params,Shift}
 
-Orthographic CRS with latitude origin `latₒ` and longitude origin `lonₒ` in degrees,
-spherical mode `S` enabled or not and a given `Datum`.
+Orthographic CRS with spherical mode `S` enabled or not, `Datum`, `Params` and `Shift`.
 """
 struct Orthographic{S,Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M

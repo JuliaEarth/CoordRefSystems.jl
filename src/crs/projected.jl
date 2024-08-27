@@ -3,14 +3,19 @@
 # ------------------------------------------------------------------
 
 """
-    Projected{Datum}
+    Projected{Datum,Shift}
 
-Projected CRS with a given `Datum`.
+Projected CRS with a given `Datum` and `Shift`.
 """
 abstract type Projected{Datum,Shift} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
 
+"""
+    CoordRefSystems.projshift(CRS::Type{<:Projected})
+
+Shift parameters of the `CRS`.
+"""
 projshift(::Type{<:Projected}) = Shift()
 
 projshift(::Type{<:Projected{Datum,Shift}}) where {Datum,Shift} = Shift

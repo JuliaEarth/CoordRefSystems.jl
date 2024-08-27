@@ -2,6 +2,11 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    EqualAreaCylindricalParams(; latₜₛ=0.0°)
+
+Equal Area Cylindrical parameters with a given latitude of true scale `latₜₛ`.
+"""
 struct EqualAreaCylindricalParams{D<:Deg}
   latₜₛ::D
 end
@@ -11,8 +16,7 @@ EqualAreaCylindricalParams(; latₜₛ=0.0°) = EqualAreaCylindricalParams(asdeg
 """
     EqualAreaCylindrical{Datum,Params,Shift}
 
-Equal Area Cylindrical CRS with latitude of true scale `latₜₛ` and longitude origin `lonₒ`
-in degrees and a given `Datum`.
+Equal Area Cylindrical CRS with a given `Datum`, `Params` and `Shift`.
 """
 struct EqualAreaCylindrical{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M

@@ -2,6 +2,11 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    EquidistantCylindricalParams(; latₜₛ=0.0°)
+
+Equidistant Cylindrical parameters with a given latitude of true scale `latₜₛ`.
+"""
 struct EquidistantCylindricalParams{D<:Deg}
   latₜₛ::D
 end
@@ -11,7 +16,7 @@ EquidistantCylindricalParams(; latₜₛ=0.0°) = EquidistantCylindricalParams(a
 """
     EquidistantCylindrical{Datum,Params,Shift}
 
-Equidistant Cylindrical CRS with latitude of true scale `latₜₛ` in degrees and a given `Datum`.
+Equidistant Cylindrical CRS with a given `Datum`, `Params` and `Shift`.
 """
 struct EquidistantCylindrical{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M

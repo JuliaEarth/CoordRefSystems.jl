@@ -2,6 +2,11 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+"""
+    TransverseMercatorParams(; k₀=1.0, latₒ=0.0°)
+
+Transverse Mercator parameters with a given scale factor `k₀` and latitude origin `latₒ`.
+"""
 struct TransverseMercatorParams{T,D<:Deg}
   k₀::T
   latₒ::D
@@ -12,8 +17,7 @@ TransverseMercatorParams(; k₀=1.0, latₒ=0.0°) = TransverseMercatorParams(k�
 """
     TransverseMercator{Datum,Params,Shift}
 
-Transverse Mercator CRS with scale factor `k₀`, latitude origin `latₒ`
-and longitude origin `lonₒ` in degrees and a given `Datum`.
+Transverse Mercator CRS with a given `Datum`, `Params` and `Shift`.
 """
 struct TransverseMercator{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
