@@ -160,17 +160,15 @@ function sphericalinv(x, y, λₒ, ϕₒ)
 end
 
 function backward(C::Type{<:Orthographic{true,Datum,Params}}, x, y) where {Datum,Params}
-  Shift = projshift(C)
   T = typeof(x)
-  λₒ = T(ustrip(deg2rad(Shift.lonₒ)))
+  λₒ = T(ustrip(deg2rad(projshift(C).lonₒ)))
   ϕₒ = T(ustrip(deg2rad(Params.latₒ)))
   sphericalinv(x, y, λₒ, ϕₒ)
 end
 
 function backward(C::Type{<:Orthographic{false,Datum,Params}}, x, y) where {Datum,Params}
-  Shift = projshift(C)
   T = typeof(x)
-  λₒ = T(ustrip(deg2rad(Shift.lonₒ)))
+  λₒ = T(ustrip(deg2rad(projshift(C).lonₒ)))
   ϕₒ = T(ustrip(deg2rad(Params.latₒ)))
   λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
   fx, fy = formulas(C, T)

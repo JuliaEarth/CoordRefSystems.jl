@@ -55,8 +55,7 @@ inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 
 Checks whether `latlon` coordinates are within the `CRS` domain.
 """
 function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
-  Shift = projshift(C)
-  lonₒ = oftype(lon, Shift.lonₒ)
+  lonₒ = oftype(lon, projshift(C).lonₒ)
   inbounds(C, ustrip(deg2rad(lon - lonₒ)), ustrip(deg2rad(lat)))
 end
 
@@ -92,12 +91,12 @@ include("projected/transversemercator.jl")
 # ----------
 
 function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
-  Shift = projshift(C)
+  S = projshift(C)
   T = numtype(coords.lon)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  xₒ = numconvert(T, Shift.xₒ)
-  yₒ = numconvert(T, Shift.yₒ)
-  lonₒ = numconvert(T, Shift.lonₒ)
+  xₒ = numconvert(T, S.xₒ)
+  yₒ = numconvert(T, S.yₒ)
+  lonₒ = numconvert(T, S.lonₒ)
   λ = ustrip(deg2rad(coords.lon - lonₒ))
   ϕ = ustrip(deg2rad(coords.lat))
   if !inbounds(C, λ, ϕ)
@@ -108,12 +107,12 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projecte
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
-  Shift = projshift(C)
+  S = projshift(C)
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  xₒ = numconvert(T, Shift.xₒ)
-  yₒ = numconvert(T, Shift.yₒ)
-  lonₒ = numconvert(T, Shift.lonₒ)
+  xₒ = numconvert(T, S.xₒ)
+  yₒ = numconvert(T, S.yₒ)
+  lonₒ = numconvert(T, S.lonₒ)
   x = (coords.x - xₒ) / a
   y = (coords.y - yₒ) / a
   λ, ϕ = backward(C, x, y)
