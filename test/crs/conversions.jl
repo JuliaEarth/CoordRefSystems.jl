@@ -999,6 +999,66 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> UTM" begin
+      UTMNorth32 = utm(North, 32)
+      UTMSouth59 = utm(South, 59)
+
+      c1 = LatLon(T(56), T(12))
+      c2 = convert(UTMNorth32, c1)
+      @test allapprox(c2, UTMNorth32(T(687071.439107327), T(6210141.326872105)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(44), T(174))
+      c2 = convert(UTMSouth59, c1)
+      @test allapprox(c2, UTMSouth59(T(740526.3210524899), T(5123750.873037999)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(56), T(12))
+      c2 = LatLon(-T(44), T(174))
+      c3 = UTMNorth32(T(687071.439107327), T(6210141.326872105))
+      c4 = UTMSouth59(T(740526.3210524899), T(5123750.873037999))
+      @inferred convert(UTMNorth32, c1)
+      @inferred convert(UTMSouth59, c2)
+      @inferred convert(LatLon, c3)
+      @inferred convert(LatLon, c4)
+    end
+
+    @testset "LatLon <> ShiftedCRS" begin
+      ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), T(5591495.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), -T(5591095.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(T(45), -T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(-T(11688346.533293724), T(5591495.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(-T(11688346.533293724), -T(5591095.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
+      @inferred convert(ShiftedMercator, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "LatLon <> Projected (different datums)" begin
       # WGS84 (G1762) to ITRF2008
       c1 = LatLon{WGS84{1762}}(T(45), T(90))
