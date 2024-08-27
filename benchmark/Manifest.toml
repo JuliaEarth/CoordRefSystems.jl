@@ -114,7 +114,7 @@ version = "1.5.7"
 
 [[deps.CoordRefSystems]]
 deps = ["Random", "Rotations", "StaticArrays", "Unitful", "Zygote"]
-path = ".."
+git-tree-sha1 = "b517abf736b56bb12d09ed4a16bb9d6efad62a88"
 uuid = "b46f11dc-f210-4604-bfba-323c1ec968cb"
 version = "0.11.0"
 
