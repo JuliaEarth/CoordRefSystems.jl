@@ -362,9 +362,9 @@
     isapproxtest3D(WinkelTripel)
     isapproxtest3D(Robinson)
     isapproxtest3D(OrthoNorth)
-    UTMNorth38WGS = utm(North, 32, datum=WGS84{1762})
-    UTMNorth38ITRF = utm(North, 32, datum=ITRF{2008})
-    isapproxtest3D(UTMNorth38WGS, UTMNorth38ITRF)
+    UTMNorth32WGS = utm(North, 32, datum=WGS84{1762})
+    UTMNorth32ITRF = utm(North, 32, datum=ITRF{2008})
+    isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
     TransverseMercatorWGS = CoordRefSystems.shift(
       CoordRefSystems.TransverseMercator{
         WGS84{1762},
