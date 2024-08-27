@@ -159,7 +159,7 @@ function sphericalinv(x, y, λₒ, ϕₒ)
   end
 end
 
-function backward(::Type{<:Orthographic{true,Datum,Params}}, x, y) where {Datum,Params}
+function backward(C::Type{<:Orthographic{true,Datum,Params}}, x, y) where {Datum,Params}
   Shift = projshift(C)
   T = typeof(x)
   λₒ = T(ustrip(deg2rad(Shift.lonₒ)))
