@@ -24,9 +24,9 @@ function geodesytime(transf, (lat, lon))
   fwdtime, invtime
 end
 
-function cartographytime(CRS, (lat, lon))
+function coordrefsystemstime(CRS, (lat, lon))
   latlon = LatLon(lat, lon)
-  fwdtime = @belapsed convert(CRS, $latlon)
+  fwdtime = @belapsed convert($CRS, $latlon)
   coord = convert(CRS, latlon)
   invtime = @belapsed convert(LatLon, $coord)
   fwdtime, invtime
@@ -171,7 +171,7 @@ for (proj, args) in projargs
     geodesytime(args.Geodesy, latlon)
   end
 
-  cfwdtime, cinvtime = cartographytime(args.CoordRefSystems, latlon)
+  cfwdtime, cinvtime = coordrefsystemstime(args.CoordRefSystems, latlon)
 
   push!(
     results,
