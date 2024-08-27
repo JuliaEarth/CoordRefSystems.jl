@@ -21,28 +21,28 @@ Mercator{WGS84Latest}(1.0m, 1.0m)
 
 See [EPSG:3395](https://epsg.io/3395).
 """
-struct Mercator{Shift,Datum,M<:Met} <: Projected{Shift,Datum}
+struct Mercator{Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-Mercator{Shift,Datum}(x::M, y::M) where {Shift,Datum,M<:Met} = Mercator{Shift,Datum,float(M)}(x, y)
-Mercator{Shift,Datum}(x::Met, y::Met) where {Shift,Datum} = Mercator{Shift,Datum}(promote(x, y)...)
-Mercator{Shift,Datum}(x::Len, y::Len) where {Shift,Datum} = Mercator{Shift,Datum}(uconvert(m, x), uconvert(m, y))
-Mercator{Shift,Datum}(x::Number, y::Number) where {Shift,Datum} = Mercator{Shift,Datum}(addunit(x, m), addunit(y, m))
+Mercator{Datum,Shift}(x::M, y::M) where {Datum,Shift,M<:Met} = Mercator{Datum,Shift,float(M)}(x, y)
+Mercator{Datum,Shift}(x::Met, y::Met) where {Datum,Shift} = Mercator{Datum,Shift}(promote(x, y)...)
+Mercator{Datum,Shift}(x::Len, y::Len) where {Datum,Shift} = Mercator{Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Mercator{Datum,Shift}(x::Number, y::Number) where {Datum,Shift} = Mercator{Datum,Shift}(addunit(x, m), addunit(y, m))
 
-Mercator{Shift}(args...) where {Shift} = Mercator{Shift,WGS84Latest}(args...)
+Mercator{Datum}(args...) where {Datum} = Mercator{Datum,Shift()}(args...)
 
-Mercator(args...) = Mercator{Shift()}(args...)
+Mercator(args...) = Mercator{WGS84Latest}(args...)
 
-Base.convert(::Type{Mercator{Shift,Datum,M}}, coords::Mercator{Shift,Datum}) where {Shift,Datum,M} =
-  Mercator{Shift,Datum,M}(coords.x, coords.y)
+Base.convert(::Type{Mercator{Datum,Shift,M}}, coords::Mercator{Datum,Shift}) where {Datum,Shift,M} =
+  Mercator{Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:Mercator{Shift,Datum}}) where {Shift,Datum} = Mercator{Shift,Datum}
+constructor(::Type{<:Mercator{Datum,Shift}}) where {Datum,Shift} = Mercator{Datum,Shift}
 
-lentype(::Type{<:Mercator{Shift,Datum,M}}) where {Shift,Datum,M} = M
+lentype(::Type{<:Mercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
-==(coords₁::Mercator{Shift,Datum}, coords₂::Mercator{Shift,Datum}) where {Shift,Datum} =
+==(coords₁::Mercator{Datum,Shift}, coords₂::Mercator{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
@@ -51,7 +51,7 @@ lentype(::Type{<:Mercator{Shift,Datum,M}}) where {Shift,Datum,M} = M
 
 inbounds(::Type{<:Mercator}, λ, ϕ) = -π ≤ λ ≤ π && -deg2rad(80) ≤ ϕ ≤ deg2rad(84)
 
-function formulas(::Type{<:Mercator{Shift,Datum}}, ::Type{T}) where {Shift,Datum,T}
+function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
   e = T(eccentricity(ellipsoid(Datum)))
 
   fx(λ, ϕ) = λ
@@ -61,7 +61,7 @@ function formulas(::Type{<:Mercator{Shift,Datum}}, ::Type{T}) where {Shift,Datum
   fx, fy
 end
 
-function backward(::Type{<:Mercator{Shift,Datum}}, x, y) where {Shift,Datum}
+function backward(::Type{<:Mercator{Datum}}, x, y) where {Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(x, eccentricity(🌎))
   e² = oftype(x, eccentricity²(🌎))
@@ -92,6 +92,6 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Mercator{Shift}}, coords::CRS{Datum}) where {Shift,Datum} = convert(Mercator{Shift,Datum}, coords)
+Base.convert(::Type{Mercator{Datum}}, coords::CRS{Datum}) where {Datum} = convert(Mercator{Datum,Shift()}, coords)
 
-Base.convert(::Type{Mercator}, coords::CRS) = convert(Mercator{Shift()}, coords)
+Base.convert(::Type{Mercator}, coords::CRS{Datum}) where {Datum} = convert(Mercator{Datum}, coords)

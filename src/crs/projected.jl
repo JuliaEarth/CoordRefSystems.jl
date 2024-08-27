@@ -7,7 +7,7 @@
 
 Projected CRS with a given `Datum`.
 """
-abstract type Projected{Shift,Datum} <: CRS{Datum} end
+abstract type Projected{Datum,Shift} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
 

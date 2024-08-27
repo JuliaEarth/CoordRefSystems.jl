@@ -9,43 +9,40 @@ end
 EDCHyper(; latₜₛ=0.0°) = EDCHyper(asdeg(latₜₛ))
 
 """
-    EquidistantCylindrical{Hyper,Shift,Datum}
+    EquidistantCylindrical{Datum,Hyper,Shift}
 
 Equidistant Cylindrical CRS with latitude of true scale `latₜₛ` in degrees and a given `Datum`.
 """
-struct EquidistantCylindrical{Hyper,Shift,Datum,M<:Met} <: Projected{Shift,Datum}
+struct EquidistantCylindrical{Datum,Hyper,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-EquidistantCylindrical{Hyper,Shift,Datum}(x::M, y::M) where {Hyper,Shift,Datum,M<:Met} =
-  EquidistantCylindrical{Hyper,Shift,Datum,float(M)}(x, y)
-EquidistantCylindrical{Hyper,Shift,Datum}(x::Met, y::Met) where {Hyper,Shift,Datum} =
-  EquidistantCylindrical{Hyper,Shift,Datum}(promote(x, y)...)
-EquidistantCylindrical{Hyper,Shift,Datum}(x::Len, y::Len) where {Hyper,Shift,Datum} =
-  EquidistantCylindrical{Hyper,Shift,Datum}(uconvert(m, x), uconvert(m, y))
-EquidistantCylindrical{Hyper,Shift,Datum}(x::Number, y::Number) where {Hyper,Shift,Datum} =
-  EquidistantCylindrical{Hyper,Shift,Datum}(addunit(x, m), addunit(y, m))
+EquidistantCylindrical{Datum,Hyper,Shift}(x::M, y::M) where {Datum,Hyper,Shift,M<:Met} =
+  EquidistantCylindrical{Datum,Hyper,Shift,float(M)}(x, y)
+EquidistantCylindrical{Datum,Hyper,Shift}(x::Met, y::Met) where {Datum,Hyper,Shift} =
+  EquidistantCylindrical{Datum,Hyper,Shift}(promote(x, y)...)
+EquidistantCylindrical{Datum,Hyper,Shift}(x::Len, y::Len) where {Datum,Hyper,Shift} =
+  EquidistantCylindrical{Datum,Hyper,Shift}(uconvert(m, x), uconvert(m, y))
+EquidistantCylindrical{Datum,Hyper,Shift}(x::Number, y::Number) where {Datum,Hyper,Shift} =
+  EquidistantCylindrical{Datum,Hyper,Shift}(addunit(x, m), addunit(y, m))
 
-EquidistantCylindrical{Hyper,Shift}(args...) where {Hyper,Shift} =
-  EquidistantCylindrical{Hyper,Shift,WGS84Latest}(args...)
-
-EquidistantCylindrical{Hyper}(args...) where {Hyper} = EquidistantCylindrical{Hyper,Shift(),WGS84Latest}(args...)
+EquidistantCylindrical{Datum,Hyper}(args...) where {Datum,Hyper} = EquidistantCylindrical{Datum,Hyper,Shift()}(args...)
 
 Base.convert(
-  ::Type{EquidistantCylindrical{Hyper,Shift,Datum,M}},
-  coords::EquidistantCylindrical{Hyper,Shift,Datum}
-) where {Hyper,Shift,Datum,M} = EquidistantCylindrical{Hyper,Shift,Datum,M}(coords.x, coords.y)
+  ::Type{EquidistantCylindrical{Datum,Hyper,Shift,M}},
+  coords::EquidistantCylindrical{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift,M} = EquidistantCylindrical{Datum,Hyper,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:EquidistantCylindrical{Hyper,Shift,Datum}}) where {Hyper,Shift,Datum} =
-  EquidistantCylindrical{Hyper,Shift,Datum}
+constructor(::Type{<:EquidistantCylindrical{Datum,Hyper,Shift}}) where {Datum,Hyper,Shift} =
+  EquidistantCylindrical{Datum,Hyper,Shift}
 
-lentype(::Type{<:EquidistantCylindrical{Hyper,Shift,Datum,M}}) where {Hyper,Shift,Datum,M} = M
+lentype(::Type{<:EquidistantCylindrical{Datum,Hyper,Shift,M}}) where {Datum,Hyper,Shift,M} = M
 
 ==(
-  coords₁::EquidistantCylindrical{Hyper,Shift,Datum},
-  coords₂::EquidistantCylindrical{Hyper,Shift,Datum}
-) where {Hyper,Shift,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::EquidistantCylindrical{Datum,Hyper,Shift},
+  coords₂::EquidistantCylindrical{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
     PlateCarree(x, y)
@@ -66,13 +63,15 @@ PlateCarree{WGS84Latest}(1.0m, 1.0m)
 
 See [EPSG:32662](https://epsg.io/32662).
 """
-const PlateCarree{Datum} = EquidistantCylindrical{EDCHyper(latₜₛ = 0.0°),Datum}
+const PlateCarree{Datum,Shift} = EquidistantCylindrical{Datum,EDCHyper(latₜₛ = 0.0°),Shift}
+
+PlateCarree(args...) = PlateCarree{WGS84Latest}(args...)
 
 # ------------
 # CONVERSIONS
 # ------------
 
-function formulas(::Type{<:EquidistantCylindrical{Hyper}}, ::Type{T}) where {Hyper,T}
+function formulas(::Type{<:EquidistantCylindrical{Datum,Hyper}}, ::Type{T}) where {Datum,Hyper,T}
   ϕₜₛ = T(ustrip(deg2rad(Hyper.latₜₛ)))
 
   fx(λ, ϕ) = λ * cos(ϕₜₛ)
@@ -82,21 +81,20 @@ function formulas(::Type{<:EquidistantCylindrical{Hyper}}, ::Type{T}) where {Hyp
   fx, fy
 end
 
-function backward(::Type{<:EquidistantCylindrical{Hyper}}, x, y) where {Hyper}
+function backward(::Type{<:EquidistantCylindrical{Datum,Hyper}}, x, y) where {Datum,Hyper}
   ϕₜₛ = oftype(x, ustrip(deg2rad(Hyper.latₜₛ)))
 
   λ = x / cos(ϕₜₛ)
   ϕ = y
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EquidistantCylindrical{Hyper,Shift}}, coords::CRS{Datum}) where {Hyper,Shift,Datum} =
-  convert(EquidistantCylindrical{Hyper,Shift,Datum}, coords)
+Base.convert(::Type{EquidistantCylindrical{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
+  convert(EquidistantCylindrical{Datum,Hyper,Shift()}, coords)
 
-Base.convert(::Type{EquidistantCylindrical{Hyper}}, coords::CRS) where {Hyper} =
-  convert(EquidistantCylindrical{Hyper,Shift()}, coords)
+Base.convert(::Type{PlateCarree}, coords::CRS{Datum}) where {Datum} = convert(PlateCarree{Datum}, coords)

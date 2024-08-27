@@ -21,28 +21,28 @@ Robinson{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54030](https://epsg.io/54030).
 """
-struct Robinson{Shift,Datum,M<:Met} <: Projected{Shift,Datum}
+struct Robinson{Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-Robinson{Shift,Datum}(x::M, y::M) where {Shift,Datum,M<:Met} = Robinson{Shift,Datum,float(M)}(x, y)
-Robinson{Shift,Datum}(x::Met, y::Met) where {Shift,Datum} = Robinson{Shift,Datum}(promote(x, y)...)
-Robinson{Shift,Datum}(x::Len, y::Len) where {Shift,Datum} = Robinson{Shift,Datum}(uconvert(m, x), uconvert(m, y))
-Robinson{Shift,Datum}(x::Number, y::Number) where {Shift,Datum} = Robinson{Shift,Datum}(addunit(x, m), addunit(y, m))
+Robinson{Datum,Shift}(x::M, y::M) where {Datum,Shift,M<:Met} = Robinson{Datum,Shift,float(M)}(x, y)
+Robinson{Datum,Shift}(x::Met, y::Met) where {Datum,Shift} = Robinson{Datum,Shift}(promote(x, y)...)
+Robinson{Datum,Shift}(x::Len, y::Len) where {Datum,Shift} = Robinson{Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Robinson{Datum,Shift}(x::Number, y::Number) where {Datum,Shift} = Robinson{Datum,Shift}(addunit(x, m), addunit(y, m))
 
-Robinson{Shift}(args...) where {Shift} = Robinson{Shift,WGS84Latest}(args...)
+Robinson{Datum}(args...) where {Datum} = Robinson{Datum,Shift()}(args...)
 
-Robinson(args...) = Robinson{Shift()}(args...)
+Robinson(args...) = Robinson{WGS84Latest}(args...)
 
-Base.convert(::Type{Robinson{Shift,Datum,M}}, coords::Robinson{Shift,Datum}) where {Shift,Datum,M} =
-  Robinson{Shift,Datum,M}(coords.x, coords.y)
+Base.convert(::Type{Robinson{Datum,Shift,M}}, coords::Robinson{Datum,Shift}) where {Datum,Shift,M} =
+  Robinson{Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:Robinson{Shift,Datum}}) where {Shift,Datum} = Robinson{Shift,Datum}
+constructor(::Type{<:Robinson{Datum,Shift}}) where {Datum,Shift} = Robinson{Datum,Shift}
 
-lentype(::Type{<:Robinson{Shift,Datum,M}}) where {Shift,Datum,M} = M
+lentype(::Type{<:Robinson{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
-==(coords₁::Robinson{Shift,Datum}, coords₂::Robinson{Shift,Datum}) where {Shift,Datum} =
+==(coords₁::Robinson{Datum,Shift}, coords₂::Robinson{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
@@ -169,6 +169,6 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Robinson{Shift}}, coords::CRS{Datum}) where {Shift,Datum} = convert(Robinson{Shift,Datum}, coords)
+Base.convert(::Type{Robinson{Datum}}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum,Shift()}, coords)
 
-Base.convert(::Type{Robinson}, coords::CRS) = convert(Robinson{Shift()}, coords)
+Base.convert(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum}, coords)

@@ -10,43 +10,41 @@ end
 TMHyper(; k₀=1.0, latₒ=0.0°) = TMHyper(k₀, asdeg(latₒ))
 
 """
-    TransverseMercator{Hyper,Shift,Datum}
+    TransverseMercator{Datum,Hyper,Shift}
 
 Transverse Mercator CRS with scale factor `k₀`, latitude origin `latₒ`
 and longitude origin `lonₒ` in degrees and a given `Datum`.
 """
-struct TransverseMercator{Hyper,Shift,Datum,M<:Met} <: Projected{Shift,Datum}
+struct TransverseMercator{Datum,Hyper,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-TransverseMercator{Hyper,Shift,Datum}(x::M, y::M) where {Hyper,Shift,Datum,M<:Met} =
-  TransverseMercator{Hyper,Shift,Datum,float(M)}(x, y)
-TransverseMercator{Hyper,Shift,Datum}(x::Met, y::Met) where {Hyper,Shift,Datum} =
-  TransverseMercator{Hyper,Shift,Datum}(promote(x, y)...)
-TransverseMercator{Hyper,Shift,Datum}(x::Len, y::Len) where {Hyper,Shift,Datum} =
-  TransverseMercator{Hyper,Shift,Datum}(uconvert(m, x), uconvert(m, y))
-TransverseMercator{Hyper,Shift,Datum}(x::Number, y::Number) where {Hyper,Shift,Datum} =
-  TransverseMercator{Hyper,Shift,Datum}(addunit(x, m), addunit(y, m))
+TransverseMercator{Datum,Hyper,Shift}(x::M, y::M) where {Datum,Hyper,Shift,M<:Met} =
+  TransverseMercator{Datum,Hyper,Shift,float(M)}(x, y)
+TransverseMercator{Datum,Hyper,Shift}(x::Met, y::Met) where {Datum,Hyper,Shift} =
+  TransverseMercator{Datum,Hyper,Shift}(promote(x, y)...)
+TransverseMercator{Datum,Hyper,Shift}(x::Len, y::Len) where {Datum,Hyper,Shift} =
+  TransverseMercator{Datum,Hyper,Shift}(uconvert(m, x), uconvert(m, y))
+TransverseMercator{Datum,Hyper,Shift}(x::Number, y::Number) where {Datum,Hyper,Shift} =
+  TransverseMercator{Datum,Hyper,Shift}(addunit(x, m), addunit(y, m))
 
-TransverseMercator{Hyper,Shift}(args...) where {Hyper,Shift} = TransverseMercator{Hyper,Shift,WGS84Latest}(args...)
-
-TransverseMercator{Hyper}(args...) where {Hyper} = TransverseMercator{Hyper,Shift(),WGS84Latest}(args...)
+TransverseMercator{Datum,Hyper}(args...) where {Datum,Hyper} = TransverseMercator{Datum,Hyper,Shift()}(args...)
 
 Base.convert(
-  ::Type{TransverseMercator{Hyper,Shift,Datum,M}},
-  coords::TransverseMercator{Hyper,Shift,Datum}
-) where {Hyper,Shift,Datum,M} = TransverseMercator{Hyper,Shift,Datum,M}(coords.x, coords.y)
+  ::Type{TransverseMercator{Datum,Hyper,Shift,M}},
+  coords::TransverseMercator{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift,M} = TransverseMercator{Datum,Hyper,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:TransverseMercator{Hyper,Shift,Datum}}) where {Hyper,Shift,Datum} =
-  TransverseMercator{Hyper,Shift,Datum}
+constructor(::Type{<:TransverseMercator{Datum,Hyper,Shift}}) where {Datum,Hyper,Shift} =
+  TransverseMercator{Datum,Hyper,Shift}
 
-lentype(::Type{<:TransverseMercator{Hyper,Shift,Datum,M}}) where {Hyper,Shift,Datum,M} = M
+lentype(::Type{<:TransverseMercator{Datum,Hyper,Shift,M}}) where {Datum,Hyper,Shift,M} = M
 
 ==(
-  coords₁::TransverseMercator{Hyper,Shift,Datum},
-  coords₂::TransverseMercator{Hyper,Shift,Datum}
-) where {Hyper,Shift,Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::TransverseMercator{Datum,Hyper,Shift},
+  coords₂::TransverseMercator{Datum,Hyper,Shift}
+) where {Datum,Hyper,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -59,7 +57,7 @@ lentype(::Type{<:TransverseMercator{Hyper,Shift,Datum,M}}) where {Hyper,Shift,Da
 # Authors of the original algorithm: Knud Poder and Karsten Engsager
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp
 
-function inbounds(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where {Hyper,Shift,Datum}
+function inbounds(::Type{<:TransverseMercator{Datum}}, λ, ϕ) where {Datum}
   T = typeof(λ)
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
@@ -72,7 +70,7 @@ function inbounds(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where
   abs(Ce) ≤ T(2.623395162778)
 end
 
-function formulas(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, ::Type{T}) where {Hyper,Shift,Datum,T}
+function formulas(::Type{<:TransverseMercator{Datum,Hyper}}, ::Type{T}) where {Datum,Hyper,T}
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
@@ -96,7 +94,7 @@ function formulas(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, ::Type{T}) wh
   fx, fy
 end
 
-function forward(C::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where {Hyper,Shift,Datum}
+function forward(::Type{<:TransverseMercator{Datum,Hyper}}, λ, ϕ) where {Datum,Hyper}
   🌎 = ellipsoid(Datum)
   T = typeof(λ)
   k = T(Hyper.k₀)
@@ -116,10 +114,10 @@ function forward(C::Type{<:TransverseMercator{Hyper,Shift,Datum}}, λ, ϕ) where
   x = (Qn * Ce)
   y = (Qn * Cn + Zb)
 
-  C(x, y)
+  x, y
 end
 
-function backward(::Type{<:TransverseMercator{Hyper,Shift,Datum}}, x, y) where {Hyper,Shift,Datum}
+function backward(::Type{<:TransverseMercator{Datum,Hyper}}, x, y) where {Datum,Hyper}
   🌎 = ellipsoid(Datum)
   T = typeof(x)
   k = T(Hyper.k₀)
@@ -155,11 +153,8 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{TransverseMercator{Hyper,Shift}}, coords::CRS{Datum}) where {Hyper,Shift,Datum} =
-  convert(TransverseMercator{Hyper,Shift,Datum}, coords)
-
-Base.convert(::Type{TransverseMercator{Hyper}}, coords::CRS) where {Hyper} =
-  convert(TransverseMercator{Hyper,Shift()}, coords)
+Base.convert(::Type{TransverseMercator{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
+  convert(TransverseMercator{Datum,Hyper,Shift()}, coords)
 
 # -----------------
 # HELPER FUNCTIONS
