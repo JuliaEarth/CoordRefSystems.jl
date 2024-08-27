@@ -1,9 +1,6 @@
 @testset "CRS API" begin
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-  TransverseMercator = CoordRefSystems.shift(
-    CoordRefSystems.TransverseMercator{WGS84Latest,CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)},
-    lonₒ=45.0°
-  )
+  TransverseMercator = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utm(North, 32)
 
   @testset "ncoords" begin
@@ -365,20 +362,10 @@
     UTMNorth32WGS = utm(North, 32, datum=WGS84{1762})
     UTMNorth32ITRF = utm(North, 32, datum=ITRF{2008})
     isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
-    TransverseMercatorWGS = CoordRefSystems.shift(
-      CoordRefSystems.TransverseMercator{
-        WGS84{1762},
-        CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)
-      },
-      lonₒ=45.0°
-    )
-    TransverseMercatorITRF = CoordRefSystems.shift(
-      CoordRefSystems.TransverseMercator{
-        ITRF{2008},
-        CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)
-      },
-      lonₒ=45.0°
-    )
+    TransverseMercatorWGS =
+      CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
+    TransverseMercatorITRF =
+      CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
     isapproxtest3D(TransverseMercatorWGS, TransverseMercatorITRF)
     ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)

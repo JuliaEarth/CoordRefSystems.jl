@@ -942,10 +942,7 @@
     @testset "LatLon <> TransverseMercator" begin
       # tests from GeographicLib testset
       # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
-      TM = CoordRefSystems.TransverseMercator{
-        WGS84Latest,
-        CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 0.0°)
-      }
+      TM = CoordRefSystems.TransverseMercator{0.9996,0.0°,WGS84Latest}
 
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
       c2 = convert(TM, c1)
@@ -972,13 +969,7 @@
       @test allapprox(c3, c1)
 
       # latₒ, lonₒ ≠ 0
-      TM = CoordRefSystems.shift(
-        CoordRefSystems.TransverseMercator{
-          WGS84Latest,
-          CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)
-        },
-        lonₒ=25.0°
-      )
+      TM = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
 
       c1 = LatLon(T(30), T(60))
       c2 = convert(TM, c1)

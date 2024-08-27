@@ -3,43 +3,34 @@
 # ------------------------------------------------------------------
 
 """
-    WinkelParams(; lat₁=0.0°)
+    Winkel{lat₁,Datum,Shift}
 
-Winkel parameters with a given first standard parallel `lat₁`.
+Winkel CRS with first standard parallel `lat₁`, `Datum` and `Shift`.
 """
-struct WinkelParams{D<:Deg}
-  lat₁::D
-end
-
-WinkelParams(; lat₁=0.0°) = WinkelParams(asdeg(lat₁))
-
-"""
-    Winkel{Datum,Params,Shift}
-
-Winkel CRS with a given `Datum`, `Params` and `Shift`.
-"""
-struct Winkel{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
+struct Winkel{lat₁,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-Winkel{Datum,Params,Shift}(x::M, y::M) where {Datum,Params,Shift,M<:Met} = Winkel{Datum,Params,Shift,float(M)}(x, y)
-Winkel{Datum,Params,Shift}(x::Met, y::Met) where {Datum,Params,Shift} = Winkel{Datum,Params,Shift}(promote(x, y)...)
-Winkel{Datum,Params,Shift}(x::Len, y::Len) where {Datum,Params,Shift} =
-  Winkel{Datum,Params,Shift}(uconvert(m, x), uconvert(m, y))
-Winkel{Datum,Params,Shift}(x::Number, y::Number) where {Datum,Params,Shift} =
-  Winkel{Datum,Params,Shift}(addunit(x, m), addunit(y, m))
+Winkel{lat₁,Datum,Shift}(x::M, y::M) where {lat₁,Datum,Shift,M<:Met} = Winkel{lat₁,Datum,Shift,float(M)}(x, y)
+Winkel{lat₁,Datum,Shift}(x::Met, y::Met) where {lat₁,Datum,Shift} = Winkel{lat₁,Datum,Shift}(promote(x, y)...)
+Winkel{lat₁,Datum,Shift}(x::Len, y::Len) where {lat₁,Datum,Shift} =
+  Winkel{lat₁,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Winkel{lat₁,Datum,Shift}(x::Number, y::Number) where {lat₁,Datum,Shift} =
+  Winkel{lat₁,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-Winkel{Datum,Params}(args...) where {Datum,Params} = Winkel{Datum,Params,Shift()}(args...)
+Winkel{lat₁,Datum}(args...) where {lat₁,Datum} = Winkel{lat₁,Datum,Shift()}(args...)
 
-Base.convert(::Type{Winkel{Datum,Params,Shift,M}}, coords::Winkel{Datum,Params,Shift}) where {Datum,Params,Shift,M} =
-  Winkel{Datum,Params,Shift,M}(coords.x, coords.y)
+Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 
-constructor(::Type{<:Winkel{Datum,Params,Shift}}) where {Datum,Params,Shift} = Winkel{Datum,Params,Shift}
+Base.convert(::Type{Winkel{lat₁,Datum,Shift,M}}, coords::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift,M} =
+  Winkel{lat₁,Datum,Shift,M}(coords.x, coords.y)
 
-lentype(::Type{<:Winkel{Datum,Params,Shift,M}}) where {Datum,Params,Shift,M} = M
+constructor(::Type{<:Winkel{lat₁,Datum,Shift}}) where {lat₁,Datum,Shift} = Winkel{lat₁,Datum,Shift}
 
-==(coords₁::Winkel{Datum,Params,Shift}, coords₂::Winkel{Datum,Params,Shift}) where {Datum,Params,Shift} =
+lentype(::Type{<:Winkel{lat₁,Datum,Shift,M}}) where {lat₁,Datum,Shift,M} = M
+
+==(coords₁::Winkel{lat₁,Datum,Shift}, coords₂::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
@@ -61,9 +52,7 @@ WinkelTripel{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54042](https://epsg.io/54042).
 """
-const WinkelTripel{Datum,Shift} = Winkel{Datum,WinkelParams(lat₁ = 50.467°),Shift}
-
-WinkelTripel(args...) = WinkelTripel{WGS84Latest}(args...)
+const WinkelTripel{Datum,Shift} = Winkel{50.467°,Datum,Shift}
 
 # ------------
 # CONVERSIONS
@@ -77,8 +66,8 @@ WinkelTripel(args...) = WinkelTripel{WGS84Latest}(args...)
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aitoff.cpp
 # reference formula: https://en.wikipedia.org/wiki/Winkel_tripel_projection
 
-function formulas(::Type{<:Winkel{Datum,Params}}, ::Type{T}) where {Datum,Params,T}
-  ϕ₁ = T(ustrip(deg2rad(Params.lat₁)))
+function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
+  ϕ₁ = T(ustrip(deg2rad(lat₁)))
 
   function sincα(λ, ϕ)
     α = acos(cos(ϕ) * cos(λ / 2))
@@ -107,4 +96,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{WinkelTripel}, coords::CRS{Datum}) where {Datum} = convert(WinkelTripel{Datum}, coords)
+Base.convert(::Type{Winkel{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)

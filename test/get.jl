@@ -1,12 +1,9 @@
 @testset "get" begin
   TM = CoordRefSystems.TransverseMercator
-  TMP = CoordRefSystems.TransverseMercatorParams
-  OT = CoordRefSystems.Orthographic
-  OTP = CoordRefSystems.OrthographicParams
 
   # EPSG/ESRI code
   @test CoordRefSystems.get(EPSG{2157}) ===
-        CoordRefSystems.shift(TM{IRENET95,TMP(k₀ = 0.99982, latₒ = 53.5°)}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
+        CoordRefSystems.shift(TM{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4208}) === LatLon{Aratu}
@@ -20,16 +17,16 @@
   @test CoordRefSystems.get(EPSG{9988}) === Cartesian{ITRF{2020},3}
   @test CoordRefSystems.get(EPSG{10176}) === Cartesian{IGS20,3}
   @test CoordRefSystems.get(EPSG{27700}) ===
-        CoordRefSystems.shift(TM{OSGB36,TMP(k₀ = 0.9996012717, latₒ = 49.0°)}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
+        CoordRefSystems.shift(TM{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
   @test CoordRefSystems.get(EPSG{29903}) ===
-        CoordRefSystems.shift(TM{Ire65,TMP(k₀ = 1.000035, latₒ = 53.5°)}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
+        CoordRefSystems.shift(TM{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
   @test CoordRefSystems.get(EPSG{32662}) === PlateCarree{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54017}) === Behrmann{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54034}) === Lambert{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
-  @test CoordRefSystems.get(ESRI{102035}) === OT{true,WGS84Latest,OTP(latₒ = 90°)}
-  @test CoordRefSystems.get(ESRI{102037}) === OT{true,WGS84Latest,OTP(latₒ = -90°)}
+  @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{true,90°,WGS84Latest}
+  @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{true,-90°,WGS84Latest}
 
   for Zone in 1:60
     NorthCode = 32600 + Zone
