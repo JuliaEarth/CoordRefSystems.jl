@@ -24,9 +24,9 @@ function geodesytime(transf, (lat, lon))
   fwdtime, invtime
 end
 
-function cartographytime(CRS, (lat, lon))
+function coordrefsystemstime(CRS, (lat, lon))
   latlon = LatLon(lat, lon)
-  fwdtime = @belapsed convert(CRS, $latlon)
+  fwdtime = @belapsed convert($CRS, $latlon)
   coord = convert(CRS, latlon)
   invtime = @belapsed convert(LatLon, $coord)
   fwdtime, invtime
@@ -61,6 +61,8 @@ projargs = let
 
   gutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
 
+  UTMNorth38 = utm(North, 38)
+
   # --------------------
   # TRANSVERSE MERCATOR
   # --------------------
@@ -78,7 +80,8 @@ projargs = let
   step proj=axisswap order=2,1
   """)
 
-  TransverseMercator = CoordRefSystems.TransverseMercator{0.9996,15.0u"°",45.0u"°"}
+  TransverseMercator =
+    CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0u"°",WGS84Latest}, lonₒ=45.0u"°")
 
   # ---------
   # MERCATOR
@@ -143,7 +146,7 @@ projargs = let
 
   [
     "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, CoordRefSystems=WebMercator),
-    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, CoordRefSystems=UTMNorth{38}),
+    "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, CoordRefSystems=UTMNorth38),
     "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, CoordRefSystems=TransverseMercator),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, CoordRefSystems=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, CoordRefSystems=PlateCarree),
@@ -171,7 +174,7 @@ for (proj, args) in projargs
     geodesytime(args.Geodesy, latlon)
   end
 
-  cfwdtime, cinvtime = cartographytime(args.CoordRefSystems, latlon)
+  cfwdtime, cinvtime = coordrefsystemstime(args.CoordRefSystems, latlon)
 
   push!(
     results,
