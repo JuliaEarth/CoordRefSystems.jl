@@ -54,7 +54,11 @@ inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 
 
 Checks whether `latlon` coordinates are within the `CRS` domain.
 """
-indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
+function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
+  Shift = projshift(C)
+  lonₒ = oftype(lon, Shift.lonₒ)
+  inbounds(C, ustrip(deg2rad(lon - lonₒ)), ustrip(deg2rad(lat)))
+end
 
 Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
