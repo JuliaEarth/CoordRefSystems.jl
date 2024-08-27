@@ -10,11 +10,11 @@ const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
 asdeg(x::Deg) = x
 asdeg(x::Number) = x * °
-asdeg(::Quantity) = error("invalid unit, please pass a value with degree unit")
+asdeg(::Quantity) = error("invalid unit, please pass a value in degrees")
 
 asmet(x::Met) = x
 asmet(x::Number) = x * m
-asmet(::Quantity) = error("invalid unit, please pass a value with meter unit")
+asmet(::Quantity) = error("invalid unit, please pass a value in meters")
 
 """
     atol(T)
