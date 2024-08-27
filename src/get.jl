@@ -28,7 +28,12 @@ end
 # IMPLEMENTATIONS
 # ----------------
 
-get(::Type{EPSG{2157}}) = shift(TransverseMercator{0.99982,53.5°,-8.0°,IRENET95}, xₒ=600000.0m, yₒ=750000.0m)
+get(::Type{EPSG{2157}}) = shift(
+  TransverseMercator{IRENET95,TransverseMercatorParams(k₀ = 0.99982, latₒ = 53.5°)},
+  lonₒ=-8.0°,
+  xₒ=600000.0m,
+  yₒ=750000.0m
+)
 get(::Type{EPSG{3395}}) = Mercator{WGS84Latest}
 get(::Type{EPSG{3857}}) = WebMercator{WGS84Latest}
 get(::Type{EPSG{4208}}) = LatLon{Aratu}
@@ -41,19 +46,29 @@ get(::Type{EPSG{4989}}) = LatLonAlt{shift(ITRF{2000}, 2000.4)}
 get(::Type{EPSG{5527}}) = LatLon{SAD96}
 get(::Type{EPSG{9988}}) = Cartesian3D{ITRF{2020}}
 get(::Type{EPSG{10176}}) = Cartesian3D{IGS20}
-get(::Type{EPSG{27700}}) = shift(TransverseMercator{0.9996012717,49.0°,-2.0°,OSGB36}, xₒ=400000.0m, yₒ=-100000.0m)
-get(::Type{EPSG{29903}}) = shift(TransverseMercator{1.000035,53.5°,-8.0°,Ire65}, xₒ=200000.0m, yₒ=250000.0m)
+get(::Type{EPSG{27700}}) = shift(
+  TransverseMercator{OSGB36,TransverseMercatorParams(k₀ = 0.9996012717, latₒ = 49.0°)},
+  lonₒ=-2.0°,
+  xₒ=400000.0m,
+  yₒ=-100000.0m
+)
+get(::Type{EPSG{29903}}) = shift(
+  TransverseMercator{Ire65,TransverseMercatorParams(k₀ = 1.000035, latₒ = 53.5°)},
+  lonₒ=-8.0°,
+  xₒ=200000.0m,
+  yₒ=250000.0m
+)
 get(::Type{EPSG{32662}}) = PlateCarree{WGS84Latest}
 get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
 get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
 get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
-get(::Type{ESRI{102035}}) = Orthographic{90.0°,0.0°,true,WGS84Latest}
-get(::Type{ESRI{102037}}) = Orthographic{-90.0°,0.0°,true,WGS84Latest}
+get(::Type{ESRI{102035}}) = Orthographic{true,WGS84Latest,OrthographicParams(latₒ = 90°)}
+get(::Type{ESRI{102037}}) = Orthographic{true,WGS84Latest,OrthographicParams(latₒ = -90°)}
 
 for Zone in 1:60
   NorthCode = 32600 + Zone
   SouthCode = 32700 + Zone
-  @eval get(::Type{EPSG{$NorthCode}}) = UTM{North,$Zone,WGS84Latest}
-  @eval get(::Type{EPSG{$SouthCode}}) = UTM{South,$Zone,WGS84Latest}
+  @eval get(::Type{EPSG{$NorthCode}}) = utm(North, $Zone, WGS84Latest)
+  @eval get(::Type{EPSG{$SouthCode}}) = utm(South, $Zone, WGS84Latest)
 end
