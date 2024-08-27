@@ -11,6 +11,10 @@ abstract type Projected{Datum,Shift} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
 
+projshift(::Type{<:Projected}) = Shift()
+
+projshift(::Type{<:Projected{Datum,Shift}}) where {Datum,Shift} = Shift
+
 """
     formulas(CRS::Type{<:Projected}, T)
 
@@ -20,6 +24,7 @@ with `f(λ::T, ϕ::T) -> T` for both functions.
 function formulas end
 
 function forward(::Type{C}, λ, ϕ) where {C<:Projected}
+  T = typeof(λ)
   fx, fy = formulas(C, T)
   x = fx(λ, ϕ)
   y = fy(λ, ϕ)
@@ -27,6 +32,7 @@ function forward(::Type{C}, λ, ϕ) where {C<:Projected}
 end
 
 function backward(::Type{C}, x, y) where {C<:Projected}
+  T = typeof(x)
   fx, fy = formulas(C, T)
   projinv(fx, fy, x, y, x, y)
 end
@@ -76,7 +82,8 @@ include("projected/transversemercator.jl")
 # FALLBACKS
 # ----------
 
-function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,Shift,C<:Projected{Datum,Shift}}
+function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
+  Shift = projshift(C)
   T = numtype(coords.lon)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   xₒ = numconvert(T, Shift.xₒ)
@@ -91,7 +98,8 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,Shift,C<:Pr
   C(x * a + xₒ, y * a + yₒ)
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,Shift,C<:Projected{Datum,Shift}}
+function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
+  Shift = projshift(C)
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
   xₒ = numconvert(T, Shift.xₒ)

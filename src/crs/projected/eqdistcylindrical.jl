@@ -94,7 +94,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EquidistantCylindrical{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
-  convert(EquidistantCylindrical{Datum,Hyper,Shift()}, coords)
-
 Base.convert(::Type{PlateCarree}, coords::CRS{Datum}) where {Datum} = convert(PlateCarree{Datum}, coords)

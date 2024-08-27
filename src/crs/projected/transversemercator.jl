@@ -149,13 +149,6 @@ function backward(::Type{<:TransverseMercator{Datum,Hyper}}, x, y) where {Datum,
   λ, ϕ
 end
 
-# ----------
-# FALLBACKS
-# ----------
-
-Base.convert(::Type{TransverseMercator{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
-  convert(TransverseMercator{Datum,Hyper,Shift()}, coords)
-
 # -----------------
 # HELPER FUNCTIONS
 # -----------------

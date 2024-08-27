@@ -169,6 +169,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Robinson{Datum}}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum,Shift()}, coords)
-
 Base.convert(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum}, coords)

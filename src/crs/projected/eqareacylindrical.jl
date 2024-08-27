@@ -167,9 +167,6 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{EqualAreaCylindrical{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
-  convert(EqualAreaCylindrical{Datum,Hyper,Shift()}, coords)
-
 Base.convert(::Type{Lambert}, coords::CRS{Datum}) where {Datum} = convert(Lambert{Datum}, coords)
 
 Base.convert(::Type{Behrmann}, coords::CRS{Datum}) where {Datum} = convert(Behrmann{Datum}, coords)

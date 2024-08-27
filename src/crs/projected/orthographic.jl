@@ -155,14 +155,16 @@ function sphericalinv(x, y, λₒ, ϕₒ)
   end
 end
 
-function backward(::Type{<:Orthographic{true,Datum,Hyper,Shift}}, x, y) where {Datum,Hyper,Shift}
+function backward(::Type{<:Orthographic{true,Datum,Hyper}}, x, y) where {Datum,Hyper}
+  Shift = projshift(C)
   T = typeof(x)
   λₒ = T(ustrip(deg2rad(Shift.lonₒ)))
   ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
   sphericalinv(x, y, λₒ, ϕₒ)
 end
 
-function backward(C::Type{<:Orthographic{false,Datum,Hyper,Shift}}, x, y) where {Datum,Hyper,Shift}
+function backward(C::Type{<:Orthographic{false,Datum,Hyper}}, x, y) where {Datum,Hyper}
+  Shift = projshift(C)
   T = typeof(x)
   λₒ = T(ustrip(deg2rad(Shift.lonₒ)))
   ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
@@ -174,9 +176,6 @@ end
 # ----------
 # FALLBACKS
 # ----------
-
-Base.convert(::Type{Orthographic{S,Datum,Hyper}}, coords::CRS{Datum}) where {S,Datum,Hyper} =
-  convert(Orthographic{S,Datum,Hyper,Shift()}, coords)
 
 Base.convert(::Type{OrthoNorth}, coords::CRS{Datum}) where {Datum} = convert(OrthoNorth{Datum}, coords)
 

@@ -97,7 +97,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Winkel{Datum,Hyper}}, coords::CRS{Datum}) where {Datum,Hyper} =
-  convert(Winkel{Datum,Hyper,Shift()}, coords)
-
 Base.convert(::Type{WinkelTripel}, coords::CRS{Datum}) where {Datum} = convert(WinkelTripel{Datum}, coords)

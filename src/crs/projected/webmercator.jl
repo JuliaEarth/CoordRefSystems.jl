@@ -73,6 +73,4 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{WebMercator{Datum}}, coords::CRS{Datum}) where {Datum} = convert(WebMercator{Datum,Shift()}, coords)
-
 Base.convert(::Type{WebMercator}, coords::CRS{Datum}) where {Datum} = convert(WebMercator{Datum}, coords)
