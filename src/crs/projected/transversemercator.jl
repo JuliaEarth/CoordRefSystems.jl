@@ -2,49 +2,49 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-struct TMHyper{T,D<:Deg}
+struct TransverseMercatorParams{T,D<:Deg}
   k₀::T
   latₒ::D
 end
 
-TMHyper(; k₀=1.0, latₒ=0.0°) = TMHyper(k₀, asdeg(latₒ))
+TransverseMercatorParams(; k₀=1.0, latₒ=0.0°) = TransverseMercatorParams(k₀, asdeg(latₒ))
 
 """
-    TransverseMercator{Datum,Hyper,Shift}
+    TransverseMercator{Datum,Params,Shift}
 
 Transverse Mercator CRS with scale factor `k₀`, latitude origin `latₒ`
 and longitude origin `lonₒ` in degrees and a given `Datum`.
 """
-struct TransverseMercator{Datum,Hyper,Shift,M<:Met} <: Projected{Datum,Shift}
+struct TransverseMercator{Datum,Params,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-TransverseMercator{Datum,Hyper,Shift}(x::M, y::M) where {Datum,Hyper,Shift,M<:Met} =
-  TransverseMercator{Datum,Hyper,Shift,float(M)}(x, y)
-TransverseMercator{Datum,Hyper,Shift}(x::Met, y::Met) where {Datum,Hyper,Shift} =
-  TransverseMercator{Datum,Hyper,Shift}(promote(x, y)...)
-TransverseMercator{Datum,Hyper,Shift}(x::Len, y::Len) where {Datum,Hyper,Shift} =
-  TransverseMercator{Datum,Hyper,Shift}(uconvert(m, x), uconvert(m, y))
-TransverseMercator{Datum,Hyper,Shift}(x::Number, y::Number) where {Datum,Hyper,Shift} =
-  TransverseMercator{Datum,Hyper,Shift}(addunit(x, m), addunit(y, m))
+TransverseMercator{Datum,Params,Shift}(x::M, y::M) where {Datum,Params,Shift,M<:Met} =
+  TransverseMercator{Datum,Params,Shift,float(M)}(x, y)
+TransverseMercator{Datum,Params,Shift}(x::Met, y::Met) where {Datum,Params,Shift} =
+  TransverseMercator{Datum,Params,Shift}(promote(x, y)...)
+TransverseMercator{Datum,Params,Shift}(x::Len, y::Len) where {Datum,Params,Shift} =
+  TransverseMercator{Datum,Params,Shift}(uconvert(m, x), uconvert(m, y))
+TransverseMercator{Datum,Params,Shift}(x::Number, y::Number) where {Datum,Params,Shift} =
+  TransverseMercator{Datum,Params,Shift}(addunit(x, m), addunit(y, m))
 
-TransverseMercator{Datum,Hyper}(args...) where {Datum,Hyper} = TransverseMercator{Datum,Hyper,Shift()}(args...)
+TransverseMercator{Datum,Params}(args...) where {Datum,Params} = TransverseMercator{Datum,Params,Shift()}(args...)
 
 Base.convert(
-  ::Type{TransverseMercator{Datum,Hyper,Shift,M}},
-  coords::TransverseMercator{Datum,Hyper,Shift}
-) where {Datum,Hyper,Shift,M} = TransverseMercator{Datum,Hyper,Shift,M}(coords.x, coords.y)
+  ::Type{TransverseMercator{Datum,Params,Shift,M}},
+  coords::TransverseMercator{Datum,Params,Shift}
+) where {Datum,Params,Shift,M} = TransverseMercator{Datum,Params,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:TransverseMercator{Datum,Hyper,Shift}}) where {Datum,Hyper,Shift} =
-  TransverseMercator{Datum,Hyper,Shift}
+constructor(::Type{<:TransverseMercator{Datum,Params,Shift}}) where {Datum,Params,Shift} =
+  TransverseMercator{Datum,Params,Shift}
 
-lentype(::Type{<:TransverseMercator{Datum,Hyper,Shift,M}}) where {Datum,Hyper,Shift,M} = M
+lentype(::Type{<:TransverseMercator{Datum,Params,Shift,M}}) where {Datum,Params,Shift,M} = M
 
 ==(
-  coords₁::TransverseMercator{Datum,Hyper,Shift},
-  coords₂::TransverseMercator{Datum,Hyper,Shift}
-) where {Datum,Hyper,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::TransverseMercator{Datum,Params,Shift},
+  coords₂::TransverseMercator{Datum,Params,Shift}
+) where {Datum,Params,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -70,12 +70,12 @@ function inbounds(::Type{<:TransverseMercator{Datum}}, λ, ϕ) where {Datum}
   abs(Ce) ≤ T(2.623395162778)
 end
 
-function formulas(::Type{<:TransverseMercator{Datum,Hyper}}, ::Type{T}) where {Datum,Hyper,T}
+function formulas(::Type{<:TransverseMercator{Datum,Params}}, ::Type{T}) where {Datum,Params,T}
   🌎 = ellipsoid(Datum)
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
-  k₀ = T(Hyper.k₀)
-  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
+  k₀ = T(Params.k₀)
+  ϕₒ = T(ustrip(deg2rad(Params.latₒ)))
 
   n = (a - b) / (a + b) # third flattening
   cbg, gtu = tmfwdcoefs(T, n)
@@ -94,11 +94,11 @@ function formulas(::Type{<:TransverseMercator{Datum,Hyper}}, ::Type{T}) where {D
   fx, fy
 end
 
-function forward(::Type{<:TransverseMercator{Datum,Hyper}}, λ, ϕ) where {Datum,Hyper}
+function forward(::Type{<:TransverseMercator{Datum,Params}}, λ, ϕ) where {Datum,Params}
   🌎 = ellipsoid(Datum)
   T = typeof(λ)
-  k = T(Hyper.k₀)
-  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
+  k = T(Params.k₀)
+  ϕₒ = T(ustrip(deg2rad(Params.latₒ)))
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
 
@@ -117,11 +117,11 @@ function forward(::Type{<:TransverseMercator{Datum,Hyper}}, λ, ϕ) where {Datum
   x, y
 end
 
-function backward(::Type{<:TransverseMercator{Datum,Hyper}}, x, y) where {Datum,Hyper}
+function backward(::Type{<:TransverseMercator{Datum,Params}}, x, y) where {Datum,Params}
   🌎 = ellipsoid(Datum)
   T = typeof(x)
-  k = T(Hyper.k₀)
-  ϕₒ = T(ustrip(deg2rad(Hyper.latₒ)))
+  k = T(Params.k₀)
+  ϕₒ = T(ustrip(deg2rad(Params.latₒ)))
   a = numconvert(T, majoraxis(🌎))
   b = numconvert(T, minoraxis(🌎))
 

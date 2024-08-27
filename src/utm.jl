@@ -37,7 +37,7 @@ function utm(H::Type{<:Hemisphere}, zone, datum=WGS84Latest)
   lonₒ = (6 * zone - 183) * °
   xₒ = falseeasting(H)
   yₒ = falsenorthing(H)
-  TransverseMercator{TMHyper(; k₀, latₒ),Shift(; lonₒ, xₒ, yₒ),datum}
+  TransverseMercator{TransverseMercatorParams(; k₀, latₒ),Shift(; lonₒ, xₒ, yₒ),datum}
 end
 
 # -----------------
