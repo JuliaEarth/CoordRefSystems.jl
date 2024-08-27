@@ -125,7 +125,10 @@
     @test c2 isa C
 
     TransverseMercator = CoordRefSystems.shift(
-      CoordRefSystems.TransverseMercator{WGS84Latest,CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)},
+      CoordRefSystems.TransverseMercator{
+        WGS84Latest,
+        CoordRefSystems.TransverseMercatorParams(k₀ = 0.9996, latₒ = 15.0°)
+      },
       lonₒ=45.0°
     )
     C = TransverseMercator{Met{T}}
@@ -133,6 +136,15 @@
     c2 = convert(C, c1)
     @test c2 isa C
     c1 = TransverseMercator(1.0f0, 1.0f0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+
+    UTMNorth32 = utm(North, 32)
+    C = UTMNorth32{Met{T}}
+    c1 = UTMNorth32(1.0, 1.0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+    c1 = UTMNorth32(1.0f0, 1.0f0)
     c2 = convert(C, c1)
     @test c2 isa C
 
