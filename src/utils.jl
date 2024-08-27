@@ -8,10 +8,22 @@ const Met{T} = Quantity{T,u"𝐋",typeof(m)}
 const Deg{T} = Quantity{T,NoDims,typeof(°)}
 const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
+"""
+    asdeg(x)
+
+Return `x` if it is in degrees, add the degree unit if it is a number,
+and throw an error otherwise.
+"""
 asdeg(x::Deg) = x
 asdeg(x::Number) = x * °
 asdeg(::Quantity) = error("invalid unit, please pass a value in degrees")
 
+"""
+    asmet(x)
+
+Return `x` if it is in meters, add the meter unit if it is a number,
+and throw an error otherwise.
+"""
 asmet(x::Met) = x
 asmet(x::Number) = x * m
 asmet(::Quantity) = error("invalid unit, please pass a value in meters")
