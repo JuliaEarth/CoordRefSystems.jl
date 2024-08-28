@@ -191,7 +191,7 @@ for (proj, args) in projargs
     results,
     (;
       :CRS => proj,
-      :DIRECTION => "inverse",
+      :DIRECTION => "backward",
       Symbol("Proj.jl") => pinvtime,
       Symbol("Geodesy.jl") => ginvtime,
       Symbol("CoordRefSystems.jl") => cinvtime
