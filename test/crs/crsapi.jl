@@ -362,10 +362,8 @@
     UTMNorth32WGS = utmnorth(32, datum=WGS84{1762})
     UTMNorth32ITRF = utmnorth(32, datum=ITRF{2008})
     isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
-    TransverseMercatorWGS =
-      CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
-    TransverseMercatorITRF =
-      CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
+    TransverseMercatorWGS = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
+    TransverseMercatorITRF = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
     isapproxtest3D(TransverseMercatorWGS, TransverseMercatorITRF)
     ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
