@@ -28,11 +28,11 @@
   @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{true,90°,WGS84Latest}
   @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{true,-90°,WGS84Latest}
 
-  for Zone in 1:60
-    NorthCode = 32600 + Zone
-    SouthCode = 32700 + Zone
-    @test CoordRefSystems.get(EPSG{NorthCode}) === utm(North, Zone, datum=WGS84Latest)
-    @test CoordRefSystems.get(EPSG{SouthCode}) === utm(South, Zone, datum=WGS84Latest)
+  for zone in 1:60
+    NorthCode = 32600 + zone
+    SouthCode = 32700 + zone
+    @test CoordRefSystems.get(EPSG{NorthCode}) === utm(North, zone, datum=WGS84Latest)
+    @test CoordRefSystems.get(EPSG{SouthCode}) === utm(South, zone, datum=WGS84Latest)
   end
 
   # CRS string
