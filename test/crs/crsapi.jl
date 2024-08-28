@@ -1,6 +1,6 @@
 @testset "CRS API" begin
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-  TransverseMercator = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
+  ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
 
   @testset "ncoords" begin
@@ -124,7 +124,7 @@
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = OrthoNorth(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = TransverseMercator(T(1), T(2))
+    c = ShiftedTM(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = UTMNorth32(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
@@ -165,7 +165,7 @@
     @test CoordRefSystems.units(c) == (m, m)
     c = OrthoNorth(T(1), T(1))
     @test CoordRefSystems.units(c) == (m, m)
-    c = TransverseMercator(T(1), T(1))
+    c = ShiftedTM(T(1), T(1))
     @test CoordRefSystems.units(c) == (m, m)
     c = UTMNorth32(T(1), T(1))
     @test CoordRefSystems.units(c) == (m, m)
@@ -204,7 +204,7 @@
     @test CoordRefSystems.constructor(c) === Robinson{WGS84Latest,CoordRefSystems.Shift()}
     c = OrthoNorth(T(1), T(1))
     @test CoordRefSystems.constructor(c) === OrthoNorth{WGS84Latest,CoordRefSystems.Shift()}
-    c = TransverseMercator(T(1), T(1))
+    c = ShiftedTM(T(1), T(1))
     @test CoordRefSystems.constructor(c) === TransverseMercator
     c = UTMNorth32(T(1), T(1))
     @test CoordRefSystems.constructor(c) === UTMNorth32
@@ -261,7 +261,7 @@
     c = OrthoNorth(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = TransverseMercator(T(1), T(2))
+    c = ShiftedTM(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     c = UTMNorth32(T(1), T(2))
@@ -303,7 +303,7 @@
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = OrthoNorth(T(1), T(1))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = TransverseMercator(T(1), T(1))
+    c = ShiftedTM(T(1), T(1))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = UTMNorth32(T(1), T(1))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
@@ -318,7 +318,7 @@
     @test datum(c) === WGS84Latest
   end
 
-  @testset "equality operator" begin
+  @testset "isequal" begin
     equaltest(Cartesian, 2)
     equaltest(Cartesian, 3)
     equaltest(Polar)
@@ -363,9 +363,9 @@
     UTMNorth32ITRF = utmnorth(32, datum=ITRF{2008})
     isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
     TransverseMercatorWGS =
-      CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
+      CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
     TransverseMercatorITRF =
-      CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
+      CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
     isapproxtest3D(TransverseMercatorWGS, TransverseMercatorITRF)
     ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)

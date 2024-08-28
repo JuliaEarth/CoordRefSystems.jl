@@ -124,12 +124,12 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    TransverseMercator = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
-    C = TransverseMercator{Met{T}}
-    c1 = TransverseMercator(1.0, 1.0)
+    TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
+    C = TM{Met{T}}
+    c1 = TM(1.0, 1.0)
     c2 = convert(C, c1)
     @test c2 isa C
-    c1 = TransverseMercator(1.0f0, 1.0f0)
+    c1 = TM(1.0f0, 1.0f0)
     c2 = convert(C, c1)
     @test c2 isa C
 

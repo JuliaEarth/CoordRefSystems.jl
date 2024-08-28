@@ -198,7 +198,7 @@
   end
 
   @testset "TransverseMercator forward" begin
-    TM = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
+    TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(TM, c1)

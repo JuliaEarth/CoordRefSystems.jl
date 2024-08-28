@@ -86,6 +86,7 @@ export
   Robinson,
   OrthoNorth,
   OrthoSouth,
+  TransverseMercator,
   datum,
   indomain,
 
