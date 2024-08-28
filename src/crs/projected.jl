@@ -31,7 +31,8 @@ function formulas end
 """
     forward(CRS::Type{<:Projected}, λ, ϕ)
 
-Forward implementation of the `CRS`.
+Forward longitude `λ` and latitude `ϕ` in radians to `x` and `y` in meters
+using `CRS` formulas. Both inputs and outputs are unitless.
 """
 function forward(::Type{C}, λ, ϕ) where {C<:Projected}
   T = typeof(λ)
@@ -44,7 +45,8 @@ end
 """
     backward(CRS::Type{<:Projected}, x, y)
 
-Backward implementation (sometimes called "inverse") of the `CRS`.
+Backward `x` and `y` in meters to longitude `λ` and latitude `ϕ` in radians
+using `CRS` formulas. Both inputs and outputs are unitless.
 """
 function backward(::Type{C}, x, y) where {C<:Projected}
   T = typeof(x)
