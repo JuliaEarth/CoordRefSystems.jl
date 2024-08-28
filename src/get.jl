@@ -48,8 +48,8 @@ get(::Type{ESRI{54017}}) = Behrmann{WGS84Latest}
 get(::Type{ESRI{54030}}) = Robinson{WGS84Latest}
 get(::Type{ESRI{54034}}) = Lambert{WGS84Latest}
 get(::Type{ESRI{54042}}) = WinkelTripel{WGS84Latest}
-get(::Type{ESRI{102035}}) = Orthographic{true,90°,WGS84Latest}
-get(::Type{ESRI{102037}}) = Orthographic{true,-90°,WGS84Latest}
+get(::Type{ESRI{102035}}) = Orthographic{SphericalMode,90°,WGS84Latest}
+get(::Type{ESRI{102037}}) = Orthographic{SphericalMode,-90°,WGS84Latest}
 
 for zone in 1:60
   NorthCode = 32600 + zone
