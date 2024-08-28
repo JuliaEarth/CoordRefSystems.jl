@@ -212,7 +212,7 @@
   end
 
   @testset "UTMNorth forward" begin
-    UTMNorth32 = utm(North, 32)
+    UTMNorth32 = utmnorth(32)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(UTMNorth32, c1)
@@ -226,7 +226,7 @@
   end
 
   @testset "UTMSouth forward" begin
-    UTMSouth59 = utm(South, 59)
+    UTMSouth59 = utmsouth(59)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(UTMSouth59, c1)

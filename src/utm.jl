@@ -3,49 +3,39 @@
 # ------------------------------------------------------------------
 
 """
-    Hemisphere
+    utm(hemisphere, zone; datum=WGS84Latest)
 
-Hemisphere of the Earth.
+UTM (Universal Transverse Mercator) CRS in `hemisphere` (`:north` or `:south`)
+with `zone` (1 ≤ zone ≤ 60) and a given `datum`.
 """
-abstract type Hemisphere end
+function utm(hemisphere, zone; datum=WGS84Latest)
+  if hemisphere ∉ (:north, :south)
+    throw(ArgumentError("invalid hemisphere, please use `:north` or `:south`"))
+  end
 
-"""
-    North
-
-Northern hemisphere.
-"""
-abstract type North <: Hemisphere end
-
-"""
-    South
-
-Southern hemisphere.
-"""
-abstract type South <: Hemisphere end
-
-"""
-    utm(H::Type{<:Hemisphere}, zone; datum=WGS84Latest)
-
-UTM (Universal Transverse Mercator) CRS in hemisphere `H` with `zone` (1 ≤ zone ≤ 60) and a given `datum`.
-"""
-function utm(H::Type{<:Hemisphere}, zone; datum=WGS84Latest)
   if !(1 ≤ zone ≤ 60)
     throw(ArgumentError("the UTM zone must be an integer between 1 and 60"))
   end
+
   k₀ = 0.9996
   latₒ = 0.0°
   lonₒ = (6 * zone - 183) * °
-  xₒ = falseeasting(H)
-  yₒ = falsenorthing(H)
+  xₒ = 500000.0m
+  yₒ = hemisphere == :north ? 0.0m : 10000000.0m
   S = Shift(; lonₒ, xₒ, yₒ)
   TransverseMercator{k₀,latₒ,datum,S}
 end
 
-# -----------------
-# HELPER FUNCTIONS
-# -----------------
+"""
+    utmnorth(zone; datum=WGS84Latest)
 
-falseeasting(::Type{<:Hemisphere}) = 500000.0m
+UTM North CRS with `zone` (1 ≤ zone ≤ 60) and a given `datum`.
+"""
+utmnorth(zone; kwargs...) = utm(:north, zone; kwargs...)
 
-falsenorthing(::Type{<:North}) = 0.0m
-falsenorthing(::Type{<:South}) = 10000000.0m
+"""
+    utmsouth(zone; datum=WGS84Latest)
+
+UTM South CRS with `zone` (1 ≤ zone ≤ 60) and a given `datum`.
+"""
+utmsouth(zone; kwargs...) = utm(:south, zone; kwargs...)

@@ -133,7 +133,7 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    UTMNorth32 = utm(North, 32)
+    UTMNorth32 = utmnorth(32)
     C = UTMNorth32{Met{T}}
     c1 = UTMNorth32(1.0, 1.0)
     c2 = convert(C, c1)

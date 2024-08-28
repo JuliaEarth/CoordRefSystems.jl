@@ -88,12 +88,10 @@ export
   datum,
   indomain,
 
-  # hemispheres
-  North,
-  South,
-
   # UTM
   utm,
+  utmnorth,
+  utmsouth,
 
   # codes
   EPSG,
