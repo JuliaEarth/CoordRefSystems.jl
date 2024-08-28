@@ -12,14 +12,14 @@ See also [`EllipticalMode`](@ref), [`SphericalMode`](@ref).
 abstract type Mode end
 
 """
-    EllipticalMode <: Mode
+    EllipticalMode
 
 Elliptical mode.
 """
 abstract type EllipticalMode <: Mode end
 
 """
-    SphericalMode <: Mode
+    SphericalMode
 
 Spherical mode.
 """
