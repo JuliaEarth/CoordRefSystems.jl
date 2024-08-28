@@ -318,7 +318,7 @@
     @test datum(c) === WGS84Latest
   end
 
-  @testset "isequal" begin
+  @testset "equality" begin
     equaltest(Cartesian, 2)
     equaltest(Cartesian, 3)
     equaltest(Polar)
