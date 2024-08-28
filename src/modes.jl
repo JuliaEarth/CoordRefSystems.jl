@@ -5,20 +5,22 @@
 """
     Mode
 
-Mode of a CRS formula.
+Mode (or variant) of a coordinate reference system.
+
+See also [`EllipticalMode`](@ref), [`SphericalMode`](@ref).
 """
 abstract type Mode end
 
 """
     EllipticalMode <: Mode
 
-Elliptical mode of a CRS formula.
+Elliptical mode.
 """
 abstract type EllipticalMode <: Mode end
 
 """
     SphericalMode <: Mode
 
-Spherical mode of a CRS formula.
+Spherical mode.
 """
 abstract type SphericalMode <: Mode end
