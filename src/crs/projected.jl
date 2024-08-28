@@ -28,6 +28,11 @@ with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
 
+"""
+    forward(CRS::Type{<:Projected}, λ, ϕ)
+
+Forward implementation of the `CRS`.
+"""
 function forward(::Type{C}, λ, ϕ) where {C<:Projected}
   T = typeof(λ)
   fx, fy = formulas(C, T)
@@ -36,6 +41,11 @@ function forward(::Type{C}, λ, ϕ) where {C<:Projected}
   x, y
 end
 
+"""
+    backward(CRS::Type{<:Projected}, x, y)
+
+Backward implementation (sometimes called "inverse") of the `CRS`.
+"""
 function backward(::Type{C}, x, y) where {C<:Projected}
   T = typeof(x)
   fx, fy = formulas(C, T)
