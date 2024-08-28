@@ -25,8 +25,10 @@
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54034}) === Lambert{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
-  @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest}
-  @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest}
+  @test CoordRefSystems.get(ESRI{102035}) ===
+        CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest}
+  @test CoordRefSystems.get(ESRI{102037}) ===
+        CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest}
 
   for zone in 1:60
     NorthCode = 32600 + zone
