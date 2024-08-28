@@ -1,7 +1,7 @@
 @testset "CRS API" begin
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
   TransverseMercator = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
-  UTMNorth32 = utm(North, 32)
+  UTMNorth32 = utmnorth(32)
 
   @testset "ncoords" begin
     c = Cartesian(T(1), T(1))
@@ -359,8 +359,8 @@
     isapproxtest3D(WinkelTripel)
     isapproxtest3D(Robinson)
     isapproxtest3D(OrthoNorth)
-    UTMNorth32WGS = utm(North, 32, datum=WGS84{1762})
-    UTMNorth32ITRF = utm(North, 32, datum=ITRF{2008})
+    UTMNorth32WGS = utmnorth(32, datum=WGS84{1762})
+    UTMNorth32ITRF = utmnorth(32, datum=ITRF{2008})
     isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
     TransverseMercatorWGS =
       CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)

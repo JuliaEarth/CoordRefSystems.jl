@@ -54,6 +54,6 @@ get(::Type{ESRI{102037}}) = Orthographic{true,-90°,WGS84Latest}
 for zone in 1:60
   NorthCode = 32600 + zone
   SouthCode = 32700 + zone
-  @eval get(::Type{EPSG{$NorthCode}}) = utm(North, $zone, datum=WGS84Latest)
-  @eval get(::Type{EPSG{$SouthCode}}) = utm(South, $zone, datum=WGS84Latest)
+  @eval get(::Type{EPSG{$NorthCode}}) = utmnorth($zone, datum=WGS84Latest)
+  @eval get(::Type{EPSG{$SouthCode}}) = utmsouth($zone, datum=WGS84Latest)
 end

@@ -991,8 +991,8 @@
     end
 
     @testset "LatLon <> UTM" begin
-      UTMNorth32 = utm(North, 32)
-      UTMSouth59 = utm(South, 59)
+      UTMNorth32 = utmnorth(32)
+      UTMSouth59 = utmsouth(59)
 
       c1 = LatLon(T(56), T(12))
       c2 = convert(UTMNorth32, c1)

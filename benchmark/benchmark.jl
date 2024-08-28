@@ -61,7 +61,7 @@ projargs = let
 
   gutm = Geodesy.UTMfromLLA(38, true, Geodesy.wgs84)
 
-  UTMNorth38 = utm(North, 38)
+  UTMNorth38 = utmnorth(38)
 
   # --------------------
   # TRANSVERSE MERCATOR
