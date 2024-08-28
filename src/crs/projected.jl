@@ -14,7 +14,7 @@ ndims(::Type{<:Projected}) = 2
 """
     CoordRefSystems.projshift(CRS::Type{<:Projected})
 
-Shift parameters of the `CRS`.
+Retrieve shift parameters of the projected `CRS`.
 """
 projshift(::Type{<:Projected}) = Shift()
 
