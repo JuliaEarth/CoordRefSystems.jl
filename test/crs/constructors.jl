@@ -567,7 +567,7 @@
     end
 
     @testset "TransverseMercator" begin
-      TM = CoordRefSystems.TransverseMercator{0.9996,15.0°}
+      TM = TransverseMercator{0.9996,15.0°}
       @test TM(T(1), T(1)) == TM(T(1) * m, T(1) * m)
       @test TM(T(1) * m, 1 * m) == TM(T(1) * m, T(1) * m)
       @test TM(T(1) * km, T(1) * km) == TM(T(1000) * m, T(1000) * m)

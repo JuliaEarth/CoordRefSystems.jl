@@ -80,8 +80,7 @@ projargs = let
   step proj=axisswap order=2,1
   """)
 
-  TransverseMercator =
-    CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0u"°",WGS84Latest}, lonₒ=45.0u"°")
+  TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0u"°",WGS84Latest}, lonₒ=45.0u"°")
 
   # ---------
   # MERCATOR
@@ -147,7 +146,7 @@ projargs = let
   [
     "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, CoordRefSystems=WebMercator),
     "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, CoordRefSystems=UTMNorth38),
-    "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, CoordRefSystems=TransverseMercator),
+    "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, CoordRefSystems=TM),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, CoordRefSystems=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, CoordRefSystems=PlateCarree),
     "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, CoordRefSystems=Lambert),
