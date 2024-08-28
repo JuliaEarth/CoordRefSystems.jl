@@ -205,7 +205,7 @@
     c = OrthoNorth(T(1), T(1))
     @test CoordRefSystems.constructor(c) === OrthoNorth{WGS84Latest,CoordRefSystems.Shift()}
     c = ShiftedTM(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === TransverseMercator
+    @test CoordRefSystems.constructor(c) === ShiftedTM
     c = UTMNorth32(T(1), T(1))
     @test CoordRefSystems.constructor(c) === UTMNorth32
     c = ShiftedMercator(T(1), T(2))
@@ -340,7 +340,7 @@
     equaltest(Robinson)
     equaltest(OrthoNorth)
     equaltest(UTMNorth32)
-    equaltest(TransverseMercator)
+    equaltest(ShiftedTM)
     equaltest(ShiftedMercator)
   end
 
