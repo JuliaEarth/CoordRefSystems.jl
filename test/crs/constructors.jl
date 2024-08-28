@@ -310,6 +310,21 @@
         └─ y: 1.0 m"""
       end
 
+      ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+      c = ShiftedMercator(T(1), T(1))
+      @test sprint(show, c) == "Mercator{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        Mercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
+        ├─ x: 1.0f0 m
+        └─ y: 1.0f0 m"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        Mercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
+        ├─ x: 1.0 m
+        └─ y: 1.0 m"""
+      end
+
       # error: invalid units for coordinates
       @test_throws ArgumentError Mercator(T(1), T(1) * m)
       @test_throws ArgumentError Mercator(T(1) * s, T(1) * m)

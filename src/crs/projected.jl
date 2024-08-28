@@ -85,6 +85,20 @@ function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   end
 end
 
+# -----------
+# IO METHODS
+# -----------
+
+function Base.summary(io::IO, coords::Projected)
+  name = prettyname(coords)
+  Datum = datum(coords)
+  S = projshift(typeof(coords))
+  print(io, "$name{$(rmmodule(Datum))} coordinates")
+  if S ≠ Shift()
+    print(io, " with lonₒ: $(S.lonₒ), xₒ: $(S.xₒ), yₒ: $(S.yₒ)")
+  end
+end
+
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
