@@ -552,7 +552,7 @@
     end
 
     @testset "TransverseMercator" begin
-      TM = CoordRefSystems.TransverseMercator{0.9996,15.0°,25.0°}
+      TM = CoordRefSystems.TransverseMercator{0.9996,15.0°}
       @test TM(T(1), T(1)) == TM(T(1) * m, T(1) * m)
       @test TM(T(1) * m, 1 * m) == TM(T(1) * m, T(1) * m)
       @test TM(T(1) * km, T(1) * km) == TM(T(1000) * m, T(1000) * m)
@@ -576,89 +576,6 @@
       @test_throws ArgumentError TM(T(1) * s, T(1) * m)
       @test_throws ArgumentError TM(T(1) * m, T(1) * s)
       @test_throws ArgumentError TM(T(1) * s, T(1) * s)
-    end
-
-    @testset "UTMNorth" begin
-      @test UTMNorth{32}(T(1), T(1)) == UTMNorth{32}(T(1) * m, T(1) * m)
-      @test UTMNorth{32}(T(1) * m, 1 * m) == UTMNorth{32}(T(1) * m, T(1) * m)
-      @test UTMNorth{32}(T(1) * km, T(1) * km) == UTMNorth{32}(T(1000) * m, T(1000) * m)
-
-      c = UTMNorth{32}(T(1), T(1))
-      @test sprint(show, c) == "UTMNorth{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        UTMNorth{WGS84Latest} coordinates
-        ├─ x: 1.0f0 m
-        └─ y: 1.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        UTMNorth{WGS84Latest} coordinates
-        ├─ x: 1.0 m
-        └─ y: 1.0 m"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError UTMNorth{32}(T(1), T(1) * m)
-      @test_throws ArgumentError UTMNorth{32}(T(1) * s, T(1) * m)
-      @test_throws ArgumentError UTMNorth{32}(T(1) * m, T(1) * s)
-      @test_throws ArgumentError UTMNorth{32}(T(1) * s, T(1) * s)
-      # error: the UTM zone must be an integer between 1 and 60
-      @test_throws ArgumentError UTMNorth{61}(T(1), T(1))
-    end
-
-    @testset "UTMSouth" begin
-      @test UTMSouth{59}(T(1), T(1)) == UTMSouth{59}(T(1) * m, T(1) * m)
-      @test UTMSouth{59}(T(1) * m, 1 * m) == UTMSouth{59}(T(1) * m, T(1) * m)
-      @test UTMSouth{59}(T(1) * km, T(1) * km) == UTMSouth{59}(T(1000) * m, T(1000) * m)
-
-      c = UTMSouth{59}(T(1), T(1))
-      @test sprint(show, c) == "UTMSouth{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        UTMSouth{WGS84Latest} coordinates
-        ├─ x: 1.0f0 m
-        └─ y: 1.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        UTMSouth{WGS84Latest} coordinates
-        ├─ x: 1.0 m
-        └─ y: 1.0 m"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError UTMSouth{59}(T(1), T(1) * m)
-      @test_throws ArgumentError UTMSouth{59}(T(1) * s, T(1) * m)
-      @test_throws ArgumentError UTMSouth{59}(T(1) * m, T(1) * s)
-      @test_throws ArgumentError UTMSouth{59}(T(1) * s, T(1) * s)
-      # error: the UTM zone must be an integer between 1 and 60
-      @test_throws ArgumentError UTMSouth{61}(T(1), T(1))
-    end
-
-    @testset "ShiftedCRS" begin
-      ShiftedMercator = CoordRefSystems.shift(Mercator, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-      @test ShiftedMercator(T(1), T(1)) == ShiftedMercator(T(1) * m, T(1) * m)
-      @test ShiftedMercator(T(1) * m, 1 * m) == ShiftedMercator(T(1) * m, T(1) * m)
-      @test ShiftedMercator(T(1) * km, T(1) * km) == ShiftedMercator(T(1000) * m, T(1000) * m)
-
-      c = ShiftedMercator(T(1), T(1))
-      @test sprint(show, c) == "ShiftedMercator{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
-        ├─ x: 1.0f0 m
-        └─ y: 1.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        ShiftedMercator{WGS84Latest} coordinates with lonₒ: 15.0°, xₒ: 200.0 m, yₒ: 200.0 m
-        ├─ x: 1.0 m
-        └─ y: 1.0 m"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError ShiftedMercator(T(1), T(1) * m)
-      @test_throws ArgumentError ShiftedMercator(T(1) * s, T(1) * m)
-      @test_throws ArgumentError ShiftedMercator(T(1) * m, T(1) * s)
-      @test_throws ArgumentError ShiftedMercator(T(1) * s, T(1) * s)
     end
   end
 end

@@ -20,6 +20,7 @@ include("ellipsoids.jl")
 include("datums.jl")
 include("transforms.jl")
 include("crs.jl")
+include("utm.jl")
 include("shift.jl")
 include("codes.jl")
 include("strings.jl")
@@ -84,15 +85,15 @@ export
   Robinson,
   OrthoNorth,
   OrthoSouth,
-  UTM,
-  UTMNorth,
-  UTMSouth,
   datum,
   indomain,
 
   # hemispheres
   North,
   South,
+
+  # UTM
+  utm,
 
   # codes
   EPSG,

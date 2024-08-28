@@ -17,9 +17,6 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
     (isapproxlon180(coords₁.lon; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
   )
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CoordRefSystems.ShiftedCRS} =
-  allapprox(CoordRefSystems._coords(coords₁), CoordRefSystems._coords(coords₂); kwargs...)
-
 isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
 function isapproxtest2D(CRS)

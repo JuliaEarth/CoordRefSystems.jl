@@ -3,37 +3,42 @@
 # ------------------------------------------------------------------
 
 """
-    EquidistantCylindrical{latₜₛ,Datum}
+    EquidistantCylindrical{latₜₛ,Datum,Shift}
 
-Equidistant Cylindrical CRS with latitude of true scale `latₜₛ` in degrees and a given `Datum`.
+Equidistant Cylindrical CRS with latitude of true scale `latₜₛ` in degrees, `Datum` and `Shift`.
 """
-struct EquidistantCylindrical{latₜₛ,Datum,M<:Met} <: Projected{Datum}
+struct EquidistantCylindrical{latₜₛ,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-EquidistantCylindrical{latₜₛ,Datum}(x::M, y::M) where {latₜₛ,Datum,M<:Met} =
-  EquidistantCylindrical{latₜₛ,Datum,float(M)}(x, y)
-EquidistantCylindrical{latₜₛ,Datum}(x::Met, y::Met) where {latₜₛ,Datum} =
-  EquidistantCylindrical{latₜₛ,Datum}(promote(x, y)...)
-EquidistantCylindrical{latₜₛ,Datum}(x::Len, y::Len) where {latₜₛ,Datum} =
-  EquidistantCylindrical{latₜₛ,Datum}(uconvert(m, x), uconvert(m, y))
-EquidistantCylindrical{latₜₛ,Datum}(x::Number, y::Number) where {latₜₛ,Datum} =
-  EquidistantCylindrical{latₜₛ,Datum}(addunit(x, m), addunit(y, m))
+EquidistantCylindrical{latₜₛ,Datum,Shift}(x::M, y::M) where {latₜₛ,Datum,Shift,M<:Met} =
+  EquidistantCylindrical{latₜₛ,Datum,Shift,float(M)}(x, y)
+EquidistantCylindrical{latₜₛ,Datum,Shift}(x::Met, y::Met) where {latₜₛ,Datum,Shift} =
+  EquidistantCylindrical{latₜₛ,Datum,Shift}(promote(x, y)...)
+EquidistantCylindrical{latₜₛ,Datum,Shift}(x::Len, y::Len) where {latₜₛ,Datum,Shift} =
+  EquidistantCylindrical{latₜₛ,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+EquidistantCylindrical{latₜₛ,Datum,Shift}(x::Number, y::Number) where {latₜₛ,Datum,Shift} =
+  EquidistantCylindrical{latₜₛ,Datum,Shift}(addunit(x, m), addunit(y, m))
+
+EquidistantCylindrical{latₜₛ,Datum}(args...) where {latₜₛ,Datum} = EquidistantCylindrical{latₜₛ,Datum,Shift()}(args...)
 
 EquidistantCylindrical{latₜₛ}(args...) where {latₜₛ} = EquidistantCylindrical{latₜₛ,WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{EquidistantCylindrical{latₜₛ,Datum,M}},
-  coords::EquidistantCylindrical{latₜₛ,Datum}
-) where {latₜₛ,Datum,M} = EquidistantCylindrical{latₜₛ,Datum,M}(coords.x, coords.y)
+  ::Type{EquidistantCylindrical{latₜₛ,Datum,Shift,M}},
+  coords::EquidistantCylindrical{latₜₛ,Datum,Shift}
+) where {latₜₛ,Datum,Shift,M} = EquidistantCylindrical{latₜₛ,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,Datum} = EquidistantCylindrical{latₜₛ,Datum}
+constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum,Shift}}) where {latₜₛ,Datum,Shift} =
+  EquidistantCylindrical{latₜₛ,Datum,Shift}
 
-lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,M}}) where {latₜₛ,Datum,M} = M
+lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,Shift,M}}) where {latₜₛ,Datum,Shift,M} = M
 
-==(coords₁::EquidistantCylindrical{latₜₛ,Datum}, coords₂::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum} =
-  coords₁.x == coords₂.x && coords₁.y == coords₂.y
+==(
+  coords₁::EquidistantCylindrical{latₜₛ,Datum,Shift},
+  coords₂::EquidistantCylindrical{latₜₛ,Datum,Shift}
+) where {latₜₛ,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
     PlateCarree(x, y)
@@ -54,7 +59,7 @@ PlateCarree{WGS84Latest}(1.0m, 1.0m)
 
 See [EPSG:32662](https://epsg.io/32662).
 """
-const PlateCarree{Datum} = EquidistantCylindrical{0.0°,Datum}
+const PlateCarree{Datum,Shift} = EquidistantCylindrical{0.0°,Datum,Shift}
 
 # ------------
 # CONVERSIONS
@@ -70,17 +75,13 @@ function formulas(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}, ::Type{T}) 
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::EquidistantCylindrical{latₜₛ,Datum}) where {latₜₛ,Datum}
-  🌎 = ellipsoid(Datum)
-  x = coords.x
-  y = coords.y
-  a = oftype(x, majoraxis(🌎))
-  ϕₜₛ = numconvert(numtype(x), deg2rad(latₜₛ))
+function backward(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}, x, y) where {latₜₛ,Datum}
+  ϕₜₛ = oftype(x, ustrip(deg2rad(latₜₛ)))
 
-  λ = x / (cos(ϕₜₛ) * a)
-  ϕ = y / a
+  λ = x / cos(ϕₜₛ)
+  ϕ = y
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------

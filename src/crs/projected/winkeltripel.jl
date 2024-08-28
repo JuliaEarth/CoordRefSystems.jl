@@ -2,26 +2,35 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-struct Winkel{lat₁,Datum,M<:Met} <: Projected{Datum}
+"""
+    Winkel{lat₁,Datum,Shift}
+
+Winkel CRS with first standard parallel `lat₁`, `Datum` and `Shift`.
+"""
+struct Winkel{lat₁,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-Winkel{lat₁,Datum}(x::M, y::M) where {lat₁,Datum,M<:Met} = Winkel{lat₁,Datum,float(M)}(x, y)
-Winkel{lat₁,Datum}(x::Met, y::Met) where {lat₁,Datum} = Winkel{lat₁,Datum}(promote(x, y)...)
-Winkel{lat₁,Datum}(x::Len, y::Len) where {lat₁,Datum} = Winkel{lat₁,Datum}(uconvert(m, x), uconvert(m, y))
-Winkel{lat₁,Datum}(x::Number, y::Number) where {lat₁,Datum} = Winkel{lat₁,Datum}(addunit(x, m), addunit(y, m))
+Winkel{lat₁,Datum,Shift}(x::M, y::M) where {lat₁,Datum,Shift,M<:Met} = Winkel{lat₁,Datum,Shift,float(M)}(x, y)
+Winkel{lat₁,Datum,Shift}(x::Met, y::Met) where {lat₁,Datum,Shift} = Winkel{lat₁,Datum,Shift}(promote(x, y)...)
+Winkel{lat₁,Datum,Shift}(x::Len, y::Len) where {lat₁,Datum,Shift} =
+  Winkel{lat₁,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Winkel{lat₁,Datum,Shift}(x::Number, y::Number) where {lat₁,Datum,Shift} =
+  Winkel{lat₁,Datum,Shift}(addunit(x, m), addunit(y, m))
+
+Winkel{lat₁,Datum}(args...) where {lat₁,Datum} = Winkel{lat₁,Datum,Shift()}(args...)
 
 Winkel{lat₁}(args...) where {lat₁} = Winkel{lat₁,WGS84Latest}(args...)
 
-Base.convert(::Type{Winkel{lat₁,Datum,M}}, coords::Winkel{lat₁,Datum}) where {lat₁,Datum,M} =
-  Winkel{lat₁,Datum,M}(coords.x, coords.y)
+Base.convert(::Type{Winkel{lat₁,Datum,Shift,M}}, coords::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift,M} =
+  Winkel{lat₁,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:Winkel{lat₁,Datum}}) where {lat₁,Datum} = Winkel{lat₁,Datum}
+constructor(::Type{<:Winkel{lat₁,Datum,Shift}}) where {lat₁,Datum,Shift} = Winkel{lat₁,Datum,Shift}
 
-lentype(::Type{<:Winkel{lat₁,Datum,M}}) where {lat₁,Datum,M} = M
+lentype(::Type{<:Winkel{lat₁,Datum,Shift,M}}) where {lat₁,Datum,Shift,M} = M
 
-==(coords₁::Winkel{lat₁,Datum}, coords₂::Winkel{lat₁,Datum}) where {lat₁,Datum} =
+==(coords₁::Winkel{lat₁,Datum,Shift}, coords₂::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 """
@@ -43,7 +52,7 @@ WinkelTripel{WGS84Latest}(1.0m, 1.0m)
 
 See [ESRI:54042](https://epsg.io/54042).
 """
-const WinkelTripel{Datum} = Winkel{50.467°,Datum}
+const WinkelTripel{Datum,Shift} = Winkel{50.467°,Datum,Shift}
 
 # ------------
 # CONVERSIONS
@@ -72,19 +81,15 @@ function formulas(::Type{<:Winkel{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::C) where {lat₁,Datum,C<:Winkel{lat₁,Datum}}
-  T = numtype(coords.x)
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
+function backward(C::Type{<:Winkel}, x, y)
+  T = typeof(x)
   tol = atol(T)
-  λ, ϕ = if abs(x) < tol && abs(y) < tol
+  if abs(x) < tol && abs(y) < tol
     zero(T), zero(T)
   else
     fx, fy = formulas(C, T)
     projinv(fx, fy, x, y, x, y; tol)
   end
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
 end
 
 # ----------

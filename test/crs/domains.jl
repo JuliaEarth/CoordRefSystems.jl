@@ -198,10 +198,10 @@
   end
 
   @testset "TransverseMercator forward" begin
-    TM = CoordRefSystems.TransverseMercator{0.9996,15.0°,25.0°}
+    TM = CoordRefSystems.shift(CoordRefSystems.TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
-      if indomain(TM{WGS84Latest}, c1)
+      if indomain(TM, c1)
         c2 = convert(TM, c1)
         @test isfinite(c2.x)
         @test isfinite(c2.y)
@@ -212,27 +212,29 @@
   end
 
   @testset "UTMNorth forward" begin
+    UTMNorth32 = utm(North, 32)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
-      if indomain(UTMNorth{32,WGS84Latest}, c1)
-        c2 = convert(UTMNorth{32}, c1)
+      if indomain(UTMNorth32, c1)
+        c2 = convert(UTMNorth32, c1)
         @test isfinite(c2.x)
         @test isfinite(c2.y)
       else
-        @test_throws ArgumentError convert(UTMNorth{32}, c1)
+        @test_throws ArgumentError convert(UTMNorth32, c1)
       end
     end
   end
 
   @testset "UTMSouth forward" begin
+    UTMSouth59 = utm(South, 59)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
-      if indomain(UTMSouth{59,WGS84Latest}, c1)
-        c2 = convert(UTMSouth{59}, c1)
+      if indomain(UTMSouth59, c1)
+        c2 = convert(UTMSouth59, c1)
         @test isfinite(c2.x)
         @test isfinite(c2.y)
       else
-        @test_throws ArgumentError convert(UTMSouth{59}, c1)
+        @test_throws ArgumentError convert(UTMSouth59, c1)
       end
     end
   end

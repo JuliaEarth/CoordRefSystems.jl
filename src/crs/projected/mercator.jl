@@ -21,25 +21,29 @@ Mercator{WGS84Latest}(1.0m, 1.0m)
 
 See [EPSG:3395](https://epsg.io/3395).
 """
-struct Mercator{Datum,M<:Met} <: Projected{Datum}
+struct Mercator{Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-Mercator{Datum}(x::M, y::M) where {Datum,M<:Met} = Mercator{Datum,float(M)}(x, y)
-Mercator{Datum}(x::Met, y::Met) where {Datum} = Mercator{Datum}(promote(x, y)...)
-Mercator{Datum}(x::Len, y::Len) where {Datum} = Mercator{Datum}(uconvert(m, x), uconvert(m, y))
-Mercator{Datum}(x::Number, y::Number) where {Datum} = Mercator{Datum}(addunit(x, m), addunit(y, m))
+Mercator{Datum,Shift}(x::M, y::M) where {Datum,Shift,M<:Met} = Mercator{Datum,Shift,float(M)}(x, y)
+Mercator{Datum,Shift}(x::Met, y::Met) where {Datum,Shift} = Mercator{Datum,Shift}(promote(x, y)...)
+Mercator{Datum,Shift}(x::Len, y::Len) where {Datum,Shift} = Mercator{Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Mercator{Datum,Shift}(x::Number, y::Number) where {Datum,Shift} = Mercator{Datum,Shift}(addunit(x, m), addunit(y, m))
+
+Mercator{Datum}(args...) where {Datum} = Mercator{Datum,Shift()}(args...)
 
 Mercator(args...) = Mercator{WGS84Latest}(args...)
 
-Base.convert(::Type{Mercator{Datum,M}}, coords::Mercator{Datum}) where {Datum,M} = Mercator{Datum,M}(coords.x, coords.y)
+Base.convert(::Type{Mercator{Datum,Shift,M}}, coords::Mercator{Datum,Shift}) where {Datum,Shift,M} =
+  Mercator{Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:Mercator{Datum}}) where {Datum} = Mercator{Datum}
+constructor(::Type{<:Mercator{Datum,Shift}}) where {Datum,Shift} = Mercator{Datum,Shift}
 
-lentype(::Type{<:Mercator{Datum,M}}) where {Datum,M} = M
+lentype(::Type{<:Mercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
-==(coords₁::Mercator{Datum}, coords₂::Mercator{Datum}) where {Datum} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+==(coords₁::Mercator{Datum,Shift}, coords₂::Mercator{Datum,Shift}) where {Datum,Shift} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -57,13 +61,10 @@ function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
-function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Datum}
+function backward(::Type{<:Mercator{Datum}}, x, y) where {Datum}
   🌎 = ellipsoid(Datum)
-  x = coords.x
-  y = coords.y
-  a = oftype(x, majoraxis(🌎))
-  e = convert(numtype(x), eccentricity(🌎))
-  e² = convert(numtype(x), eccentricity²(🌎))
+  e = oftype(x, eccentricity(🌎))
+  e² = oftype(x, eccentricity²(🌎))
   ome² = 1 - e²
 
   # τ′(τ)
@@ -76,15 +77,15 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Mercator{Datum}) where {Dat
   # dτ′/dτ
   df(τ) = (ome² * sqrt(1 + f(τ)^2) * sqrt(1 + τ^2)) / (1 + ome² * τ^2)
 
-  ψ = y / a
+  ψ = y
   τ′ = sinh(ψ)
   τ₀ = abs(τ′) > 70 ? (τ′ * exp(e * atanh(e))) : (τ′ / ome²)
   τ = newton(τ -> f(τ) - τ′, df, τ₀, maxiter=5)
 
-  λ = x / a
+  λ = x
   ϕ = atan(τ)
 
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  λ, ϕ
 end
 
 # ----------

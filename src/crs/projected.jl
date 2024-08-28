@@ -3,13 +3,22 @@
 # ------------------------------------------------------------------
 
 """
-    Projected{Datum}
+    Projected{Datum,Shift}
 
-Projected CRS with a given `Datum`.
+Projected CRS with a given `Datum` and `Shift`.
 """
-abstract type Projected{Datum} <: CRS{Datum} end
+abstract type Projected{Datum,Shift} <: CRS{Datum} end
 
 ndims(::Type{<:Projected}) = 2
+
+"""
+    CoordRefSystems.projshift(CRS::Type{<:Projected})
+
+Retrieve shift parameters of the projected `CRS`.
+"""
+projshift(::Type{<:Projected}) = Shift()
+
+projshift(::Type{<:Projected{Datum,Shift}}) where {Datum,Shift} = Shift
 
 """
     formulas(CRS::Type{<:Projected}, T)
@@ -18,6 +27,32 @@ Returns the forward formulas of the `CRS`: `fx(λ, ϕ)` and `fy(λ, ϕ)`,
 with `f(λ::T, ϕ::T) -> T` for both functions.
 """
 function formulas end
+
+"""
+    forward(CRS::Type{<:Projected}, λ, ϕ)
+
+Forward longitude `λ` and latitude `ϕ` in radians to `x` and `y` in meters
+using `CRS` formulas. Both inputs and outputs are unitless.
+"""
+function forward(::Type{C}, λ, ϕ) where {C<:Projected}
+  T = typeof(λ)
+  fx, fy = formulas(C, T)
+  x = fx(λ, ϕ)
+  y = fy(λ, ϕ)
+  x, y
+end
+
+"""
+    backward(CRS::Type{<:Projected}, x, y)
+
+Backward `x` and `y` in meters to longitude `λ` and latitude `ϕ` in radians
+using `CRS` formulas. Both inputs and outputs are unitless.
+"""
+function backward(::Type{C}, x, y) where {C<:Projected}
+  T = typeof(x)
+  fx, fy = formulas(C, T)
+  projinv(fx, fy, x, y, x, y)
+end
 
 """
     inbounds(CRS::Type{<:Projected}, λ, ϕ)
@@ -31,7 +66,10 @@ inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 
 
 Checks whether `latlon` coordinates are within the `CRS` domain.
 """
-indomain(C::Type{<:Projected}, (; lat, lon)::LatLon) = inbounds(C, ustrip(deg2rad(lon)), ustrip(deg2rad(lat)))
+function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
+  lonₒ = oftype(lon, projshift(C).lonₒ)
+  inbounds(C, ustrip(deg2rad(lon - lonₒ)), ustrip(deg2rad(lat)))
+end
 
 Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
@@ -59,35 +97,38 @@ include("projected/winkeltripel.jl")
 include("projected/robinson.jl")
 include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
-include("projected/utm.jl")
-include("projected/shifted.jl")
 
 # ----------
 # FALLBACKS
 # ----------
 
 function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
+  S = projshift(C)
   T = numtype(coords.lon)
-  λ = ustrip(deg2rad(coords.lon))
+  a = numconvert(T, majoraxis(ellipsoid(Datum)))
+  xₒ = numconvert(T, S.xₒ)
+  yₒ = numconvert(T, S.yₒ)
+  lonₒ = numconvert(T, S.lonₒ)
+  λ = ustrip(deg2rad(coords.lon - lonₒ))
   ϕ = ustrip(deg2rad(coords.lat))
   if !inbounds(C, λ, ϕ)
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
-  a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  fx, fy = formulas(C, T)
-  x = fx(λ, ϕ) * a
-  y = fy(λ, ϕ) * a
-  C(x, y)
+  x, y = forward(C, λ, ϕ)
+  C(x * a + xₒ, y * a + yₒ)
 end
 
 function Base.convert(::Type{LatLon{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
+  S = projshift(C)
   T = numtype(coords.x)
   a = numconvert(T, majoraxis(ellipsoid(Datum)))
-  x = coords.x / a
-  y = coords.y / a
-  fx, fy = formulas(C, T)
-  λ, ϕ = projinv(fx, fy, x, y, x, y)
-  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ))
+  xₒ = numconvert(T, S.xₒ)
+  yₒ = numconvert(T, S.yₒ)
+  lonₒ = numconvert(T, S.lonₒ)
+  x = (coords.x - xₒ) / a
+  y = (coords.y - yₒ) / a
+  λ, ϕ = backward(C, x, y)
+  LatLon{Datum}(phi2lat(ϕ), lam2lon(λ) + lonₒ)
 end
 
 Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ} =

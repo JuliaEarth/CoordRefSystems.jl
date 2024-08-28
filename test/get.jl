@@ -3,7 +3,7 @@
 
   # EPSG/ESRI code
   @test CoordRefSystems.get(EPSG{2157}) ===
-        CoordRefSystems.shift(TM{0.99982,53.5°,-8.0°,IRENET95}, xₒ=600000.0m, yₒ=750000.0m)
+        CoordRefSystems.shift(TM{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
   @test CoordRefSystems.get(EPSG{3395}) === Mercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{3857}) === WebMercator{WGS84Latest}
   @test CoordRefSystems.get(EPSG{4208}) === LatLon{Aratu}
@@ -17,22 +17,22 @@
   @test CoordRefSystems.get(EPSG{9988}) === Cartesian{ITRF{2020},3}
   @test CoordRefSystems.get(EPSG{10176}) === Cartesian{IGS20,3}
   @test CoordRefSystems.get(EPSG{27700}) ===
-        CoordRefSystems.shift(TM{0.9996012717,49.0°,-2.0°,OSGB36}, xₒ=400000.0m, yₒ=-100000.0m)
+        CoordRefSystems.shift(TM{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
   @test CoordRefSystems.get(EPSG{29903}) ===
-        CoordRefSystems.shift(TM{1.000035,53.5°,-8.0°,Ire65}, xₒ=200000.0m, yₒ=250000.0m)
+        CoordRefSystems.shift(TM{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
   @test CoordRefSystems.get(EPSG{32662}) === PlateCarree{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54017}) === Behrmann{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54030}) === Robinson{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54034}) === Lambert{WGS84Latest}
   @test CoordRefSystems.get(ESRI{54042}) === WinkelTripel{WGS84Latest}
-  @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{90.0°,0.0°,true,WGS84Latest}
-  @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{-90.0°,0.0°,true,WGS84Latest}
+  @test CoordRefSystems.get(ESRI{102035}) === CoordRefSystems.Orthographic{true,90°,WGS84Latest}
+  @test CoordRefSystems.get(ESRI{102037}) === CoordRefSystems.Orthographic{true,-90°,WGS84Latest}
 
-  for Zone in 1:60
-    NorthCode = 32600 + Zone
-    SouthCode = 32700 + Zone
-    @test CoordRefSystems.get(EPSG{NorthCode}) === UTM{North,Zone,WGS84Latest}
-    @test CoordRefSystems.get(EPSG{SouthCode}) === UTM{South,Zone,WGS84Latest}
+  for zone in 1:60
+    NorthCode = 32600 + zone
+    SouthCode = 32700 + zone
+    @test CoordRefSystems.get(EPSG{NorthCode}) === utm(North, zone, datum=WGS84Latest)
+    @test CoordRefSystems.get(EPSG{SouthCode}) === utm(South, zone, datum=WGS84Latest)
   end
 
   # CRS string
