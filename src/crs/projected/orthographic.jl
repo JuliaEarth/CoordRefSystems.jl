@@ -5,7 +5,7 @@
 """
     Orthographic{Mode,latₒ,Datum,Shift}
 
-Orthographic CRS with formula `Mode`, latitude origin `latₒ`, `Datum` and `Shift`.
+Orthographic CRS with given `Mode`, latitude origin `latₒ`, `Datum` and `Shift`.
 """
 struct Orthographic{Mode,latₒ,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
