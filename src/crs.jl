@@ -170,8 +170,6 @@ function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
   convert(C, coords′)
 end
 
-Base.promote
-
 # -----------
 # IO METHODS
 # -----------
