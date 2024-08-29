@@ -104,6 +104,9 @@ lentype(coords::CRS) = lentype(typeof(coords))
 mactype(coords::CRS) = mactype(typeof(coords))
 mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
+withmactype(::Type{T}, coords::CRS) where {T} =
+  constructor(coords)((numconvert(T, getproperty(coords, nm)) for nm in names(coords))...)
+
 """
     datum(coords)
 
@@ -121,10 +124,13 @@ are approximate using the `isapprox` function.
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
 
-function Base.promote(coords₁::C₁, coords::CRS...) where {C₁<:CRS}
-  T = promote_type(mactype(coords₁), mactype.(coords)...)
-  C = withmactype(C₁, T)
-  (convert(C, coords₁), convert.(C, coords)...)
+function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
+  allcoords = (coords₁, coords₂, others...)
+  # promote the machine type of the coordinates
+  T = promote_type(mactype.(allcoords)...)
+  allcoords′ = withmactype.(T, allcoords)
+  # convert the coordinates to the same CRS
+  convert.(constructor(coords₁), allcoords′)
 end
 
 """

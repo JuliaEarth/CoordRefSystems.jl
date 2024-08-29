@@ -56,8 +56,6 @@ end
 
 lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
-withmactype(::Type{<:GeodeticLatLon{Datum,D}}, ::Type{T}) where {Datum,D,T} = GeodeticLatLon{Datum,withnumtype(D, T)}
-
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
@@ -137,9 +135,6 @@ end
 
 lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
-withmactype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}, ::Type{T}) where {Datum,D,M,T} =
-  GeodeticLatLonAlt{Datum,withnumtype(D, T),withnumtype(M, T)}
-
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
 
@@ -212,9 +207,6 @@ end
 
 lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 
-withmactype(::Type{<:GeocentricLatLon{Datum,D}}, ::Type{T}) where {Datum,D,T} =
-  GeocentricLatLon{Datum,withnumtype(D, T)}
-
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
@@ -265,8 +257,6 @@ function reconstruct(C::Type{<:AuthalicLatLon}, raw)
 end
 
 lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
-
-withmactype(::Type{<:AuthalicLatLon{Datum,D}}, ::Type{T}) where {Datum,D,T} = AuthalicLatLon{Datum,withnumtype(D, T)}
 
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon

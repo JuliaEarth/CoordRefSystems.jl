@@ -54,8 +54,6 @@ Converts the number type of quantity `x` to `T`.
 """
 numconvert(::Type{T}, x::Quantity{S,D,U}) where {T,S,D,U} = convert(Quantity{T,D,U}, x)
 
-withnumtype(::Type{Quantity{S,D,U}}, ::Type{T}) where {S,D,U,T} = Quantity{T,D,U}
-
 """
     atanpos(x, y)
 
