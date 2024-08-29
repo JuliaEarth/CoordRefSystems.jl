@@ -125,18 +125,19 @@ Convert the machine type of `coords` to `T`.
 withmactype(::Type{T}, coords::CRS) where {T} = constructor(coords)(numconvert.(T, values(coords))...)
 
 """
-    promote(coords₁, coords₂, ..., coordsₙ)
+    promote(coords₁, coords₂)
 
-Promote all coordinates to the same CRS as `coords₁`
+Promote both coordinates to the same CRS as `coords₁`
 and the same appropriate machine type.
 """
-function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
-  allcoords = (coords₁, coords₂, others...)
+function Base.promote(coords₁::CRS, coords₂::CRS)
   # promote the machine type of the coordinates
-  T = promote_type(mactype.(allcoords)...)
-  allcoords′ = withmactype.(T, allcoords)
+  T = promote_type(mactype(coords₁), mactype(coords₂))
+  coords₁′ = withmactype(T, coords₁)
+  coords₂′ = withmactype(T, coords₂)
   # convert the coordinates to the same CRS
-  convert.(constructor(coords₁), allcoords′)
+  C = constructor(coords₁)
+  convert(C, coords₁′), convert(C, coords₂′)
 end
 
 """
