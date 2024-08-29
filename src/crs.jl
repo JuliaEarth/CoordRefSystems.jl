@@ -102,7 +102,7 @@ Length unit type of `coords`.
 lentype(coords::CRS) = lentype(typeof(coords))
 
 """
-    CoordRefSystems.lentype(coords)
+    CoordRefSystems.mactype(coords)
 
 Machine type type of `coords`.
 """
