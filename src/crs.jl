@@ -10,6 +10,14 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 """
+    datum(coords)
+
+Datum of the coordinates `coords`.
+"""
+datum(coords::CRS) = datum(typeof(coords))
+datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
+
+"""
     CoordRefSystems.ncoords(coords)
 
 Number of coordinates of `coords`.
@@ -102,12 +110,34 @@ Length unit type of `coords`.
 lentype(coords::CRS) = lentype(typeof(coords))
 
 """
-    datum(coords)
+    CoordRefSystems.mactype(coords)
 
-Datum of the coordinates `coords`.
+Machine type type of `coords`.
 """
-datum(coords::CRS) = datum(typeof(coords))
-datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
+mactype(coords::CRS) = mactype(typeof(coords))
+mactype(C::Type{<:CRS}) = numtype(lentype(C))
+
+"""
+    CoordRefSystems.withmactype(T, coords)
+
+Convert the machine type of `coords` to `T`.
+"""
+withmactype(::Type{T}, coords::CRS) where {T} = constructor(coords)(numconvert.(T, values(coords))...)
+
+"""
+    promote(coords₁, coords₂, ..., coordsₙ)
+
+Promote all coordinates to the same CRS as `coords₁`
+and the same appropriate machine type.
+"""
+function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
+  allcoords = (coords₁, coords₂, others...)
+  # promote the machine type of the coordinates
+  T = promote_type(mactype.(allcoords)...)
+  allcoords′ = withmactype.(T, allcoords)
+  # convert the coordinates to the same CRS
+  convert.(constructor(coords₁), allcoords′)
+end
 
 """
     isapprox(coords₁, coords₂; kwargs...)

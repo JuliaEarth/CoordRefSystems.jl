@@ -3,6 +3,13 @@
   ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
 
+  @testset "datum" begin
+    c = Cartesian(T(1), T(1))
+    @test datum(c) === NoDatum
+    c = LatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
+  end
+
   @testset "ncoords" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
@@ -311,11 +318,104 @@
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
-  @testset "datum" begin
+  @testset "mactype" begin
     c = Cartesian(T(1), T(1))
-    @test datum(c) === NoDatum
-    c = LatLon(T(1), T(1))
-    @test datum(c) === WGS84Latest
+    @test CoordRefSystems.mactype(c) == T
+    c = Polar(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = Cylindrical(T(1), T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = Spherical(T(1), T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = LatLon(T(30), T(60))
+    @test CoordRefSystems.mactype(c) == T
+    c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.mactype(c) == T
+    c = AuthalicLatLon(T(30), T(60))
+    @test CoordRefSystems.mactype(c) == T
+    c = Mercator(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = WebMercator(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = PlateCarree(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = Lambert(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = WinkelTripel(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = Robinson(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = OrthoNorth(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = ShiftedTM(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = UTMNorth32(T(1), T(1))
+    @test CoordRefSystems.mactype(c) == T
+    c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.mactype(c) == T
+  end
+
+  @testset "withmactype" begin
+    withmactypetest(Cartesian2D, T)
+    withmactypetest(Cartesian3D, T)
+    withmactypetest(Polar, T)
+    withmactypetest(Cylindrical, T)
+    withmactypetest(Spherical, T)
+    withmactypetest(LatLon, T)
+    withmactypetest(LatLonAlt, T)
+    withmactypetest(GeocentricLatLon, T)
+    withmactypetest(AuthalicLatLon, T)
+    withmactypetest(Mercator, T)
+    withmactypetest(WebMercator, T)
+    withmactypetest(PlateCarree, T)
+    withmactypetest(Lambert, T)
+    withmactypetest(WinkelTripel, T)
+    withmactypetest(Robinson, T)
+    withmactypetest(OrthoNorth, T)
+    withmactypetest(UTMNorth32, T)
+    withmactypetest(ShiftedTM, T)
+    withmactypetest(ShiftedMercator, T)
+  end
+
+  @testset "promote" begin
+    c1 = LatLon(T(30), T(60))
+    c2 = LatLon(30.0, 60.0)
+    c3 = LatLon(30.0f0, 60.0f0)
+    c4 = convert(Mercator, c1)
+    c5 = convert(PlateCarree, c2)
+    c6 = convert(Lambert, c3)
+    if T == Float32
+      cs = promote(c1, c2)
+      @test allequal(CoordRefSystems.mactype.(cs))
+      @test CoordRefSystems.mactype(first(cs)) == Float64
+      cs = promote(c1, c3)
+      @test allequal(CoordRefSystems.mactype.(cs))
+      @test CoordRefSystems.mactype(first(cs)) == Float32
+    else
+      cs = promote(c1, c2)
+      @test allequal(CoordRefSystems.mactype.(cs))
+      @test CoordRefSystems.mactype(first(cs)) == Float64
+      cs = promote(c1, c3)
+      @test allequal(CoordRefSystems.mactype.(cs))
+      @test CoordRefSystems.mactype(first(cs)) == Float64
+    end
+    cs = promote(c1, c2, c3)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == Float64
+    cs = promote(c1, c4)
+    @test all(c -> c isa LatLon, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == T
+    cs = promote(c1, c4, c5, c6)
+    @test all(c -> c isa LatLon, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == Float64
+    cs = promote(c4, c5, c6)
+    @test all(c -> c isa Mercator, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == Float64
   end
 
   @testset "equality" begin
