@@ -101,11 +101,35 @@ Length unit type of `coords`.
 """
 lentype(coords::CRS) = lentype(typeof(coords))
 
+"""
+    CoordRefSystems.lentype(coords)
+
+Machine type type of `coords`.
+"""
 mactype(coords::CRS) = mactype(typeof(coords))
 mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
-withmactype(::Type{T}, coords::CRS) where {T} =
-  constructor(coords)(ntuple(i -> numconvert(T, getfield(coords, i)), nfields(coords))...)
+"""
+    CoordRefSystems.withmactype(T, coords)
+
+Convert the machine type of `coords` to `T`.
+"""
+withmactype(::Type{T}, coords::CRS) where {T} = constructor(coords)(numconvert.(T, values(coords))...)
+
+"""
+    promote(coords₁, coords₂, ..., coordsₙ)
+
+Promote all coordinates to the same CRS as `coords₁`
+and the same appropriate machine type.
+"""
+function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
+  allcoords = (coords₁, coords₂, others...)
+  # promote the machine type of the coordinates
+  T = promote_type(mactype.(allcoords)...)
+  allcoords′ = withmactype.(T, allcoords)
+  # convert the coordinates to the same CRS
+  convert.(constructor(coords₁), allcoords′)
+end
 
 """
     datum(coords)
@@ -123,15 +147,6 @@ are approximate using the `isapprox` function.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
-
-function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
-  allcoords = (coords₁, coords₂, others...)
-  # promote the machine type of the coordinates
-  T = promote_type(mactype.(allcoords)...)
-  allcoords′ = withmactype.(T, allcoords)
-  # convert the coordinates to the same CRS
-  convert.(constructor(coords₁), allcoords′)
-end
 
 """
     CoordRefSystems.tol(coords)
