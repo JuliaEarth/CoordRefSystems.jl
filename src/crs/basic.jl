@@ -126,6 +126,8 @@ constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
 lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
+withmactype(::Type{<:Cartesian{Datum,N,L}}, ::Type{T}) where {Datum,N,L,T} = Cartesian{Datum,N,withnumtype(L, T)}
+
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
 Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =
@@ -213,6 +215,9 @@ constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
 
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
+withmactype(::Type{<:Polar{Datum,L,R}}, ::Type{T}) where {Datum,L,R,T} =
+  Polar{Datum,withnumtype(L, T),withnumtype(R, T)}
+
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Polar{Datum}}) where {Datum} = Polar{Datum}(rand(rng), 2π * rand(rng))
@@ -270,6 +275,9 @@ constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
 
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
+withmactype(::Type{<:Cylindrical{Datum,L,R}}, ::Type{T}) where {Datum,L,R,T} =
+  Cylindrical{Datum,withnumtype(L, T),withnumtype(R, T)}
+
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
@@ -324,6 +332,9 @@ ndims(::Type{<:Spherical}) = 3
 constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
 
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
+
+withmactype(::Type{<:Spherical{Datum,L,R}}, ::Type{T}) where {Datum,L,R,T} =
+  Spherical{Datum,withnumtype(L, T),withnumtype(R, T)}
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ

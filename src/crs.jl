@@ -101,6 +101,9 @@ Length unit type of `coords`.
 """
 lentype(coords::CRS) = lentype(typeof(coords))
 
+mactype(coords::CRS) = mactype(typeof(coords))
+mactype(C::Type{<:CRS}) = numtype(lentype(C))
+
 """
     datum(coords)
 
@@ -117,6 +120,12 @@ are approximate using the `isapprox` function.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
+
+function Base.promote(coords₁::C₁, coords::CRS...) where {C₁<:CRS}
+  T = promote_type(mactype(coords₁), mactype.(coords)...)
+  C = withmactype(C₁, T)
+  (convert(C, coords₁), convert.(C, coords)...)
+end
 
 """
     CoordRefSystems.tol(coords)
@@ -154,6 +163,8 @@ function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
   # convert machine type, units, ...
   convert(C, coords′)
 end
+
+Base.promote
 
 # -----------
 # IO METHODS
