@@ -3,6 +3,13 @@
   ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
 
+  @testset "datum" begin
+    c = Cartesian(T(1), T(1))
+    @test datum(c) === NoDatum
+    c = LatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
+  end
+
   @testset "ncoords" begin
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
@@ -409,13 +416,6 @@
     @test all(c -> c isa Mercator, cs)
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == Float64
-  end
-
-  @testset "datum" begin
-    c = Cartesian(T(1), T(1))
-    @test datum(c) === NoDatum
-    c = LatLon(T(1), T(1))
-    @test datum(c) === WGS84Latest
   end
 
   @testset "equality" begin

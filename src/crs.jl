@@ -10,6 +10,14 @@ Coordinate Reference System (CRS) with a given `Datum`.
 abstract type CRS{Datum} end
 
 """
+    datum(coords)
+
+Datum of the coordinates `coords`.
+"""
+datum(coords::CRS) = datum(typeof(coords))
+datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
+
+"""
     CoordRefSystems.ncoords(coords)
 
 Number of coordinates of `coords`.
@@ -130,14 +138,6 @@ function Base.promote(coords₁::CRS, coords₂::CRS, others::CRS...)
   # convert the coordinates to the same CRS
   convert.(constructor(coords₁), allcoords′)
 end
-
-"""
-    datum(coords)
-
-Datum of the coordinates `coords`.
-"""
-datum(coords::CRS) = datum(typeof(coords))
-datum(::Type{<:CRS{Datum}}) where {Datum} = Datum
 
 """
     isapprox(coords₁, coords₂; kwargs...)
