@@ -126,6 +126,8 @@ constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
 lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
+withmactype(::Type{T}, coords::Cartesian{Datum}) where {T,Datum} = Cartesian{Datum}(numconvert.(T, _coords(coords)))
+
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
 Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =

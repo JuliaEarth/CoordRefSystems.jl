@@ -105,7 +105,7 @@ mactype(coords::CRS) = mactype(typeof(coords))
 mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
 withmactype(::Type{T}, coords::CRS) where {T} =
-  constructor(coords)((numconvert(T, getproperty(coords, nm)) for nm in names(coords))...)
+  constructor(coords)(ntuple(i -> numconvert(T, getfield(coords, i)), nfields(coords))...)
 
 """
     datum(coords)
