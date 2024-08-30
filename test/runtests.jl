@@ -10,7 +10,7 @@ using Unitful: m, mm, cm, km, rad, °, s
 
 include("testutils.jl")
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "promotion.jl", "strings.jl", "get.jl", "misc.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION

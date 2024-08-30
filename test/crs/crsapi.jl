@@ -357,62 +357,6 @@
     @test CoordRefSystems.mactype(c) == T
   end
 
-  @testset "withmactype" begin
-    withmactypetest(Cartesian2D, T)
-    withmactypetest(Cartesian3D, T)
-    withmactypetest(Polar, T)
-    withmactypetest(Cylindrical, T)
-    withmactypetest(Spherical, T)
-    withmactypetest(LatLon, T)
-    withmactypetest(LatLonAlt, T)
-    withmactypetest(GeocentricLatLon, T)
-    withmactypetest(AuthalicLatLon, T)
-    withmactypetest(Mercator, T)
-    withmactypetest(WebMercator, T)
-    withmactypetest(PlateCarree, T)
-    withmactypetest(Lambert, T)
-    withmactypetest(WinkelTripel, T)
-    withmactypetest(Robinson, T)
-    withmactypetest(OrthoNorth, T)
-    withmactypetest(UTMNorth32, T)
-    withmactypetest(ShiftedTM, T)
-    withmactypetest(ShiftedMercator, T)
-  end
-
-  @testset "promote" begin
-    c1 = LatLon(T(30), T(60))
-    c2 = LatLon(30.0, 60.0)
-    c3 = LatLon(30.0f0, 60.0f0)
-    c4 = convert(Mercator, c1)
-    c5 = convert(PlateCarree, c2)
-    c6 = convert(Lambert, c3)
-    cs = promote(c1, c2)
-    @test allequal(CoordRefSystems.mactype.(cs))
-    @test CoordRefSystems.mactype(first(cs)) == Float64
-    cs = promote(c1, c3)
-    @test allequal(CoordRefSystems.mactype.(cs))
-    @test CoordRefSystems.mactype(first(cs)) == T
-    cs = promote(c1, c4)
-    @test all(c -> c isa LatLon, cs)
-    @test allequal(CoordRefSystems.mactype.(cs))
-    @test CoordRefSystems.mactype(first(cs)) == T
-    cs = promote(c4, c5)
-    @test all(c -> c isa Mercator, cs)
-    @test allequal(CoordRefSystems.mactype.(cs))
-    @test CoordRefSystems.mactype(first(cs)) == Float64
-    cs = promote(c5, c6)
-    @test all(c -> c isa PlateCarree, cs)
-    @test allequal(CoordRefSystems.mactype.(cs))
-    @test CoordRefSystems.mactype(first(cs)) == Float64
-
-    # type stability
-    @inferred promote(c1, c2)
-    @inferred promote(c1, c3)
-    @inferred promote(c1, c4)
-    @inferred promote(c4, c5)
-    @inferred promote(c5, c6)
-  end
-
   @testset "equality" begin
     equaltest(Cartesian, 2)
     equaltest(Cartesian, 3)

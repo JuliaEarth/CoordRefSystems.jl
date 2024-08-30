@@ -118,29 +118,6 @@ mactype(coords::CRS) = mactype(typeof(coords))
 mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
 """
-    CoordRefSystems.withmactype(T, coords)
-
-Convert the machine type of `coords` to `T`.
-"""
-withmactype(::Type{T}, coords::CRS) where {T} = constructor(coords)(numconvert.(T, values(coords))...)
-
-"""
-    promote(coords₁, coords₂)
-
-Promote both coordinates to the same CRS as `coords₁`
-and the same appropriate machine type.
-"""
-function Base.promote(coords₁::CRS, coords₂::CRS)
-  # promote the machine type of the coordinates
-  T = promote_type(mactype(coords₁), mactype(coords₂))
-  coords₁′ = withmactype(T, coords₁)
-  coords₂′ = withmactype(T, coords₂)
-  # convert the coordinates to the same CRS
-  C = constructor(coords₁)
-  convert(C, coords₁′), convert(C, coords₂′)
-end
-
-"""
     isapprox(coords₁, coords₂; kwargs...)
 
 Checks whether the coordinates `coords₁` and `coords₂`
