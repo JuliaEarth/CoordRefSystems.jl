@@ -2,9 +2,15 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-const DefaultDatum = WGS84Latest
-
+# we promote to Behrmann by default because
+# it preserves area near +/-30° latitude, but this
+# may change in the future after we have better
+# support for LatLon in downstream packages
 const DefaultCRS = Behrmann
+
+# we promote to WGS84Latest by default because
+# it is the most widely used datum nowadays
+const DefaultDatum = WGS84Latest
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Projected{Datum}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
