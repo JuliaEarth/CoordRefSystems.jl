@@ -4,16 +4,16 @@
 
 const DefaultDatum = WGS84Latest
 
-const DefaultProjected = Behrmann
+const DefaultCRS = Behrmann
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Projected{Datum}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
-  DefaultProjected{Datum,Shift(),Met{T}}
+  DefaultCRS{Datum,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum₁}}, C₂::Type{<:Projected{Datum₂}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  DefaultProjected{DefaultDatum,Shift(),Met{T}}
+  DefaultCRS{DefaultDatum,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Cartesian{Datum,2}}) where {Datum}
