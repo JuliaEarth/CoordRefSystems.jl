@@ -8,6 +8,7 @@
 const esriid2code = Dict(
   "British_National_Grid" => EPSG{27700},
   "GCS_MAGNA" => EPSG{4686},
+  "GCS_North_American_1983" => EPSG{4269},
   "GCS_SAD_1969_96" => EPSG{5527},
   "GCS_SIRGAS_2000" => EPSG{4674},
   "GCS_South_American_1969" => EPSG{4618},
