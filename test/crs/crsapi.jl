@@ -375,11 +375,11 @@
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == T
     cs = promote(c4, c5)
-    @test all(c -> c isa Mercator, cs)
+    @test all(c -> c isa Behrmann, cs)
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == Float64
     cs = promote(c5, c6)
-    @test all(c -> c isa Mercator, cs)
+    @test all(c -> c isa Behrmann, cs)
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == Float64
 
