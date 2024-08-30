@@ -2,14 +2,16 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+const DefaultProjected = Behrmann
+
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Projected{Datum}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
-  Behrmann{Datum,Shift(),Met{T}}
+  DefaultProjected{Datum,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum₁}}, C₂::Type{<:Projected{Datum₂}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  Behrmann{WGS84Latest,Shift(),Met{T}}
+  DefaultProjected{WGS84Latest,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Cartesian{Datum,2}}) where {Datum}
