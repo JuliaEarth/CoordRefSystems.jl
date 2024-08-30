@@ -136,8 +136,7 @@ function Base.promote(coords₁::CRS, coords₂::CRS)
   coords₁′ = withmactype(T, coords₁)
   coords₂′ = withmactype(T, coords₂)
   # convert the coordinates to the same CRS
-  C = constructor(coords₁)
-  convert(C, coords₁′), convert(C, coords₂′)
+  coords₁′, convert(constructor(coords₁), coords₂′)
 end
 
 """

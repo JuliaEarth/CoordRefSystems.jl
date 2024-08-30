@@ -151,7 +151,8 @@ Base.convert(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Da
 Base.convert(C::Type{LatLon{Datumₜ}}, coords::Projected{Datumₛ}) where {Datumₜ,Datumₛ} =
   convert(C, convert(LatLon, coords))
 
-Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian2D, coords)
+Base.convert(::Type{Cartesian}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum}, coords)
+Base.convert(::Type{Cartesian{Datum}}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
 
 Base.convert(::Type{Cartesian2D}, coords::Projected{Datum}) where {Datum} = convert(Cartesian{Datum,2}, coords)
 Base.convert(::Type{Cartesian{Datum,2}}, coords::Projected{Datum}) where {Datum} = Cartesian{Datum}(coords.x, coords.y)
@@ -179,3 +180,13 @@ end
 
 # avoid converting coordinates with the same type as the first argument
 Base.convert(::Type{C}, coords::C) where {Datum,C<:Projected{Datum}} = coords
+
+# special case for promotion with cartesian 3D
+function Base.promote(coords₁::Cartesian{Datum,3}, coords₂::Projected{Datum}) where {Datum}
+  # promote the machine type of the coordinates
+  T = promote_type(mactype(coords₁), mactype(coords₂))
+  coords₁′ = withmactype(T, coords₁)
+  coords₂′ = withmactype(T, coords₂)
+  # convert the coordinates to the same CRS
+  coords₁′, convert(Cartesian{Datum,3}, coords₂′)
+end

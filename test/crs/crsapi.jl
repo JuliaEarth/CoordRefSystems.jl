@@ -386,6 +386,8 @@
     c4 = convert(Mercator, c1)
     c5 = convert(PlateCarree, c2)
     c6 = convert(Lambert, c3)
+    c7 = convert(Cartesian2D, c4)
+    c8 = convert(Cartesian3D, c4)
     cs = promote(c1, c2)
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == Float64
@@ -404,6 +406,22 @@
     @test all(c -> c isa PlateCarree, cs)
     @test allequal(CoordRefSystems.mactype.(cs))
     @test CoordRefSystems.mactype(first(cs)) == Float64
+    cs = promote(c4, c7)
+    @test all(c -> c isa Mercator, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == T
+    cs = promote(c7, c4)
+    @test all(c -> c isa Cartesian2D, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == T
+    cs = promote(c4, c8)
+    @test all(c -> c isa Mercator, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == T
+    cs = promote(c8, c4)
+    @test all(c -> c isa Cartesian3D, cs)
+    @test allequal(CoordRefSystems.mactype.(cs))
+    @test CoordRefSystems.mactype(first(cs)) == T
 
     # type stability
     @inferred promote(c1, c2)
@@ -411,6 +429,10 @@
     @inferred promote(c1, c4)
     @inferred promote(c4, c5)
     @inferred promote(c5, c6)
+    @inferred promote(c4, c7)
+    @inferred promote(c7, c4)
+    @inferred promote(c4, c8)
+    @inferred promote(c8, c4)
   end
 
   @testset "equality" begin
