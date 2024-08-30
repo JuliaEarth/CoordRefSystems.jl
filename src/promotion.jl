@@ -4,15 +4,27 @@
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Projected{Datum}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
-  Mercator{Datum,Shift(),Met{T}}
+  Behrmann{Datum,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum₁}}, C₂::Type{<:Projected{Datum₂}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  Mercator{WGS84Latest,Shift(),Met{T}}
+  Behrmann{WGS84Latest,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Cartesian{Datum,2}}) where {Datum}
+  T = promote_type(mactype(C₁), mactype(C₂))
+  C = constructor(C₁)
+  C{Met{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Projected}, C₂::Type{<:Cartesian{NoDatum,2}})
+  T = promote_type(mactype(C₁), mactype(C₂))
+  C = constructor(C₁)
+  C{Met{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Cartesian{Datum,3}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
   C = constructor(C₁)
   C{Met{T}}
