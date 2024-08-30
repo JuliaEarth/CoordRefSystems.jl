@@ -71,14 +71,6 @@ function equaltest(CRS, n)
   @test c1 == c3
 end
 
-function withmactypetest(CRS, T)
-  n = CoordRefSystems.ncoords(CRS)
-  c1 = CRS(ntuple(_ -> 1.0, n)...)
-  c2 = CRS(ntuple(_ -> 1.0f0, n)...)
-  @test CoordRefSystems.mactype(CoordRefSystems.withmactype(T, c1)) == T
-  @test CoordRefSystems.mactype(CoordRefSystems.withmactype(T, c2)) == T
-end
-
 function randtest(CRS)
   rng = StableRNG(123)
 
