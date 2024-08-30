@@ -2,6 +2,8 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
+const DefaultDatum = WGS84Latest
+
 const DefaultProjected = Behrmann
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Projected{Datum}}) where {Datum}
@@ -11,7 +13,7 @@ end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum₁}}, C₂::Type{<:Projected{Datum₂}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  DefaultProjected{WGS84Latest,Shift(),Met{T}}
+  DefaultProjected{DefaultDatum,Shift(),Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Projected{Datum}}, C₂::Type{<:Cartesian{Datum,2}}) where {Datum}
@@ -43,9 +45,14 @@ function Base.promote_rule(C₁::Type{<:Cartesian{Datum,N}}, C₂::Type{<:Cartes
   Cartesian{Datum,N,Met{T}}
 end
 
+function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:Cartesian{Datum,3}}) where {Datum}
+  T = promote_type(mactype(C₁), mactype(C₂))
+  Cartesian{Datum,3,Met{T}}
+end
+
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum₁,3}}, C₂::Type{<:Cartesian{Datum₂,3}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  Cartesian{WGS84Latest,N,Met{T}}
+  Cartesian{DefaultDatum,3,Met{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:LatLon}) where {Datum}
@@ -60,5 +67,5 @@ end
 
 function Base.promote_rule(C₁::Type{<:LatLon{Datum₁}}, C₂::Type{<:LatLon{Datum₂}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
-  LatLon{WGS84Latest,Deg{T}}
+  LatLon{DefaultDatum,Deg{T}}
 end
