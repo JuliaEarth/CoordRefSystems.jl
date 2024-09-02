@@ -157,7 +157,7 @@ Base.convert(::Type{TransverseMercator{k₀,latₒ}}, coords::CRS{Datum}) where 
 function gatg(p, B)
   b = 2 * cos(2B)
   h = h₂ = zero(B)
-  h₁, rest... = reverse(p)
+  h₁, rest... = Iterators.reverse(p)
   for pᵢ in rest
     h = -h₂ + b * h₁ + pᵢ
     h₂ = h₁
@@ -175,7 +175,7 @@ function clenshaw(p, real, imag)
   i = -2 * sin2r * sinh2i
   hi = hi₁ = hi₂ = zero(real)
   hr₁ = hr₂ = zero(real)
-  hr, rest... = reverse(p)
+  hr, rest... = Iterators.reverse(p)
   for pᵢ in rest
     hr₂ = hr₁
     hi₂ = hi₁
@@ -197,7 +197,7 @@ end
 function clenshaw(p, real)
   r = 2 * cos(real)
   hr₁ = hr₂ = zero(real)
-  hr, rest... = reverse(p)
+  hr, rest... = Iterators.reverse(p)
   for pᵢ in rest
     hr₂ = hr₁
     hr₁ = hr
