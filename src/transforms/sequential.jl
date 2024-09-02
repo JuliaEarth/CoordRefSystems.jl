@@ -24,7 +24,7 @@ end
 function apply(transform::Reverse{<:Sequential}, x)
   x′ = x
   for t in reverse(transform.transforms)
-    x′ = apply(reverseof(t), x′)
+    x′ = apply(inverse(t), x′)
   end
   x′
 end
