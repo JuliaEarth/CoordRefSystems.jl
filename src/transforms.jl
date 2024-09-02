@@ -51,6 +51,7 @@ include("transforms/utils.jl")
 include("transforms/identity.jl")
 include("transforms/geoctranslation.jl")
 include("transforms/helmert.jl")
+include("transforms/sequential.jl")
 
 # ----------------
 # IMPLEMENTATIONS
@@ -214,3 +215,39 @@ include("transforms/helmert.jl")
   dδz=1.8e-3,
   ds=-0.08e-3
 )
+
+@reversible WGS84{0} WGS84{2296} @sequential(
+  WGS84{0},
+  WGS84{730},
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{730} WGS84{2296} @sequential(
+  WGS84{730},
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{873} WGS84{2296} @sequential(
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{1150} WGS84{2296} @sequential(WGS84{1150}, WGS84{1674}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible WGS84{1674} WGS84{2296} @sequential(WGS84{1674}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible WGS84{1762} WGS84{2296} @sequential(WGS84{1762}, WGS84{2139}, WGS84{2296})
