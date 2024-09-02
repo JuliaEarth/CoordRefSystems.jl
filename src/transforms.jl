@@ -21,6 +21,14 @@ end
 Base.getproperty(transform::Reverse, name::Symbol) = getproperty(getfield(transform, :transform), name)
 
 """
+    revert(transform)
+
+Revert the `transform` by handling the "reverse of reverse" case.
+"""
+revert(transform::Transform) = Reverse(transform)
+revert(transform::Reverse) = getfield(transform, :transform)
+
+"""
     @reversible Datum₁ Datum₂ transform
 
 Define the methods to apply and reverse the `transform` with `Datum₁` and `Datum₂`.
@@ -28,7 +36,7 @@ Define the methods to apply and reverse the `transform` with `Datum₁` and `Dat
 macro reversible(Datum₁, Datum₂, transform)
   expr = quote
     transform(::Type{<:$Datum₁}, ::Type{<:$Datum₂}) = $transform
-    transform(D₂::Type{<:$Datum₂}, D₁::Type{<:$Datum₁}) = Reverse(transform(D₁, D₂))
+    transform(D₂::Type{<:$Datum₂}, D₁::Type{<:$Datum₁}) = revert(transform(D₁, D₂))
   end
   esc(expr)
 end
@@ -51,6 +59,7 @@ include("transforms/utils.jl")
 include("transforms/identity.jl")
 include("transforms/geoctranslation.jl")
 include("transforms/helmert.jl")
+include("transforms/sequential.jl")
 
 # ----------------
 # IMPLEMENTATIONS
@@ -214,3 +223,43 @@ include("transforms/helmert.jl")
   dδz=1.8e-3,
   ds=-0.08e-3
 )
+
+@reversible ITRF{2008} WGS84{2296} @sequential(ITRF{2008}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible ITRF{2014} WGS84{2296} @sequential(ITRF{2014}, WGS84{2139}, WGS84{2296})
+
+@reversible WGS84{0} WGS84{2296} @sequential(
+  WGS84{0},
+  WGS84{730},
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{730} WGS84{2296} @sequential(
+  WGS84{730},
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{873} WGS84{2296} @sequential(
+  WGS84{873},
+  WGS84{1150},
+  WGS84{1674},
+  WGS84{1762},
+  WGS84{2139},
+  WGS84{2296}
+)
+
+@reversible WGS84{1150} WGS84{2296} @sequential(WGS84{1150}, WGS84{1674}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible WGS84{1674} WGS84{2296} @sequential(WGS84{1674}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible WGS84{1762} WGS84{2296} @sequential(WGS84{1762}, WGS84{2139}, WGS84{2296})

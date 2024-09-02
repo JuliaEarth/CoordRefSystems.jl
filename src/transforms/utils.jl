@@ -73,3 +73,19 @@ function timedephelmert(
     s=s + ds * dt
   )
 end
+
+"""
+    @sequential(Datum₁, Datum₂, ..., Datumₙ)
+
+Create a Sequential transform using the intermediate transforms
+between `Datum₁`, `Datum₂`, ..., `Datumₙ`.
+
+See also [`Sequential`](@ref).
+"""
+macro sequential(Datums...)
+  transforms = map(1:(length(Datums) - 1)) do i
+    :(transform($(Datums[i]), $(Datums[i + 1])))
+  end
+  expr = :(Sequential($(transforms...)))
+  esc(expr)
+end
