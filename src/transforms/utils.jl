@@ -93,8 +93,8 @@ end
 """
     reverseof(transform)
 
-Return the correct reverse of the `transform`,
-handling the "reverse of the reverse" case.
+Return the correct reverse of `transform`
+by handling the "reverse of reverse" case.
 """
 reverseof(transform::Transform) = Reverse(transform)
 reverseof(transform::Reverse) = parent(transform)
