@@ -5,7 +5,7 @@
 """
     Sequential(transforms...)
 
-Apply the `transforms` pipeline sequentially.
+Apply the `transforms` sequentially.
 """
 struct Sequential{T<:Tuple} <: Transform
   transforms::T
