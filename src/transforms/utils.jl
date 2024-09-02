@@ -89,3 +89,12 @@ macro sequential(Datums...)
   expr = :(Sequential($(transforms...)))
   esc(expr)
 end
+
+"""
+    reverseof(transform)
+
+Return the correct reverse of the `transform`,
+handling the "reverse of the reverse" case.
+"""
+reverseof(transform::Transform) = Reverse(transform)
+reverseof(transform::Reverse) = parent(transform)

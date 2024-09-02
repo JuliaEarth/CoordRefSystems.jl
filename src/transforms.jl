@@ -18,6 +18,8 @@ struct Reverse{T<:Transform} <: Transform
   transform::T
 end
 
+Base.parent(transform::Reverse) = getfield(transform, :transform)
+
 Base.getproperty(transform::Reverse, name::Symbol) = getproperty(getfield(transform, :transform), name)
 
 """
@@ -215,6 +217,10 @@ include("transforms/sequential.jl")
   dδz=1.8e-3,
   ds=-0.08e-3
 )
+
+@reversible ITRF{2008} WGS84{2296} @sequential(ITRF{2008}, WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+@reversible ITRF{2014} WGS84{2296} @sequential(ITRF{2014}, WGS84{2139}, WGS84{2296})
 
 @reversible WGS84{0} WGS84{2296} @sequential(
   WGS84{0},
