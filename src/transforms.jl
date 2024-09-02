@@ -182,7 +182,6 @@ include("transforms/helmert.jl")
   ds=0.03e-3
 )
 
-# note: reference epoch differs from epoch of target datum
 # https://epsg.org/transformation_9962/WGS-84-G873-to-WGS-84-G1150-1.html
 @reversible WGS84{873} WGS84{1150} timedephelmert(
   WGS84{873},
@@ -196,7 +195,7 @@ include("transforms/helmert.jl")
   dδz=1.4e-3,
   dθz=-0.02e-3,
   ds=-0.01e-3,
-  tᵣ=2005.0
+  tᵣ=2005.0 # reference epoch differs from epoch of target datum
 )
 
 # https://epsg.org/transformation_9963/WGS-84-G1150-to-WGS-84-G1674-1.html
