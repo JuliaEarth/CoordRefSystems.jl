@@ -179,9 +179,10 @@ include("transforms/helmert.jl")
   dδy=0.1e-3,
   dδz=-0.1e-3,
   ds=0.03e-3,
-  t₀=2015.0
+  tᵣ=epoch(ITRF{2020})
 )
 
+# note: reference epoch differs from epoch of target datum
 # https://epsg.org/transformation_9962/WGS-84-G873-to-WGS-84-G1150-1.html
 @reversible WGS84{873} WGS84{1150} timedephelmert(
   WGS84{873},
@@ -194,7 +195,7 @@ include("transforms/helmert.jl")
   dδz=1.4e-3,
   dθz=-0.02e-3,
   ds=-0.01e-3,
-  t₀=2005.0
+  tᵣ=2005.0
 )
 
 # https://epsg.org/transformation_9963/WGS-84-G1150-to-WGS-84-G1674-1.html
@@ -211,5 +212,5 @@ include("transforms/helmert.jl")
   dδy=-0.1e-3,
   dδz=1.8e-3,
   ds=-0.08e-3,
-  t₀=2005.0
+  tᵣ=epoch(WGS84{1674})
 )

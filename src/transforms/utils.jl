@@ -28,14 +28,14 @@ end
 
 """
     timedephelmert(Datumₛ, δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0,
-      dδx=0.0, dδy=0.0, dδz=0.0, dθx=0.0, dθy=0.0, dθz=0.0, ds=0.0, t₀=0.0)
+      dδx=0.0, dδy=0.0, dδz=0.0, dθx=0.0, dθy=0.0, dθz=0.0, ds=0.0, tᵣ=0.0)
 
 Create a Helmert transform from time-dependent parameters:
-epoch difference `dt = epoch(Datumₛ) - t₀`,
+epoch difference `dt = epoch(Datumₛ) - tᵣ`,
 translation rates `dδx, dδy, dδz` in meters per year, 
 rotation rates `dθx, dθy, dθz` in arc seconds per year 
 scale rate `ds` in ppm (parts per million) per year,
-and reference epoch `t₀` in decimalyears.
+and reference epoch `tᵣ` in decimalyears.
 
 See also [`HelmertTransform`](@ref).
 
@@ -59,9 +59,9 @@ function timedephelmert(
   dθy=0.0,
   dθz=0.0,
   ds=0.0,
-  t₀=0.0
+  tᵣ=0.0
 )
-  dt = epoch(Datumₛ) - t₀
+  dt = epoch(Datumₛ) - tᵣ
   HelmertTransform(
     δx=δx + dδx * dt,
     δy=δy + dδy * dt,
