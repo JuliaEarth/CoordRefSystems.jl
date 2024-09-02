@@ -23,8 +23,8 @@ end
 
 function apply(transform::Reverse{<:Sequential}, x)
   x′ = x
-  for t in Iterators.reverse(transform.transforms)
-    x′ = apply(reverse(t), x′)
+  for t in reverse(transform.transforms)
+    x′ = apply(revert(t), x′)
   end
   x′
 end

@@ -21,13 +21,12 @@ end
 Base.getproperty(transform::Reverse, name::Symbol) = getproperty(getfield(transform, :transform), name)
 
 """
-    reverse(transform)
+    revert(transform)
 
-Return the correct reverse of `transform`
-by handling the "reverse of reverse" case.
+Revert the `transform` by handling the "reverse of reverse" case.
 """
-reverse(transform::Transform) = Reverse(transform)
-reverse(transform::Reverse) = getfield(transform, :transform)
+revert(transform::Transform) = Reverse(transform)
+revert(transform::Reverse) = getfield(transform, :transform)
 
 """
     @reversible Datum₁ Datum₂ transform
@@ -37,7 +36,7 @@ Define the methods to apply and reverse the `transform` with `Datum₁` and `Dat
 macro reversible(Datum₁, Datum₂, transform)
   expr = quote
     transform(::Type{<:$Datum₁}, ::Type{<:$Datum₂}) = $transform
-    transform(D₂::Type{<:$Datum₂}, D₁::Type{<:$Datum₁}) = reverse(transform(D₁, D₂))
+    transform(D₂::Type{<:$Datum₂}, D₁::Type{<:$Datum₁}) = revert(transform(D₁, D₂))
   end
   esc(expr)
 end
