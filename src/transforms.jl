@@ -120,6 +120,55 @@ include("transforms/helmert.jl")
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @reversible Potsdam WGS84 HelmertTransform(δx=598.1, δy=73.7, δz=418.2, θx=0.202, θy=0.045, θz=-2.455, s=6.7)
 
+# https://epsg.org/transformation_9960/WGS-84-Transit-to-WGS-84-G730-1.html
+@reversible WGS84{0} WGS84{730} HelmertTransform(
+  δx=-58e-3,
+  δy=521e-3,
+  δz=239e-3,
+  θx=-18.3e-3,
+  θy=0.3e-3,
+  θz=-7e-3,
+  s=10.7e-3
+)
+
+# https://epsg.org/transformation_9961/WGS-84-G730-to-WGS-84-G873-1.html
+@reversible WGS84{730} WGS84{873} HelmertTransform(δx=-20e-3, δy=-16e-3, δz=14e-3, s=-0.69e-3)
+
+# https://epsg.org/transformation_7668/WGS-84-G1150-to-WGS-84-G1762-1.html
+@reversible WGS84{1150} WGS84{1762} HelmertTransform(δx=-6e-3, δy=5e-3, δz=20e-3, s=-4.5e-3)
+
+# https://epsg.org/transformation_7667/WGS-84-G1674-to-WGS-84-G1762-1.html
+@reversible WGS84{1674} WGS84{1762} HelmertTransform(
+  δx=-4e-3,
+  δy=3e-3,
+  δz=4e-3,
+  θx=-0.27e-3,
+  θy=0.27e-3,
+  θz=-0.38e-3,
+  s=-6.9e-3
+)
+
+# https://epsg.org/transformation_9756/WGS-84-G1762-to-WGS-84-G2139-1.html
+@reversible WGS84{1762} WGS84{2139} HelmertTransform(
+  δx=0.0058,
+  δy=-0.0064,
+  δz=0.007,
+  θx=-0.08e-3,
+  θy=-0.04e-3,
+  θz=-0.12e-3,
+  s=-4.4e-3
+)
+
+# https://epsg.org/transformation_10607/WGS-84-G2139-to-WGS-84-G2296-1.html
+@reversible WGS84{2139} WGS84{2296} HelmertTransform(
+  δx=2.6e-3,
+  δy=5.4e-3,
+  δz=-0.9e-3,
+  θx=0.01e-3,
+  θy=0.07e-3,
+  s=0.06e-3
+)
+
 # https://epsg.org/transformation_9992/ITRF2008-to-ITRF2020-1.html
 @reversible ITRF{2008} ITRF{2020} timedephelmert(
   ITRF{2008},
@@ -131,4 +180,36 @@ include("transforms/helmert.jl")
   dδy=0.1e-3,
   dδz=-0.1e-3,
   ds=0.03e-3
+)
+
+# https://epsg.org/transformation_9962/WGS-84-G873-to-WGS-84-G1150-1.html
+@reversible WGS84{873} WGS84{1150} timedephelmert(
+  WGS84{873},
+  WGS84{1150},
+  δx=1.1e-3,
+  δy=-4.7e-3,
+  δz=22e-3,
+  θz=-0.16e-3,
+  s=1.45e-3,
+  dδy=0.6e-3,
+  dδz=1.4e-3,
+  dθz=-0.02e-3,
+  ds=-0.01e-3
+)
+
+# https://epsg.org/transformation_9963/WGS-84-G1150-to-WGS-84-G1674-1.html
+@reversible WGS84{1150} WGS84{1674} timedephelmert(
+  WGS84{1150},
+  WGS84{1674},
+  δx=-2.4e-3,
+  δy=1.6e-3,
+  δz=23.2e-3,
+  θx=0.27e-3,
+  θy=-0.27e-3,
+  θz=0.38e-3,
+  s=2.08e-3,
+  dδx=-0.1e-3,
+  dδy=-0.1e-3,
+  dδz=1.8e-3,
+  ds=-0.08e-3
 )
