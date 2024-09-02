@@ -28,13 +28,14 @@ end
 
 """
     timedephelmert(Datumₛ, Datumₜ, δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0,
-      dδx=0.0, dδy=0.0, dδz=0.0, dθx=0.0, dθy=0.0, dθz=0.0, ds=0.0)
+      dδx=0.0, dδy=0.0, dδz=0.0, dθx=0.0, dθy=0.0, dθz=0.0, ds=0.0, tᵣ=epoch(Datumₜ))
 
 Create a Helmert transform from time-dependent parameters:
-epoch difference `dt = epoch(Datumₛ) - epoch(Datumₜ)`,
+epoch difference `dt = epoch(Datumₛ) - tᵣ`,
 translation rates `dδx, dδy, dδz` in meters per year, 
 rotation rates `dθx, dθy, dθz` in arc seconds per year 
-and scale rate `ds` in ppm (parts per million) per year.
+scale rate `ds` in ppm (parts per million) per year,
+and reference epoch `tᵣ` in decimalyears.
 
 See also [`HelmertTransform`](@ref).
 
@@ -43,8 +44,8 @@ See also [`HelmertTransform`](@ref).
 * Section 4.3.5 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
 """
 function timedephelmert(
-  ::Type{Datumₛ},
-  ::Type{Datumₜ};
+  Datumₛ,
+  Datumₜ;
   δx=0.0,
   δy=0.0,
   δz=0.0,
@@ -58,9 +59,10 @@ function timedephelmert(
   dθx=0.0,
   dθy=0.0,
   dθz=0.0,
-  ds=0.0
-) where {Datumₜ,Datumₛ}
-  dt = epoch(Datumₛ) - epoch(Datumₜ)
+  ds=0.0,
+  tᵣ=epoch(Datumₜ)
+)
+  dt = epoch(Datumₛ) - tᵣ
   HelmertTransform(
     δx=δx + dδx * dt,
     δy=δy + dδy * dt,
