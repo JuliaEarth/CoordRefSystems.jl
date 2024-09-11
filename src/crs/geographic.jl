@@ -216,6 +216,56 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon{Datum}}) where {Dat
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon}) = rand(rng, GeocentricLatLon{WGS84Latest})
 
 """
+    GeoCentricLatLonAlt(lat, lon, alt)
+    GeoCentricLatLonAlt{Datum}(lat, lon, alt)
+
+Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
+and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
+"""
+struct GeocentricLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
+  lat::D
+  lon::D
+  alt::M
+end
+
+GeocentricLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
+  GeocentricLatLonAlt{Datum,float(D),float(M)}(checklat(lat), fixlon(lon), alt)
+GeocentricLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
+    GeocentricLatLonAlt{Datum}(promote(lat, lon)..., alt)
+GeocentricLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
+    GeocentricLatLonAlt{Datum}(lat, lon, uconvert(m, alt))
+GeocentricLatLonAlt{Datum}(lat::Rad, lon::Rad, alt::Len) where {Datum} =
+    GeocentricLatLonAlt{Datum}(rad2deg(lat), rad2deg(lon), alt)
+GeocentricLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
+    GeocentricLatLonAlt{Datum}(addunit(lat, °), addunit(lon, °), addunit(alt, m))
+
+GeocentricLatLonAlt(args...) = GeocentricLatLonAlt{WGS84Latest}(args...)
+
+Base.convert(::Type{GeocentricLatLonAlt{Datum,D,M}}, coords::GeocentricLatLonAlt{Datum}) where {Datum,D,M} =
+    GeocentricLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
+
+raw(coords::GeocentricLatLonAlt) = ustrip(coords.lon), ustrip(coords.lat), ustrip(coords.alt) # reverse order
+
+constructor(::Type{<:GeocentricLatLonAlt{Datum}}) where {Datum} = GeocentricLatLonAlt{Datum}
+
+function reconstruct(C::Type{<:GeocentricLatLonAlt}, raw)
+    lon, lat, alt = raw .* units(C)
+    constructor(C)(lat, lon, alt) # reverse order
+end
+
+lentype(::Type{<:GeocentricLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
+
+==(coords₁::GeocentricLatLonAlt{Datum}, coords₂::GeocentricLatLonAlt{Datum}) where {Datum} =
+    coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
+
+Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt{Datum}}) where {Datum} =
+    GeocentricLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
+
+Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt}) = rand(rng, GeocentricLatLonAlt{WGS84Latest})
+
+# ------------
+
+"""
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
 
