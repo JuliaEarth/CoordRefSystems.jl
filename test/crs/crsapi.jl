@@ -8,6 +8,14 @@
     @test datum(c) === NoDatum
     c = LatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
+    c = LatLonAlt(T(1), T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = GeocentricLatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = GeocentricLatLonAlt(T(1), T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = AuthalicLatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
   end
 
   @testset "ncoords" begin
@@ -156,6 +164,8 @@
     @test CoordRefSystems.units(c) == (°, °, m)
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.units(c) == (°, °)
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.units(c) == (°, °, m)
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.units(c) == (°, °)
     c = Mercator(T(1), T(1))
