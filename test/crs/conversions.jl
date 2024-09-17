@@ -352,9 +352,7 @@
 
     # conversion LatLonAlt <> GeocentricLatLonAlt is tested in the next section
     @testset "LatLonAlt <> GeocentricLatLonAlt" begin
-
     end
-
 
     if T === Float64
       # altitude can only be calculated accurately using Float64
@@ -407,7 +405,6 @@
 
       # conversion GeocentricLatLonAlt <> Cartesian is tested in the next section
       @testset "GeocentricLatLonAlt <> Cartesian" begin
-
       end
     end
 

@@ -231,35 +231,35 @@ end
 GeocentricLatLonAlt{Datum}(lat::D, lon::D, alt::M) where {Datum,D<:Deg,M<:Met} =
   GeocentricLatLonAlt{Datum,float(D),float(M)}(checklat(lat), fixlon(lon), alt)
 GeocentricLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Met) where {Datum} =
-    GeocentricLatLonAlt{Datum}(promote(lat, lon)..., alt)
+  GeocentricLatLonAlt{Datum}(promote(lat, lon)..., alt)
 GeocentricLatLonAlt{Datum}(lat::Deg, lon::Deg, alt::Len) where {Datum} =
-    GeocentricLatLonAlt{Datum}(lat, lon, uconvert(m, alt))
+  GeocentricLatLonAlt{Datum}(lat, lon, uconvert(m, alt))
 GeocentricLatLonAlt{Datum}(lat::Rad, lon::Rad, alt::Len) where {Datum} =
-    GeocentricLatLonAlt{Datum}(rad2deg(lat), rad2deg(lon), alt)
+  GeocentricLatLonAlt{Datum}(rad2deg(lat), rad2deg(lon), alt)
 GeocentricLatLonAlt{Datum}(lat::Number, lon::Number, alt::Number) where {Datum} =
-    GeocentricLatLonAlt{Datum}(addunit(lat, °), addunit(lon, °), addunit(alt, m))
+  GeocentricLatLonAlt{Datum}(addunit(lat, °), addunit(lon, °), addunit(alt, m))
 
 GeocentricLatLonAlt(args...) = GeocentricLatLonAlt{WGS84Latest}(args...)
 
 Base.convert(::Type{GeocentricLatLonAlt{Datum,D,M}}, coords::GeocentricLatLonAlt{Datum}) where {Datum,D,M} =
-    GeocentricLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
+  GeocentricLatLonAlt{Datum,D,M}(coords.lat, coords.lon, coords.alt)
 
 raw(coords::GeocentricLatLonAlt) = ustrip(coords.lon), ustrip(coords.lat), ustrip(coords.alt) # reverse order
 
 constructor(::Type{<:GeocentricLatLonAlt{Datum}}) where {Datum} = GeocentricLatLonAlt{Datum}
 
 function reconstruct(C::Type{<:GeocentricLatLonAlt}, raw)
-    lon, lat, alt = raw .* units(C)
-    constructor(C)(lat, lon, alt) # reverse order
+  lon, lat, alt = raw .* units(C)
+  constructor(C)(lat, lon, alt) # reverse order
 end
 
 lentype(::Type{<:GeocentricLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 ==(coords₁::GeocentricLatLonAlt{Datum}, coords₂::GeocentricLatLonAlt{Datum}) where {Datum} =
-    coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
+  coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt{Datum}}) where {Datum} =
-    GeocentricLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
+  GeocentricLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt}) = rand(rng, GeocentricLatLonAlt{WGS84Latest})
 
@@ -410,7 +410,8 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum}) where {Da
 end
 
 # Conversion from GeocentriLatLonAlt to GeocentriLatLonAlt
-Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum} = GeocentricLatLon{Datum}(coords.lat, coords.lon)
+Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum} =
+  GeocentricLatLon{Datum}(coords.lat, coords.lon)
 
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
   T = numtype(coords.lon)
@@ -419,17 +420,15 @@ end
 
 # Cross conversion between LatLonAlt and GeocentricLatLonAlt
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
-  geocentric = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon));
-  return GeocentricLatLonAlt{Datum}(geocentric.lat, geocentric.lon, coords.alt);
+  geocentric = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon))
+  GeocentricLatLonAlt{Datum}(geocentric.lat, geocentric.lon, coords.alt)
 end
 
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum}
-  geodetic  = convert(LatLon, GeocentricLatLon{Datum}(coords.lat, coords.lon));
-  return LatLonAlt{Datum}(geodetic.lat, geodetic.lon, coords.alt);
+  geodetic = convert(LatLon, GeocentricLatLon{Datum}(coords.lat, coords.lon))
+  LatLonAlt{Datum}(geodetic.lat, geodetic.lon, coords.alt)
 end
 ###################################################################
-
-
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
   lla = convert(LatLonAlt{Datum}, coords)
@@ -442,26 +441,24 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Cartesian{Datum,3}) where {
 end
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
-  geocentric_lla = convert(GeocentricLatLonAlt{Datum}, coords);
-  return convert(Cartesian{Datum}, geocentric_lla)
+  lla = convert(GeocentricLatLonAlt{Datum}, coords)
+  convert(Cartesian{Datum}, lla)
 end
 
 function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
-  geocentric_lla = convert(GeocentricLatLonAlt{Datum}, coords);
-  return convert(GeocentricLatLon{Datum}, geocentric_lla)
+  lla = convert(GeocentricLatLonAlt{Datum}, coords)
+  convert(GeocentricLatLon{Datum}, lla)
 end
 
-
 function Base.convert(::Type{Cartesian{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum}
-  geodesic_coords = convert(LatLonAlt, coords);
-  return convert(Cartesian{Datum}, geodesic_coords)
+  _coords = convert(LatLonAlt, coords)
+  convert(Cartesian{Datum}, _coords)
 end
 
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
-  geodesic_coords = convert(LatLonAlt, coords);
-  return convert(GeocentricLatLonAlt{Datum}, geodesic_coords)
+  _coords = convert(LatLonAlt, coords)
+  convert(GeocentricLatLonAlt{Datum}, _coords)
 end
-
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
   T = numtype(coords.lon)
@@ -516,10 +513,9 @@ end
 # avoid converting coordinates with the same datum as the first argument
 Base.convert(::Type{LatLon{Datum}}, coords::LatLon{Datum}) where {Datum} = coords
 
-
 function Base.convert(::Type{GeocentricLatLon{Datumₜ}}, coords::GeocentricLatLon{Datumₛ}) where {Datumₜ,Datumₛ}
-  cartₛ = convert(Cartesian{Datumₛ}, coords);
-  cartₜ = convert(Cartesian{Datumₜ}, cartₛ);
+  cartₛ = convert(Cartesian{Datumₛ}, coords)
+  cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
   convert(GeocentricLatLon{Datumₜ}, cartₜ)
 end
 # avoid converting coordinates with the same datum as the first argument
@@ -535,6 +531,7 @@ Base.convert(::Type{LatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(LatL
 
 Base.convert(::Type{GeocentricLatLon}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
 
-Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLonAlt{Datum}, coords)
+Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} =
+  convert(GeocentricLatLonAlt{Datum}, coords)
 
 Base.convert(::Type{AuthalicLatLon}, coords::CRS{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)

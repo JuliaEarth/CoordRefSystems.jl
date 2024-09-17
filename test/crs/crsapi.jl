@@ -16,7 +16,6 @@
     @test datum(c) === WGS84Latest
     c = AuthalicLatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
-
   end
 
   @testset "ncoords" begin

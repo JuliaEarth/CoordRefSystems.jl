@@ -264,7 +264,6 @@
     end
     # Add Test for GeocentricLatLonAlt
     @testset "GeocentricLatLonAlt" begin
-
     end
 
     @testset "AuthalicLatLon" begin

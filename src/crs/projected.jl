@@ -115,32 +115,29 @@ include("projected/transversemercator.jl")
 # ----------
 # FALLBACKS
 # ----------
-function Base.convert(::Type{C},coords::GeocentricLatLon{Datum}) where {Datum,C<:Projected{Datum}}
-  return convert(C, convert(LatLon{Datum}, coords))
+function Base.convert(::Type{C}, coords::GeocentricLatLon{Datum}) where {Datum,C<:Projected{Datum}}
+  convert(C, convert(LatLon{Datum}, coords))
 end
 
 function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
-  return convert(GeocentricLatLon{Datum}, convert(LatLon{Datum}, coords))
+  convert(GeocentricLatLon{Datum}, convert(LatLon{Datum}, coords))
 end
 
 function Base.convert(::Type{C}, coords::GeocentricLatLonAlt{Datum}) where {Datum,C<:Projected{Datum}}
-  return convert(C, convert(GeocentricLatLon{Datum}, coords))
+  convert(C, convert(GeocentricLatLon{Datum}, coords))
 end
 
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
-  return convert(GeocentricLatLonAlt{Datum}, convert(GeocentricLatLon{Datum}, coords))
+  convert(GeocentricLatLonAlt{Datum}, convert(GeocentricLatLon{Datum}, coords))
 end
 
 function Base.convert(::Type{C}, coords::LatLonAlt{Datum}) where {Datum,C<:Projected{Datum}}
-  return convert(C, convert(LatLon{Datum}, coords))
+  convert(C, convert(LatLon{Datum}, coords))
 end
 
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::C) where {Datum,C<:Projected{Datum}}
-  return convert(LatLonAlt{Datum}, convert(LatLon{Datum}, coords))
+  convert(LatLonAlt{Datum}, convert(LatLon{Datum}, coords))
 end
-
-
-
 
 function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
   S = projshift(C)
