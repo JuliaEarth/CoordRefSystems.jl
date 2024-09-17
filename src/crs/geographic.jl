@@ -216,8 +216,8 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon{Datum}}) where {Dat
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon}) = rand(rng, GeocentricLatLon{WGS84Latest})
 
 """
-    GeoCentricLatLonAlt(lat, lon, alt)
-    GeoCentricLatLonAlt{Datum}(lat, lon, alt)
+    GeocentricLatLonAlt(lat, lon, alt)
+    GeocentricLatLonAlt{Datum}(lat, lon, alt)
 
 Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
@@ -440,6 +440,17 @@ function Base.convert(::Type{LatLon{Datum}}, coords::Cartesian{Datum,3}) where {
   lla = convert(LatLonAlt{Datum}, coords)
   convert(LatLon{Datum}, lla)
 end
+
+function Base.convert(::Type{Cartesian{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
+  geocentric_lla = convert(GeocentricLatLonAlt{Datum}, coords);
+  return convert(Cartesian{Datum}, geocentric_lla)
+end
+
+function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::Cartesian{Datum,3}) where {Datum}
+  geocentric_lla = convert(GeocentricLatLonAlt{Datum}, coords);
+  return convert(GeocentricLatLon{Datum}, geocentric_lla)
+end
+
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum}
   geodesic_coords = convert(LatLonAlt, coords);
