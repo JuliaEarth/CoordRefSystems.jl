@@ -535,6 +535,6 @@ Base.convert(::Type{LatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(LatL
 
 Base.convert(::Type{GeocentricLatLon}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLon{Datum}, coords)
 
-Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLonAlts{Datum}, coords)
+Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(GeocentricLatLonAlt{Datum}, coords)
 
 Base.convert(::Type{AuthalicLatLon}, coords::CRS{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)
