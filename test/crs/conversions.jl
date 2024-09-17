@@ -350,6 +350,12 @@
       @inferred convert(LatLon, c2)
     end
 
+    # conversion LatLonAlt <> GeocentricLatLonAlt is tested in the next section
+    @testset "LatLonAlt <> GeocentricLatLonAlt" begin
+
+    end
+
+
     if T === Float64
       # altitude can only be calculated accurately using Float64
       @testset "LatLonAlt <> Cartesian" begin
@@ -397,6 +403,11 @@
         c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
         @inferred convert(Cartesian, c1)
         @inferred convert(LatLonAlt, c2)
+      end
+
+      # conversion GeocentricLatLonAlt <> Cartesian is tested in the next section
+      @testset "GeocentricLatLonAlt <> Cartesian" begin
+
       end
     end
 
