@@ -263,8 +263,6 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt{Datum}}) where {
 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt}) = rand(rng, GeocentricLatLonAlt{WGS84Latest})
 
-# ------------
-
 """
     AuthalicLatLon(lat, lon)
     AuthalicLatLon{Datum}(lat, lon)
