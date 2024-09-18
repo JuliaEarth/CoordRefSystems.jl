@@ -350,7 +350,6 @@
       @inferred convert(LatLon, c2)
     end
 
-    # conversion LatLonAlt <> GeocentricLatLonAlt is tested in the next section
     @testset "LatLonAlt <> GeocentricLatLonAlt" begin
       c1 = LatLonAlt(T(30), T(40), T(0))
       c2 = convert(GeocentricLatLonAlt, c1)
@@ -414,7 +413,6 @@
         @inferred convert(LatLonAlt, c2)
       end
 
-      # conversion GeocentricLatLonAlt <> Cartesian is tested in the next section
       @testset "GeocentricLatLonAlt <> Cartesian" begin
         c1 = GeocentricLatLonAlt(T(30), T(40), T(0))
         c2 = convert(Cartesian, c1)

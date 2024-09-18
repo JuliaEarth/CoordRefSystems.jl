@@ -115,6 +115,7 @@ include("projected/transversemercator.jl")
 # ----------
 # FALLBACKS
 # ----------
+
 function Base.convert(::Type{C}, coords::GeocentricLatLon{Datum}) where {Datum,C<:Projected{Datum}}
   convert(C, convert(LatLon{Datum}, coords))
 end

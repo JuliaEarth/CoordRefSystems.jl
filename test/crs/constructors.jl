@@ -262,7 +262,6 @@
       @test_throws ArgumentError GeocentricLatLon(T(1) * °, T(1) * s)
       @test_throws ArgumentError GeocentricLatLon(T(1) * s, T(1) * s)
     end
-    # Add Test for GeocentricLatLonAlt
     @testset "GeocentricLatLonAlt" begin
       @test GeocentricLatLonAlt(T(1), T(2), T(3)) == GeocentricLatLonAlt(T(1) * °, T(2) * °, T(3) * m)
       @test GeocentricLatLonAlt(T(1) * °, 2 * °, T(3) * m) == GeocentricLatLonAlt(T(1) * °, T(2) * °, T(3) * m)
