@@ -264,6 +264,34 @@
     end
     # Add Test for GeocentricLatLonAlt
     @testset "GeocentricLatLonAlt" begin
+      @test GeocentricLatLonAlt(T(1), T(2), T(3)) == GeocentricLatLonAlt(T(1) * °, T(2) * °, T(3) * m)
+      @test GeocentricLatLonAlt(T(1) * °, 2 * °, T(3) * m) == GeocentricLatLonAlt(T(1) * °, T(2) * °, T(3) * m)
+      @test allapprox(
+        GeocentricLatLonAlt(T(π / 4) * rad, T(π / 4) * rad, T(1) * km),
+        GeocentricLatLonAlt(T(45) * °, T(45) * °, T(1000) * m)
+      )
+
+      c = GeocentricLatLonAlt(T(1), T(2), T(3))
+      @test sprint(show, c) == "GeocentricLatLonAlt{WGS84Latest}(lat: 1.0°, lon: 2.0°, alt: 3.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        GeocentricLatLonAlt{WGS84Latest} coordinates
+        ├─ lat: 1.0f0°
+        ├─ lon: 2.0f0°
+        └─ alt: 3.0f0 m"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        GeocentricLatLonAlt{WGS84Latest} coordinates
+        ├─ lat: 1.0°
+        ├─ lon: 2.0°
+        └─ alt: 3.0 m"""
+      end
+
+      # error: invalid units for coordinates
+      @test_throws ArgumentError GeocentricLatLonAlt(T(1), T(1) * °, T(1) * m)
+      @test_throws ArgumentError GeocentricLatLonAlt(T(1) * s, T(1) * °, T(1) * m)
+      @test_throws ArgumentError GeocentricLatLonAlt(T(1) * °, T(1) * s, T(1) * m)
+      @test_throws ArgumentError GeocentricLatLonAlt(T(1) * °, T(1) * °, T(1) * s)
     end
 
     @testset "AuthalicLatLon" begin

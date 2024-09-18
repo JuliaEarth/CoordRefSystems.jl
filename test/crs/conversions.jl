@@ -352,6 +352,17 @@
 
     # conversion LatLonAlt <> GeocentricLatLonAlt is tested in the next section
     @testset "LatLonAlt <> GeocentricLatLonAlt" begin
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = convert(GeocentricLatLonAlt, c1)
+      @test allapprox(c2, GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0))
+      @inferred convert(GeocentricLatLonAlt, c1)
+      @inferred convert(LatLonAlt, c2)
     end
 
     if T === Float64
@@ -405,6 +416,47 @@
 
       # conversion GeocentricLatLonAlt <> Cartesian is tested in the next section
       @testset "GeocentricLatLonAlt <> Cartesian" begin
+        c1 = GeocentricLatLonAlt(T(30), T(40), T(0))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(4227784.905275363), T(3547532.754713428), T(3186385.300568595)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        c1 = GeocentricLatLonAlt(T(35), T(45), T(100))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(3690364.254026674), T(3690364.2540266733), T(3654357.744678035)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        c1 = GeocentricLatLonAlt(T(40), T(50), T(200))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(3136354.020667129), T(3737761.1717773457), T(4094220.2645078264)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        c1 = GeocentricLatLonAlt(-T(30), -T(40), T(0))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(4227784.905275363), -T(3547532.754713428), -T(3186385.300568595)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        c1 = GeocentricLatLonAlt(-T(35), T(45), T(100))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(3690364.254026674), T(3690364.2540266733), -T(3654357.744678035)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        c1 = GeocentricLatLonAlt(T(40), -T(50), T(200))
+        c2 = convert(Cartesian, c1)
+        @test allapprox(c2,Cartesian{WGS84Latest}(T(3136354.020667129), -T(3737761.1717773457), T(4094220.2645078264)))
+        c3 = convert(GeocentricLatLonAlt, c2)
+        @test allapprox(c3, c1)
+
+        # type stability
+        c1 = GeocentricLatLonAlt(T(30), T(40), T(0))
+        c2 = Cartesian{WGS84Latest}(T(4227784.905275363), T(3547532.754713428), T(3186385.300568595))
+        @inferred convert(Cartesian, c1)
+        @inferred convert(LatLonAlt, c2)
       end
     end
 
