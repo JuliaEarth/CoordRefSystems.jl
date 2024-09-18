@@ -407,7 +407,6 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLon{Datum}) where {Da
   LatLonAlt{Datum}(coords.lat, coords.lon, zero(T) * m)
 end
 
-# Conversion from GeocentriLatLonAlt to GeocentriLatLonAlt
 Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum} =
   GeocentricLatLon{Datum}(coords.lat, coords.lon)
 
