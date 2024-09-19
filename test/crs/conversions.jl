@@ -204,7 +204,7 @@
   end
 
   @testset "Geographic" begin
-    @testset "GeodeticLatLon <> GeocentricLatLon" begin
+    @testset "LatLon <> GeocentricLatLon" begin
       c1 = LatLon(T(30), T(40))
       c2 = convert(GeocentricLatLon, c1)
       @test allapprox(c2, GeocentricLatLon(T(29.833635809829065), T(40)))
@@ -248,7 +248,7 @@
       @inferred convert(LatLon, c2)
     end
 
-    @testset "GeodeticLatLon <> AuthalicLatLon" begin
+    @testset "LatLon <> AuthalicLatLon" begin
       c1 = LatLon(T(30), T(40))
       c2 = convert(AuthalicLatLon, c1)
       @test allapprox(c2, AuthalicLatLon(T(29.888997034459567), T(40)))
@@ -290,6 +290,34 @@
       c2 = AuthalicLatLon(T(29.888997034459567), T(40))
       @inferred convert(AuthalicLatLon, c1)
       @inferred convert(LatLon, c2)
+    end
+
+    @testset "LatLon <> LatLonAlt" begin
+      c1 = LatLon(T(30), T(40))
+      c2 = convert(LatLonAlt, c1)
+      @test allapprox(c2, LatLonAlt(T(30), T(40), T(0)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(30), T(40))
+      c2 = LatLonAlt(T(30), T(40), T(0))
+      @inferred convert(LatLonAlt, c1)
+      @inferred convert(LatLon, c2)
+    end
+
+    @testset "LatLonAlt <> GeocentricLatLonAlt" begin
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = convert(GeocentricLatLonAlt, c1)
+      @test allapprox(c2, GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0))
+      @inferred convert(GeocentricLatLonAlt, c1)
+      @inferred convert(LatLonAlt, c2)
     end
 
     @testset "LatLon <> Cartesian" begin
@@ -334,34 +362,6 @@
       c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
       @inferred convert(Cartesian, c1)
       @inferred convert(LatLon, c2)
-    end
-
-    @testset "LatLon <> LatLonAlt" begin
-      c1 = LatLon(T(30), T(40))
-      c2 = convert(LatLonAlt, c1)
-      @test allapprox(c2, LatLonAlt(T(30), T(40), T(0)))
-      c3 = convert(LatLon, c2)
-      @test allapprox(c3, c1)
-
-      # type stability
-      c1 = LatLon(T(30), T(40))
-      c2 = LatLonAlt(T(30), T(40), T(0))
-      @inferred convert(LatLonAlt, c1)
-      @inferred convert(LatLon, c2)
-    end
-
-    @testset "LatLonAlt <> GeocentricLatLonAlt" begin
-      c1 = LatLonAlt(T(30), T(40), T(0))
-      c2 = convert(GeocentricLatLonAlt, c1)
-      @test allapprox(c2, GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0)))
-      c3 = convert(LatLonAlt, c2)
-      @test allapprox(c3, c1)
-
-      # type stability
-      c1 = LatLonAlt(T(30), T(40), T(0))
-      c2 = GeocentricLatLonAlt(T(29.833635809829065), T(40), T(0))
-      @inferred convert(GeocentricLatLonAlt, c1)
-      @inferred convert(LatLonAlt, c2)
     end
 
     if T === Float64
@@ -864,6 +864,18 @@
       @inferred convert(LatLon{ITRF{2008}}, c3)
       @inferred convert(LatLon{WGS84{2296}}, c4)
       @inferred convert(LatLon{WGS84{0}}, c5)
+    end
+
+    @testset "LatLonAlt: Datum conversion" begin
+      # TODO
+    end
+
+    @testset "GeocentricLatLon: Datum conversion" begin
+      # TODO
+    end
+
+    @testset "GeocentricLatLonAlt: Datum conversion" begin
+      # TODO
     end
   end
 
@@ -1452,7 +1464,7 @@
       @inferred convert(Cartesian3D, c6)
     end
 
-    @testset "Projection conversion" begin
+    @testset "Projected <> Projected" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
 
       # same datum
