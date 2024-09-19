@@ -128,7 +128,6 @@ Base.convert(::Type{C}, coords::LatLonAlt{Datum}) where {Datum,C<:Projected{Datu
 
 Base.convert(::Type{LatLonAlt{Datum}}, coords::C) where {Datum,C<:Projected{Datum}} = convert(LatLonAlt{Datum}, convert(LatLon{Datum}, coords))
 
-
 function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projected{Datum}}
   S = projshift(C)
   T = numtype(coords.lon)
