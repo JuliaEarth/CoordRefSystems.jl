@@ -74,6 +74,7 @@ export
   GeodeticLatLon,
   GeodeticLatLonAlt,
   GeocentricLatLon,
+  GeocentricLatLonAlt,
   AuthalicLatLon,
   LatLon,
   LatLonAlt,

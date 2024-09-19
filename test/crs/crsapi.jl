@@ -8,6 +8,14 @@
     @test datum(c) === NoDatum
     c = LatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
+    c = LatLonAlt(T(1), T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = GeocentricLatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = GeocentricLatLonAlt(T(1), T(1), T(1))
+    @test datum(c) === WGS84Latest
+    c = AuthalicLatLon(T(1), T(1))
+    @test datum(c) === WGS84Latest
   end
 
   @testset "ncoords" begin
@@ -26,6 +34,10 @@
     c = LatLon(T(30), T(60))
     @test CoordRefSystems.ncoords(c) == 2
     c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.ncoords(c) == 3
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.ncoords(c) == 2
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ncoords(c) == 3
     c = Mercator(T(1), T(1))
     @test CoordRefSystems.ncoords(c) == 2
@@ -50,6 +62,10 @@
     @test CoordRefSystems.ndims(c) == 3
     c = LatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ndims(c) == 3
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.ndims(c) == 3
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.ndims(c) == 3
     c = Mercator(T(1), T(1))
     @test CoordRefSystems.ndims(c) == 2
     c = ShiftedMercator(T(1), T(2))
@@ -71,6 +87,10 @@
     @test CoordRefSystems.names(c) == (:lat, :lon)
     c = LatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.names(c) == (:lat, :lon)
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
     c = Mercator(T(1), T(1))
     @test CoordRefSystems.names(c) == (:x, :y)
     c = ShiftedMercator(T(1), T(2))
@@ -91,6 +111,10 @@
     c = LatLon(T(30), T(60))
     @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °)
     c = LatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °, T(1) * m)
+    c = GeocentricLatLon(T(30), T(60))
+    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °)
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °, T(1) * m)
     c = Mercator(T(1), T(2))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)
@@ -115,6 +139,8 @@
     @test CoordRefSystems.raw(c) == (T(60), T(30), T(1))
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.raw(c) == (T(60), T(30))
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.raw(c) == (T(60), T(30), T(1))
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.raw(c) == (T(60), T(30))
     c = Mercator(T(1), T(2))
@@ -156,6 +182,8 @@
     @test CoordRefSystems.units(c) == (°, °, m)
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.units(c) == (°, °)
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.units(c) == (°, °, m)
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.units(c) == (°, °)
     c = Mercator(T(1), T(1))
@@ -195,6 +223,8 @@
     @test CoordRefSystems.constructor(c) === LatLonAlt{WGS84Latest}
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.constructor(c) === GeocentricLatLon{WGS84Latest}
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.constructor(c) === GeocentricLatLonAlt{WGS84Latest}
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.constructor(c) === AuthalicLatLon{WGS84Latest}
     c = Mercator(T(1), T(1))
@@ -242,6 +272,9 @@
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     c = GeocentricLatLon(T(30), T(60))
+    rv = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     c = AuthalicLatLon(T(30), T(60))
@@ -294,6 +327,8 @@
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = Mercator(T(1), T(1))
@@ -333,6 +368,8 @@
     @test CoordRefSystems.mactype(c) == T
     c = GeocentricLatLon(T(30), T(60))
     @test CoordRefSystems.mactype(c) == T
+    c = GeocentricLatLonAlt(T(30), T(60), T(1))
+    @test CoordRefSystems.mactype(c) == T
     c = AuthalicLatLon(T(30), T(60))
     @test CoordRefSystems.mactype(c) == T
     c = Mercator(T(1), T(1))
@@ -366,6 +403,7 @@
     equaltest(LatLon)
     equaltest(LatLonAlt)
     equaltest(GeocentricLatLon)
+    equaltest(GeocentricLatLonAlt)
     equaltest(AuthalicLatLon)
     equaltest(Mercator)
     equaltest(WebMercator)
@@ -387,6 +425,8 @@
     isapproxtest3D(Spherical)
     isapproxtest3D(LatLon)
     isapproxtest3D(LatLonAlt)
+    isapproxtest3D(GeocentricLatLon)
+    isapproxtest3D(GeocentricLatLonAlt)
     isapproxtest3D(Mercator)
     isapproxtest3D(WebMercator)
     isapproxtest3D(PlateCarree)
@@ -409,6 +449,10 @@
     tol = CoordRefSystems.atol(T) * m
     c = LatLon(T(1), T(1))
     @test CoordRefSystems.tol(c) == tol
+    c = LatLonAlt(T(1), T(1), T(1))
+    @test CoordRefSystems.tol(c) == tol
+    c = GeocentricLatLon(T(1), T(1))
+    @test CoordRefSystems.tol(c) == tol
     c = Cartesian(T(1), T(1))
     @test CoordRefSystems.tol(c) == tol
     c = Polar(T(1), 1.0f0)
@@ -429,6 +473,11 @@
     c2 = LatLon(45.0f0, 90.0f0)
     @test typeof(convert(C, c1)) === C
     @test typeof(convert(C, c2)) === C
+    c1 = GeocentricLatLon(45.0, 90.0)
+    c2 = GeocentricLatLon(45.0f0, 90.0f0)
+    @test typeof(convert(C, c1)) === C
+    @test typeof(convert(C, c2)) === C
+
     C = typeof(PlateCarree(T(0), T(0)))
     c1 = Cartesian(1.0, 1.0)
     c2 = Cartesian(1.0f0, 1.0f0)
@@ -452,6 +501,8 @@
     @test convert(Cartesian, c) === c
     c = LatLon(T(45), T(90))
     @test convert(LatLon, c) === c
+    c = GeocentricLatLon(T(45), T(90))
+    @test convert(GeocentricLatLon, c) === c
     c = OrthoNorth(T(1), T(1))
     @test convert(OrthoNorth, c) === c
 
@@ -468,5 +519,9 @@
     @inferred convert(C, c1)
     @inferred convert(C, c2)
     @inferred convert(Cartesian, c3)
+    c1 = GeocentricLatLon(45.0, 90.0)
+    c2 = GeocentricLatLon(45.0f0, 90.0f0)
+    @inferred convert(C, c1)
+    @inferred convert(C, c2)
   end
 end
