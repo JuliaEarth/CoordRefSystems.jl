@@ -513,6 +513,7 @@ function Base.convert(::Type{GeocentricLatLon{Datumₜ}}, coords::GeocentricLatL
   cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
   convert(GeocentricLatLon{Datumₜ}, cartₜ)
 end
+
 # avoid converting coordinates with the same datum as the first argument
 Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum} = coords
 
