@@ -446,7 +446,7 @@
 
         c1 = GeocentricLatLonAlt(T(40), -T(50), T(200))
         c2 = convert(Cartesian, c1)
-        @test allapprox(c2,Cartesian{WGS84Latest}(T(3136354.020667129), -T(3737761.1717773457), T(4094220.2645078264)))
+        @test allapprox(c2, Cartesian{WGS84Latest}(T(3136354.020667129), -T(3737761.1717773457), T(4094220.2645078264)))
         c3 = convert(GeocentricLatLonAlt, c2)
         @test allapprox(c3, c1)
 
