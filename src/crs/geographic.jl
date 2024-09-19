@@ -416,13 +416,13 @@ function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::GeocentricLatL
 end
 
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
-  geocentric = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon))
-  GeocentricLatLonAlt{Datum}(geocentric.lat, geocentric.lon, coords.alt)
+  lla = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon))
+  GeocentricLatLonAlt{Datum}(lla.lat, lla.lon, coords.alt)
 end
 
 function Base.convert(::Type{LatLonAlt{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum}
-  geodetic = convert(LatLon, GeocentricLatLon{Datum}(coords.lat, coords.lon))
-  LatLonAlt{Datum}(geodetic.lat, geodetic.lon, coords.alt)
+  lla = convert(LatLon, GeocentricLatLon{Datum}(coords.lat, coords.lon))
+  LatLonAlt{Datum}(lla.lat, lla.lon, coords.alt)
 end
 
 function Base.convert(::Type{Cartesian{Datum}}, coords::LatLon{Datum}) where {Datum}
