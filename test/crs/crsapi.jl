@@ -501,8 +501,12 @@
     @test convert(Cartesian, c) === c
     c = LatLon(T(45), T(90))
     @test convert(LatLon, c) === c
+    c = LatLonAlt(T(45), T(90), T(1))
+    @test convert(LatLonAlt, c) === c
     c = GeocentricLatLon(T(45), T(90))
     @test convert(GeocentricLatLon, c) === c
+    c = GeocentricLatLonAlt(T(45), T(90), T(1))
+    @test convert(GeocentricLatLonAlt, c) === c
     c = OrthoNorth(T(1), T(1))
     @test convert(OrthoNorth, c) === c
 

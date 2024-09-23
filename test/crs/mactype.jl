@@ -58,6 +58,14 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
+    C = GeocentricLatLonAlt{WGS84Latest,Deg{T},Met{T}}
+    c1 = GeocentricLatLonAlt(1.0, 1.0, 1.0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+    c1 = GeocentricLatLonAlt(1.0f0, 1.0f0, 1.0f0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+
     C = AuthalicLatLon{WGS84Latest,Deg{T}}
     c1 = AuthalicLatLon(1.0, 1.0)
     c2 = convert(C, c1)

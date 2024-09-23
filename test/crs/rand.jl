@@ -32,6 +32,9 @@
     randtest(GeocentricLatLon{WGS84Latest})
     randtest(GeocentricLatLon)
 
+    randtest(GeocentricLatLonAlt{WGS84Latest})
+    randtest(GeocentricLatLonAlt)
+
     randtest(AuthalicLatLon{WGS84Latest})
     randtest(AuthalicLatLon)
   end
