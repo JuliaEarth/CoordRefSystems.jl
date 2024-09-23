@@ -112,36 +112,6 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLonAlt}) = rand(rng, Ge
 # holder, but he didn't mean to imply he did the work. Essentially all work was
 # done by Gerald Evenden.
 
-# GeocentricLatLon <> GeodeticLatLon
-
-# reference code: https://github.com/OSGeo/PROJ/blob/master/src/4D_api.cpp#L774
-
-function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::LatLon{Datum}) where {Datum}
-  ϕ = ustrip(deg2rad(coords.lat))
-  e² = oftype(ϕ, eccentricity²(ellipsoid(Datum)))
-  ϕ′ = atan((1 - e²) * tan(ϕ))
-  GeocentricLatLon{Datum}(rad2deg(ϕ′) * °, coords.lon)
-end
-
-function Base.convert(::Type{LatLon{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
-  ϕ′ = ustrip(deg2rad(coords.lat))
-  e² = oftype(ϕ′, eccentricity²(ellipsoid(Datum)))
-  ϕ = atan(1 / (1 - e²) * tan(ϕ′))
-  LatLon{Datum}(phi2lat(ϕ), coords.lon)
-end
-
-# GeocentricLatLonAlt <> GeodeticLatLonAlt
-
-function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
-  lla = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon))
-  GeocentricLatLonAlt{Datum}(lla.lat, lla.lon, coords.alt)
-end
-
-function Base.convert(::Type{LatLonAlt{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum}
-  lla = convert(LatLon, GeocentricLatLon{Datum}(coords.lat, coords.lon))
-  LatLonAlt{Datum}(lla.lat, lla.lon, coords.alt)
-end
-
 # GeocentricLatLon <> GeocentricLatLonAlt
 
 Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum} =
