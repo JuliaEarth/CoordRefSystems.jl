@@ -508,6 +508,15 @@ end
 # avoid converting coordinates with the same datum as the first argument
 Base.convert(::Type{LatLon{Datum}}, coords::LatLon{Datum}) where {Datum} = coords
 
+function Base.convert(::Type{LatLonAlt{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ}
+  cartₛ = convert(Cartesian{Datumₛ}, coords)
+  cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
+  convert(LatLonAlt{Datumₜ}, cartₜ)
+end
+
+# avoid converting coordinates with the same datum as the first argument
+Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = coords
+
 function Base.convert(::Type{GeocentricLatLon{Datumₜ}}, coords::GeocentricLatLon{Datumₛ}) where {Datumₜ,Datumₛ}
   cartₛ = convert(Cartesian{Datumₛ}, coords)
   cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
@@ -516,6 +525,15 @@ end
 
 # avoid converting coordinates with the same datum as the first argument
 Base.convert(::Type{GeocentricLatLon{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum} = coords
+
+function Base.convert(::Type{GeocentricLatLonAlt{Datumₜ}}, coords::GeocentricLatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ}
+  cartₛ = convert(Cartesian{Datumₛ}, coords)
+  cartₜ = convert(Cartesian{Datumₜ}, cartₛ)
+  convert(GeocentricLatLonAlt{Datumₜ}, cartₜ)
+end
+
+# avoid converting coordinates with the same datum as the first argument
+Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::GeocentricLatLonAlt{Datum}) where {Datum} = coords
 
 # ----------
 # FALLBACKS

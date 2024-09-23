@@ -364,8 +364,8 @@
       @inferred convert(LatLon, c2)
     end
 
+    # altitude can only be calculated accurately using Float64
     if T === Float64
-      # altitude can only be calculated accurately using Float64
       @testset "LatLonAlt <> Cartesian" begin
         c1 = LatLonAlt(T(30), T(40), T(0))
         c2 = convert(Cartesian, c1)
@@ -455,6 +455,78 @@
         c2 = Cartesian{WGS84Latest}(T(4227784.905275363), T(3547532.754713428), T(3186385.300568595))
         @inferred convert(Cartesian, c1)
         @inferred convert(LatLonAlt, c2)
+      end
+
+      @testset "LatLonAlt: Datum conversion" begin
+        # WGS84 (G1762) to ITRF2008
+        c1 = LatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
+        c2 = convert(LatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(30), T(40), T(1.0000261394307017)))
+        c3 = convert(LatLonAlt{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = LatLonAlt{WGS84{1762}}(T(35), T(45), T(1))
+        c2 = convert(LatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(35), T(45), T(1.0000344086438417)))
+        c3 = convert(LatLonAlt{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+  
+        # ITRF2008 to ITRF2020
+        c1 = LatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
+        c2 = convert(LatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(0.9975402476266026)))
+        c3 = convert(LatLonAlt{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = LatLonAlt{ITRF{2008}}(T(35), T(45), T(1))
+        c2 = convert(LatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742), T(0.9973427625373006)))
+        c3 = convert(LatLonAlt{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = LatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
+        c2 = LatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
+        @inferred convert(LatLonAlt{ITRF{2008}}, c1)
+        @inferred convert(LatLonAlt{ITRF{2020}}, c2)
+      end
+
+      @testset "GeocentricLatLonAlt: Datum conversion" begin
+        # WGS84 (G1762) to ITRF2008
+        c1 = GeocentricLatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
+        c2 = convert(GeocentricLatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1.0000264029949903)))
+        c3 = convert(GeocentricLatLonAlt{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = GeocentricLatLonAlt{WGS84{1762}}(T(35), T(45), T(1))
+        c2 = convert(GeocentricLatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, GeocentricLatLonAlt{ITRF{2008}}(T(35), T(45), T(1.0000347206369042)))
+        c3 = convert(GeocentricLatLonAlt{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+  
+        # ITRF2008 to ITRF2020
+        c1 = GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
+        c2 = convert(GeocentricLatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(
+          c2,
+          GeocentricLatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(0.997536551207304))
+        )
+        c3 = convert(GeocentricLatLonAlt{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = GeocentricLatLonAlt{ITRF{2008}}(T(35), T(45), T(1))
+        c2 = convert(GeocentricLatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(
+          c2,
+          GeocentricLatLonAlt{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742), T(0.9973396398127079))
+        )
+        c3 = convert(GeocentricLatLonAlt{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+  
+        c1 = GeocentricLatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
+        c2 = GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
+        @inferred convert(GeocentricLatLonAlt{ITRF{2008}}, c1)
+        @inferred convert(GeocentricLatLonAlt{ITRF{2020}}, c2)
       end
     end
 
@@ -866,16 +938,37 @@
       @inferred convert(LatLon{WGS84{0}}, c5)
     end
 
-    @testset "LatLonAlt: Datum conversion" begin
-      # TODO
-    end
-
     @testset "GeocentricLatLon: Datum conversion" begin
-      # TODO
-    end
+      # WGS84 (G1762) to ITRF2008
+      c1 = GeocentricLatLon{WGS84{1762}}(T(30), T(40))
+      c2 = convert(GeocentricLatLon{ITRF{2008}}, c1)
+      @test allapprox(c2, GeocentricLatLon{ITRF{2008}}(T(30), T(40)))
+      c3 = convert(GeocentricLatLon{WGS84{1762}}, c2)
+      @test allapprox(c3, c1)
 
-    @testset "GeocentricLatLonAlt: Datum conversion" begin
-      # TODO
+      c1 = GeocentricLatLon{WGS84{1762}}(T(35), T(45))
+      c2 = convert(GeocentricLatLon{ITRF{2008}}, c1)
+      @test allapprox(c2, GeocentricLatLon{ITRF{2008}}(T(35), T(45)))
+      c3 = convert(GeocentricLatLon{WGS84{1762}}, c2)
+      @test allapprox(c3, c1)
+
+      # ITRF2008 to ITRF2020
+      c1 = GeocentricLatLon{ITRF{2008}}(T(30), T(40))
+      c2 = convert(GeocentricLatLon{ITRF{2020}}, c1)
+      @test allapprox(c2, GeocentricLatLon{ITRF{2020}}(T(29.999999988624147), T(39.99999998542911)))
+      c3 = convert(GeocentricLatLon{ITRF{2008}}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = GeocentricLatLon{ITRF{2008}}(T(35), T(45))
+      c2 = convert(GeocentricLatLon{ITRF{2020}}, c1)
+      @test allapprox(c2, GeocentricLatLon{ITRF{2020}}(T(34.999999991156464), T(44.99999998602658)))
+      c3 = convert(GeocentricLatLon{ITRF{2008}}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = GeocentricLatLon{WGS84{1762}}(T(30), T(40))
+      c2 = GeocentricLatLon{ITRF{2008}}(T(30), T(40))
+      @inferred convert(GeocentricLatLon{ITRF{2008}}, c1)
+      @inferred convert(GeocentricLatLon{ITRF{2020}}, c2)
     end
   end
 
@@ -1376,6 +1469,99 @@
       c2 = Mercator{WGS84{1762}}(T(10018754.171394622), T(5591295.9185533915))
       @inferred convert(Mercator{ITRF{2008}}, c1)
       @inferred convert(LatLon{ITRF{2008}}, c2)
+    end
+
+    @testset "LatLonAlt <> Projected" begin
+      c1 = LatLonAlt(T(45), T(90), T(0))
+      c2 = convert(Mercator, c1)
+      @test allapprox(c2, Mercator(T(10018754.171394622), T(5591295.9185533915)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLonAlt(T(45), T(90), T(0))
+      c2 = convert(WinkelTripel, c1)
+      @test allapprox(c2, WinkelTripel(T(7044801.6979576545), T(5231448.051548355)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+      c1 = LatLonAlt(T(45), T(90), T(0))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), T(5591495.9185533915)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLonAlt(T(45), T(90), T(0))
+      c2 = Mercator(T(10018754.171394622), T(5591295.9185533915))
+      c3 = WinkelTripel(T(7044801.6979576545), T(5231448.051548355))
+      c4 = ShiftedMercator(T(8349161.809495518), T(5591495.9185533915))
+      @inferred convert(Mercator, c1)
+      @inferred convert(LatLonAlt, c2)
+      @inferred convert(LatLonAlt, c3)
+      @inferred convert(LatLonAlt, c4)
+    end
+
+    @testset "GeocentricLatLon <> Projected" begin
+      c1 = GeocentricLatLon(T(45), T(90))
+      c2 = convert(Mercator, c1)
+      @test allapprox(c2, Mercator(T(10018754.171394622), T(5621538.488121794)))
+      c3 = convert(GeocentricLatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = GeocentricLatLon(T(45), T(90))
+      c2 = convert(WinkelTripel, c1)
+      @test allapprox(c2, WinkelTripel(T(7034650.123120441), T(5253308.640402036)))
+      c3 = convert(GeocentricLatLon, c2)
+      @test allapprox(c3, c1)
+
+      ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+      c1 = GeocentricLatLon(T(45), T(90))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), T(5621738.488121794)))
+      c3 = convert(GeocentricLatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = GeocentricLatLon(T(45), T(90))
+      c2 = Mercator(T(10018754.171394622), T(5621538.488121794))
+      c3 = WinkelTripel(T(7034650.123120441), T(5253308.640402036))
+      c4 = ShiftedMercator(T(8349161.809495518), T(5621738.488121794))
+      @inferred convert(Mercator, c1)
+      @inferred convert(GeocentricLatLon, c2)
+      @inferred convert(GeocentricLatLon, c3)
+      @inferred convert(GeocentricLatLon, c4)
+    end
+
+    @testset "GeocentricLatLonAlt <> Projected" begin
+      c1 = GeocentricLatLonAlt(T(45), T(90), T(0))
+      c2 = convert(Mercator, c1)
+      @test allapprox(c2, Mercator(T(10018754.171394622), T(5621538.488121794)))
+      c3 = convert(GeocentricLatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      c1 = GeocentricLatLonAlt(T(45), T(90), T(0))
+      c2 = convert(WinkelTripel, c1)
+      @test allapprox(c2, WinkelTripel(T(7034650.123120441), T(5253308.640402036)))
+      c3 = convert(GeocentricLatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
+      c1 = GeocentricLatLonAlt(T(45), T(90), T(0))
+      c2 = convert(ShiftedMercator, c1)
+      @test allapprox(c2, ShiftedMercator(T(8349161.809495518), T(5621738.488121794)))
+      c3 = convert(GeocentricLatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = GeocentricLatLonAlt(T(45), T(90), T(0))
+      c2 = Mercator(T(10018754.171394622), T(5621538.488121794))
+      c3 = WinkelTripel(T(7034650.123120441), T(5253308.640402036))
+      c4 = ShiftedMercator(T(8349161.809495518), T(5621738.488121794))
+      @inferred convert(Mercator, c1)
+      @inferred convert(GeocentricLatLonAlt, c2)
+      @inferred convert(GeocentricLatLonAlt, c3)
+      @inferred convert(GeocentricLatLonAlt, c4)
     end
 
     @testset "Cartesian <> Projected" begin
