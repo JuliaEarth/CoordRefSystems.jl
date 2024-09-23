@@ -464,26 +464,26 @@
         @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(30), T(40), T(1.0000261394307017)))
         c3 = convert(LatLonAlt{WGS84{1762}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = LatLonAlt{WGS84{1762}}(T(35), T(45), T(1))
         c2 = convert(LatLonAlt{ITRF{2008}}, c1)
         @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(35), T(45), T(1.0000344086438417)))
         c3 = convert(LatLonAlt{WGS84{1762}}, c2)
         @test allapprox(c3, c1)
-  
+
         # ITRF2008 to ITRF2020
         c1 = LatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
         c2 = convert(LatLonAlt{ITRF{2020}}, c1)
         @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(0.9975402476266026)))
         c3 = convert(LatLonAlt{ITRF{2008}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = LatLonAlt{ITRF{2008}}(T(35), T(45), T(1))
         c2 = convert(LatLonAlt{ITRF{2020}}, c1)
         @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742), T(0.9973427625373006)))
         c3 = convert(LatLonAlt{ITRF{2008}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = LatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
         c2 = LatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
         @inferred convert(LatLonAlt{ITRF{2008}}, c1)
@@ -497,13 +497,13 @@
         @test allapprox(c2, GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1.0000264029949903)))
         c3 = convert(GeocentricLatLonAlt{WGS84{1762}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = GeocentricLatLonAlt{WGS84{1762}}(T(35), T(45), T(1))
         c2 = convert(GeocentricLatLonAlt{ITRF{2008}}, c1)
         @test allapprox(c2, GeocentricLatLonAlt{ITRF{2008}}(T(35), T(45), T(1.0000347206369042)))
         c3 = convert(GeocentricLatLonAlt{WGS84{1762}}, c2)
         @test allapprox(c3, c1)
-  
+
         # ITRF2008 to ITRF2020
         c1 = GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
         c2 = convert(GeocentricLatLonAlt{ITRF{2020}}, c1)
@@ -513,7 +513,7 @@
         )
         c3 = convert(GeocentricLatLonAlt{ITRF{2008}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = GeocentricLatLonAlt{ITRF{2008}}(T(35), T(45), T(1))
         c2 = convert(GeocentricLatLonAlt{ITRF{2020}}, c1)
         @test allapprox(
@@ -522,7 +522,7 @@
         )
         c3 = convert(GeocentricLatLonAlt{ITRF{2008}}, c2)
         @test allapprox(c3, c1)
-  
+
         c1 = GeocentricLatLonAlt{WGS84{1762}}(T(30), T(40), T(1))
         c2 = GeocentricLatLonAlt{ITRF{2008}}(T(30), T(40), T(1))
         @inferred convert(GeocentricLatLonAlt{ITRF{2008}}, c1)
