@@ -14,7 +14,7 @@ struct Shift{D<:Deg,M<:Met}
   yₒ::M
 end
 
-Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(asdeg(lonₒ), asmet(xₒ), asmet(yₒ))
+Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(float(asdeg(lonₒ)), float(asmet(xₒ)), float(asmet(yₒ)))
 
 """
     CoordRefSystems.shift(CRS::Type{<:Projected}; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m)

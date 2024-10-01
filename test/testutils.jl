@@ -110,3 +110,13 @@ function crsstringtest(code)
   str = wktstring(code, format="WKT1_ESRI", multiline=true)
   @test CoordRefSystems.string2code(str) === code
 end
+
+function gettest(code, CRS)
+  @test CoordRefSystems.get(code) === CRS
+  # inverse operation
+  @test CoordRefSystems.code(CRS) === code
+  # with instance type
+  n = CoordRefSystems.ncoords(CRS)
+  c = CRS(ntuple(_ -> T(0), n)...)
+  @test CoordRefSystems.code(typeof(c)) === code
+end
