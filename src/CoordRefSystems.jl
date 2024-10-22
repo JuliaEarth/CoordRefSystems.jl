@@ -12,7 +12,7 @@ using Rotations: RotXYZ
 using StaticArrays: SVector
 
 import Random
-import Base: ==
+import Base: ==,isless
 
 include("utils.jl")
 include("ioutils.jl")
@@ -99,6 +99,9 @@ export
 
   # codes
   EPSG,
-  ESRI
+  ESRI,
 
+  # functions
+  sort_by_field,
+  sort_by_field!
 end

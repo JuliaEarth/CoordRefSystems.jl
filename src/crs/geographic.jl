@@ -554,7 +554,47 @@ end
 # Lexiconomical comparison between two geographic coordinates of the same type
 Base.isless(x::T, y::T) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x),_toTuple(y))
 
+
+"""
+  isless(x::T, y::T,s::S) where {T<:CoordRefSystems.Geographic,S}
+
+Lexiconomical comparison between two geographic coordinates of the same type `T` by a field `s` of type `S`. Where `S` could be a String, Symbol or a Vector of Strings or Symbols.
+If only a partial order is defined, the rest of the rest of the field are sorted in the order of the remaining namefields.
+
+## Examples
+```jldoctest
+julia> a1= LatLon(1,2); a2= LatLon(2,1);
+julia> isless(a1,a2)
+true
+julia> isless(a1,a2,:lon)
+false
+
+See also [`sort_by_field`](@ref).
+"""
 Base.isless(x::T, y::T,s::Symbol) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
 Base.isless(x::T, y::T,s::String) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
 Base.isless(x::T, y::T,s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
 Base.isless(x::T, y::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
+
+
+"""
+  sort_by_field(x::T,s::S;kwargs...)
+
+Sort an array of `Geographic` type `T` by a field `s` of type `S`. Where `S` could be a String, Symbol or a Vector of Strings or Symbols.
+It is an alias for `sort(x;lt=(x,y)->isless(x,y,s),kwargs...)`.
+"""
+sort_by_field(x::AbstractArray{T},s::Symbol;kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field(x::AbstractArray{T},s::String;kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field(x::AbstractArray{T},s::AbstractVector{Symbol};kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field(x::AbstractArray{T},s::AbstractVector{String};kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
+
+"""
+  sort_by_field!(x::T,s::S;kwargs...)
+
+In-place sort an array of `Geographic` type `T` by a field `s` of type `S`. Where `S` could be a String, Symbol or a Vector of Strings or Symbols. It is an
+alias for `sort!(x;lt=(x,y)->isless(x,y,s),kwargs...)`.
+"""
+sort_by_field!(x::AbstractArray{T},s::Symbol;kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field!(x::AbstractArray{T},s::String;kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field!(x::AbstractArray{T},s::AbstractVector{Symbol};kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field!(x::AbstractArray{T},s::AbstractVector{String};kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)

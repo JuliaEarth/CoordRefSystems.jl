@@ -50,7 +50,10 @@ end
   _lon= -180:10:180
   _alt= 0:10:100
   sorted_latlon = [LatLon(lat, lon) for lon in _lon,lat in _lat][:]
+  sorted_lonlat = [LatLon(lat, lon) for lat in _lat,lon in _lon][:]
   sorted_latlonalt = [LatLonAlt(lat, lon, alt) for  alt in _alt,lon in _lon,lat in _lat ][:]
+  sorted_altlonlat = [LatLonAlt(lat, lon, alt) for  lat in _lat,lon in _lon,alt in _alt ][:]
+  sorted_altlatlon = [LatLonAlt(lat, lon, alt) for  lon in _lon,lat in _lat,alt in _alt ][:]
   sorted_geocentriclatlon = [GeocentricLatLon(lat, lon) for lon in _lon, lat in _lat][:]
   sorted_geocentriclatlonalt = [GeocentricLatLonAlt(lat, lon, alt) for alt in _alt, lon in _lon, lat in _lat  ][:]
   shuffled_latlon = sorted_latlon[randperm(length(sorted_latlon))]
@@ -62,5 +65,16 @@ end
   @test sort(shuffled_latlonalt) == sorted_latlonalt
   @test sort(shuffled_geocentriclatlon) == sorted_geocentriclatlon
   @test sort(shuffled_geocentriclatlonalt) == sorted_geocentriclatlonalt
+
+  @test sort_by_field(shuffled_latlon, :lon) == sorted_lonlat
+  @test sort_by_field(shuffled_latlonalt, [:alt,:lon,:lat]) == sorted_altlonlat
+  @test sort_by_field(shuffled_latlonalt, :alt) == sorted_altlatlon
+
+  @test sort_by_field(shuffled_latlon, "lon") == sorted_lonlat
+  @test sort_by_field(shuffled_latlonalt, ["alt","lon","lat"]) == sorted_altlonlat
+  @test sort_by_field(shuffled_latlonalt, "alt") == sorted_altlatlon
+
+  @test sort_by_field!(shuffled_latlon, :lon) == sorted_lonlat
+  @test sort_by_field!(shuffled_latlonalt, [:alt,:lon,:lat]) == sorted_altlonlat
 
 end
