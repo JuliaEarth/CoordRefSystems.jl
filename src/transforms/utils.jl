@@ -83,7 +83,7 @@ between `Datum₁`, `Datum₂`, ..., `Datumₙ`.
 See also [`Sequential`](@ref).
 """
 macro sequential(Datums...)
-  transforms = map(1:(length(Datums) - 1)) do i
+  transforms = map(1:(length(Datums)-1)) do i
     :(transform($(Datums[i]), $(Datums[i + 1])))
   end
   expr = :(Sequential($(transforms...)))

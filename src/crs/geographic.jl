@@ -532,28 +532,21 @@ Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} =
 
 Base.convert(::Type{AuthalicLatLon}, coords::CRS{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)
 
-
-
-
 #  Trasform the field of a Geographic type to a Tuple for comparison
-@inline _toTuple(x::T) where {T<:CoordRefSystems.Geographic} = Tuple([getfield(x,name) for name in fieldnames(T)])
+@inline _toTuple(x::T) where {T<:CoordRefSystems.Geographic} = Tuple([getfield(x, name) for name in fieldnames(T)])
 
-
-
-
-@inline function _toTuple(x::T,s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic}
-  @assert all(@. hasfield(T,s)) "Field $s not found in $T"
-  _fieldname=fieldnames(T) |> names-> filter(x->x ∉ s,names) |> names-> (s...,names...)
-  Tuple([getfield(x,name) for name in _fieldname])
+@inline function _toTuple(x::T, s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic}
+  @assert all(@. hasfield(T, s)) "Field $s not found in $T"
+  _fieldname=fieldnames(T) |> names->filter(x->x ∉ s, names) |> names -> (s..., names...)
+  Tuple([getfield(x, name) for name in _fieldname])
 end
 
-@inline _toTuple(x::T,s::Symbol) where {T<:CoordRefSystems.Geographic} = _toTuple(x,[s])
-@inline _toTuple(x::T,s::String) where {T<:CoordRefSystems.Geographic} = _toTuple(x,Symbol(s))
-@inline _toTuple(x::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = _toTuple(x,Symbol.(s))
+@inline _toTuple(x::T, s::Symbol) where {T<:CoordRefSystems.Geographic} = _toTuple(x, [s])
+@inline _toTuple(x::T, s::String) where {T<:CoordRefSystems.Geographic} = _toTuple(x, Symbol(s))
+@inline _toTuple(x::T, s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = _toTuple(x, Symbol.(s))
 
 # Lexiconomical comparison between two geographic coordinates of the same type
-Base.isless(x::T, y::T) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x),_toTuple(y))
-
+Base.isless(x::T, y::T) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x), _toTuple(y))
 
 """
   isless(x::T, y::T,s::S) where {T<:CoordRefSystems.Geographic,S}
@@ -571,11 +564,12 @@ false
 
 See also [`sort_by_field`](@ref).
 """
-Base.isless(x::T, y::T,s::Symbol) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
-Base.isless(x::T, y::T,s::String) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
-Base.isless(x::T, y::T,s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
-Base.isless(x::T, y::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
-
+Base.isless(x::T, y::T, s::Symbol) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x, s), _toTuple(y, s))
+Base.isless(x::T, y::T, s::String) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x, s), _toTuple(y, s))
+Base.isless(x::T, y::T, s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic} =
+  isless(_toTuple(x, s), _toTuple(y, s))
+Base.isless(x::T, y::T, s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} =
+  isless(_toTuple(x, s), _toTuple(y, s))
 
 """
   sort_by_field(x::T,s::S;kwargs...)
@@ -583,10 +577,14 @@ Base.isless(x::T, y::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geog
 Sort an array of `Geographic` type `T` by a field `s` of type `S`. Where `S` could be a String, Symbol or a Vector of Strings or Symbols.
 It is an alias for `sort(x;lt=(x,y)->isless(x,y,s),kwargs...)`.
 """
-sort_by_field(x::AbstractArray{T},s::Symbol;kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field(x::AbstractArray{T},s::String;kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field(x::AbstractArray{T},s::AbstractVector{Symbol};kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field(x::AbstractArray{T},s::AbstractVector{String};kwargs...) where {T<:CoordRefSystems.Geographic} = sort(x;lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field(x::AbstractArray{T}, s::Symbol; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort(x; lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field(x::AbstractArray{T}, s::String; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort(x; lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field(x::AbstractArray{T}, s::AbstractVector{Symbol}; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort(x; lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field(x::AbstractArray{T}, s::AbstractVector{String}; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort(x; lt=(x, y)->isless(x, y, s), kwargs...)
 
 """
   sort_by_field!(x::T,s::S;kwargs...)
@@ -594,7 +592,11 @@ sort_by_field(x::AbstractArray{T},s::AbstractVector{String};kwargs...) where {T<
 In-place sort an array of `Geographic` type `T` by a field `s` of type `S`. Where `S` could be a String, Symbol or a Vector of Strings or Symbols. It is an
 alias for `sort!(x;lt=(x,y)->isless(x,y,s),kwargs...)`.
 """
-sort_by_field!(x::AbstractArray{T},s::Symbol;kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field!(x::AbstractArray{T},s::String;kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field!(x::AbstractArray{T},s::AbstractVector{Symbol};kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
-sort_by_field!(x::AbstractArray{T},s::AbstractVector{String};kwargs...) where {T<:CoordRefSystems.Geographic} = sort!(x,lt=(x,y)->isless(x,y,s),kwargs...)
+sort_by_field!(x::AbstractArray{T}, s::Symbol; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort!(x, lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field!(x::AbstractArray{T}, s::String; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort!(x, lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field!(x::AbstractArray{T}, s::AbstractVector{Symbol}; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort!(x, lt=(x, y)->isless(x, y, s), kwargs...)
+sort_by_field!(x::AbstractArray{T}, s::AbstractVector{String}; kwargs...) where {T<:CoordRefSystems.Geographic} =
+  sort!(x, lt=(x, y)->isless(x, y, s), kwargs...)
