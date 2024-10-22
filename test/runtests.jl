@@ -4,13 +4,14 @@ using StableRNGs
 using ArchGDAL
 using ArchGDAL.GDAL
 using Test
+using Random # used for testing sort
 
 using CoordRefSystems: Met, Deg, Rad
 using Unitful: m, mm, cm, km, rad, °, s
 
 include("testutils.jl")
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "promotion.jl", "strings.jl", "get.jl", "misc.jl"]
+testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "promotion.jl", "strings.jl", "get.jl", "misc.jl","sorting.jl"]
 
 # --------------------------------
 # RUN TESTS WITH SINGLE PRECISION

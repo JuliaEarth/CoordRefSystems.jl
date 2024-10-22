@@ -531,3 +531,30 @@ Base.convert(::Type{GeocentricLatLonAlt}, coords::CRS{Datum}) where {Datum} =
   convert(GeocentricLatLonAlt{Datum}, coords)
 
 Base.convert(::Type{AuthalicLatLon}, coords::CRS{Datum}) where {Datum} = convert(AuthalicLatLon{Datum}, coords)
+
+
+
+
+#  Trasform the field of a Geographic type to a Tuple for comparison
+@inline _toTuple(x::T) where {T<:CoordRefSystems.Geographic} = Tuple([getfield(x,name) for name in fieldnames(T)])
+
+
+
+
+@inline function _toTuple(x::T,s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic}
+  @assert all(@. hasfield(T,s)) "Field $s not found in $T"
+  _fieldname=fieldnames(T) |> names-> filter(x->x ∉ s,names) |> names-> (s...,names...)
+  Tuple([getfield(x,name) for name in _fieldname])
+end
+
+@inline _toTuple(x::T,s::Symbol) where {T<:CoordRefSystems.Geographic} = _toTuple(x,[s])
+@inline _toTuple(x::T,s::String) where {T<:CoordRefSystems.Geographic} = _toTuple(x,Symbol(s))
+@inline _toTuple(x::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = _toTuple(x,Symbol.(s))
+
+# Lexiconomical comparison between two geographic coordinates of the same type
+Base.isless(x::T, y::T) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x),_toTuple(y))
+
+Base.isless(x::T, y::T,s::Symbol) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
+Base.isless(x::T, y::T,s::String) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
+Base.isless(x::T, y::T,s::AbstractVector{Symbol}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
+Base.isless(x::T, y::T,s::AbstractVector{String}) where {T<:CoordRefSystems.Geographic} = isless(_toTuple(x,s),_toTuple(y,s))
