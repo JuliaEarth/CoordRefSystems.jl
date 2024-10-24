@@ -111,6 +111,7 @@ include("projected/winkeltripel.jl")
 include("projected/robinson.jl")
 include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
+include("projected/eqareaalbers.jl")
 
 # ----------
 # FALLBACKS
