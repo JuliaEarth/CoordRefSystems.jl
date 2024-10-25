@@ -63,7 +63,7 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
 # Authors of the original algorithm: Gerald Evenden and Thomas Knudsen
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aea.cpp
 
-inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum} =
+inbounds(::Type{<:Albers}, λ, ϕ) =
   -π ≤ λ ≤ π && deg2rad(90) ≤ ϕ ≤ deg2rad(90)
 
 function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
