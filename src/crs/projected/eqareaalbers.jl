@@ -70,19 +70,20 @@ inbounds(::Type{<:Albers}, λ, ϕ) =
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
+  e² = T(eccentricity²(🌎))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
-  m₁ = hm(ϕ₁, e)
-  m₂ = hm(ϕ₂, e)
-  α₁ = hα(ϕ₁, e)
-  α₂ = hα(ϕ₂, e)
+  m₁ = hm(ϕ₁, e, e²)
+  m₂ = hm(ϕ₂, e, e²)
+  α₁ = hα(ϕ₁, e, e²)
+  α₂ = hα(ϕ₂, e, e²)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
   Θ(λ) = n * λ
-  ρ(ϕ) = sqrt(C - n * hα(ϕ, e)) / n
+  ρ(ϕ) = sqrt(C - n * hα(ϕ, e, e²)) / n
   ρₒ = ρ(ϕₒ)
 
   fx(λ, ϕ) = ρ(ϕ) * sin(Θ(λ))
@@ -103,11 +104,11 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
   ρₒ = sqrt(C - n * αₒ) / n
-  m₁ = hm(ϕ₁, e)
-  m₂ = hm(ϕ₂, e)
-  αₒ = hα(ϕₒ, e)
-  α₁ = hα(ϕ₁, e)
-  α₂ = hα(ϕ₂, e)
+  m₁ = hm(ϕ₁, e, e²)
+  m₂ = hm(ϕ₂, e, e²)
+  αₒ = hα(ϕₒ, e, e²)
+  α₁ = hα(ϕ₁, e, e²)
+  α₂ = hα(ϕ₂, e, e²)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
@@ -117,11 +118,7 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   β′ = asin(α′ / (1 - (1 - e) / (2 * e) * log((1 - e) / (1 + e))))
 
   λ = θ / n
-  ϕ =
-    β′ +
-    (e^2 / 3 + 31 * e^4 / 180 + 517 * e^6 / 5040) * sin(2 * β′) +
-    (23 * e^4 / 360 + 251 * e^6 / 3780) * sin(4 * β′) +
-    (761 * e^6 / 45360) * sin(6 * β′)
+  ϕ = auth2geod(β′, e²)
 
   λ, ϕ
 end
@@ -130,9 +127,9 @@ end
 # HELPER FUNCTIONS
 # -----------------
 
-hm(ϕ, e) = cos(ϕ) / sqrt(1 - e^2 * sin(ϕ)^2)
+hm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
-hα(ϕ, e) = (1 - e^2) * (sin(ϕ) / (1 - e^2 * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
+hα(ϕ, e, e²) = (1 - e²) * (sin(ϕ) / (1 - e² * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
 
 # ----------
 # FALLBACKS
