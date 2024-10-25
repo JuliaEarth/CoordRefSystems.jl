@@ -88,7 +88,7 @@ function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {lat₀,lat₁,lat�
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
-  Θ = n * (λ - λ₀)
+  Θ = n * λ
   ρ = a * sqrt(C - n * hα(ϕ, e)) / n
   if ρ < 0
     throw(DomainError("Coordinate transformation outside projection domain"))
