@@ -3,8 +3,9 @@
 # ------------------------------------------------------------------
 
 """
-    Albers(latₒ, lat₁, lat₂, Datum, Shift)
-    Albers CRS with latitude origin latₒ standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
+    Alber{latₒ, lat₁, lat₂, Datum, Shift}
+    
+Albers CRS with latitude origin latₒ standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
 
 ## Examples
 
