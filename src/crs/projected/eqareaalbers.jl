@@ -127,7 +127,7 @@ function backward(::Type{<:Albers{Datum}}, x, y) where {lat₀,lat₁,lat₂,lon
   α′ = (C - (ρ^2 * n^2) / a^2) / n
   β′ = asin(α′ / (1 - (1 - e) / (2 * e) * log((1 - e) / (1 + e))))
 
-  λ = λ₀ + θ / n
+  λ = θ / n
   ϕ =
     β′ +
     (e^2 / 3 + 31 * e^4 / 180 + 517 * e^6 / 5040) * sin(2 * β′) +
