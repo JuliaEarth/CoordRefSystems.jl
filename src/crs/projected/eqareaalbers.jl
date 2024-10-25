@@ -18,7 +18,7 @@ Albers{NAD83}(1.0m, 1.0m)
 
 See [EPSG:5070](https://epsg.io/5070).
 """
-struct Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
+struct Albers{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
