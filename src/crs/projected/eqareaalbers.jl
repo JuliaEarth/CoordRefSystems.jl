@@ -79,7 +79,6 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
-
   m₁ = hm(ϕ₁, e)
   m₂ = hm(ϕ₂, e)
   α₁ = hα(ϕ₁, e)
@@ -93,7 +92,7 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   if ρ < 0
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
-  ρ₀ = (a * (C - n * α₀))^0.5 / n
+  ρ₀ = sqrt(a * (C - n * α₀)) / n
   function fx(λ, ϕ)
     ρ₀ - ρ * cos(Θ)
   end
@@ -107,13 +106,15 @@ end
 
 # backward projection formulas
 
-function backward(::Type{<:Albers{Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum,T}
+function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(x, eccentricity(🌎))
   e² = oftype(x, eccentricity²(🌎))
-  ϕ₀, ϕ₁, ϕ₂ = T.(ustrip.(deg2rad.(latₒ, lat₁, lat₂)))
+  ϕ₀ = oftype(x, ustrip(deg2rad(latₒ)))
+  ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
+  ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
   α₀ = hα(ϕ₀, e)
-  ρ₀ = (a * (C - n * α₀))^0.5 / n
+  ρ₀ = sqrt(a * (C - n * α₀)) / n
   α₁ = hα(ϕ₁, e)
   α₂ = hα(ϕ₂, e)
 
@@ -133,17 +134,17 @@ function backward(::Type{<:Albers{Datum}}, x, y) where {latₒ,lat₁,lat₂,Dat
     (e^2 / 3 + 31 * e^4 / 180 + 517 * e^6 / 5040) * sin(2 * β′) +
     (23 * e^4 / 360 + 251 * e^6 / 3780) * sin(4 * β′) +
     (761 * e^6 / 45360) * sin(6 * β′)
-  return λ, ϕ
+
+  λ, ϕ
 end
-# ----------
-# Helper functions
-# ----------
-function hm(ϕ, e)
-  cos(ϕ) / sqrt(1 - e^2 * sin(ϕ)^2)
-end
-function hα(ϕ, e)
-  (1 - e^2) * (sin(ϕ) / (1 - e^2 * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
-end
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+hm(ϕ, e) = cos(ϕ) / sqrt(1 - e^2 * sin(ϕ)^2)
+
+hα(ϕ, e) = (1 - e^2) * (sin(ϕ) / (1 - e^2 * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
 
 # ----------
 # FALLBACKS
