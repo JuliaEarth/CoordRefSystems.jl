@@ -68,15 +68,9 @@ inbounds(::Type{<:Albers}, λ, ϕ) =
   -π ≤ λ ≤ π && deg2rad(90) ≤ ϕ ≤ deg2rad(90)
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
-  # Constants
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
-  a = numconvert(T, majoraxis(🌎))
-
-  # Latitude origin
   ϕₒ = T(ustrip(deg2rad(latₒ)))
-
-  # Standard parallels
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
@@ -84,23 +78,16 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   m₂ = hm(ϕ₂, e)
   α₁ = hα(ϕ₁, e)
   α₂ = hα(ϕ₂, e)
-  αₒ = hα(ϕₒ, e)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
-  Θ = n * λ
-  ρ = a * sqrt(C - n * hα(ϕ, e)) / n
-  if ρ < 0
-    throw(ArgumentError("coordinates outside of the projection domain"))
-  end
-  ρₒ = sqrt(a * (C - n * αₒ)) / n
-  function fx(λ, ϕ)
-    ρₒ - ρ * cos(Θ)
-  end
+  Θ(λ) = n * λ
+  ρ(ϕ) = sqrt(C - n * hα(ϕ, e)) / n
+  ρₒ = ρ(ϕₒ)
 
-  function fy(λ, ϕ)
-    ρ * sin(Θ)
-  end
+  fx(λ, ϕ) = ρ(ϕ) * sin(Θ(λ))
+
+  fy(λ, ϕ) = ρₒ - ρ(ϕ) * cos(Θ(λ))
 
   fx, fy
 end
@@ -114,19 +101,19 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ϕₒ = oftype(x, ustrip(deg2rad(latₒ)))
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
-  αₒ = hα(ϕₒ, e)
-  ρₒ = sqrt(a * (C - n * αₒ)) / n
-  α₁ = hα(ϕ₁, e)
-  α₂ = hα(ϕ₂, e)
 
+  ρₒ = sqrt(C - n * αₒ) / n
   m₁ = hm(ϕ₁, e)
   m₂ = hm(ϕ₂, e)
+  αₒ = hα(ϕₒ, e)
+  α₁ = hα(ϕ₁, e)
+  α₂ = hα(ϕ₂, e)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
   θ = atan2(x, ρₒ - y)
-  ρ = sqrt(x^2 + (ρₒ - y)^2)
-  α′ = (C - (ρ^2 * n^2) / a^2) / n
+  ρ′ = sqrt(x^2 + (ρₒ - y)^2)
+  α′ = (C - (ρ′^2 * n^2)) / n
   β′ = asin(α′ / (1 - (1 - e) / (2 * e) * log((1 - e) / (1 + e))))
 
   λ = θ / n
