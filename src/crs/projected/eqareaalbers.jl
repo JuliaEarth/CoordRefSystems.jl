@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------
 
 """
-    Albers(lat₀, lat₁, lat₂, Datum, Shift)
-    Albers CRS with latitude origin lat₀ standard parallels `lat₁` and `lat₂`, `lon₀`, `Datum` and `Shift`.
+    Albers(latₒ, lat₁, lat₂, Datum, Shift)
+    Albers CRS with latitude origin latₒ standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
 
 ## Examples
 
@@ -23,34 +23,34 @@ struct Albers{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   y::M
 end
 
-Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(x::M, y::M) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift,M<:Met} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,float(M)}(x, y)
-Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(x::Met, y::Met) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(promote(x, y)...)
-Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(x::Len, y::Len) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(uconvert(m, x), uconvert(m, y))
-Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(x::Number, y::Number) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}(addunit(x, m), addunit(y, m))
+Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::M, y::M) where {latₒ,lat₁,lat₂,Datum,Shift,M<:Met} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift,float(M)}(x, y)
+Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Met, y::Met) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift}(promote(x, y)...)
+Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Len, y::Len) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-Albers{lat₀,lat₁,lat₂,lon₀,Datum}(args...) where {lat₀,lat₁,lat₂,lon₀,Datum} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift()}(args...)
+Albers{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
 
 Albers(args...) = Albers{NAD83}(args...)
 
 Base.convert(
-  ::Type{Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,M}},
-  coords::Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}
-) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift,M} = Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,M}(coords.x, coords.y)
+  ::Type{Albers{latₒ,lat₁,lat₂,Datum,Shift,M}},
+  coords::Albers{latₒ,lat₁,lat₂,Datum,Shift}
+) where {latₒ,lat₁,lat₂,Datum,Shift,M} = Albers{latₒ,lat₁,lat₂,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}}) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift} =
-  Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}
+constructor(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift}}) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  Albers{latₒ,lat₁,lat₂,Datum,Shift}
 
-lentype(::Type{<:Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,M}}) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift,M} = M
+lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat₁,lat₂,Datum,Shift,M} = M
 
 ==(
-  coords₁::Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift},
-  coords₂::Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift}
-) where {lat₀,lat₁,lat₂,lon₀,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::Albers{latₒ,lat₁,lat₂,Datum,Shift},
+  coords₂::Albers{latₒ,lat₁,lat₂,Datum,Shift}
+) where {latₒ,lat₁,lat₂,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -63,24 +63,22 @@ lentype(::Type{<:Albers{lat₀,lat₁,lat₂,lon₀,Datum,Shift,M}}) where {lat�
 # Authors of the original algorithm: Gerald Evenden and Thomas Knudsen
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aea.cpp
 
-inbounds(::Type{<:Albers{lat₀,lat₁,lat₂,lon₀,Datum}}, λ, ϕ) where {lat₀,lat₁,lat₂,lon₀,Datum} =
+inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum} =
   -π ≤ λ ≤ π && deg2rad(90) ≤ ϕ ≤ deg2rad(90)
 
-function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {lat₀,lat₁,lat₂,lon₀,Datum,T}
+function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   # Constants
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   a = numconvert(T, majoraxis(🌎))
 
   # Latitude origin
-  ϕ₀ = T(ustrip(deg2rad(lat₀)))
+  ϕ₀ = T(ustrip(deg2rad(latₒ)))
 
   # Standard parallels
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
-  # Longitude origin
-  λ₀ = T(ustrip(deg2rad(lon₀)))
 
   m₁ = hm(ϕ₁, e)
   m₂ = hm(ϕ₂, e)
@@ -109,11 +107,11 @@ end
 
 # backward projection formulas
 
-function backward(::Type{<:Albers{Datum}}, x, y) where {lat₀,lat₁,lat₂,lon₀,Datum,T}
+function backward(::Type{<:Albers{Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
   e = oftype(x, eccentricity(🌎))
   e² = oftype(x, eccentricity²(🌎))
-  ϕ₀, ϕ₁, ϕ₂, λ₀ = T.(ustrip.(deg2rad.(lat₀, lat₁, lat₂, lon₀)))
+  ϕ₀, ϕ₁, ϕ₂ = T.(ustrip.(deg2rad.(latₒ, lat₁, lat₂)))
   α₀ = hα(ϕ₀, e)
   ρ₀ = (a * (C - n * α₀))^0.5 / n
   α₁ = hα(ϕ₁, e)
@@ -151,5 +149,5 @@ end
 # FALLBACKS
 # ----------
 
-Base.convert(::Type{Albers{lat₀,lat₁,lat₂,lon₀}}, coords::CRS{Datum}) where {lat₀,lat₁,lat₂,lon₀,Datum} =
-  convert(Albers{lat₀,lat₁,lat₂,lon₀,Datum}, coords)
+Base.convert(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  convert(Albers{latₒ,lat₁,lat₂,Datum}, coords)
