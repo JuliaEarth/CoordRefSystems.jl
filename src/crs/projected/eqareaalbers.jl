@@ -66,7 +66,7 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
 inbounds(::Type{<:Albers}, λ, ϕ) =
   -π ≤ λ ≤ π && deg2rad(90) ≤ ϕ ≤ deg2rad(90)
 
-function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
+function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   # Constants
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
