@@ -91,7 +91,7 @@ function formulas(::Type{<:Albers{Datum}}, ::Type{T}) where {lat₀,lat₁,lat�
   Θ = n * λ
   ρ = a * sqrt(C - n * hα(ϕ, e)) / n
   if ρ < 0
-    throw(DomainError("Coordinate transformation outside projection domain"))
+    throw(ArgumentError("coordinates outside of the projection domain"))
   end
   ρ₀ = (a * (C - n * α₀))^0.5 / n
   function fx(λ, ϕ)
