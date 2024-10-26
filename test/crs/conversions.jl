@@ -1365,6 +1365,39 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> Albers" begin
+      AlbersUS = CoordRefSystems.get(EPSG{5070})
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(T(-7231430.540202629), T(11853758.709623523)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(T(10018754.171394622), -T(5591295.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(T(45), -T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(-T(10018754.171394622), T(5591295.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(-T(10018754.171394622), -T(5591295.9185533915)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = AlbersUS(T(-7231430.540202629), T(11853758.709623523))
+      @inferred convert(AlbersUS, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "LatLon <> UTM" begin
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)

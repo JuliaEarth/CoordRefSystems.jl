@@ -623,5 +623,32 @@
       @test_throws ArgumentError TM(T(1) * m, T(1) * s)
       @test_throws ArgumentError TM(T(1) * s, T(1) * s)
     end
+
+    @testset "Albers" begin
+      A = Albers{23.0,29.5,45.5,NAD83}
+      @test A(T(1), T(1)) == A(T(1) * m, T(1) * m)
+      @test A(T(1) * m, 1 * m) == A(T(1) * m, T(1) * m)
+      @test A(T(1) * km, T(1) * km) == A(T(1000) * m, T(1000) * m)
+
+      c = A(T(1), T(1))
+      @test sprint(show, c) == "Albers{NAD83}(x: 1.0 m, y: 1.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        Albers{NAD83} coordinates
+        ├─ x: 1.0f0 m
+        └─ y: 1.0f0 m"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        Albers{NAD83} coordinates
+        ├─ x: 1.0 m
+        └─ y: 1.0 m"""
+      end
+
+      # error: invalid units for coordinates
+      @test_throws ArgumentError A(T(1), T(1) * m)
+      @test_throws ArgumentError A(T(1) * s, T(1) * m)
+      @test_throws ArgumentError A(T(1) * m, T(1) * s)
+      @test_throws ArgumentError A(T(1) * s, T(1) * s)
+    end
   end
 end

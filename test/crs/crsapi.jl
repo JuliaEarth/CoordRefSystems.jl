@@ -2,6 +2,7 @@
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
   ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
+  AlbersUS = CoordRefSystems.shift(Albers{23.0,29.5,45.0,WGS84Latest}, xₒ=-96.0)
 
   @testset "datum" begin
     c = Cartesian(T(1), T(1))
@@ -163,6 +164,8 @@
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
+    c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.raw(c) == (T(1), T(2))
   end
 
   @testset "units" begin
@@ -206,6 +209,8 @@
     @test CoordRefSystems.units(c) == (m, m)
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.units(c) == (m, m)
+    c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.units(c) == (m, m)
   end
 
   @testset "constructor" begin
@@ -247,6 +252,8 @@
     @test CoordRefSystems.constructor(c) === UTMNorth32
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.constructor(c) === ShiftedMercator
+    c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.constructor(c) === AlbersUS
   end
 
   @testset "reconstruct" begin
@@ -310,6 +317,9 @@
     c = ShiftedMercator(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = AlbersUS(T(1), T(2))
+    rv = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "lentype" begin
@@ -350,6 +360,8 @@
     c = UTMNorth32(T(1), T(1))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = ShiftedMercator(T(1), T(2))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
@@ -392,6 +404,8 @@
     @test CoordRefSystems.mactype(c) == T
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
+    c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.mactype(c) == T
   end
 
   @testset "equality" begin
@@ -415,6 +429,7 @@
     equaltest(UTMNorth32)
     equaltest(ShiftedTM)
     equaltest(ShiftedMercator)
+    equaltest(AlbersUS)
   end
 
   @testset "isapprox" begin

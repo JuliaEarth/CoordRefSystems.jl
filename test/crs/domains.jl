@@ -211,6 +211,20 @@
     end
   end
 
+  @testset "Albers Forward" begin
+    Albers = CoordRefSystems.shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0°)
+    for lat in T.(-90:90), lon in T.(-180:180)
+      c1 = LatLon(lat, lon)
+      if indomain(Albers, c1)
+        c2 = convert(Albers, c1)
+        @test isfinite(c2.x)
+        @test isfinite(c2.y)
+      else
+        @test_throws ArgumentError convert(Albers, c1)
+      end
+    end
+  end
+
   @testset "UTMNorth forward" begin
     UTMNorth32 = utmnorth(32)
     for lat in T.(-90:90), lon in T.(-180:180)

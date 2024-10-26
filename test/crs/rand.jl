@@ -69,5 +69,8 @@
 
     randtest(OrthoSouth{WGS84Latest})
     randtest(OrthoSouth)
+
+    randtest(Albers{NAD83})
+    randtest(Albers)
   end
 end

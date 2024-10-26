@@ -4,7 +4,7 @@
 
 """
     Albers{latₒ, lat₁, lat₂, Datum, Shift}
-    
+
 Albers CRS with latitude origin latₒ standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
 
 ## Examples
@@ -33,8 +33,7 @@ Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Len, y::Len) where {latₒ,lat₁,la
 Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat₁,lat₂,Datum,Shift} =
   Albers{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-Albers{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} =
-  Albers{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
+Albers{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = Albers{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
 
 Albers(args...) = Albers{NAD83}(args...)
 
@@ -64,8 +63,7 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
 # Authors of the original algorithm: Gerald Evenden and Thomas Knudsen
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aea.cpp
 
-inbounds(::Type{<:Albers}, λ, ϕ) =
-  -π ≤ λ ≤ π && deg2rad(90) ≤ ϕ ≤ deg2rad(90)
+inbounds(::Type{<:Albers}, λ, ϕ) = -2π ≤ λ ≤ 2π && deg2rad(lat₁) ≤ ϕ ≤ deg2rad(lat₂)
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -86,9 +84,9 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ρ(ϕ) = sqrt(C - n * hα(ϕ, e, e²)) / n
   ρₒ = ρ(ϕₒ)
 
-  fx(λ, ϕ) = ρ(ϕ) * sin(Θ(λ))
+  fx(λ, ϕ) = ρ(ϕ) * sin(Θ(hλ(λ)))
 
-  fy(λ, ϕ) = ρₒ - ρ(ϕ) * cos(Θ(λ))
+  fy(λ, ϕ) = ρₒ - ρ(ϕ) * cos(Θ(hλ(λ)))
 
   fx, fy
 end
@@ -131,6 +129,7 @@ hm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
 hα(ϕ, e, e²) = (1 - e²) * (sin(ϕ) / (1 - e² * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
 
+hλ(λ) = λ > π ? λ - 2π : λ < -π ? λ + 2π : λ
 # ----------
 # FALLBACKS
 # ----------
