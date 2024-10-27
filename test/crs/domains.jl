@@ -212,15 +212,15 @@
   end
 
   @testset "Albers Forward" begin
-    Albers = CoordRefSystems.shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0°)
+    AlbersUS = CoordRefSystems.shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0°)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
-      if indomain(Albers, c1)
-        c2 = convert(Albers, c1)
+      if indomain(AlbersUS, c1)
+        c2 = convert(AlbersUS, c1)
         @test isfinite(c2.x)
         @test isfinite(c2.y)
       else
-        @test_throws ArgumentError convert(Albers, c1)
+        @test_throws ArgumentError convert(AlbersUS, c1)
       end
     end
   end

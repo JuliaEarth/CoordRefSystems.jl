@@ -1367,35 +1367,35 @@
 
     @testset "LatLon <> Albers" begin
       AlbersUS = CoordRefSystems.get(EPSG{5070})
-      c1 = LatLon(T(45), T(90))
+      c1 = LatLon{NAD83}(T(45), T(90))
       c2 = convert(AlbersUS, c1)
       @test allapprox(c2, AlbersUS(T(-7231430.540202629), T(11853758.709623523)))
-      c3 = convert(LatLon, c2)
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
-      c1 = LatLon(-T(45), T(90))
+      c1 = LatLon{NAD83}(-T(45), T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(T(10018754.171394622), -T(5591295.9185533915)))
-      c3 = convert(LatLon, c2)
+      @test allapprox(c2, AlbersUS(-T(15156419.949174397), T(13963188.032694416)))
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
-      c1 = LatLon(T(45), -T(90))
+      c1 = LatLon{NAD83}(T(45), -T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(-T(10018754.171394622), T(5591295.9185533915)))
-      c3 = convert(LatLon, c2)
+      @test allapprox(c2, AlbersUS(T(472145.12299166346), T(2460630.2617624514)))
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
-      c1 = LatLon(-T(45), -T(90))
+      c1 = LatLon{NAD83}(-T(45), -T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(-T(10018754.171394622), -T(5591295.9185533915)))
-      c3 = convert(LatLon, c2)
+      @test allapprox(c2, AlbersUS(T(8640856.920871278), -T(4596167.748123343)))
+      c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       # type stability
-      c1 = LatLon(T(45), T(90))
+      c1 = LatLon{NAD83}(T(45), T(90))
       c2 = AlbersUS(T(-7231430.540202629), T(11853758.709623523))
       @inferred convert(AlbersUS, c1)
-      @inferred convert(LatLon, c2)
+      @inferred convert(LatLon{NAD83}, c2)
     end
 
     @testset "LatLon <> UTM" begin

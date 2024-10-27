@@ -63,7 +63,7 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
 # Authors of the original algorithm: Gerald Evenden and Thomas Knudsen
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aea.cpp
 
-inbounds(::Type{<:Albers}, λ, ϕ) = -2π ≤ λ ≤ 2π && deg2rad(lat₁) ≤ ϕ ≤ deg2rad(lat₂)
+inbounds(::Type{<:Albers}, λ, ϕ) = -2π ≤ λ ≤ 2π && -π ≤ ϕ ≤ π
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -84,9 +84,14 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ρ(ϕ) = sqrt(C - n * hα(ϕ, e, e²)) / n
   ρₒ = ρ(ϕₒ)
 
-  fx(λ, ϕ) = ρ(ϕ) * sin(Θ(hλ(λ)))
+  fx(λ, ϕ) = ρ(hϕ(ϕ)) * sin(Θ(hλ(λ)))
 
-  fy(λ, ϕ) = ρₒ - ρ(ϕ) * cos(Θ(hλ(λ)))
+  function fy(λ, ϕ)
+    ρ = ρₒ - ρ(hϕ(ϕ)) * cos(Θ(hλ(λ)))
+    if ρ < 0
+      throw(ArgumentError("coordinates outside of the projection domain"))
+    end
+  end
 
   fx, fy
 end
@@ -101,7 +106,6 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-  ρₒ = sqrt(C - n * αₒ) / n
   m₁ = hm(ϕ₁, e, e²)
   m₂ = hm(ϕ₂, e, e²)
   αₒ = hα(ϕₒ, e, e²)
@@ -110,7 +114,10 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
 
-  θ = atan2(x, ρₒ - y)
+  ρ(ϕ) = sqrt(C - n * hα(ϕ, e, e²)) / n
+  ρₒ = ρ(ϕₒ)
+
+  θ = atan(x, ρₒ - y)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
   α′ = (C - (ρ′^2 * n^2)) / n
   β′ = asin(α′ / (1 - (1 - e) / (2 * e) * log((1 - e) / (1 + e))))
@@ -130,6 +137,8 @@ hm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 hα(ϕ, e, e²) = (1 - e²) * (sin(ϕ) / (1 - e² * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
 
 hλ(λ) = λ > π ? λ - 2π : λ < -π ? λ + 2π : λ
+
+hϕ(ϕ) = ϕ > π / 2 ? ϕ - π : ϕ < -π / 2 ? ϕ + π : ϕ
 # ----------
 # FALLBACKS
 # ----------

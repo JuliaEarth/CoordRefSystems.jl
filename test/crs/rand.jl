@@ -70,7 +70,6 @@
     randtest(OrthoSouth{WGS84Latest})
     randtest(OrthoSouth)
 
-    randtest(Albers{NAD83})
-    randtest(Albers)
+    randtest(CoordRefSystems.get(EPSG{5070}))
   end
 end
