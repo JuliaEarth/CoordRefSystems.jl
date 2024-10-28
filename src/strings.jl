@@ -24,7 +24,9 @@ const esriid2code = Dict(
   "World_Behrmann" => ESRI{54017},
   "World_Cylindrical_Equal_Area" => ESRI{54034},
   "World_Robinson" => ESRI{54030},
-  "World_Winkel_Tripel_NGS" => ESRI{54042}
+  "World_Winkel_Tripel_NGS" => ESRI{54042},
+  "NAD83 / Conus Albers" => EPSG{5070},
+  "NAD_1983_Contiguous_USA_Albers" => EPSG{5070}
 )
 
 """
@@ -50,7 +52,7 @@ function string2code(crsstr)
     type == "EPSG" ? EPSG{code} : ESRI{code}
   elseif endswith(keyword, "CS") # WKT1
     # use the datum name to differentiate ESRI WKT1 from OGC WKT1
-    # if the datum name starts with "D_", the format is ESRI WKT1 
+    # if the datum name starts with "D_", the format is ESRI WKT1
     datumregex = r"DATUM\[\"(.*?)\""
     datummatch = match(datumregex, content) |> checkmatch
     datumname = datummatch.captures[1]
