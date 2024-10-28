@@ -3,21 +3,9 @@
 # ------------------------------------------------------------------
 
 """
-    Albers{latₒ, lat₁, lat₂, Datum, Shift}
+    Albers{latₒ,lat₁,lat₂,Datum,Shift}
 
-Albers CRS with latitude origin latₒ standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
-
-## Examples
-
-```julia
-Albers(1, 1) # add default units
-Albers(1m, 1m) # integers are converted converted to floats
-Albers(1.0km, 1.0km) # length quantities are converted to meters
-Albers(1.0m, 1.0m)
-Albers{NAD83}(1.0m, 1.0m)
-```
-
-See [EPSG:5070](https://epsg.io/5070).
+Albers Conic Equal Area CRS with latitude origin `latₒ` standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
 """
 struct Albers{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
@@ -34,8 +22,6 @@ Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat
   Albers{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
 
 Albers{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = Albers{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
-
-Albers(args...) = Albers{NAD83}(args...)
 
 Base.convert(
   ::Type{Albers{latₒ,lat₁,lat₂,Datum,Shift,M}},
@@ -63,7 +49,24 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
 # Authors of the original algorithm: Gerald Evenden and Thomas Knudsen
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/aea.cpp
 
-inbounds(::Type{<:Albers}, λ, ϕ) = -2π ≤ λ ≤ 2π && -π ≤ ϕ ≤ π
+function inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum}
+  🌎 = ellipsoid(Datum)
+  e = oftype(λ, eccentricity(🌎))
+  e² = oftype(λ, eccentricity²(🌎))
+  ϕₒ = oftype(λ, ustrip(deg2rad(latₒ)))
+  ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
+  ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
+  
+  m₁ = hm(ϕ₁, e, e²)
+  m₂ = hm(ϕ₂, e, e²)
+  α₁ = hα(ϕ₁, e, e²)
+  α₂ = hα(ϕ₂, e, e²)
+  n = (m₁^2 - m₂^2) / (α₂ - α₁)
+  C = m₁^2 + n * α₁
+  
+  ρ = sqrt(C - n * hα(ϕ, e, e²)) / n
+  ρ ≥ 0
+end
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
