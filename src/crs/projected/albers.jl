@@ -23,6 +23,8 @@ Albers{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat
 
 Albers{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = Albers{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
 
+Albers{latₒ,lat₁,lat₂}(args...) where {latₒ,lat₁,lat₂} = Albers{latₒ,lat₁,lat₂,WGS84Latest}(args...)
+
 Base.convert(
   ::Type{Albers{latₒ,lat₁,lat₂,Datum,Shift,M}},
   coords::Albers{latₒ,lat₁,lat₂,Datum,Shift}
