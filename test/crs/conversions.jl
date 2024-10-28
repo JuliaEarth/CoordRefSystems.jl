@@ -1369,31 +1369,31 @@
       AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96°)
       c1 = LatLon{NAD83}(T(45), T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(T(-7231430.540202629), T(11853758.709623523)))
+      @test allapprox(c2, AlbersUS(-T(7.231430540202629e6), T(1.1853758709623523e7)))
       c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon{NAD83}(-T(45), T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(-T(15156419.949174397), T(13963188.032694416)))
+      @test allapprox(c2, AlbersUS(-T(1.5156419949174397e7), T(1.3963188032694416e7)))
       c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon{NAD83}(T(45), -T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(T(472145.12299166346), T(2460630.2617624514)))
+      @test allapprox(c2, AlbersUS(T(472145.2567221438), T(2.4606302944375253e6)))
       c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon{NAD83}(-T(45), -T(90))
       c2 = convert(AlbersUS, c1)
-      @test allapprox(c2, AlbersUS(T(8640856.920871278), -T(4596167.748123343)))
+      @test allapprox(c2, AlbersUS(T(989573.4665648951), -T(5.723953827495912e6)))
       c3 = convert(LatLon{NAD83}, c2)
       @test allapprox(c3, c1)
 
       # type stability
       c1 = LatLon{NAD83}(T(45), T(90))
-      c2 = AlbersUS(T(-7231430.540202629), T(11853758.709623523))
+      c2 = AlbersUS(-T(7.231430540202629e6), T(1.1853758709623523e7))
       @inferred convert(Albers{23°,29.5°,45.5°,NAD83}, c1)
       @inferred convert(LatLon{NAD83}, c2)
     end
