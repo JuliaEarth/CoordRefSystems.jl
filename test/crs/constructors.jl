@@ -625,7 +625,7 @@
     end
 
     @testset "Albers" begin
-      A = Albers{23.0,29.5,45.5,NAD83}
+      A = Albers{23.0°,29.5°,45.5°,NAD83}
       @test A(T(1), T(1)) == A(T(1) * m, T(1) * m)
       @test A(T(1) * m, 1 * m) == A(T(1) * m, T(1) * m)
       @test A(T(1) * km, T(1) * km) == A(T(1000) * m, T(1000) * m)

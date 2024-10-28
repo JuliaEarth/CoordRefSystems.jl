@@ -63,7 +63,7 @@ end
 @crscode EPSG{4208} LatLon{Aratu}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4326} LatLon{WGS84Latest}
-@crscode EPSG{5070} shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0)
+@crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}

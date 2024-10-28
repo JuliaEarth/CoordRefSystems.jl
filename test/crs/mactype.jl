@@ -141,7 +141,7 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    AlbersUS = CoordRefSystems.shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0°)
+    AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
     C = Albers{Met{T}}
     c1 = AlbersUS(1.0, 1.0)
     c2 = convert(C, c1)

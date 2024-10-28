@@ -86,12 +86,7 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
 
   fx(λ, ϕ) = ρ(hϕ(ϕ)) * sin(Θ(hλ(λ)))
 
-  function fy(λ, ϕ)
-    ρ = ρₒ - ρ(hϕ(ϕ)) * cos(Θ(hλ(λ)))
-    if ρ < 0
-      throw(ArgumentError("coordinates outside of the projection domain"))
-    end
-  end
+  fy(λ, ϕ) = ρₒ - ρ(hϕ(ϕ)) * cos(Θ(hλ(λ)))
 
   fx, fy
 end

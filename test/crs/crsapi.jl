@@ -2,7 +2,7 @@
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
   ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
-  AlbersUS = CoordRefSystems.shift(Albers{23.0,29.5,45.0,WGS84Latest}, xₒ=-96.0)
+  AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.0°,NAD83}, lonₒ=-96.0°)
 
   @testset "datum" begin
     c = Cartesian(T(1), T(1))

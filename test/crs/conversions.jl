@@ -1366,7 +1366,7 @@
     end
 
     @testset "LatLon <> Albers" begin
-      AlbersUS = CoordRefSystems.get(EPSG{5070})
+      AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96°)
       c1 = LatLon{NAD83}(T(45), T(90))
       c2 = convert(AlbersUS, c1)
       @test allapprox(c2, AlbersUS(T(-7231430.540202629), T(11853758.709623523)))

@@ -212,7 +212,7 @@
   end
 
   @testset "Albers Forward" begin
-    AlbersUS = CoordRefSystems.shift(Albers{23.0,29.5,45.5,NAD83}, lonₒ=-96.0°)
+    AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(AlbersUS, c1)
