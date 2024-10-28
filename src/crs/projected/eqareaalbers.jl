@@ -53,18 +53,17 @@ function inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {l
   🌎 = ellipsoid(Datum)
   e = oftype(λ, eccentricity(🌎))
   e² = oftype(λ, eccentricity²(🌎))
-  ϕₒ = oftype(λ, ustrip(deg2rad(latₒ)))
   ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
-  
-  m₁ = hm(ϕ₁, e, e²)
-  m₂ = hm(ϕ₂, e, e²)
-  α₁ = hα(ϕ₁, e, e²)
-  α₂ = hα(ϕ₂, e, e²)
+
+  m₁ = _albersm(ϕ₁, e, e²)
+  m₂ = _albersm(ϕ₂, e, e²)
+  α₁ = _albersα(ϕ₁, e, e²)
+  α₂ = _albersα(ϕ₂, e, e²)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
   C = m₁^2 + n * α₁
-  
-  ρ = sqrt(C - n * hα(ϕ, e, e²)) / n
+
+  ρ = sqrt(C - n * _albersα(ϕ, e, e²)) / n
   ρ ≥ 0
 end
 
@@ -87,14 +86,12 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ρ(ϕ) = sqrt(C - n * _albersα(ϕ, e, e²)) / n
   ρₒ = ρ(ϕₒ)
 
-  fx(λ, ϕ) = ρ(_albersϕ(ϕ)) * sin(θ(_albersλ(λ)))
+  fx(λ, ϕ) = ρ(ϕ) * sin(θ(λ))
 
-  fy(λ, ϕ) = ρₒ - ρ(_albersϕ(ϕ)) * cos(θ(_albersλ(λ)))
+  fy(λ, ϕ) = ρₒ - ρ(ϕ) * cos(θ(λ))
 
   fx, fy
 end
-
-# backward projection formulas
 
 function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
   🌎 = ellipsoid(Datum)
@@ -114,7 +111,7 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ρ(ϕ) = sqrt(C - n * _albersα(ϕ, e, e²)) / n
   ρₒ = ρ(ϕₒ)
 
-  θ = n >= 0 ? atan(x, ρₒ - y) : atan(-x, y - ρₒ)
+  θ = n ≥ 0 ? atan(x, ρₒ - y) : atan(-x, y - ρₒ)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
   α′ = (C - (ρ′^2 * n^2)) / n
   β′ = asin(α′ / (1 - ((1 - e²) / (2 * e)) * log((1 - e) / (1 + e))))
@@ -134,9 +131,6 @@ _albersm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 _albersα(ϕ, e, e²) =
   (1 - e²) * ((sin(ϕ) / (1 - e² * sin(ϕ)^2)) - (1 / (2 * e) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))))
 
-_albersλ(λ) = λ > π ? λ - 2π : λ < -π ? λ + 2π : λ
-
-_albersϕ(ϕ) = ϕ > π / 2 ? ϕ - π : ϕ < -π / 2 ? ϕ + π : ϕ
 # ----------
 # FALLBACKS
 # ----------

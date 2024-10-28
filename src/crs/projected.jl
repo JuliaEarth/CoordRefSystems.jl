@@ -142,7 +142,7 @@ function Base.convert(::Type{C}, coords::LatLon{Datum}) where {Datum,C<:Projecte
   xₒ = numconvert(T, S.xₒ)
   yₒ = numconvert(T, S.yₒ)
   lonₒ = numconvert(T, S.lonₒ)
-  λ = ustrip(deg2rad(coords.lon - lonₒ))
+  λ = ustrip(fixlon(deg2rad(coords.lon - lonₒ)))
   ϕ = ustrip(deg2rad(coords.lat))
   if !inbounds(C, λ, ϕ)
     throw(ArgumentError("coordinates outside of the projection domain"))
