@@ -98,7 +98,7 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   θ = n ≥ 0 ? atan(x, ρₒ - y) : atan(-x, y - ρₒ)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
   α′ = (C - (ρ′^2 * n^2)) / n
-  β′ = asin(α′ / (1 - ((1 - e²) / (2 * e)) * log((1 - e) / (1 + e))))
+  β′ = asinclamp(α′ / (1 - ((1 - e²) / (2 * e)) * log((1 - e) / (1 + e))))
 
   λ = θ / n
   ϕ = auth2geod(β′, e²)

@@ -160,18 +160,17 @@ Base.convert(::Type{Orthographic{Mode,latₒ}}, coords::CRS{Datum}) where {Mode,
 # -----------------
 
 function sphericalinv(x, y, λₒ, ϕₒ)
-  fix(x) = clamp(x, -one(x), one(x))
   ρ = hypot(x, y)
   if ρ < atol(x)
     λₒ, ϕₒ
   else
-    c = asin(fix(ρ))
+    c = asinclamp(ρ)
     sinc = sin(c)
     cosc = cos(c)
     sinϕₒ = sin(ϕₒ)
     cosϕₒ = cos(ϕₒ)
     λ = atan(x * sinc, ρ * cosϕₒ * cosc - y * sinϕₒ * sinc)
-    ϕ = asin(fix(cosc * sinϕₒ + (y * sinc * cosϕₒ / ρ)))
+    ϕ = asinclamp(cosc * sinϕₒ + (y * sinc * cosϕₒ / ρ))
     λ, ϕ
   end
 end
