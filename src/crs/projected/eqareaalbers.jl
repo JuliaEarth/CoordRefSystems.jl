@@ -103,7 +103,6 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
 
   m₁ = hm(ϕ₁, e, e²)
   m₂ = hm(ϕ₂, e, e²)
-  αₒ = hα(ϕₒ, e, e²)
   α₁ = hα(ϕ₁, e, e²)
   α₂ = hα(ϕ₂, e, e²)
   n = (m₁^2 - m₂^2) / (α₂ - α₁)
@@ -115,7 +114,7 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   θ = atan(x, ρₒ - y)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
   α′ = (C - (ρ′^2 * n^2)) / n
-  β′ = asin(α′ / (1 - (1 - e) / (2 * e) * log((1 - e) / (1 + e))))
+  β′ = asin(α′ / (1 - ((1 - e²) / (2 * e)) * log((1 - e) / (1 + e))))
 
   λ = θ / n
   ϕ = auth2geod(β′, e²)
@@ -129,7 +128,7 @@ end
 
 hm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
-hα(ϕ, e, e²) = (1 - e²) * (sin(ϕ) / (1 - e² * sin(ϕ)^2) - (1 / (2 * e)) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ))))
+hα(ϕ, e, e²) = (1 - e²) * ((sin(ϕ) / (1 - e² * sin(ϕ)^2)) - (1 / (2 * e) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))))
 
 hλ(λ) = λ > π ? λ - 2π : λ < -π ? λ + 2π : λ
 
