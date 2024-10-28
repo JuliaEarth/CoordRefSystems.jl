@@ -56,14 +56,8 @@ function inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {l
   ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
 
-  m₁ = _albersm(ϕ₁, e, e²)
-  m₂ = _albersm(ϕ₂, e, e²)
-  α₁ = _albersα(ϕ₁, e, e²)
-  α₂ = _albersα(ϕ₂, e, e²)
-  n = (m₁^2 - m₂^2) / (α₂ - α₁)
-  C = m₁^2 + n * α₁
-
-  ρ = sqrt(C - n * _albersα(ϕ, e, e²)) / n
+  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
+  ρ = _ambersρ(ϕ, C, n, e, e²)
   ρ ≥ 0
 end
 
@@ -75,15 +69,10 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
-  m₁ = _albersm(ϕ₁, e, e²)
-  m₂ = _albersm(ϕ₂, e, e²)
-  α₁ = _albersα(ϕ₁, e, e²)
-  α₂ = _albersα(ϕ₂, e, e²)
-  n = (m₁^2 - m₂^2) / (α₂ - α₁)
-  C = m₁^2 + n * α₁
+  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
 
   θ(λ) = n * λ
-  ρ(ϕ) = sqrt(C - n * _albersα(ϕ, e, e²)) / n
+  ρ(ϕ) = _ambersρ(ϕ, C, n, e, e²)
   ρₒ = ρ(ϕₒ)
 
   fx(λ, ϕ) = ρ(ϕ) * sin(θ(λ))
@@ -101,15 +90,8 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-  m₁ = _albersm(ϕ₁, e, e²)
-  m₂ = _albersm(ϕ₂, e, e²)
-  α₁ = _albersα(ϕ₁, e, e²)
-  α₂ = _albersα(ϕ₂, e, e²)
-  n = (m₁^2 - m₂^2) / (α₂ - α₁)
-  C = m₁^2 + n * α₁
-
-  ρ(ϕ) = sqrt(C - n * _albersα(ϕ, e, e²)) / n
-  ρₒ = ρ(ϕₒ)
+  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
+  ρₒ = _ambersρ(ϕₒ, C, n, e, e²)
 
   θ = n ≥ 0 ? atan(x, ρₒ - y) : atan(-x, y - ρₒ)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
@@ -126,7 +108,22 @@ end
 # HELPER FUNCTIONS
 # -----------------
 
-_albersm(ϕ, e, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
+function _ambersCn(ϕ₁, ϕ₂, e, e²)
+  m₁ = _albersm(ϕ₁, e²)
+  m₂ = _albersm(ϕ₂, e²)
+  α₁ = _albersα(ϕ₁, e, e²)
+  α₂ = _albersα(ϕ₂, e, e²)
+  n = (m₁^2 - m₂^2) / (α₂ - α₁)
+  C = m₁^2 + n * α₁
+  C, n
+end
+
+function _ambersρ(ϕ, C, n, e, e²)
+  α = _albersα(ϕ, e, e²)
+  sqrt(C - n * α) / n
+end
+
+_albersm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
 _albersα(ϕ, e, e²) =
   (1 - e²) * ((sin(ϕ) / (1 - e² * sin(ϕ)^2)) - (1 / (2 * e) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))))

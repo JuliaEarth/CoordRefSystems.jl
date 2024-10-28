@@ -1394,7 +1394,7 @@
       # type stability
       c1 = LatLon{NAD83}(T(45), T(90))
       c2 = AlbersUS(-T(7.231430540202629e6), T(1.1853758709623523e7))
-      @inferred convert(Albers{23°,29.5°,45.5°,NAD83}, c1)
+      @inferred convert(AlbersUS, c1)
       @inferred convert(LatLon{NAD83}, c2)
     end
 
