@@ -1364,18 +1364,6 @@
       # link: https://sourceforge.net/projects/geographiclib/files/testdata/TMcoords.dat.gz
       TM = TransverseMercator{0.9996,0.0°,WGS84Latest}
 
-      # forward tested against Proj.Transformation("""
-      # proj=pipeline
-      # step proj=axisswap order=2,1
-      # step proj=unitconvert xy_in=deg xy_out=rad
-      # step proj=tmerc lat_0=0 k_0=0.9996 ellps=WGS84
-      # """)
-      # inverse tested against Proj.Transformation("""
-      # proj=pipeline
-      # step proj=tmerc inv lat_0=0 k_0=0.9996 ellps=WGS84
-      # step proj=unitconvert xy_in=rad xy_out=deg
-      # step proj=axisswap order=2,1
-      # """)
       c1 = LatLon(T(70.579277094557), T(45.599419731762))
       c2 = convert(TM, c1)
       @test allapprox(c2, TM(T(1548706.7916191491794), T(8451449.1987722350778)))
