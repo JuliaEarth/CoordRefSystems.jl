@@ -143,6 +143,25 @@ projargs = let
   step proj=axisswap order=2,1
   """)
 
+  # -------
+  # ALBERS
+  # -------
+
+  pfwdalbers = Proj.Transformation("""
+  proj=pipeline
+  step proj=axisswap order=2,1
+  step proj=unitconvert xy_in=deg xy_out=rad
+  step proj=aea lat_0=23 lon_0=-96 lat_1=29.5 lat_2=45.5 ellps=WGS84
+  """)
+  pinvalbers = Proj.Transformation("""
+  proj=pipeline
+  step proj=aea inv lat_0=23 lon_0=-96 lat_1=29.5 lat_2=45.5 ellps=WGS84
+  step proj=unitconvert xy_in=rad xy_out=deg
+  step proj=axisswap order=2,1
+  """)
+
+  AlbersWGS = CoordRefSystems.shift(Albers{23.0u"°",29.5u"°",45.5u"°",WGS84Latest}, lonₒ=-96.0u"°")
+
   [
     "Web Mercator" => (Proj=(pfwdwmerc, pinvwmerc), Geodesy=gwmerc, CoordRefSystems=WebMercator),
     "UTM 38N" => (Proj=(pfwdutm, pinvutm), Geodesy=gutm, CoordRefSystems=UTMNorth38),
@@ -154,7 +173,8 @@ projargs = let
     "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=missing, CoordRefSystems=Robinson),
     "Orthographic Spherical" =>
       (Proj=(pfwdorthosphere, pinvorthosphere), Geodesy=missing, CoordRefSystems=OrthoNorthSpherical),
-    "Orthographic Elliptical" => (Proj=(pfwdorthoellip, pinvorthoellip), Geodesy=missing, CoordRefSystems=OrthoNorth)
+    "Orthographic Elliptical" => (Proj=(pfwdorthoellip, pinvorthoellip), Geodesy=missing, CoordRefSystems=OrthoNorth),
+    "Albers" => (Proj=(pinvalbers, pinvalbers), Geodesy=missing, CoordRefSystems=AlbersWGS)
   ]
 end
 

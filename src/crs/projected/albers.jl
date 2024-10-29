@@ -84,6 +84,30 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   fx, fy
 end
 
+function forward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum}
+  🌎 = ellipsoid(Datum)
+  e = oftype(λ, eccentricity(🌎))
+  e² = oftype(λ, eccentricity²(🌎))
+  ϕₒ = oftype(λ, ustrip(deg2rad(latₒ)))
+  ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
+  ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
+
+  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
+  ρ = _ambersρ(ϕ, C, n, e, e²)
+
+  if ρ < 0
+    throw(ArgumentError("coordinates outside of the projection domain"))
+  end
+
+  θ = n * λ
+  ρₒ = _ambersρ(ϕₒ, C, n, e, e²)
+
+  x = ρ * sin(θ)
+  y = ρₒ - ρ * cos(θ)
+
+  x, y
+end
+
 function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(x, eccentricity(🌎))
