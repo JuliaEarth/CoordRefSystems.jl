@@ -974,6 +974,7 @@
 
   @testset "Projected" begin
     @testset "LatLon <> Mercator" begin
+      # tested against Proj.Transformation("EPSG:4326", "EPSG:3395")
       c1 = LatLon(T(45), T(90))
       c2 = convert(Mercator, c1)
       @test allapprox(c2, Mercator(T(10018754.171394622), T(5591295.9185533915)))
@@ -1006,6 +1007,7 @@
     end
 
     @testset "LatLon <> WebMercator" begin
+      # tested against Proj.Transformation("EPSG:4326", "EPSG:3857")
       c1 = LatLon(T(45), T(90))
       c2 = convert(WebMercator, c1)
       @test allapprox(c2, WebMercator(T(10018754.171394622), T(5621521.486192066)))
@@ -1038,6 +1040,7 @@
     end
 
     @testset "LatLon <> PlateCarree" begin
+      # tested against Proj.Transformation("EPSG:4326", "EPSG:32662")
       c1 = LatLon(T(45), T(90))
       c2 = convert(PlateCarree, c1)
       @test allapprox(c2, PlateCarree(T(10018754.171394622), T(5009377.085697311)))
@@ -1070,6 +1073,7 @@
     end
 
     @testset "LatLon <> Lambert" begin
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:54034")
       c1 = LatLon(T(45), T(90))
       c2 = convert(Lambert, c1)
       @test allapprox(c2, Lambert(T(10018754.171394622), T(4489858.8869480025)))
@@ -1102,6 +1106,7 @@
     end
 
     @testset "LatLon <> Behrmann" begin
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:54017")
       c1 = LatLon(T(45), T(90))
       c2 = convert(Behrmann, c1)
       @test allapprox(c2, Behrmann(T(8683765.222580686), T(5180102.328839251)))
@@ -1134,6 +1139,18 @@
     end
 
     @testset "LatLon <> GallPeters" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=cea lat_ts=45 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=cea inv lat_ts=45 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
       c1 = LatLon(T(45), T(90))
       c2 = convert(GallPeters, c1)
       @test allapprox(c2, GallPeters(T(7096215.158458031), T(6338983.732612475)))
@@ -1166,6 +1183,7 @@
     end
 
     @testset "LatLon <> WinkelTripel" begin
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:54042")
       c1 = LatLon(T(45), T(90))
       c2 = convert(WinkelTripel, c1)
       @test allapprox(c2, WinkelTripel(T(7044801.6979576545), T(5231448.051548355)))
@@ -1204,6 +1222,7 @@
     end
 
     @testset "LatLon <> Robinson" begin
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:54030")
       c1 = LatLon(T(45), T(90))
       c2 = convert(Robinson, c1)
       @test allapprox(c2, Robinson(T(7620313.925950073), T(4805073.646653474)))
@@ -1236,6 +1255,18 @@
     end
 
     @testset "LatLon <> OrthoNorth" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=ortho lat_0=90 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=ortho inv lat_0=90 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorth, c1)
       @test allapprox(c2, OrthoNorth(T(4787610.688267582), T(-2764128.319646418)))
@@ -1256,6 +1287,18 @@
     end
 
     @testset "LatLon <> OrthoSouth" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=ortho lat_0=-90 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=ortho inv lat_0=-90 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouth, c1)
       @test allapprox(c2, OrthoSouth(T(4787610.688267582), T(2764128.319646418)))
@@ -1279,6 +1322,7 @@
       OrthoNorthSpherical = CoordRefSystems.get(ESRI{102035})
       OrthoSouthSpherical = CoordRefSystems.get(ESRI{102037})
 
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:102035")
       c1 = LatLon(T(30), T(60))
       c2 = convert(OrthoNorthSpherical, c1)
       @test allapprox(c2, OrthoNorthSpherical(T(4783602.75), T(-2761814.335408735)))
@@ -1291,6 +1335,7 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
+       # tested against Proj.Transformation("EPSG:4326", "ESRI:102037")
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test allapprox(c2, OrthoSouthSpherical(T(4783602.75), T(2761814.335408735)))
@@ -1346,6 +1391,18 @@
       # latₒ, lonₒ ≠ 0
       TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
 
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=tmerc lat_0=15 lon_0=25 k_0=0.9996 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=tmerc inv lat_0=15 lon_0=25 k_0=0.9996 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
       c1 = LatLon(T(30), T(60))
       c2 = convert(TM, c1)
       @test allapprox(c2, TM(T(3478021.0568801453), T(2237622.8976712096)))
@@ -1366,7 +1423,7 @@
     end
 
     @testset "LatLon <> Albers" begin
-      # tested aganist Proj.Transformation("EPSG:4269", "EPSG:5070")
+      # tested against Proj.Transformation("EPSG:4269", "EPSG:5070")
       AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96°)
       c1 = LatLon{NAD83}(T(45), T(90))
       c2 = convert(AlbersUS, c1)
@@ -1403,12 +1460,14 @@
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)
 
+      # tested against Proj.Transformation("EPSG:4326", "EPSG:32632")
       c1 = LatLon(T(56), T(12))
       c2 = convert(UTMNorth32, c1)
       @test allapprox(c2, UTMNorth32(T(687071.439107327), T(6210141.326872105)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
+      # tested against Proj.Transformation("EPSG:4326", "EPSG:32759")
       c1 = LatLon(-T(44), T(174))
       c2 = convert(UTMSouth59, c1)
       @test allapprox(c2, UTMSouth59(T(740526.3210524899), T(5123750.873037999)))
@@ -1427,6 +1486,18 @@
     end
 
     @testset "LatLon <> ShiftedCRS" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=merc lon_0=15 x_0=200 y_0=200 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=merc inv lon_0=15 x_0=200 y_0=200 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
       c1 = LatLon(T(45), T(90))
       c2 = convert(ShiftedMercator, c1)
