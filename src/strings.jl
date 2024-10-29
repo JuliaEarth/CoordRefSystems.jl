@@ -14,6 +14,7 @@ const esriid2code = Dict(
   "GCS_South_American_1969" => EPSG{4618},
   "GCS_WGS_1984" => EPSG{4326},
   "IRENET95_Irish_Transverse_Mercator" => EPSG{2157},
+  "NAD_1983_Contiguous_USA_Albers" => EPSG{5070},
   "North_Pole_Orthographic" => ESRI{102035},
   "South_Pole_Orthographic" => ESRI{102037},
   "TM75_Irish_Grid" => EPSG{29903},
@@ -24,9 +25,7 @@ const esriid2code = Dict(
   "World_Behrmann" => ESRI{54017},
   "World_Cylindrical_Equal_Area" => ESRI{54034},
   "World_Robinson" => ESRI{54030},
-  "World_Winkel_Tripel_NGS" => ESRI{54042},
-  "NAD83 / Conus Albers" => EPSG{5070},
-  "NAD_1983_Contiguous_USA_Albers" => EPSG{5070}
+  "World_Winkel_Tripel_NGS" => ESRI{54042}
 )
 
 """

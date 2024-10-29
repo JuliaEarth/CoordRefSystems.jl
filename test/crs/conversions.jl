@@ -1366,6 +1366,8 @@
     end
 
     @testset "LatLon <> Albers" begin
+      # PROJ transformation used:
+      # Proj.Transformation("EPSG:4269", "EPSG:5070")
       AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96°)
       c1 = LatLon{NAD83}(T(45), T(90))
       c2 = convert(AlbersUS, c1)
