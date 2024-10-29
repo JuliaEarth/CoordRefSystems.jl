@@ -1335,7 +1335,7 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
-       # tested against Proj.Transformation("EPSG:4326", "ESRI:102037")
+      # tested against Proj.Transformation("EPSG:4326", "ESRI:102037")
       c1 = LatLon(-T(30), T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test allapprox(c2, OrthoSouthSpherical(T(4783602.75), T(2761814.335408735)))
