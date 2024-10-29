@@ -65,6 +65,13 @@ function atanpos(y, x)
 end
 
 """
+    asinclamp(x)
+
+Adjust `x` to the range `[-1,1]` to handle floating-point errors.
+"""
+asinclamp(x) = asin(clamp(x, -one(x), one(x)))
+
+"""
     checklat(lat)
 
 Checks if the latitude is in the range `[-90°,90°]`.

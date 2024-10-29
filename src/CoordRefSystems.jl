@@ -89,6 +89,7 @@ export
   OrthoNorth,
   OrthoSouth,
   TransverseMercator,
+  Albers,
   datum,
   indomain,
 

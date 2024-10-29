@@ -1365,6 +1365,40 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> Albers" begin
+      # tested aganist Proj.Transformation("EPSG:4269", "EPSG:5070")
+      AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96°)
+      c1 = LatLon{NAD83}(T(45), T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(-T(7.231430540202629e6), T(1.1853758709623523e7)))
+      c3 = convert(LatLon{NAD83}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD83}(-T(45), T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(-T(1.5156419949174397e7), T(1.3963188032694416e7)))
+      c3 = convert(LatLon{NAD83}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD83}(T(45), -T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(T(472145.2567221438), T(2.4606302944375253e6)))
+      c3 = convert(LatLon{NAD83}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD83}(-T(45), -T(90))
+      c2 = convert(AlbersUS, c1)
+      @test allapprox(c2, AlbersUS(T(989573.4665648951), -T(5.723953827495912e6)))
+      c3 = convert(LatLon{NAD83}, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon{NAD83}(T(45), T(90))
+      c2 = AlbersUS(-T(7.231430540202629e6), T(1.1853758709623523e7))
+      @inferred convert(AlbersUS, c1)
+      @inferred convert(LatLon{NAD83}, c2)
+    end
+
     @testset "LatLon <> UTM" begin
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)

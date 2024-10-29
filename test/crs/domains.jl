@@ -211,6 +211,23 @@
     end
   end
 
+  @testset "Albers" begin
+    atol = T === Float32 ? 1.0f-1° : 1e-7°
+    AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
+    for lat in T.(-90:90), lon in T.(-180:180)
+      c1 = LatLon{NAD83}(lat, lon)
+      if indomain(AlbersUS, c1)
+        c2 = convert(AlbersUS, c1)
+        @test isfinite(c2.x)
+        @test isfinite(c2.y)
+        c3 = convert(LatLon{NAD83}, c2)
+        @test allapprox(c3, c1; atol)
+      else
+        @test_throws ArgumentError convert(AlbersUS, c1)
+      end
+    end
+  end
+
   @testset "UTMNorth forward" begin
     UTMNorth32 = utmnorth(32)
     for lat in T.(-90:90), lon in T.(-180:180)

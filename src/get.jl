@@ -18,7 +18,7 @@ For the inverse operation, see the [`CoordRefSystems.code`](@ref) function.
 """
 function get(code::Type{<:CRSCode})
   throw(ArgumentError("""
-  The provided code $code is not mapped to a CRS type yet. 
+  The provided code $code is not mapped to a CRS type yet.
   Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/get.jl
   If you know the CRS type of a given code, please submit a pull request.
   See https://discourse.julialang.org/t/esri-code-for-british-national-grid-not-known-by-geoio/117641
@@ -63,6 +63,7 @@ end
 @crscode EPSG{4208} LatLon{Aratu}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4326} LatLon{WGS84Latest}
+@crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}

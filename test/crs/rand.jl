@@ -69,5 +69,8 @@
 
     randtest(OrthoSouth{WGS84Latest})
     randtest(OrthoSouth)
+
+    randtest(Albers{23.0°,29.5°,45.5°,WGS84Latest})
+    randtest(Albers{23.0°,29.5°,45.5°})
   end
 end
