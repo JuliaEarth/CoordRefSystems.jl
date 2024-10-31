@@ -25,6 +25,10 @@
     EPSG{29903},
     CoordRefSystems.shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
   )
+  gettest(
+    EPSG{2180},
+    CoordRefSystems.shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
+  )
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
   gettest(ESRI{54030}, Robinson{WGS84Latest})

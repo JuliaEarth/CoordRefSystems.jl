@@ -80,6 +80,7 @@ end
 @crscode ESRI{54042} WinkelTripel{WGS84Latest}
 @crscode ESRI{102035} Orthographic{SphericalMode,90°,WGS84Latest}
 @crscode ESRI{102037} Orthographic{SphericalMode,-90°,WGS84Latest}
+@crscode EPSG{2180} shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
 
 for zone in 1:60
   NorthCode = 32600 + zone
