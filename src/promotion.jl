@@ -47,18 +47,51 @@ function Base.promote_rule(C₁::Type{<:Projected}, C₂::Type{<:LatLon})
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,N}}, C₂::Type{<:Cartesian{Datum,N}}) where {Datum,N}
-  T = promote_type(mactype(C₁), mactype(C₂))
-  Cartesian{Datum,N,Met{T}}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{Datum,N,L}
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:Cartesian{Datum,3}}) where {Datum}
-  T = promote_type(mactype(C₁), mactype(C₂))
-  Cartesian{Datum,3,Met{T}}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{Datum,3,L}
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum₁,3}}, C₂::Type{<:Cartesian{Datum₂,3}}) where {Datum₁,Datum₂}
-  T = promote_type(mactype(C₁), mactype(C₂))
-  Cartesian{DefaultDatum,3,Met{T}}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{DefaultDatum,3,L}
+end
+
+function Base.promote_rule(C₁::Type{<:Cartesian{Datum,2}}, C₂::Type{<:Polar{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{Datum,2,L}
+end
+
+function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:Cylindrical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{Datum,3,L}
+end
+
+function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:Spherical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  Cartesian{Datum,3,L}
+end
+
+function Base.promote_rule(C₁::Type{<:Polar{Datum}}, C₂::Type{<:Polar{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Polar{Datum,L,Rad{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Cylindrical{Datum}}, C₂::Type{<:Cylindrical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Cylindrical{Datum,L,Rad{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Spherical{Datum}}, C₂::Type{<:Spherical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Spherical{Datum,L,Rad{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:LatLon}) where {Datum}
