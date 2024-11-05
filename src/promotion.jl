@@ -46,6 +46,24 @@ function Base.promote_rule(C₁::Type{<:Projected}, C₂::Type{<:LatLon})
   C{Met{T}}
 end
 
+function Base.promote_rule(C₁::Type{<:Polar{Datum}}, C₂::Type{<:Polar{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Polar{Datum,L,Rad{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Cylindrical{Datum}}, C₂::Type{<:Cylindrical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Cylindrical{Datum,L,Rad{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Spherical{Datum}}, C₂::Type{<:Spherical{Datum}}) where {Datum}
+  L = promote_type(lentype(C₁), lentype(C₂))
+  T = numtype(L)
+  Spherical{Datum,L,Rad{T}}
+end
+
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,N}}, C₂::Type{<:Cartesian{Datum,N}}) where {Datum,N}
   L = promote_type(lentype(C₁), lentype(C₂))
   Cartesian{Datum,N,L}
@@ -74,24 +92,6 @@ end
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:Spherical{Datum}}) where {Datum}
   L = promote_type(lentype(C₁), lentype(C₂))
   Cartesian{Datum,3,L}
-end
-
-function Base.promote_rule(C₁::Type{<:Polar{Datum}}, C₂::Type{<:Polar{Datum}}) where {Datum}
-  L = promote_type(lentype(C₁), lentype(C₂))
-  T = numtype(L)
-  Polar{Datum,L,Rad{T}}
-end
-
-function Base.promote_rule(C₁::Type{<:Cylindrical{Datum}}, C₂::Type{<:Cylindrical{Datum}}) where {Datum}
-  L = promote_type(lentype(C₁), lentype(C₂))
-  T = numtype(L)
-  Cylindrical{Datum,L,Rad{T}}
-end
-
-function Base.promote_rule(C₁::Type{<:Spherical{Datum}}, C₂::Type{<:Spherical{Datum}}) where {Datum}
-  L = promote_type(lentype(C₁), lentype(C₂))
-  T = numtype(L)
-  Spherical{Datum,L,Rad{T}}
 end
 
 function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:LatLon}) where {Datum}
