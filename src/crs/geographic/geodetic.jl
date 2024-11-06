@@ -252,6 +252,12 @@ end
 # avoid converting coordinates with the same datum as the first argument
 Base.convert(::Type{LatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum} = coords
 
+Base.convert(C::Type{LatLonAlt{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₜ,Datumₛ} =
+  convert(C, convert(LatLonAlt, coords))
+
+Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ} =
+  convert(C, convert(LatLon, coords))
+
 # ----------
 # FALLBACKS
 # ----------
