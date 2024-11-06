@@ -318,7 +318,10 @@
         # ITRF2008 to ITRF2020
         c1 = LatLon{ITRF{2008}}(T(30), T(40))
         c2 = convert(LatLonAlt{ITRF{2020}}, c1)
-        @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(-0.0024597514420747757)))
+        @test allapprox(
+          c2,
+          LatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(-0.0024597514420747757))
+        )
         c3 = convert(LatLon{ITRF{2008}}, c2)
         @test allapprox(c3, c1)
 
