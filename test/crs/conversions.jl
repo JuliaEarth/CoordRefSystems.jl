@@ -299,11 +299,45 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
+      # datum conversion
+      # altitude can only be calculated accurately using Float64
+      if T == Float64
+        # WGS84 (G1762) to ITRF2008
+        c1 = LatLon{WGS84{1762}}(T(30), T(40))
+        c2 = convert(LatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(30), T(40), T(2.613849937915802e-5)))
+        c3 = convert(LatLon{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+
+        c1 = LatLon{WGS84{1762}}(T(35), T(45))
+        c2 = convert(LatLonAlt{ITRF{2008}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2008}}(T(35), T(45), T(3.440864384174347e-5)))
+        c3 = convert(LatLon{WGS84{1762}}, c2)
+        @test allapprox(c3, c1)
+
+        # ITRF2008 to ITRF2020
+        c1 = LatLon{ITRF{2008}}(T(30), T(40))
+        c2 = convert(LatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(29.999999988422587), T(39.99999998545356), T(-0.0024597514420747757)))
+        c3 = convert(LatLon{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+
+        c1 = LatLon{ITRF{2008}}(T(35), T(45))
+        c2 = convert(LatLonAlt{ITRF{2020}}, c1)
+        @test allapprox(c2, LatLonAlt{ITRF{2020}}(T(34.99999999095351), T(44.99999998605742), T(-0.002657238394021988)))
+        c3 = convert(LatLon{ITRF{2008}}, c2)
+        @test allapprox(c3, c1)
+      end
+
       # type stability
       c1 = LatLon(T(30), T(40))
       c2 = LatLonAlt(T(30), T(40), T(0))
+      c3 = LatLon{WGS84{1762}}(T(30), T(40))
+      c4 = LatLonAlt{ITRF{2008}}(T(30), T(40), T(0))
       @inferred convert(LatLonAlt, c1)
       @inferred convert(LatLon, c2)
+      @inferred convert(LatLonAlt{ITRF{2008}}, c3)
+      @inferred convert(LatLon{WGS84{1762}}, c4)
     end
 
     @testset "LatLonAlt <> GeocentricLatLonAlt" begin
