@@ -26,6 +26,8 @@
 
   @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
 
+  @test ellipsoid(ETRS89) === CoordRefSystems.GRS80🌎
+
   @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎

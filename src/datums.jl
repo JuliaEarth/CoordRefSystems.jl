@@ -132,6 +132,17 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
+    ETRS89
+
+European Terrestrial Reference System 1989.
+
+See <https://epsg.org/datum_6258/European-Terrestrial-Reference-System-1989-ensemble.html>
+"""
+abstract type ETRS89 <: Datum end
+
+ellipsoid(::Type{ETRS89}) = GRS80🌎
+
+"""
     GGRS87
 
 Greek Geodetic Reference System 1987 datum.

@@ -18,6 +18,10 @@
   gettest(EPSG{9988}, Cartesian{ITRF{2020},3})
   gettest(EPSG{10176}, Cartesian{IGS20,3})
   gettest(
+    EPSG{25832},
+    CoordRefSystems.shift(TransverseMercator{0.9996,0.0°,ETRS89}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m)
+  )
+  gettest(
     EPSG{27700},
     CoordRefSystems.shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
   )

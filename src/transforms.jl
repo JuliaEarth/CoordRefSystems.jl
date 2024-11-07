@@ -263,3 +263,17 @@ include("transforms/sequential.jl")
 @reversible WGS84{1674} WGS84{2296} @sequential(WGS84{1674}, WGS84{1762}, WGS84{2139}, WGS84{2296})
 
 @reversible WGS84{1762} WGS84{2296} @sequential(WGS84{1762}, WGS84{2139}, WGS84{2296})
+
+# https://epsg.org/transformation_9225/WGS-84-to-ETRS89-2.html
+@reversible WGS84{2296} ETRS89 timedephelmert(
+  WGS84{2296},
+  ETRS89,
+  δx=54.0e-3,
+  δy=51.0e-3,
+  δz=-85.0e-3,
+  θx=2.1e-3,
+  θy=12.6e-3,
+  θz=-20.4e-3,
+  s=2.5e-3,
+  tᵣ=2014.81
+)
