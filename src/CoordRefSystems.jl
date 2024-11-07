@@ -47,6 +47,7 @@ export
   ITRFLatest,
   Aratu,
   Carthage,
+  ETRS89,
   GGRS87,
   GRS80S,
   Hermannskogel,
