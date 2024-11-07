@@ -8,6 +8,7 @@
 const esriid2code = Dict(
   "British_National_Grid" => EPSG{27700},
   "ETRF2000-PL_CS92" => EPSG{2180},
+  "ETRS_1989_UTM_Zone_32N" => EPSG{25832},
   "GCS_MAGNA" => EPSG{4686},
   "GCS_North_American_1983" => EPSG{4269},
   "GCS_SAD_1969_96" => EPSG{5527},
@@ -19,7 +20,6 @@ const esriid2code = Dict(
   "North_Pole_Orthographic" => ESRI{102035},
   "South_Pole_Orthographic" => ESRI{102037},
   "TM75_Irish_Grid" => EPSG{29903},
-  "ETRS_1989_UTM_Zone_32N" => EPSG{25832},
   "WGS_1984_Plate_Carree" => EPSG{32662},
   "WGS_1984_UTM_Zone_33N" => EPSG{32633},
   "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
