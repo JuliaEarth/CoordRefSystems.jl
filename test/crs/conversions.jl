@@ -343,6 +343,20 @@
       @inferred convert(LatLon{WGS84{1762}}, c4)
     end
 
+    @testset "LatLonAlt <> GeocentricLatLon" begin
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = convert(GeocentricLatLon, c1)
+      @test allapprox(c2, GeocentricLatLon(T(29.833635809829065), T(40)))
+      c3 = convert(LatLonAlt, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLonAlt(T(30), T(40), T(0))
+      c2 = GeocentricLatLon(T(29.833635809829065), T(40))
+      @inferred convert(GeocentricLatLon, c1)
+      @inferred convert(LatLonAlt, c2)
+    end
+
     @testset "LatLonAlt <> GeocentricLatLonAlt" begin
       c1 = LatLonAlt(T(30), T(40), T(0))
       c2 = convert(GeocentricLatLonAlt, c1)

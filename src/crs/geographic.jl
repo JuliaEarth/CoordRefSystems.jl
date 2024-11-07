@@ -28,7 +28,7 @@ include("geographic/authalic.jl")
 # holder, but he didn't mean to imply he did the work. Essentially all work was
 # done by Gerald Evenden.
 
-# Authalic <> Geodetic
+# AuthalicLatLon <> GeodeticLatLon
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/healpix.cpp#L230
 # reference formula: https://mathworld.wolfram.com/AuthalicLatitude.html
@@ -56,8 +56,6 @@ function Base.convert(::Type{AuthalicLatLon{Datum}}, coords::LatLon{Datum}) wher
   AuthalicLatLon{Datum}(rad2deg(β) * °, coords.lon)
 end
 
-# Geocentric <> Geodetic
-
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/auth.cpp
 # reference formula: https://mathworld.wolfram.com/AuthalicLatitude.html
 
@@ -67,6 +65,8 @@ function Base.convert(::Type{LatLon{Datum}}, coords::AuthalicLatLon{Datum}) wher
   ϕ = auth2geod(β, e²)
   LatLon{Datum}(phi2lat(ϕ), coords.lon)
 end
+
+# GeocentricLatLon <> GeodeticLatLon
 
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/4D_api.cpp#L774
 
@@ -83,6 +83,20 @@ function Base.convert(::Type{LatLon{Datum}}, coords::GeocentricLatLon{Datum}) wh
   ϕ = atan(1 / (1 - e²) * tan(ϕ′))
   LatLon{Datum}(phi2lat(ϕ), coords.lon)
 end
+
+# GeocentricLatLon <> GeodeticLatLonAlt
+
+function Base.convert(::Type{GeocentricLatLon{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
+  ll = convert(LatLon, coords)
+  convert(GeocentricLatLon{Datum}, ll)
+end
+
+function Base.convert(::Type{LatLonAlt{Datum}}, coords::GeocentricLatLon{Datum}) where {Datum}
+  ll = convert(LatLon, coords)
+  convert(LatLonAlt{Datum}, ll)
+end
+
+# GeocentricLatLonAlt <> GeodeticLatLonAlt
 
 function Base.convert(::Type{GeocentricLatLonAlt{Datum}}, coords::LatLonAlt{Datum}) where {Datum}
   lla = convert(GeocentricLatLon, LatLon{Datum}(coords.lat, coords.lon))
