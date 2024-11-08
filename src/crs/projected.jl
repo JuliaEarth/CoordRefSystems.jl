@@ -122,7 +122,6 @@ include("projected/robinson.jl")
 include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
 include("projected/albers.jl")
-include("projected/sinusoidal.jl")
 
 # ----------
 # FALLBACKS

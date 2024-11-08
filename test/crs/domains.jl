@@ -228,22 +228,6 @@
     end
   end
 
-  @testset "Sinusoidal" begin
-    atol = T(1e-3) * °
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Sinusoidal, c1)
-        c2 = convert(Sinusoidal, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(Sinusoidal, c1)
-      end
-    end
-  end
-
   @testset "UTMNorth forward" begin
     UTMNorth32 = utmnorth(32)
     for lat in T.(-90:90), lon in T.(-180:180)
