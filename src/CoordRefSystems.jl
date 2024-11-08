@@ -66,12 +66,16 @@ export
 
   # coordinates
   CRS,
+
+  # basic
   Cartesian,
   Cartesian2D,
   Cartesian3D,
   Polar,
   Cylindrical,
   Spherical,
+
+  # geographic
   GeodeticLatLon,
   GeodeticLatLonAlt,
   GeocentricLatLon,
@@ -79,6 +83,8 @@ export
   AuthalicLatLon,
   LatLon,
   LatLonAlt,
+
+  # projected
   Mercator,
   WebMercator,
   PlateCarree,
@@ -91,6 +97,7 @@ export
   OrthoSouth,
   TransverseMercator,
   Albers,
+  Sinusoidal,
   datum,
   indomain,
 

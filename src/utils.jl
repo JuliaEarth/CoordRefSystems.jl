@@ -127,8 +127,8 @@ end
     projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
 
 Approximates the inverse of a projection with the Newton-Raphson method
-using its forward formulas `fx` and `fy`, `x` and `y` values, 
-initial guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
+using its forward formulas `fx` and `fy`, `x` and `y` values, initial
+guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
 
 ## References
 
@@ -141,11 +141,16 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
 
+  # workaround Zygote's behavior
+  # https://github.com/FluxML/Zygote.jl/issues/1538
+  denothing(::Nothing) = zero(λₒ)
+  denothing(x) = x
+
   for _ in 1:maxiter
     v₁ = f₁(λᵢ, ϕᵢ)
     v₂ = f₂(λᵢ, ϕᵢ)
-    df₁dλ, df₁dϕ = gradient(f₁, λᵢ, ϕᵢ)
-    df₂dλ, df₂dϕ = gradient(f₂, λᵢ, ϕᵢ)
+    df₁dλ, df₁dϕ = denothing.(gradient(f₁, λᵢ, ϕᵢ))
+    df₂dλ, df₂dϕ = denothing.(gradient(f₂, λᵢ, ϕᵢ))
 
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
