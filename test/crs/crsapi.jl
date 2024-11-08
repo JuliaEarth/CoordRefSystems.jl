@@ -170,6 +170,8 @@
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.raw(c) == (T(1), T(2))
   end
 
   @testset "units" begin
@@ -215,6 +217,8 @@
     @test CoordRefSystems.units(c) == (m, m)
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.units(c) == (m, m)
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.units(c) == (m, m)
   end
 
   @testset "constructor" begin
@@ -258,6 +262,8 @@
     @test CoordRefSystems.constructor(c) === ShiftedMercator
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.constructor(c) === AlbersUS
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.constructor(c) === Sinusoidal{WGS84Latest,CoordRefSystems.Shift()}
   end
 
   @testset "reconstruct" begin
@@ -324,6 +330,9 @@
     c = AlbersUS(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Sinusoidal(T(1), T(2))
+    rv = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "lentype" begin
@@ -366,6 +375,8 @@
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    c = Sinusoidal(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
@@ -410,6 +421,8 @@
     @test CoordRefSystems.mactype(c) == T
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.mactype(c) == T
   end
 
   @testset "equality" begin
@@ -434,6 +447,7 @@
     equaltest(ShiftedTM)
     equaltest(ShiftedMercator)
     equaltest(AlbersUS)
+    equaltest(Sinusoidal)
   end
 
   @testset "isapprox" begin
@@ -462,6 +476,7 @@
     ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     isapproxtest3D(ShiftedMercatorWGS, ShiftedMercatorITRF)
+    isapproxtest3D(Sinusoidal)
   end
 
   @testset "tol" begin

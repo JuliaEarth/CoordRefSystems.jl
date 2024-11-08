@@ -97,6 +97,7 @@ export
   OrthoSouth,
   TransverseMercator,
   Albers,
+  Sinusoidal,
   datum,
   indomain,
 
