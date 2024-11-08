@@ -17,6 +17,10 @@
     @test datum(c) === WGS84Latest
     c = AuthalicLatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
+    c = Mercator(T(1), T(2))
+    @test datum(c) === WGS84Latest
+    c = ShiftedMercator(T(1), T(2))
+    @test datum(c) === WGS84Latest
   end
 
   @testset "ncoords" begin
@@ -40,7 +44,7 @@
     @test CoordRefSystems.ncoords(c) == 2
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ncoords(c) == 3
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.ncoords(c) == 2
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.ncoords(c) == 2
@@ -67,7 +71,7 @@
     @test CoordRefSystems.ndims(c) == 3
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ndims(c) == 3
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.ndims(c) == 2
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.ndims(c) == 2
@@ -92,7 +96,7 @@
     @test CoordRefSystems.names(c) == (:lat, :lon)
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
@@ -166,6 +170,8 @@
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.raw(c) == (T(1), T(2))
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.raw(c) == (T(1), T(2))
   end
 
   @testset "units" begin
@@ -211,6 +217,8 @@
     @test CoordRefSystems.units(c) == (m, m)
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.units(c) == (m, m)
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.units(c) == (m, m)
   end
 
   @testset "constructor" begin
@@ -254,6 +262,8 @@
     @test CoordRefSystems.constructor(c) === ShiftedMercator
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.constructor(c) === AlbersUS
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.constructor(c) === Sinusoidal{WGS84Latest,CoordRefSystems.Shift()}
   end
 
   @testset "reconstruct" begin
@@ -320,6 +330,9 @@
     c = AlbersUS(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    c = Sinusoidal(T(1), T(2))
+    rv = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "lentype" begin
@@ -362,6 +375,8 @@
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = AlbersUS(T(1), T(2))
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    c = Sinusoidal(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
@@ -406,6 +421,8 @@
     @test CoordRefSystems.mactype(c) == T
     c = AlbersUS(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
+    c = Sinusoidal(T(1), T(2))
+    @test CoordRefSystems.mactype(c) == T
   end
 
   @testset "equality" begin
@@ -430,6 +447,7 @@
     equaltest(ShiftedTM)
     equaltest(ShiftedMercator)
     equaltest(AlbersUS)
+    equaltest(Sinusoidal)
   end
 
   @testset "isapprox" begin
@@ -472,7 +490,9 @@
     @test CoordRefSystems.tol(c) == tol
     c = Polar(T(1), 1.0f0)
     @test CoordRefSystems.tol(c) == tol
-    c = ShiftedMercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
+    @test CoordRefSystems.tol(c) == tol
+    c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.tol(c) == tol
   end
 

@@ -1507,6 +1507,10 @@
       @inferred convert(LatLon{NAD83}, c2)
     end
 
+    @testset "LatLon <> Sinusoidal" begin
+      # TODO
+    end
+
     @testset "LatLon <> UTM" begin
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)
