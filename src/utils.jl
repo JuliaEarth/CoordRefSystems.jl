@@ -136,16 +136,19 @@ initial guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
   MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
 """
 function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
-  f₁(λ, ϕ) = fx(λ, ϕ) - x
-  f₂(λ, ϕ) = fy(λ, ϕ) - y
+  f₁(λϕ) = fx(λϕ...) - x
+  f₂(λϕ) = fy(λϕ...) - y
+
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
-
   for _ in 1:maxiter
-    v₁ = f₁(λᵢ, ϕᵢ)
-    v₂ = f₂(λᵢ, ϕᵢ)
-    df₁dλ, df₁dϕ = gradient(f₁, λᵢ, ϕᵢ)
-    df₂dλ, df₂dϕ = gradient(f₂, λᵢ, ϕᵢ)
+    λϕᵢ = SVector(λᵢ, ϕᵢ)
+
+    v₁ = f₁(λϕᵢ)
+    v₂ = f₂(λϕᵢ)
+
+    df₁dλ, df₁dϕ = gradient(f₁, λϕᵢ)
+    df₂dλ, df₂dϕ = gradient(f₂, λϕᵢ)
 
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den

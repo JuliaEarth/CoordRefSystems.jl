@@ -7,7 +7,7 @@ module CoordRefSystems
 using Unitful
 using Unitful: numtype
 using Unitful: m, rad, °
-using Zygote: gradient
+using ForwardDiff: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
 
