@@ -19,7 +19,7 @@ Sinusoidal(1.0m, 1.0m)
 Sinusoidal{WGS84Latest}(1.0m, 1.0m)
 ```
 
-See [ESRI:54008](https://epsg.io/54008)
+See [Sinusoidal projection](https://en.wikipedia.org/wiki/Sinusoidal_projection)
 """
 struct Sinusoidal{Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M

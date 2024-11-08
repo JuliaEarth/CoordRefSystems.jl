@@ -75,7 +75,6 @@ end
 @crscode EPSG{27700} shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
 @crscode EPSG{29903} shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
-@crscode ESRI{54008} Sinusoidal{WGS84Latest}
 @crscode ESRI{54017} Behrmann{WGS84Latest}
 @crscode ESRI{54030} Robinson{WGS84Latest}
 @crscode ESRI{54034} Lambert{WGS84Latest}

@@ -1508,34 +1508,33 @@
     end
 
     @testset "LatLon <> Sinusoidal" begin
-      # tested against Proj.Transformation("EPSG:4326", "ESRI:54008")
       c1 = LatLon(T(45), T(90))
       c2 = convert(Sinusoidal, c1)
-      @test allapprox(c2, Sinusoidal(T(7.09621515845803e6), T(4.984944377977743e6)))
+      @test allapprox(c2, Sinusoidal(T(7.084329013634147e6), T(5.009377085697311e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(-T(45), T(90))
       c2 = convert(Sinusoidal, c1)
-      @test allapprox(c2, Sinusoidal(T(7.09621515845803e6), -T(4.984944377977743e6)))
+      @test allapprox(c2, Sinusoidal(T(7.084329013634147e6), -T(5.009377085697311e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(T(45), -T(90))
       c2 = convert(Sinusoidal, c1)
-      @test allapprox(c2, Sinusoidal(-T(7.09621515845803e6), T(4.984944377977743e6)))
+      @test allapprox(c2, Sinusoidal(-T(7.084329013634147e6), T(5.009377085697311e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(-T(45), -T(90))
       c2 = convert(Sinusoidal, c1)
-      @test allapprox(c2, Sinusoidal(-T(7.09621515845803e6), -T(4.984944377977743e6)))
+      @test allapprox(c2, Sinusoidal(-T(7.084329013634147e6), -T(5.009377085697311e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       # type stability
       c1 = LatLon(T(45), T(90))
-      c2 = Sinusoidal(T(7.09621515845803e6), T(4.984944377977743e6))
+      c2 = Sinusoidal(T(7.084329013634147e6), T(5.009377085697311e6))
       @inferred convert(Sinusoidal, c1)
       @inferred convert(LatLon, c2)
     end
