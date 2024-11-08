@@ -255,4 +255,29 @@
       end
     end
   end
+
+  @testset "Sinusoidal forward" begin
+    for lat in T.(-90:90), lon in T.(-180:180)
+      c1 = LatLon(lat, lon)
+      if indomain(Sinusoidal, c1)
+        c2 = convert(Sinusoidal, c1)
+        @test isfinite(c2.x)
+        @test isfinite(c2.y)
+      else
+        @test_throws ArgumentError convert(Sinusoidal, c1)
+      end
+    end
+  end
+
+  @testset "Sinusoidal inverse" begin
+    # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
+    for lat in T.(-89:89), lon in T.(-180:180)
+      c1 = LatLon(lat, lon)
+      if indomain(Sinusoidal, c1)
+        c2 = convert(Sinusoidal, c1)
+        c3 = convert(LatLon, c2)
+        @test allapprox(c3, c1)
+      end
+    end
+  end
 end

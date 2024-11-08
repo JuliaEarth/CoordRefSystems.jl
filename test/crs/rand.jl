@@ -72,5 +72,8 @@
 
     randtest(Albers{23.0°,29.5°,45.5°,WGS84Latest})
     randtest(Albers{23.0°,29.5°,45.5°})
+
+    randtest(Sinusoidal{WGS84Latest})
+    randtest(Sinusoidal)
   end
 end

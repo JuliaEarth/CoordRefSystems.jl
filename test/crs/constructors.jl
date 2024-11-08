@@ -650,5 +650,31 @@
       @test_throws ArgumentError A(T(1) * m, T(1) * s)
       @test_throws ArgumentError A(T(1) * s, T(1) * s)
     end
+
+    @testset "Sinusoidal" begin
+      @test Sinusoidal(T(1), T(1)) == Sinusoidal(T(1) * m, T(1) * m)
+      @test Sinusoidal(T(1) * m, 1 * m) == Sinusoidal(T(1) * m, T(1) * m)
+      @test Sinusoidal(T(1) * km, T(1) * km) == Sinusoidal(T(1000) * m, T(1000) * m)
+
+      c = Sinusoidal(T(1), T(1))
+      @test sprint(show, c) == "Sinusoidal{WGS84Latest}(x: 1.0 m, y: 1.0 m)"
+      if T === Float32
+        @test sprint(show, MIME("text/plain"), c) == """
+        Sinusoidal{WGS84Latest} coordinates
+        ├─ x: 1.0f0 m
+        └─ y: 1.0f0 m"""
+      else
+        @test sprint(show, MIME("text/plain"), c) == """
+        Sinusoidal{WGS84Latest} coordinates
+        ├─ x: 1.0 m
+        └─ y: 1.0 m"""
+      end
+
+      # error: invalid units for coordinates
+      @test_throws ArgumentError Sinusoidal(T(1), T(1) * m)
+      @test_throws ArgumentError Sinusoidal(T(1) * s, T(1) * m)
+      @test_throws ArgumentError Sinusoidal(T(1) * m, T(1) * s)
+      @test_throws ArgumentError Sinusoidal(T(1) * s, T(1) * s)
+    end
   end
 end

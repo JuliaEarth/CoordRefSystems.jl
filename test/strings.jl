@@ -13,6 +13,7 @@
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
+  crsstringtest(ESRI{54008})
   crsstringtest(ESRI{54017})
   crsstringtest(ESRI{54030})
   crsstringtest(ESRI{54034})

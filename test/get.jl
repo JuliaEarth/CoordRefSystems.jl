@@ -31,6 +31,7 @@
     CoordRefSystems.shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
   )
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
+  gettest(ESRI{54008}, Sinusoidal{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
   gettest(ESRI{54030}, Robinson{WGS84Latest})
   gettest(ESRI{54034}, Lambert{WGS84Latest})

@@ -167,5 +167,13 @@
     c1 = ShiftedMercator(1.0f0, 1.0f0)
     c2 = convert(C, c1)
     @test c2 isa C
+
+    C = Sinusoidal{WGS84Latest,CoordRefSystems.Shift(),Met{T}}
+    c1 = Sinusoidal(1.0, 1.0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+    c1 = Sinusoidal(1.0f0, 1.0f0)
+    c2 = convert(C, c1)
+    @test c2 isa C
   end
 end
