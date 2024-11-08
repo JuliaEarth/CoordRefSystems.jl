@@ -23,16 +23,26 @@ projshift(::Type{<:Projected{Datum,Shift}}) where {Datum,Shift} = Shift
 """
     formulas(CRS::Type{<:Projected}, T)
 
-Returns the forward formulas of the `CRS`: `fx(λ, ϕ)` and `fy(λ, ϕ)`,
-with `f(λ::T, ϕ::T) -> T` for both functions.
+Returns the forward formulas of the `CRS`. The formulas
+`x = fx(λ, ϕ)` and `y = fy(λ, ϕ)` map unitless longitude
+`λ` and latitude `ϕ` to unitless Cartesian coordinates
+`x` and `y`.
+
+The formulas must be normalized, i.e., they must return
+values that are **not** scaled by the major axis of the
+ellipsoid of the datum. Additionally, these formulas should
+**not** include the shift parameters: longitude origin `λₒ`,
+false easting `xₒ` and false northing `yₒ`. These adjustments
+are performed automatically for all `Projected` `CRS` in pre-
+and post-processing steps using the `shift` function.
 """
 function formulas end
 
 """
     forward(CRS::Type{<:Projected}, λ, ϕ)
 
-Forward longitude `λ` and latitude `ϕ` in radians to `x` and `y` in meters
-using `CRS` formulas. Both inputs and outputs are unitless.
+Forward longitude `λ` and latitude `ϕ` in radians to `x` and `y`
+in meters using `CRS` `formulas` that operate on unitless values.
 """
 function forward(::Type{C}, λ, ϕ) where {C<:Projected}
   T = typeof(λ)
@@ -45,8 +55,8 @@ end
 """
     backward(CRS::Type{<:Projected}, x, y)
 
-Backward `x` and `y` in meters to longitude `λ` and latitude `ϕ` in radians
-using `CRS` formulas. Both inputs and outputs are unitless.
+Backward `x` and `y` in meters to longitude `λ` and latitude `ϕ`
+in radians using `CRS` `formulas` that operate on unitless values.
 """
 function backward(::Type{C}, x, y) where {C<:Projected}
   T = typeof(x)

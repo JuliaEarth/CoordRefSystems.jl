@@ -127,8 +127,8 @@ end
     projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
 
 Approximates the inverse of a projection with the Newton-Raphson method
-using its forward formulas `fx` and `fy`, `x` and `y` values, 
-initial guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
+using its forward formulas `fx` and `fy`, `x` and `y` values, initial
+guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
 
 ## References
 

@@ -17,6 +17,10 @@
     @test datum(c) === WGS84Latest
     c = AuthalicLatLon(T(1), T(1))
     @test datum(c) === WGS84Latest
+    c = Mercator(T(1), T(2))
+    @test datum(c) === WGS84Latest
+    c = ShiftedMercator(T(1), T(2))
+    @test datum(c) === WGS84Latest
   end
 
   @testset "ncoords" begin
@@ -40,7 +44,7 @@
     @test CoordRefSystems.ncoords(c) == 2
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ncoords(c) == 3
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.ncoords(c) == 2
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.ncoords(c) == 2
@@ -67,7 +71,7 @@
     @test CoordRefSystems.ndims(c) == 3
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.ndims(c) == 3
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.ndims(c) == 2
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.ndims(c) == 2
@@ -92,7 +96,7 @@
     @test CoordRefSystems.names(c) == (:lat, :lon)
     c = GeocentricLatLonAlt(T(30), T(60), T(1))
     @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
@@ -472,7 +476,9 @@
     @test CoordRefSystems.tol(c) == tol
     c = Polar(T(1), 1.0f0)
     @test CoordRefSystems.tol(c) == tol
-    c = ShiftedMercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
+    @test CoordRefSystems.tol(c) == tol
+    c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.tol(c) == tol
   end
 
