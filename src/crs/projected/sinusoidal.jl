@@ -57,6 +57,13 @@ function formulas(::Type{<:Sinusoidal{Datum}}, ::Type{T}) where {Datum,T}
   fx, fy
 end
 
+function backward(::Type{<:Sinusoidal{Datum}}, x, y) where {Datum}
+  ϕ = y
+  λ = x / cos(ϕ)
+
+  λ, ϕ
+end
+
 # ----------
 # FALLBACKS
 # ----------
