@@ -249,13 +249,13 @@
   end
 
   @testset "lentype" begin
-    c = Cartesian(T(1) * mm, T(1) * mm)
+    c = Cartesian(T(1) * mm, T(2) * mm)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
-    c = Polar(T(1) * km, T(1) * rad)
+    c = Polar(T(1) * km, T(2) * rad)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * km)
-    c = Cylindrical(T(1) * cm, T(1) * rad, T(1) * cm)
+    c = Cylindrical(T(1) * cm, T(2) * rad, T(3) * cm)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * cm)
-    c = Spherical(T(1) * mm, T(1) * rad, T(1) * rad)
+    c = Spherical(T(1) * mm, T(3) * rad, T(3) * rad)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
 
     for C in geographic2D
