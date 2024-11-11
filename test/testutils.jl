@@ -36,9 +36,11 @@ function isapproxtest2D(CRS; datum=WGS84{1762})
 end
 
 function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
-  c1 = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
-  cart = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, c1) : convert(Cartesian, c1)
+  c = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
+  cart = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, c) : convert(Cartesian, c)
   u = CoordRefSystems.lentype(cart) |> unit
+
+  c1 = convert(CRS, Cartesian{datum1}(cart.x, cart.y, cart.z))
 
   τ = CoordRefSystems.atol(Float64) * u
   x = Float64(ustrip(cart.x)) * u
@@ -62,7 +64,6 @@ function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
   @test c1 ≈ c3
   @test c1 ≈ c4
 
-  c1 = convert(CRS, Cartesian{datum1}(cart.x, cart.y, cart.z))
   c2 = convert(CRS, Cartesian{datum2}(cart.x, cart.y, cart.z))
   @test c1 ≈ c2
 end
