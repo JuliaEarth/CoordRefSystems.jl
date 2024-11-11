@@ -1,282 +1,152 @@
 @testset "Projection domain" begin
-  @testset "Mercator" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Mercator, c1)
-        c2 = convert(Mercator, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
-      else
-        @test_throws ArgumentError convert(Mercator, c1)
-      end
-    end
-  end
-
-  @testset "WebMercator" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(WebMercator, c1)
-        c2 = convert(WebMercator, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
-      else
-        @test_throws ArgumentError convert(WebMercator, c1)
-      end
-    end
-  end
-
-  @testset "PlateCarree" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(PlateCarree, c1)
-        c2 = convert(PlateCarree, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
-      else
-        @test_throws ArgumentError convert(PlateCarree, c1)
-      end
-    end
-  end
-
-  @testset "Lambert" begin
-    atol = T === Float32 ? 1.0f-2° : 1e-4°
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Lambert, c1)
-        c2 = convert(Lambert, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(Lambert, c1)
-      end
-    end
-  end
-
-  @testset "Behrmann" begin
-    atol = T === Float32 ? 1.0f-2° : 1e-4°
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Behrmann, c1)
-        c2 = convert(Behrmann, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(Behrmann, c1)
-      end
-    end
-  end
-
-  @testset "GallPeters" begin
-    atol = T === Float32 ? 1.0f-2° : 1e-4°
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(GallPeters, c1)
-        c2 = convert(GallPeters, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(GallPeters, c1)
-      end
-    end
-  end
-
-  @testset "WinkelTripel" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(WinkelTripel, c1)
-        c2 = convert(WinkelTripel, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
-      else
-        @test_throws ArgumentError convert(WinkelTripel, c1)
-      end
-    end
-  end
-
-  @testset "Robinson" begin
-    atol = T(1e-3) * °
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Robinson, c1)
-        c2 = convert(Robinson, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(Robinson, c1)
-      end
-    end
-  end
-
-  @testset "OrthoNorth forward" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(OrthoNorth, c1)
-        c2 = convert(OrthoNorth, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(OrthoNorth, c1)
-      end
-    end
-  end
-
-  @testset "OrthoNorth inverse" begin
-    # coordinates at the singularity of the projection (lat ≈ 90) cannot be inverted
-    for lat in T.(1:89), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(OrthoNorth, c1)
-        c2 = convert(OrthoNorth, c1)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
-      end
+  for C in projected
+    atol = if C <: Lambert
+      T === Float32 ? 1.0f-2° : 1e-4°
+    elseif C <: Behrmann
+      T === Float32 ? 1.0f-2° : 1e-4°
+    elseif C <: GallPeters
+      T === Float32 ? 1.0f-2° : 1e-4°
+    elseif C <: Robinson
+      T(1e-3) * °
+    else
+      nothing
     end
 
-    # coordinates at the edge of the projection (lat ≈ 0)
-    # cannot be accurately inverted by numerical problems
-    atol = T(0.5) * °
-    for lon in T.(-180:180)
-      c1 = LatLon(T(0), lon)
-      if indomain(OrthoNorth, c1)
-        c2 = convert(OrthoNorth, c1)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+    if C <: OrthoNorth
+      # forward
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(OrthoNorth, c1)
+        end
       end
-    end
-  end
 
-  @testset "OrthoSouth forward" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(OrthoSouth, c1)
-        c2 = convert(OrthoSouth, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(OrthoSouth, c1)
+      # inverse
+      # coordinates at the singularity of the projection (lat ≈ 90) cannot be inverted
+      for lat in T.(1:89), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth, c1)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1)
+        end
       end
-    end
-  end
 
-  @testset "OrthoSouth inverse" begin
-    # coordinates at the singularity of the projection (lat ≈ -90) cannot be inverted
-    for lat in T.(-89:-1), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(OrthoSouth, c1)
-        c2 = convert(OrthoSouth, c1)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+      # coordinates at the edge of the projection (lat ≈ 0)
+      # cannot be accurately inverted by numerical problems
+      atol = T(0.5) * °
+      for lon in T.(-180:180)
+        c1 = LatLon(T(0), lon)
+        if indomain(OrthoNorth, c1)
+          c2 = convert(OrthoNorth, c1)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1; atol)
+        end
       end
-    end
-
-    # coordinates at the edge of the projection (lat ≈ 0)
-    # cannot be accurately inverted by numerical problems
-    atol = T(0.5) * °
-    for lon in T.(-180:180)
-      c1 = LatLon(T(0), lon)
-      if indomain(OrthoSouth, c1)
-        c2 = convert(OrthoSouth, c1)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1; atol)
+    elseif C <: OrthoSouth
+      # forward
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(OrthoSouth, c1)
+        end
       end
-    end
-  end
 
-  @testset "TransverseMercator forward" begin
-    TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(TM, c1)
-        c2 = convert(TM, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(TM, c1)
+      # inverse
+      # coordinates at the singularity of the projection (lat ≈ -90) cannot be inverted
+      for lat in T.(-89:-1), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth, c1)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1)
+        end
       end
-    end
-  end
 
-  @testset "Albers" begin
-    atol = T === Float32 ? 1.0f-1° : 1e-7°
-    AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon{NAD83}(lat, lon)
-      if indomain(AlbersUS, c1)
-        c2 = convert(AlbersUS, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-        c3 = convert(LatLon{NAD83}, c2)
-        @test allapprox(c3, c1; atol)
-      else
-        @test_throws ArgumentError convert(AlbersUS, c1)
+      # coordinates at the edge of the projection (lat ≈ 0)
+      # cannot be accurately inverted by numerical problems
+      atol = T(0.5) * °
+      for lon in T.(-180:180)
+        c1 = LatLon(T(0), lon)
+        if indomain(OrthoSouth, c1)
+          c2 = convert(OrthoSouth, c1)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1; atol)
+        end
       end
-    end
-  end
-
-  @testset "UTMNorth forward" begin
-    UTMNorth32 = utmnorth(32)
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(UTMNorth32, c1)
-        c2 = convert(UTMNorth32, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(UTMNorth32, c1)
+    elseif C <: TransverseMercator
+      # TODO: fix inverse
+      TM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=25.0°)
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(TM, c1)
+          c2 = convert(TM, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(TM, c1)
+        end
       end
-    end
-  end
-
-  @testset "UTMSouth forward" begin
-    UTMSouth59 = utmsouth(59)
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(UTMSouth59, c1)
-        c2 = convert(UTMSouth59, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(UTMSouth59, c1)
+    elseif C <: Albers
+      atol = T === Float32 ? 1.0f-1° : 1e-7°
+      AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon{NAD83}(lat, lon)
+        if indomain(AlbersUS, c1)
+          c2 = convert(AlbersUS, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+          c3 = convert(LatLon{NAD83}, c2)
+          @test allapprox(c3, c1; atol)
+        else
+          @test_throws ArgumentError convert(AlbersUS, c1)
+        end
       end
-    end
-  end
-
-  @testset "Sinusoidal forward" begin
-    for lat in T.(-90:90), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Sinusoidal, c1)
-        c2 = convert(Sinusoidal, c1)
-        @test isfinite(c2.x)
-        @test isfinite(c2.y)
-      else
-        @test_throws ArgumentError convert(Sinusoidal, c1)
+    elseif C <: Sinusoidal
+      # forward
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(Sinusoidal, c1)
+          c2 = convert(Sinusoidal, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+        else
+          @test_throws ArgumentError convert(Sinusoidal, c1)
+        end
       end
-    end
-  end
 
-  @testset "Sinusoidal inverse" begin
-    # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
-    for lat in T.(-89:89), lon in T.(-180:180)
-      c1 = LatLon(lat, lon)
-      if indomain(Sinusoidal, c1)
-        c2 = convert(Sinusoidal, c1)
-        c3 = convert(LatLon, c2)
-        @test allapprox(c3, c1)
+      # inverse
+      # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
+      for lat in T.(-89:89), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(Sinusoidal, c1)
+          c2 = convert(Sinusoidal, c1)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1)
+        end
+      end
+    else
+      kwargs = isnothing(atol) ? (;) : (; atol)
+
+      for lat in T.(-90:90), lon in T.(-180:180)
+        c1 = LatLon(lat, lon)
+        if indomain(C, c1)
+          c2 = convert(C, c1)
+          @test isfinite(c2.x)
+          @test isfinite(c2.y)
+          c3 = convert(LatLon, c2)
+          @test allapprox(c3, c1; kwargs...)
+        else
+          @test_throws ArgumentError convert(C, c1)
+        end
       end
     end
   end
