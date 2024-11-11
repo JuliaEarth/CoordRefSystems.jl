@@ -20,17 +20,17 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
 isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
 function isapproxtest2D(CRS; datum=WGS84{1762})
-  c1 = convert(CRS, Cartesian{datum}(T(1), T(1)))
+  c1 = convert(CRS, Cartesian{datum}(T(1), T(2)))
 
   τ = CoordRefSystems.atol(Float64) * m
-  c2 = convert(CRS, Cartesian{datum}(1m + τ, 1m))
-  c3 = convert(CRS, Cartesian{datum}(1m, 1m + τ))
+  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
+  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 
   τ = CoordRefSystems.atol(Float32) * m
-  c2 = convert(CRS, Cartesian{datum}(1m + τ, 1m))
-  c3 = convert(CRS, Cartesian{datum}(1m, 1m + τ))
+  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
+  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 end
