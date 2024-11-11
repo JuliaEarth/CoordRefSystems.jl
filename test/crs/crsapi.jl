@@ -2,104 +2,106 @@
   ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
   ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
   UTMNorth32 = utmnorth(32)
-  AlbersUS = CoordRefSystems.shift(Albers{23.0°,29.5°,45.0°,NAD83}, lonₒ=-96.0°)
 
   @testset "datum" begin
-    c = Cartesian(T(1), T(1))
-    @test datum(c) === NoDatum
-    c = LatLon(T(1), T(1))
-    @test datum(c) === WGS84Latest
-    c = LatLonAlt(T(1), T(1), T(1))
-    @test datum(c) === WGS84Latest
-    c = GeocentricLatLon(T(1), T(1))
-    @test datum(c) === WGS84Latest
-    c = GeocentricLatLonAlt(T(1), T(1), T(1))
-    @test datum(c) === WGS84Latest
-    c = AuthalicLatLon(T(1), T(1))
-    @test datum(c) === WGS84Latest
-    c = Mercator(T(1), T(2))
-    @test datum(c) === WGS84Latest
-    c = ShiftedMercator(T(1), T(2))
-    @test datum(c) === WGS84Latest
+    for C in basic2D
+      c = C(T(1), T(2))
+      @test datum(c) === NoDatum
+    end
+
+    for C in basic3D
+      c = C(T(1), T(2), T(3))
+      @test datum(c) === NoDatum
+    end
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test datum(c) === WGS84Latest
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test datum(c) === WGS84Latest
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test datum(c) === WGS84Latest
+    end
   end
 
   @testset "ncoords" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.ncoords(c) == 2
-    @test CoordRefSystems.ncoords(Cartesian2D) == 2
-    c = Cartesian(T(1), T(1), T(1))
-    @test CoordRefSystems.ncoords(c) == 3
-    @test CoordRefSystems.ncoords(Cartesian3D) == 3
-    c = Polar(T(1), T(1))
-    @test CoordRefSystems.ncoords(c) == 2
-    c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.ncoords(c) == 3
-    c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.ncoords(c) == 3
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.ncoords(c) == 2
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.ncoords(c) == 3
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.ncoords(c) == 2
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.ncoords(c) == 3
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.ncoords(c) == 2
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.ncoords(c) == 2
+    for C in [basic2D; geographic2D; projected]
+      c = C(T(1), T(2))
+      @test CoordRefSystems.ncoords(C) == 2
+      @test CoordRefSystems.ncoords(c) == 2
+    end
+
+    for C in [basic3D; geographic3D]
+      c = C(T(1), T(2), T(3))
+      @test CoordRefSystems.ncoords(C) == 2
+      @test CoordRefSystems.ncoords(c) == 2
+    end
   end
 
   @testset "ndims" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 2
-    @test CoordRefSystems.ndims(Cartesian2D) == 2
-    c = Cartesian(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    @test CoordRefSystems.ndims(Cartesian3D) == 3
-    c = Polar(T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 2
-    c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.ndims(c) == 3
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.ndims(c) == 3
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.ndims(c) == 3
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.ndims(c) == 2
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.ndims(c) == 2
+    for C in basic2D
+      c = C(T(1), T(2))
+      @test CoordRefSystems.ndims(C) == 2
+      @test CoordRefSystems.ndims(c) == 2
+    end
+
+    for C in basic3D
+      c = C(T(1), T(2), T(3))
+      @test CoordRefSystems.ndims(C) == 3
+      @test CoordRefSystems.ndims(c) == 3
+    end
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.ndims(C) == 3
+      @test CoordRefSystems.ndims(c) == 3
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.ndims(C) == 3
+      @test CoordRefSystems.ndims(c) == 3
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.ndims(C) == 2
+      @test CoordRefSystems.ndims(c) == 2
+    end
   end
 
   @testset "names" begin
-    c = Cartesian(T(1), T(1))
+    c = Cartesian(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
-    c = Cartesian(T(1), T(1), T(1))
+    c = Cartesian(T(1), T(2), T(3))
     @test CoordRefSystems.names(c) == (:x, :y, :z)
-    c = Polar(T(1), T(1))
+    c = Polar(T(1), T(2))
     @test CoordRefSystems.names(c) == (:ρ, :ϕ)
-    c = Cylindrical(T(1), T(1), T(1))
+    c = Cylindrical(T(1), T(2), T(3))
     @test CoordRefSystems.names(c) == (:ρ, :ϕ, :z)
-    c = Spherical(T(1), T(1), T(1))
+    c = Spherical(T(1), T(2), T(3))
     @test CoordRefSystems.names(c) == (:r, :θ, :ϕ)
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.names(c) == (:lat, :lon)
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.names(c) == (:lat, :lon)
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.names(c) == (:x, :y)
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.names(c) == (:x, :y)
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.names(c) == (:lat, :lon)
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.names(c) == (:lat, :lon, :alt)
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.names(c) == (:x, :y)
+    end
   end
 
   @testset "values" begin
@@ -113,22 +115,25 @@
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * rad, T(3) * m)
     c = Spherical(T(1), T(2), T(3))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * rad, T(3) * rad)
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °)
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °, T(1) * m)
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °)
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °, T(1) * m)
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °)
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.values(c) == (T(30) * °, T(60) * °, T(1) * m)
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)
+    end
   end
 
   @testset "raw" begin
-    c = Cartesian(T(1), T(2))
+    c = Cartesian(T(1) * mm, T(2) * mm)
     @test CoordRefSystems.raw(c) == (T(1), T(2))
     c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
     @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
@@ -138,45 +143,26 @@
     @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
     c = Spherical(T(1) * mm, T(2) * rad, T(3) * rad)
     @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.raw(c) == (T(60), T(30))
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.raw(c) == (T(60), T(30), T(1))
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.raw(c) == (T(60), T(30))
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.raw(c) == (T(60), T(30), T(1))
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.raw(c) == (T(60), T(30))
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = WebMercator(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = PlateCarree(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = Lambert(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = WinkelTripel(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = Robinson(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = OrthoNorth(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = ShiftedTM(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = UTMNorth32(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = AlbersUS(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = Sinusoidal(T(1), T(2))
-    @test CoordRefSystems.raw(c) == (T(1), T(2))
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.raw(c) == (T(30), T(60))
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.raw(c) == (T(30), T(60), T(1))
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.raw(c) == (T(1), T(2))
+    end
   end
 
   @testset "units" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
+    c = Cartesian(T(1) * mm, T(1) * mm)
+    @test CoordRefSystems.units(c) == (mm, mm)
     c = Cartesian(T(1) * cm, T(1) * cm, T(1) * cm)
     @test CoordRefSystems.units(c) == (cm, cm, cm)
     c = Polar(T(1) * km, T(1) * rad)
@@ -185,89 +171,59 @@
     @test CoordRefSystems.units(c) == (cm, rad, cm)
     c = Spherical(T(1) * mm, T(1) * rad, T(1) * rad)
     @test CoordRefSystems.units(c) == (mm, rad, rad)
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.units(c) == (°, °)
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.units(c) == (°, °, m)
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.units(c) == (°, °)
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.units(c) == (°, °, m)
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.units(c) == (°, °)
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = WebMercator(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = PlateCarree(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = Lambert(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = WinkelTripel(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = Robinson(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = OrthoNorth(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = ShiftedTM(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = UTMNorth32(T(1), T(1))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = AlbersUS(T(1), T(2))
-    @test CoordRefSystems.units(c) == (m, m)
-    c = Sinusoidal(T(1), T(2))
-    @test CoordRefSystems.units(c) == (m, m)
+    
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.units(c) == (°, °)
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.units(c) == (°, °, m)
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.units(c) == (m, m)
+    end
   end
 
   @testset "constructor" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
-    c = Polar(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Polar{NoDatum}
-    c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Cylindrical{NoDatum}
-    c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Spherical{NoDatum}
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.constructor(c) === LatLon{WGS84Latest}
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.constructor(c) === LatLonAlt{WGS84Latest}
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.constructor(c) === GeocentricLatLon{WGS84Latest}
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.constructor(c) === GeocentricLatLonAlt{WGS84Latest}
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.constructor(c) === AuthalicLatLon{WGS84Latest}
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Mercator{WGS84Latest,CoordRefSystems.Shift()}
-    c = WebMercator(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === WebMercator{WGS84Latest,CoordRefSystems.Shift()}
-    c = PlateCarree(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === PlateCarree{WGS84Latest,CoordRefSystems.Shift()}
-    c = Lambert(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Lambert{WGS84Latest,CoordRefSystems.Shift()}
-    c = WinkelTripel(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === WinkelTripel{WGS84Latest,CoordRefSystems.Shift()}
-    c = Robinson(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === Robinson{WGS84Latest,CoordRefSystems.Shift()}
-    c = OrthoNorth(T(1), T(1))
-    @test CoordRefSystems.constructor(c) === OrthoNorth{WGS84Latest,CoordRefSystems.Shift()}
-    c = ShiftedTM(T(1), T(1))
+    for C in basic2D
+      c = C(T(1), T(2))
+      @test CoordRefSystems.constructor(c) === C{NoDatum}
+    end
+
+    for C in basic3D
+      c = C(T(1), T(2), T(3))
+      @test CoordRefSystems.constructor(c) === C{NoDatum}
+    end
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.constructor(c) === C{WGS84Latest}
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.constructor(c) === C{WGS84Latest}
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.constructor(c) === C{WGS84Latest,CoordRefSystems.Shift()}
+    end
+
+    c = ShiftedTM(T(1), T(2))
     @test CoordRefSystems.constructor(c) === ShiftedTM
-    c = UTMNorth32(T(1), T(1))
+    c = UTMNorth32(T(1), T(2))
     @test CoordRefSystems.constructor(c) === UTMNorth32
     c = ShiftedMercator(T(1), T(2))
     @test CoordRefSystems.constructor(c) === ShiftedMercator
-    c = AlbersUS(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === AlbersUS
-    c = Sinusoidal(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === Sinusoidal{WGS84Latest,CoordRefSystems.Shift()}
   end
 
   @testset "reconstruct" begin
-    c = Cartesian(T(1), T(2))
+    c = Cartesian(T(1) * mm, T(2) * mm)
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
@@ -282,42 +238,25 @@
     c = Spherical(T(1) * mm, T(2) * rad, T(3) * rad)
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = LatLon(T(30), T(60))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = LatLonAlt(T(30), T(60), T(1))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = GeocentricLatLon(T(30), T(60))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = AuthalicLatLon(T(30), T(60))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Mercator(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = WebMercator(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = PlateCarree(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Lambert(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = WinkelTripel(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Robinson(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = OrthoNorth(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      rv = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      rv = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      rv = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    end
+
     c = ShiftedTM(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
@@ -327,146 +266,80 @@
     c = ShiftedMercator(T(1), T(2))
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = AlbersUS(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Sinusoidal(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "lentype" begin
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    c = Cartesian(T(1) * mm, T(1) * mm)
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
     c = Polar(T(1) * km, T(1) * rad)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * km)
     c = Cylindrical(T(1) * cm, T(1) * rad, T(1) * cm)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * cm)
     c = Spherical(T(1) * mm, T(1) * rad, T(1) * rad)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
-    c = LatLon(T(30), T(60))
+
+    for C in geographic2D
+      c = C(T(30), T(60))
+      @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    end
+
+    for C in geographic3D
+      c = C(T(30), T(60), T(1))
+      @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    end
+
+    for C in projected
+      c = C(T(1), T(2))
+      @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
+    end
+
+    c = ShiftedTM(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = WebMercator(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = PlateCarree(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = Lambert(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = WinkelTripel(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = Robinson(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = OrthoNorth(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = ShiftedTM(T(1), T(1))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = UTMNorth32(T(1), T(1))
+    c = UTMNorth32(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = AlbersUS(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = Sinusoidal(T(1), T(2))
     @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
   @testset "mactype" begin
-    c = Cartesian(T(1), T(1))
+    for C in [basic2D; geographic2D; projected]
+      c = C(T(1), T(2))
+      @test CoordRefSystems.mactype(c) == T
+    end
+
+    for C in [basic3D; geographic3D]
+      c = C(T(1), T(2), T(3))
+      @test CoordRefSystems.mactype(c) == T
+    end
+
     @test CoordRefSystems.mactype(c) == T
-    c = Polar(T(1), T(1))
+    c = ShiftedTM(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
-    c = Cylindrical(T(1), T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = Spherical(T(1), T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = LatLon(T(30), T(60))
-    @test CoordRefSystems.mactype(c) == T
-    c = LatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = GeocentricLatLon(T(30), T(60))
-    @test CoordRefSystems.mactype(c) == T
-    c = GeocentricLatLonAlt(T(30), T(60), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = AuthalicLatLon(T(30), T(60))
-    @test CoordRefSystems.mactype(c) == T
-    c = Mercator(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = WebMercator(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = PlateCarree(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = Lambert(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = WinkelTripel(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = Robinson(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = OrthoNorth(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = ShiftedTM(T(1), T(1))
-    @test CoordRefSystems.mactype(c) == T
-    c = UTMNorth32(T(1), T(1))
+    c = UTMNorth32(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
     c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.mactype(c) == T
-    c = AlbersUS(T(1), T(2))
-    @test CoordRefSystems.mactype(c) == T
-    c = Sinusoidal(T(1), T(2))
     @test CoordRefSystems.mactype(c) == T
   end
 
   @testset "equality" begin
-    equaltest(Cartesian, 2)
-    equaltest(Cartesian, 3)
-    equaltest(Polar)
-    equaltest(Cylindrical)
-    equaltest(Spherical)
-    equaltest(LatLon)
-    equaltest(LatLonAlt)
-    equaltest(GeocentricLatLon)
-    equaltest(GeocentricLatLonAlt)
-    equaltest(AuthalicLatLon)
-    equaltest(Mercator)
-    equaltest(WebMercator)
-    equaltest(PlateCarree)
-    equaltest(Lambert)
-    equaltest(WinkelTripel)
-    equaltest(Robinson)
-    equaltest(OrthoNorth)
+    for C in [basic; geographic; projected] 
+      equaltest(C)
+    end
+
     equaltest(UTMNorth32)
     equaltest(ShiftedTM)
     equaltest(ShiftedMercator)
-    equaltest(AlbersUS)
-    equaltest(Sinusoidal)
   end
 
   @testset "isapprox" begin
-    isapproxtest2D(Cartesian)
-    isapproxtest3D(Cartesian)
-    isapproxtest2D(Polar)
-    isapproxtest3D(Cylindrical)
-    isapproxtest3D(Spherical)
-    isapproxtest3D(LatLon)
-    isapproxtest3D(LatLonAlt)
-    isapproxtest3D(GeocentricLatLon)
-    isapproxtest3D(GeocentricLatLonAlt)
-    isapproxtest3D(Mercator)
-    isapproxtest3D(WebMercator)
-    isapproxtest3D(PlateCarree)
-    isapproxtest3D(Lambert)
-    isapproxtest3D(WinkelTripel)
-    isapproxtest3D(Robinson)
-    isapproxtest3D(OrthoNorth)
+    for C in basic2D
+      isapproxtest2D(C)
+    end
+
+    for C in [basic3D; geographic; projected]
+      isapproxtest3D(C)
+    end
+
     UTMNorth32WGS = utmnorth(32, datum=WGS84{1762})
     UTMNorth32ITRF = utmnorth(32, datum=ITRF{2008})
     isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
@@ -476,25 +349,19 @@
     ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
     isapproxtest3D(ShiftedMercatorWGS, ShiftedMercatorITRF)
-    isapproxtest3D(Sinusoidal)
   end
 
   @testset "tol" begin
     tol = CoordRefSystems.atol(T) * m
-    c = LatLon(T(1), T(1))
-    @test CoordRefSystems.tol(c) == tol
-    c = LatLonAlt(T(1), T(1), T(1))
-    @test CoordRefSystems.tol(c) == tol
-    c = GeocentricLatLon(T(1), T(1))
-    @test CoordRefSystems.tol(c) == tol
-    c = Cartesian(T(1), T(1))
-    @test CoordRefSystems.tol(c) == tol
-    c = Polar(T(1), 1.0f0)
-    @test CoordRefSystems.tol(c) == tol
-    c = Mercator(T(1), T(2))
-    @test CoordRefSystems.tol(c) == tol
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.tol(c) == tol
+    for C in [basic2D; geographic2D; projected]
+      c = C(T(1), T(2))
+      @test CoordRefSystems.tol(c) == tol
+    end
+
+    for C in [basic3D; geographic3D]
+      c = C(T(1), T(2), T(3))
+      @test CoordRefSystems.tol(c) == tol
+    end
   end
 
   @testset "convert fallback" begin
@@ -533,7 +400,7 @@
     @test c5 ≈ c1
 
     # same type
-    c = Cartesian(T(1), T(1))
+    c = Cartesian(T(1), T(2))
     @test convert(Cartesian, c) === c
     c = LatLon(T(45), T(90))
     @test convert(LatLon, c) === c
@@ -543,19 +410,19 @@
     @test convert(GeocentricLatLon, c) === c
     c = GeocentricLatLonAlt(T(45), T(90), T(1))
     @test convert(GeocentricLatLonAlt, c) === c
-    c = OrthoNorth(T(1), T(1))
+    c = OrthoNorth(T(1), T(2))
     @test convert(OrthoNorth, c) === c
 
     # error: conversion not defined
     C = typeof(Spherical(T(0), T(0), T(0)))
-    c = Mercator(T(1), T(1))
+    c = Mercator(T(1), T(2))
     @test_throws ArgumentError convert(C, c)
 
     # type stability
     C = typeof(Mercator(T(0), T(0)))
     c1 = LatLon(45.0, 90.0)
     c2 = LatLon(45.0f0, 90.0f0)
-    c3 = Cartesian(T(1), T(1))
+    c3 = Cartesian(T(1), T(2))
     @inferred convert(C, c1)
     @inferred convert(C, c2)
     @inferred convert(Cartesian, c3)
