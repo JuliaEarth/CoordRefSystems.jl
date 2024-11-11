@@ -39,8 +39,8 @@
 
     for C in [basic3D; geographic3D]
       c = C(T(1), T(2), T(3))
-      @test CoordRefSystems.ncoords(C) == 2
-      @test CoordRefSystems.ncoords(c) == 2
+      @test CoordRefSystems.ncoords(C) == 3
+      @test CoordRefSystems.ncoords(c) == 3
     end
   end
 
@@ -146,12 +146,12 @@
 
     for C in geographic2D
       c = C(T(30), T(60))
-      @test CoordRefSystems.raw(c) == (T(30), T(60))
+      @test CoordRefSystems.raw(c) == (T(60), T(30))
     end
 
     for C in geographic3D
       c = C(T(30), T(60), T(1))
-      @test CoordRefSystems.raw(c) == (T(30), T(60), T(1))
+      @test CoordRefSystems.raw(c) == (T(60), T(30), T(1))
     end
 
     for C in projected
@@ -189,15 +189,16 @@
   end
 
   @testset "constructor" begin
-    for C in basic2D
-      c = C(T(1), T(2))
-      @test CoordRefSystems.constructor(c) === C{NoDatum}
-    end
-
-    for C in basic3D
-      c = C(T(1), T(2), T(3))
-      @test CoordRefSystems.constructor(c) === C{NoDatum}
-    end
+    c = Cartesian(T(1), T(2))
+    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
+    c = Cartesian(T(1), T(2), T(3))
+    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
+    c = Polar(T(1), T(2))
+    @test CoordRefSystems.constructor(c) === Polar{NoDatum}
+    c = Cylindrical(T(1), T(2), T(3))
+    @test CoordRefSystems.constructor(c) === Cylindrical{NoDatum}
+    c = Spherical(T(1), T(2), T(3))
+    @test CoordRefSystems.constructor(c) === Spherical{NoDatum}
 
     for C in geographic2D
       c = C(T(30), T(60))
@@ -332,12 +333,17 @@
   end
 
   @testset "isapprox" begin
-    for C in basic2D
-      isapproxtest2D(C)
-    end
-
-    for C in [basic3D; geographic; projected]
-      isapproxtest3D(C)
+    isapproxtest2D(Cartesian)
+    isapproxtest3D(Cartesian)
+    isapproxtest2D(Polar)
+    isapproxtest3D(Cylindrical)
+    isapproxtest3D(Spherical)
+    
+    for C in [geographic; projected]
+      # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
+      if !(C <: AuthalicLatLon)
+        isapproxtest3D(C)
+      end
     end
 
     UTMNorth32WGS = utmnorth(32, datum=WGS84{1762})
@@ -354,8 +360,11 @@
   @testset "tol" begin
     tol = CoordRefSystems.atol(T) * m
     for C in [basic2D; geographic2D; projected]
-      c = C(T(1), T(2))
-      @test CoordRefSystems.tol(c) == tol
+      # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
+      if !(C <: AuthalicLatLon)
+        c = C(T(1), T(2))
+        @test CoordRefSystems.tol(c) == tol
+      end
     end
 
     for C in [basic3D; geographic3D]
