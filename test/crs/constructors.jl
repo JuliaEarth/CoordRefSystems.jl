@@ -1,167 +1,163 @@
 @testset "Constructors" begin
   @testset "Basic" begin
-    @testset "Cartesian" begin
-      @test Cartesian(T(1)) == Cartesian(T(1) * m)
-      @test Cartesian(T(1), T(2)) == Cartesian(T(1) * m, T(2) * m)
-      @test Cartesian(T(1), T(2), T(3)) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
-      @test Cartesian(T(1) * m, 2 * m) == Cartesian(T(1) * m, T(2) * m)
-      @test Cartesian((T(1), T(2))) == Cartesian((T(1) * m, T(2) * m))
-      @test Cartesian((T(1), T(2), T(3))) == Cartesian((T(1) * m, T(2) * m, T(3) * m))
-      @test Cartesian((T(1) * m, 2 * m)) == Cartesian((T(1) * m, T(2) * m))
-      @test Cartesian2D(T(1), T(2)) == Cartesian(T(1) * m, T(2) * m)
-      @test Cartesian2D(T(1) * m, 2 * m) == Cartesian(T(1) * m, T(2) * m)
-      @test Cartesian3D(T(1), T(2), T(3)) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
-      @test Cartesian3D(T(1) * m, T(2) * m, 3 * m) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
+    # Cartesian
+    @test Cartesian(T(1)) == Cartesian(T(1) * m)
+    @test Cartesian(T(1), T(2)) == Cartesian(T(1) * m, T(2) * m)
+    @test Cartesian(T(1), T(2), T(3)) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
+    @test Cartesian(T(1) * m, 2 * m) == Cartesian(T(1) * m, T(2) * m)
+    @test Cartesian((T(1), T(2))) == Cartesian((T(1) * m, T(2) * m))
+    @test Cartesian((T(1), T(2), T(3))) == Cartesian((T(1) * m, T(2) * m, T(3) * m))
+    @test Cartesian((T(1) * m, 2 * m)) == Cartesian((T(1) * m, T(2) * m))
+    @test Cartesian2D(T(1), T(2)) == Cartesian(T(1) * m, T(2) * m)
+    @test Cartesian2D(T(1) * m, 2 * m) == Cartesian(T(1) * m, T(2) * m)
+    @test Cartesian3D(T(1), T(2), T(3)) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
+    @test Cartesian3D(T(1) * m, T(2) * m, 3 * m) == Cartesian(T(1) * m, T(2) * m, T(3) * m)
 
-      c = Cartesian(T(1))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        └─ x: 1.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        └─ x: 1.0 m"""
-      end
-
-      c = Cartesian(T(1), T(2))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x: 1.0f0 m
-        └─ y: 2.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x: 1.0 m
-        └─ y: 2.0 m"""
-      end
-
-      c = Cartesian(T(1), T(2), T(3))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m, z: 3.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x: 1.0f0 m
-        ├─ y: 2.0f0 m
-        └─ z: 3.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x: 1.0 m
-        ├─ y: 2.0 m
-        └─ z: 3.0 m"""
-      end
-
-      c = Cartesian(T(1), T(2), T(3), T(4))
-      @test sprint(show, c) == "Cartesian{NoDatum}(x1: 1.0 m, x2: 2.0 m, x3: 3.0 m, x4: 4.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x1: 1.0f0 m
-        ├─ x2: 2.0f0 m
-        ├─ x3: 3.0f0 m
-        └─ x4: 4.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cartesian{NoDatum} coordinates
-        ├─ x1: 1.0 m
-        ├─ x2: 2.0 m
-        ├─ x3: 3.0 m
-        └─ x4: 4.0 m"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError Cartesian(T(1), T(2) * m)
-      @test_throws ArgumentError Cartesian(T(1) * s, T(2) * m)
-      @test_throws ArgumentError Cartesian(T(1) * m, T(2) * s)
-      @test_throws ArgumentError Cartesian(T(1) * s, T(2) * s)
+    c = Cartesian(T(1))
+    @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      └─ x: 1.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      └─ x: 1.0 m"""
     end
 
-    @testset "Polar" begin
-      @test Polar(T(1), T(2)) == Polar(T(1) * m, T(2) * rad)
-      @test allapprox(Polar(T(1) * m, T(45) * °), Polar(T(1) * m, T(π / 4) * rad))
-
-      c = Polar(T(1), T(2))
-      @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Polar{NoDatum} coordinates
-        ├─ ρ: 1.0f0 m
-        └─ ϕ: 2.0f0 rad"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Polar{NoDatum} coordinates
-        ├─ ρ: 1.0 m
-        └─ ϕ: 2.0 rad"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError Polar(T(1), T(2) * rad)
-      @test_throws ArgumentError Polar(T(1) * s, T(2) * rad)
-      @test_throws ArgumentError Polar(T(1) * m, T(2) * s)
-      @test_throws ArgumentError Polar(T(1) * s, T(2) * s)
+    c = Cartesian(T(1), T(2))
+    @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x: 1.0f0 m
+      └─ y: 2.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x: 1.0 m
+      └─ y: 2.0 m"""
     end
 
-    @testset "Cylindrical" begin
-      @test Cylindrical(T(1), T(2), T(3)) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
-      @test Cylindrical(T(1) * m, T(2) * rad, 3 * m) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
-      @test allapprox(Cylindrical(T(1) * m, T(45) * °, T(1) * m), Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m))
-
-      c = Cylindrical(T(1), T(2), T(3))
-      @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad, z: 3.0 m)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cylindrical{NoDatum} coordinates
-        ├─ ρ: 1.0f0 m
-        ├─ ϕ: 2.0f0 rad
-        └─ z: 3.0f0 m"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Cylindrical{NoDatum} coordinates
-        ├─ ρ: 1.0 m
-        ├─ ϕ: 2.0 rad
-        └─ z: 3.0 m"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError Cylindrical(T(1), T(2) * rad, T(3))
-      @test_throws ArgumentError Cylindrical(T(1) * s, T(2) * rad, T(3) * m)
-      @test_throws ArgumentError Cylindrical(T(1) * m, T(2) * s, T(3) * m)
-      @test_throws ArgumentError Cylindrical(T(1) * m, T(2) * rad, T(3) * s)
-      @test_throws ArgumentError Cylindrical(T(1) * s, T(2) * s, T(3) * s)
+    c = Cartesian(T(1), T(2), T(3))
+    @test sprint(show, c) == "Cartesian{NoDatum}(x: 1.0 m, y: 2.0 m, z: 3.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x: 1.0f0 m
+      ├─ y: 2.0f0 m
+      └─ z: 3.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x: 1.0 m
+      ├─ y: 2.0 m
+      └─ z: 3.0 m"""
     end
 
-    @testset "Spherical" begin
-      @test Spherical(T(1), T(2), T(3)) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
-      @test Spherical(T(1) * m, T(2) * rad, 3 * rad) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
-      @test allapprox(Spherical(T(1) * m, T(45) * °, T(45) * °), Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad))
-
-      c = Spherical(T(1), T(2), T(3))
-      @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 2.0 rad, ϕ: 3.0 rad)"
-      if T === Float32
-        @test sprint(show, MIME("text/plain"), c) == """
-        Spherical{NoDatum} coordinates
-        ├─ r: 1.0f0 m
-        ├─ θ: 2.0f0 rad
-        └─ ϕ: 3.0f0 rad"""
-      else
-        @test sprint(show, MIME("text/plain"), c) == """
-        Spherical{NoDatum} coordinates
-        ├─ r: 1.0 m
-        ├─ θ: 2.0 rad
-        └─ ϕ: 3.0 rad"""
-      end
-
-      # error: invalid units for coordinates
-      @test_throws ArgumentError Spherical(T(1) * m, T(2), T(3))
-      @test_throws ArgumentError Spherical(T(1) * s, T(2) * rad, T(3) * rad)
-      @test_throws ArgumentError Spherical(T(1) * m, T(2) * s, T(3) * rad)
-      @test_throws ArgumentError Spherical(T(1) * m, T(2) * rad, T(3) * s)
-      @test_throws ArgumentError Spherical(T(1) * s, T(2) * s, T(3) * s)
+    c = Cartesian(T(1), T(2), T(3), T(4))
+    @test sprint(show, c) == "Cartesian{NoDatum}(x1: 1.0 m, x2: 2.0 m, x3: 3.0 m, x4: 4.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x1: 1.0f0 m
+      ├─ x2: 2.0f0 m
+      ├─ x3: 3.0f0 m
+      └─ x4: 4.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cartesian{NoDatum} coordinates
+      ├─ x1: 1.0 m
+      ├─ x2: 2.0 m
+      ├─ x3: 3.0 m
+      └─ x4: 4.0 m"""
     end
+
+    # error: invalid units for coordinates
+    @test_throws ArgumentError Cartesian(T(1), T(2) * m)
+    @test_throws ArgumentError Cartesian(T(1) * s, T(2) * m)
+    @test_throws ArgumentError Cartesian(T(1) * m, T(2) * s)
+    @test_throws ArgumentError Cartesian(T(1) * s, T(2) * s)
+
+    # Polar
+    @test Polar(T(1), T(2)) == Polar(T(1) * m, T(2) * rad)
+    @test allapprox(Polar(T(1) * m, T(45) * °), Polar(T(1) * m, T(π / 4) * rad))
+
+    c = Polar(T(1), T(2))
+    @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Polar{NoDatum} coordinates
+      ├─ ρ: 1.0f0 m
+      └─ ϕ: 2.0f0 rad"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Polar{NoDatum} coordinates
+      ├─ ρ: 1.0 m
+      └─ ϕ: 2.0 rad"""
+    end
+
+    # error: invalid units for coordinates
+    @test_throws ArgumentError Polar(T(1), T(2) * rad)
+    @test_throws ArgumentError Polar(T(1) * s, T(2) * rad)
+    @test_throws ArgumentError Polar(T(1) * m, T(2) * s)
+    @test_throws ArgumentError Polar(T(1) * s, T(2) * s)
+
+    # Cylindrical
+    @test Cylindrical(T(1), T(2), T(3)) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
+    @test Cylindrical(T(1) * m, T(2) * rad, 3 * m) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
+    @test allapprox(Cylindrical(T(1) * m, T(45) * °, T(1) * m), Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m))
+
+    c = Cylindrical(T(1), T(2), T(3))
+    @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad, z: 3.0 m)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cylindrical{NoDatum} coordinates
+      ├─ ρ: 1.0f0 m
+      ├─ ϕ: 2.0f0 rad
+      └─ z: 3.0f0 m"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Cylindrical{NoDatum} coordinates
+      ├─ ρ: 1.0 m
+      ├─ ϕ: 2.0 rad
+      └─ z: 3.0 m"""
+    end
+
+    # error: invalid units for coordinates
+    @test_throws ArgumentError Cylindrical(T(1), T(2) * rad, T(3))
+    @test_throws ArgumentError Cylindrical(T(1) * s, T(2) * rad, T(3) * m)
+    @test_throws ArgumentError Cylindrical(T(1) * m, T(2) * s, T(3) * m)
+    @test_throws ArgumentError Cylindrical(T(1) * m, T(2) * rad, T(3) * s)
+    @test_throws ArgumentError Cylindrical(T(1) * s, T(2) * s, T(3) * s)
+
+    # Spherical
+    @test Spherical(T(1), T(2), T(3)) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
+    @test Spherical(T(1) * m, T(2) * rad, 3 * rad) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
+    @test allapprox(Spherical(T(1) * m, T(45) * °, T(45) * °), Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad))
+
+    c = Spherical(T(1), T(2), T(3))
+    @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 2.0 rad, ϕ: 3.0 rad)"
+    if T === Float32
+      @test sprint(show, MIME("text/plain"), c) == """
+      Spherical{NoDatum} coordinates
+      ├─ r: 1.0f0 m
+      ├─ θ: 2.0f0 rad
+      └─ ϕ: 3.0f0 rad"""
+    else
+      @test sprint(show, MIME("text/plain"), c) == """
+      Spherical{NoDatum} coordinates
+      ├─ r: 1.0 m
+      ├─ θ: 2.0 rad
+      └─ ϕ: 3.0 rad"""
+    end
+
+    # error: invalid units for coordinates
+    @test_throws ArgumentError Spherical(T(1) * m, T(2), T(3))
+    @test_throws ArgumentError Spherical(T(1) * s, T(2) * rad, T(3) * rad)
+    @test_throws ArgumentError Spherical(T(1) * m, T(2) * s, T(3) * rad)
+    @test_throws ArgumentError Spherical(T(1) * m, T(2) * rad, T(3) * s)
+    @test_throws ArgumentError Spherical(T(1) * s, T(2) * s, T(3) * s)
   end
 
   @testset "Geographic" begin
