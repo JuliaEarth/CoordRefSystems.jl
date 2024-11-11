@@ -29,7 +29,8 @@ end
 Sinusoidal{Datum,Shift}(x::M, y::M) where {Datum,Shift,M<:Met} = Sinusoidal{Datum,Shift,float(M)}(x, y)
 Sinusoidal{Datum,Shift}(x::Met, y::Met) where {Datum,Shift} = Sinusoidal{Datum,Shift}(promote(x, y)...)
 Sinusoidal{Datum,Shift}(x::Len, y::Len) where {Datum,Shift} = Sinusoidal{Datum,Shift}(uconvert(m, x), uconvert(m, y))
-Sinusoidal{Datum,Shift}(x::Number, y::Number) where {Datum,Shift} = Sinusoidal{Datum,Shift}(addunit(x, m), addunit(y, m))
+Sinusoidal{Datum,Shift}(x::Number, y::Number) where {Datum,Shift} =
+  Sinusoidal{Datum,Shift}(addunit(x, m), addunit(y, m))
 
 Sinusoidal{Datum}(args...) where {Datum} = Sinusoidal{Datum,Shift()}(args...)
 
