@@ -47,7 +47,7 @@
       end
 
       # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted by numerical problems
+      # cannot be accurately inverted due to numerical issues
       atol = T(0.5) * °
       for lon in T.(-180:180)
         c1 = LatLon(T(0), lon)
@@ -69,7 +69,7 @@
       end
 
       # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted by numerical problems
+      # cannot be accurately inverted due to numerical issues
       atol = T(0.5) * °
       for lon in T.(-180:180)
         c1 = LatLon(T(0), lon)
