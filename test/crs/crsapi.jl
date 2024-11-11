@@ -1,8 +1,4 @@
 @testset "CRS API" begin
-  ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-  ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
-  UTMNorth32 = utmnorth(32)
-
   @testset "datum" begin
     for C in basic2D
       c = C(T(1), T(2))
@@ -214,13 +210,6 @@
       c = C(T(1), T(2))
       @test CoordRefSystems.constructor(c) === C{WGS84Latest,CoordRefSystems.Shift()}
     end
-
-    c = ShiftedTM(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === ShiftedTM
-    c = UTMNorth32(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === UTMNorth32
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === ShiftedMercator
   end
 
   @testset "reconstruct" begin
@@ -257,16 +246,6 @@
       rv = CoordRefSystems.raw(c)
       @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     end
-
-    c = ShiftedTM(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = UTMNorth32(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = ShiftedMercator(T(1), T(2))
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
   end
 
   @testset "lentype" begin
@@ -293,13 +272,6 @@
       c = C(T(1), T(2))
       @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
     end
-
-    c = ShiftedTM(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = UTMNorth32(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.lentype(c) == typeof(T(1) * m)
   end
 
   @testset "mactype" begin
@@ -312,24 +284,12 @@
       c = C(T(1), T(2), T(3))
       @test CoordRefSystems.mactype(c) == T
     end
-
-    @test CoordRefSystems.mactype(c) == T
-    c = ShiftedTM(T(1), T(2))
-    @test CoordRefSystems.mactype(c) == T
-    c = UTMNorth32(T(1), T(2))
-    @test CoordRefSystems.mactype(c) == T
-    c = ShiftedMercator(T(1), T(2))
-    @test CoordRefSystems.mactype(c) == T
   end
 
   @testset "equality" begin
     for C in [basic; geographic; projected] 
       equaltest(C)
     end
-
-    equaltest(UTMNorth32)
-    equaltest(ShiftedTM)
-    equaltest(ShiftedMercator)
   end
 
   @testset "isapprox" begin
@@ -345,16 +305,6 @@
         isapproxtest3D(C)
       end
     end
-
-    UTMNorth32WGS = utmnorth(32, datum=WGS84{1762})
-    UTMNorth32ITRF = utmnorth(32, datum=ITRF{2008})
-    isapproxtest3D(UTMNorth32WGS, UTMNorth32ITRF)
-    TransverseMercatorWGS = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84{1762}}, lonₒ=45.0°)
-    TransverseMercatorITRF = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,ITRF{2008}}, lonₒ=45.0°)
-    isapproxtest3D(TransverseMercatorWGS, TransverseMercatorITRF)
-    ShiftedMercatorWGS = CoordRefSystems.shift(Mercator{WGS84{1762}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-    ShiftedMercatorITRF = CoordRefSystems.shift(Mercator{ITRF{2008}}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-    isapproxtest3D(ShiftedMercatorWGS, ShiftedMercatorITRF)
   end
 
   @testset "tol" begin

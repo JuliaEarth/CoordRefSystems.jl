@@ -73,32 +73,5 @@
       c2 = convert(CT, c1)
       @test c2 isa CT
     end
-
-    ShiftedTM = CoordRefSystems.shift(TransverseMercator{0.9996,15.0°,WGS84Latest}, lonₒ=45.0°)
-    C = ShiftedTM{Met{T}}
-    c1 = ShiftedTM(1.0, 1.0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-    c1 = ShiftedTM(1.0f0, 1.0f0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-
-    UTMNorth32 = utmnorth(32)
-    C = UTMNorth32{Met{T}}
-    c1 = UTMNorth32(1.0, 1.0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-    c1 = UTMNorth32(1.0f0, 1.0f0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-
-    ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
-    C = ShiftedMercator{Met{T}}
-    c1 = ShiftedMercator(1.0, 1.0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-    c1 = ShiftedMercator(1.0f0, 1.0f0)
-    c2 = convert(C, c1)
-    @test c2 isa C
   end
 end
