@@ -120,8 +120,9 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 """
     isapprox(coords₁, coords₂; kwargs...)
 
-Checks whether the coordinates `coords₁` and `coords₂`
-are approximate using the `isapprox` function.
+Converts `coords₁` and `coords₂` to `Cartesian` coordinates and compare the coordinate
+values with the `isapprox` method of vectors. The conversion to `Cartesian` coordinates
+takes care of possibly different `Datum`.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
