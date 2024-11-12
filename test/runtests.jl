@@ -10,6 +10,28 @@ using Unitful: m, mm, cm, km, rad, °, s
 
 include("testutils.jl")
 
+basic2D = [Cartesian2D, Polar]
+basic3D = [Cartesian3D, Cylindrical, Spherical]
+basic = [basic2D; basic3D]
+geographic2D = [LatLon, GeocentricLatLon, AuthalicLatLon]
+geographic3D = [LatLonAlt, GeocentricLatLonAlt]
+geographic = [geographic2D; geographic3D]
+projected = [
+  Mercator,
+  WebMercator,
+  PlateCarree,
+  Lambert,
+  Behrmann,
+  GallPeters,
+  WinkelTripel,
+  Robinson,
+  OrthoNorth,
+  OrthoSouth,
+  TransverseMercator{0.9996,0.0°},
+  Albers{23.0°,29.5°,45.0°},
+  Sinusoidal
+]
+
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "promotion.jl", "strings.jl", "get.jl", "misc.jl"]
 
 # --------------------------------

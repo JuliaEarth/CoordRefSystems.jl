@@ -19,45 +19,52 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
 
 isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
-function isapproxtest2D(CRS)
-  c1 = convert(CRS, Cartesian{WGS84{1762}}(T(1), T(1)))
+function isapproxtest2D(CRS; datum=WGS84{1762})
+  c1 = convert(CRS, Cartesian{datum}(T(1), T(2)))
 
   τ = CoordRefSystems.atol(Float64) * m
-  c2 = convert(CRS, Cartesian{WGS84{1762}}(1m + τ, 1m))
-  c3 = convert(CRS, Cartesian{WGS84{1762}}(1m, 1m + τ))
+  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
+  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 
   τ = CoordRefSystems.atol(Float32) * m
-  c2 = convert(CRS, Cartesian{WGS84{1762}}(1m + τ, 1m))
-  c3 = convert(CRS, Cartesian{WGS84{1762}}(1m, 1m + τ))
+  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
+  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 end
 
-isapproxtest3D(CRS) = isapproxtest3D(CRS{WGS84{1762}}, CRS{ITRF{2008}})
+function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
+  c = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
+  cart = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, c) : convert(Cartesian, c)
+  u = CoordRefSystems.lentype(cart) |> unit
 
-function isapproxtest3D(CRS1, CRS2)
-  c1 = convert(CRS1, Cartesian{WGS84{1762}}(T(3.2e6), T(3.2e6), T(4.5e6)))
+  c1 = convert(CRS, Cartesian{datum1}(cart.x, cart.y, cart.z))
 
-  τ = CoordRefSystems.atol(Float64) * m
-  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m + τ, 3.2e6m, 4.5e6m))
-  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m, 3.2e6m + τ, 4.5e6m))
-  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2e6m, 3.2e6m, 4.5e6m + τ))
+  τ = CoordRefSystems.atol(Float64) * u
+  x = Float64(ustrip(cart.x)) * u
+  y = Float64(ustrip(cart.y)) * u
+  z = Float64(ustrip(cart.z)) * u
+  c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
+  c3 = convert(CRS, Cartesian{datum1}(x, y + τ, z))
+  c4 = convert(CRS, Cartesian{datum1}(x, y, z + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
 
-  τ = CoordRefSystems.atol(Float32) * m
-  c2 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m + τ, 3.2f6m, 4.5f6m))
-  c3 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m, 3.2f6m + τ, 4.5f6m))
-  c4 = convert(CRS1, Cartesian{WGS84{1762}}(3.2f6m, 3.2f6m, 4.5f6m + τ))
+  τ = CoordRefSystems.atol(Float32) * u
+  x = Float32(ustrip(cart.x)) * u
+  y = Float32(ustrip(cart.y)) * u
+  z = Float32(ustrip(cart.z)) * u
+  c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
+  c3 = convert(CRS, Cartesian{datum1}(x, y + τ, z))
+  c4 = convert(CRS, Cartesian{datum1}(x, y, z + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
 
-  c1 = convert(CRS2, Cartesian{ITRF{2008}}(T(3.2e6), T(3.2e6), T(4.5e6)))
-  c2 = convert(CRS1, Cartesian{WGS84{1762}}(T(3.2e6), T(3.2e6), T(4.5e6)))
+  c2 = convert(CRS, Cartesian{datum2}(cart.x, cart.y, cart.z))
   @test c1 ≈ c2
 end
 
