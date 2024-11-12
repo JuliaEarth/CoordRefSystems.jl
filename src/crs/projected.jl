@@ -81,6 +81,7 @@ function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
   inbounds(C, ustrip(deg2rad(lon - lonₒ)), ustrip(deg2rad(lat)))
 end
 
+# convert to Cartesian3D through a common LatLon
 Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
   isapprox(convert(Cartesian3D, coords₁), convert(Cartesian3D, coords₂); kwargs...)
 
