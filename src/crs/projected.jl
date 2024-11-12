@@ -82,11 +82,8 @@ function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
 end
 
 # convert to Cartesian3D through a common LatLon
-Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
+Base.isapprox(coords₁::Projected, coords₂::Projected; kwargs...) =
   isapprox(convert(Cartesian3D, coords₁), convert(Cartesian3D, coords₂); kwargs...)
-
-Base.isapprox(coords₁::Projected{Datum₁}, coords₂::Projected{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
-  isapprox(convert(Cartesian{Datum₁,3}, coords₁), convert(Cartesian{Datum₂,3}, coords₂); kwargs...)
 
 function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   try
