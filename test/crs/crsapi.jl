@@ -167,7 +167,7 @@
     @test CoordRefSystems.units(c) == (cm, rad, cm)
     c = Spherical(T(1) * mm, T(1) * rad, T(1) * rad)
     @test CoordRefSystems.units(c) == (mm, rad, rad)
-    
+
     for C in geographic2D
       c = C(T(30), T(60))
       @test CoordRefSystems.units(c) == (°, °)
@@ -287,7 +287,7 @@
   end
 
   @testset "equality" begin
-    for C in [basic; geographic; projected] 
+    for C in [basic; geographic; projected]
       equaltest(C)
     end
   end
@@ -298,7 +298,7 @@
     isapproxtest2D(Polar)
     isapproxtest3D(Cylindrical)
     isapproxtest3D(Spherical)
-    
+
     for C in [geographic; projected]
       # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
       if !(C <: AuthalicLatLon)
