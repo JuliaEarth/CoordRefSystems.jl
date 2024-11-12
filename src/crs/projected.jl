@@ -85,6 +85,12 @@ end
 Base.isapprox(coords₁::Projected, coords₂::Projected; kwargs...) =
   isapprox(convert(Cartesian3D, coords₁), convert(Cartesian3D, coords₂); kwargs...)
 
+Base.isapprox(coords₁::Projected, coords₂::CRS; kwargs...) =
+  isapprox(convert(Cartesian3D, coords₁), convert(Cartesian, coords₂); kwargs...)
+
+Base.isapprox(coords₁::CRS, coords₂::Projected; kwargs...) =
+  isapprox(convert(Cartesian, coords₁), convert(Cartesian3D, coords₂); kwargs...)
+
 function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   try
     convert(C, rand(rng, LatLon))
