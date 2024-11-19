@@ -2,8 +2,7 @@
   <img src="logo/logo-text.svg" height="200">
 </p>
 
-[![Build Status](https://github.com/JuliaEarth/CoordRefSystems.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaEarth/CoordRefSystems.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/JuliaEarth/CoordRefSystems.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaEarth/CoordRefSystems.jl)
+[![][build-img]][build-url] [![][codecov-img]][codecov-url]
 
 CoordRefSystems.jl provides conversions between Coordinate Reference Systems (CRS) in native Julia.
 It was designed to work with units from [Unitful.jl](https://github.com/PainterQubits/Unitful.jl),
@@ -220,3 +219,9 @@ Most implementations in this package are adaptations from
 and its [list of references](https://proj.org/en/9.3/zreferences.html).
 Our tests were designed to match their results to the last digit
 via the [Proj.jl](https://github.com/JuliaGeo/Proj.jl) wrapper.
+
+[build-img]: https://img.shields.io/github/actions/workflow/status/JuliaEarth/CoordRefSystems.jl/CI.yml?branch=main&style=flat-square
+[build-url]: https://github.com/JuliaEarth/CoordRefSystems.jl/actions
+
+[codecov-img]: https://img.shields.io/codecov/c/github/JuliaEarth/CoordRefSystems.jl?style=flat-square
+[codecov-url]: https://codecov.io/gh/JuliaEarth/CoordRefSystems.jl
