@@ -58,6 +58,7 @@ end
 # ----------------
 
 @crscode EPSG{2157} shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
+@crscode EPSG{3310} shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m)
 @crscode EPSG{3395} Mercator{WGS84Latest}
 @crscode EPSG{3857} WebMercator{WGS84Latest}
 @crscode EPSG{4208} LatLon{Aratu}

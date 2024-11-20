@@ -5,6 +5,7 @@
     CoordRefSystems.shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
   )
   gettest(EPSG{3395}, Mercator{WGS84Latest})
+  gettest(EPSG{3310}, CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m))
   gettest(EPSG{3857}, WebMercator{WGS84Latest})
   gettest(EPSG{4208}, LatLon{Aratu})
   gettest(EPSG{4269}, LatLon{NAD83})
