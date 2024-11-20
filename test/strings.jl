@@ -1,5 +1,6 @@
 @testset "CRS strings" begin
   crsstringtest(EPSG{2157})
+  crsstringtest(EPSG{3310})
   crsstringtest(EPSG{3395})
   crsstringtest(EPSG{3857})
   crsstringtest(EPSG{4269})
