@@ -40,6 +40,8 @@ lentype(::Type{<:EqualAreaCylindrical{latₜₛ,Datum,Shift,M}}) where {latₜ�
   coords₂::EqualAreaCylindrical{latₜₛ,Datum,Shift}
 ) where {latₜₛ,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isequalarea(::Type{<:EqualAreaCylindrical}) = true
+
 """
     Lambert(x, y)
     Lambert{Datum}(x, y)

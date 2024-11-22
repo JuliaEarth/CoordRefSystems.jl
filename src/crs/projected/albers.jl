@@ -40,6 +40,8 @@ lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat�
   coords₂::Albers{latₒ,lat₁,lat₂,Datum,Shift}
 ) where {latₒ,lat₁,lat₂,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isequalarea(::Type{<:Albers}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

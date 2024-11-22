@@ -100,6 +100,10 @@ export
   Sinusoidal,
   datum,
   indomain,
+  isconformal,
+  isequalarea,
+  isequidistant,
+  iscompromise,
 
   # UTM
   utm,

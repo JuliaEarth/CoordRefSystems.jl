@@ -46,6 +46,8 @@ lentype(::Type{<:WebMercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 ==(coords₁::WebMercator{Datum,Shift}, coords₂::WebMercator{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+iscompromise(::Type{<:WebMercator}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

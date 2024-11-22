@@ -6,4 +6,5 @@
   include("crs/mactype.jl")
   include("crs/domains.jl")
   include("crs/rand.jl")
+  include("crs/traits.jl")
 end
