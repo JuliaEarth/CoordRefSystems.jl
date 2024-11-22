@@ -40,6 +40,8 @@ lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,Shift,M}}) where {latₜ
   coords₂::EquidistantCylindrical{latₜₛ,Datum,Shift}
 ) where {latₜₛ,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isequidistant(::Type{<:EquidistantCylindrical}) = true
+
 """
     PlateCarree(x, y)
     PlateCarree{Datum}(x, y)

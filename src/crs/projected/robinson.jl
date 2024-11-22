@@ -45,6 +45,8 @@ lentype(::Type{<:Robinson{Datum,Shift,M}}) where {Datum,Shift,M} = M
 ==(coords₁::Robinson{Datum,Shift}, coords₂::Robinson{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+iscompromise(::Type{<:Robinson}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

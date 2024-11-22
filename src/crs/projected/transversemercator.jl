@@ -40,6 +40,8 @@ lentype(::Type{<:TransverseMercator{k₀,latₒ,Datum,Shift,M}}) where {k₀,lat
   coords₂::TransverseMercator{k₀,latₒ,Datum,Shift}
 ) where {k₀,latₒ,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isconformal(::Type{<:TransverseMercator}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

@@ -99,6 +99,35 @@ function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   end
 end
 
+"""
+    isconformal(CRS::Type{<:Projected})
+
+Tells whether or not the projected `CRS` preserves angles.
+"""
+isconformal(CRS::Type{<:Projected}) = false
+
+"""
+    isequalarea(CRS::Type{<:Projected})
+
+Tells whether or not the projected `CRS` preserves area.
+"""
+isequalarea(CRS::Type{<:Projected}) = false
+
+"""
+    isequidistant(CRS::Type{<:Projected})
+
+Tells whether or not the projected `CRS` preserves distance.
+"""
+isequidistant(CRS::Type{<:Projected}) = false
+
+"""
+    iscompromise(CRS::Type{<:Projected})
+
+Tells whether or not the projected `CRS` is a compromise
+of angle, area and distance distortion.
+"""
+iscompromise(CRS::Type{<:Projected}) = false
+
 # -----------
 # IO METHODS
 # -----------

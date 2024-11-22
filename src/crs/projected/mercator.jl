@@ -45,6 +45,8 @@ lentype(::Type{<:Mercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 ==(coords₁::Mercator{Datum,Shift}, coords₂::Mercator{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isconformal(::Type{<:Mercator}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

@@ -46,6 +46,9 @@ lentype(::Type{<:Sinusoidal{Datum,Shift,M}}) where {Datum,Shift,M} = M
 ==(coords₁::Sinusoidal{Datum,Shift}, coords₂::Sinusoidal{Datum,Shift}) where {Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isequalarea(::Type{<:Sinusoidal}) = true
+isequidistant(::Type{<:Sinusoidal}) = true
+
 # ------------
 # CONVERSIONS
 # ------------

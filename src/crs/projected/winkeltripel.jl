@@ -33,6 +33,8 @@ lentype(::Type{<:Winkel{lat₁,Datum,Shift,M}}) where {lat₁,Datum,Shift,M} = M
 ==(coords₁::Winkel{lat₁,Datum,Shift}, coords₂::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift} =
   coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+iscompromise(::Type{<:Winkel}) = true
+
 """
     WinkelTripel(x, y)
     WinkelTripel{Datum}(x, y)
