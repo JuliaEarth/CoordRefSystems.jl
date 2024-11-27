@@ -59,6 +59,7 @@ include("transforms/utils.jl")
 include("transforms/identity.jl")
 include("transforms/geoctranslation.jl")
 include("transforms/helmert.jl")
+include("transforms/timedephelmert.jl")
 include("transforms/sequential.jl")
 
 # ----------------

@@ -3,28 +3,32 @@
 # ------------------------------------------------------------------
 
 """
-    Sequential(transforms...)
+    @sequential(Datum₁, Datum₂, ..., Datumₙ)
 
-Apply the `transforms` sequentially.
+Create a Sequential transform using the intermediate transforms
+between `Datum₁`, `Datum₂`, ..., `Datumₙ`.
+
+See also [`Sequential`](@ref).
 """
-struct Sequential{T<:Tuple} <: Transform
-  transforms::T
-end
-
-Sequential(transforms...) = Sequential(transforms)
-
-function apply(transform::Sequential, x)
-  x′ = x
-  for t in transform.transforms
-    x′ = apply(t, x′)
+macro sequential(Datums...)
+  function bodyexpr(datums)
+    init = :(convert(Cartesian{$(datums[2])}, coords))
+    foldl(3:length(datums); init) do acc, i
+      :(convert(Cartesian{$(datums[i])}, $acc))
+    end
   end
-  x′
-end
 
-function apply(transform::Reverse{<:Sequential}, x)
-  x′ = x
-  for t in reverse(transform.transforms)
-    x′ = apply(revert(t), x′)
+  fwdbody = bodyexpr(Datums)
+  bwdbody = bodyexpr(reverse(Datums))
+
+  Datumₛ = first(Datums)
+  Datumₜ = last(Datums)
+
+  expr = quote
+    Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) = $fwdbody
+
+    Base.convert(::Type{Cartesian{Datumₛ}}, coords::Cartesian{Datumₜ,3}) = $bwdbody
   end
-  x′
+
+  esc(expr)
 end
