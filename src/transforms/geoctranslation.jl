@@ -22,7 +22,7 @@ macro geoctranslation(Datumₛ, Datumₜ, params)
     function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       xyz = SVector(coords.x, coords.y, coords.z)
       xyz′ = geoctranslationbwd(xyz; $params...)
-      Cartesian{Dₜ}(xyz′...)
+      Cartesian{Dₛ}(xyz′...)
     end
   end
   esc(expr)
