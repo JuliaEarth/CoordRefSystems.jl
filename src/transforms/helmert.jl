@@ -36,18 +36,18 @@ macro helmert(Datumₛ, Datumₜ, params)
   esc(expr)
 end
 
-function helmertfwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
-  T = numtype(eltype(x))
+function helmertfwd(xyz; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+  T = numtype(eltype(xyz))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
   R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)
   S = T(s) * u"ppm"
-  (1 + S) * R * x + δ
+  (1 + S) * R * xyz + δ
 end
 
-function helmertbwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
-  T = numtype(eltype(x))
+function helmertbwd(xyz; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+  T = numtype(eltype(xyz))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
   R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)
   S = T(s) * u"ppm"
-  (1 / (1 + S)) * inv(R) * (x - δ)
+  (1 / (1 + S)) * inv(R) * (xyz - δ)
 end

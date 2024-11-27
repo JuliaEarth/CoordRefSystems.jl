@@ -28,10 +28,10 @@ macro geoctranslation(Datumₛ, Datumₜ, params)
   esc(expr)
 end
 
-function geoctranslationfwd(x; δx=0.0, δy=0.0, δz=0.0)
-  T = numtype(eltype(x))
+function geoctranslationfwd(xyz; δx=0.0, δy=0.0, δz=0.0)
+  T = numtype(eltype(xyz))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
-  x + δ
+  xyz + δ
 end
 
-geoctranslationbwd(x; δx=0.0, δy=0.0, δz=0.0) = geoctranslationfwd(x, δx=-δx, δy=-δy, δz=-δz)
+geoctranslationbwd(xyz; δx=0.0, δy=0.0, δz=0.0) = geoctranslationfwd(xyz, δx=-δx, δy=-δy, δz=-δz)

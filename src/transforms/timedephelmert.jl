@@ -50,7 +50,7 @@ function timedephelmertgeneric(
   helmert,
   Datumₛ,
   Datumₜ,
-  x;
+  xyz;
   δx=0.0,
   δy=0.0,
   δz=0.0,
@@ -69,7 +69,7 @@ function timedephelmertgeneric(
 )
   dt = epoch(Datumₛ) - tᵣ
   helmert(
-    x,
+    xyz,
     δx=δx + dδx * dt,
     δy=δy + dδy * dt,
     δz=δz + dδz * dt,
