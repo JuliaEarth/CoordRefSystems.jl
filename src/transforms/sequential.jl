@@ -3,12 +3,10 @@
 # ------------------------------------------------------------------
 
 """
-    @sequential(Datum₁, Datum₂, ..., Datumₙ)
+    @sequential(Datumₛ, Datum₁, ..., Datumₙ, Datumₜ)
 
-Create a Sequential transform using the intermediate transforms
-between `Datum₁`, `Datum₂`, ..., `Datumₙ`.
-
-See also [`Sequential`](@ref).
+Create a sequential transform that converts source `Datumₛ` to target `Datumₜ` 
+using the intermediate transforms between `Datumₛ`, `Datum₁`, ..., `Datumₙ`, `Datumₜ`.
 """
 macro sequential(Datums...)
   function bodyexpr(datums)
@@ -25,9 +23,9 @@ macro sequential(Datums...)
   Datumₜ = last(Datums)
 
   expr = quote
-    Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) = $fwdbody
+    Base.convert(::Type{Cartesian{$Datumₜ}}, coords::Cartesian{$Datumₛ,3}) = $fwdbody
 
-    Base.convert(::Type{Cartesian{Datumₛ}}, coords::Cartesian{Datumₜ,3}) = $bwdbody
+    Base.convert(::Type{Cartesian{$Datumₛ}}, coords::Cartesian{$Datumₜ,3}) = $bwdbody
   end
 
   esc(expr)

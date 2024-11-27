@@ -13,21 +13,27 @@ rotation rates `dθx, dθy, dθz` in arc seconds per year
 scale rate `ds` in ppm (parts per million) per year,
 and reference epoch `tᵣ` in decimalyears.
 
-See also [`HelmertTransform`](@ref).
+See also [`@helmerttransform`](@ref).
 
 ## References
 
 * Section 4.3.5 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
+
+### Notes
+
+* The convention used for rotation is the Position Vector. 
+  To set rotation parameters that use the Coordinate Frame convention,
+  simply invert the sign of the parameters.
 """
 macro timedephelmert(Datumₛ, Datumₜ, params)
   expr = quote
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:Datumₜ}
+    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
       x′ = timedephelmertfwd(Dₛ, Dₜ, x; $params...)
       Cartesian{Dₜ,3}(Tuple(x′))
     end
 
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:Datumₛ}
+    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:$Datumₛ}
       x = SVector(values(coords))
       x′ = timedephelmertbwd(Dₛ, Dₜ, x; $params...)
       Cartesian{Dₜ,3}(Tuple(x′))

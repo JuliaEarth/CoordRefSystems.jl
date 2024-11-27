@@ -13,13 +13,13 @@ Geocentric translation with parameters `δx, δy, δz` in meters.
 """
 macro geocentrictranslation(Datumₛ, Datumₜ, params)
   expr = quote
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:Datumₜ}
+    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
       x′ = geocentrictranslationfwd(x; $params...)
       Cartesian{Dₜ,3}(Tuple(x′))
     end
 
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:Datumₛ}
+    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:$Datumₛ}
       x = SVector(values(coords))
       x′ = geocentrictranslationbwd(x; $params...)
       Cartesian{Dₜ,3}(Tuple(x′))
