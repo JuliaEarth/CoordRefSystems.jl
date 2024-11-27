@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------
 
 """
-    @helmerttransform Datumₛ Datumₜ (δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+    @helmert Datumₛ Datumₜ (δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
 
 Helmert transform with translation parameters `δx, δy, δz` in meters, 
 rotation parameters `θx, θy, θz` in arc seconds,
@@ -19,24 +19,24 @@ and scale parameter `s` in ppm (parts per million).
   To set rotation parameters that use the Coordinate Frame convention,
   simply invert the sign of the parameters.
 """
-macro helmerttransform(Datumₛ, Datumₜ, params)
+macro helmert(Datumₛ, Datumₜ, params)
   expr = quote
     function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
-      x′ = helmerttransformfwd(x; $params...)
-      Cartesian{Dₜ,3}(Tuple(x′))
+      x′ = helmertfwd(x; $params...)
+      Cartesian{Dₜ}(Tuple(x′))
     end
 
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:$Datumₛ}
+    function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
-      x′ = helmerttransformbwd(x; $params...)
-      Cartesian{Dₜ,3}(Tuple(x′))
+      x′ = helmertbwd(x; $params...)
+      Cartesian{Dₛ}(Tuple(x′))
     end
   end
   esc(expr)
 end
 
-function helmerttransformfwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+function helmertfwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
   T = numtype(eltype(x))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
   R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)
@@ -44,7 +44,7 @@ function helmerttransformfwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz
   (1 + S) * R * x + δ
 end
 
-function helmerttransformbwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+function helmertbwd(x; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
   T = numtype(eltype(x))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
   R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)

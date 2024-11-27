@@ -13,7 +13,7 @@ rotation rates `dθx, dθy, dθz` in arc seconds per year
 scale rate `ds` in ppm (parts per million) per year,
 and reference epoch `tᵣ` in decimalyears.
 
-See also [`@helmerttransform`](@ref).
+See also [`@helmert`](@ref).
 
 ## References
 
@@ -30,23 +30,21 @@ macro timedephelmert(Datumₛ, Datumₜ, params)
     function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
       x′ = timedephelmertfwd(Dₛ, Dₜ, x; $params...)
-      Cartesian{Dₜ,3}(Tuple(x′))
+      Cartesian{Dₜ}(Tuple(x′))
     end
 
-    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₜ,Dₜ<:$Datumₛ}
+    function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
       x = SVector(values(coords))
       x′ = timedephelmertbwd(Dₛ, Dₜ, x; $params...)
-      Cartesian{Dₜ,3}(Tuple(x′))
+      Cartesian{Dₛ}(Tuple(x′))
     end
   end
   esc(expr)
 end
 
-timedephelmertfwd(Datumₛ, Datumₜ, x; kwargs...) =
-  timedephelmertgeneric(helmerttransformfwd, Datumₛ, Datumₜ, x; kwargs...)
+timedephelmertfwd(args...; kwargs...) = timedephelmertgeneric(helmertfwd, args...; kwargs...)
 
-timedephelmertbwd(Datumₛ, Datumₜ, x; kwargs...) =
-  timedephelmertgeneric(helmerttransformbwd, Datumₜ, Datumₛ, x; kwargs...)
+timedephelmertbwd(args...; kwargs...) = timedephelmertgeneric(helmertbwd, args...; kwargs...)
 
 function timedephelmertgeneric(
   helmert,
