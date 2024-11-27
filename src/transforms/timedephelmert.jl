@@ -42,11 +42,11 @@ macro timedephelmert(Datumₛ, Datumₜ, params)
   esc(expr)
 end
 
-timedephelmertfwd(args...; kwargs...) = timedephelmertgeneric(helmertfwd, args...; kwargs...)
+timedephelmertfwd(args...; kwargs...) = timedephelmertimpl(helmertfwd, args...; kwargs...)
 
-timedephelmertbwd(args...; kwargs...) = timedephelmertgeneric(helmertbwd, args...; kwargs...)
+timedephelmertbwd(args...; kwargs...) = timedephelmertimpl(helmertbwd, args...; kwargs...)
 
-function timedephelmertgeneric(
+function timedephelmertimpl(
   helmert,
   Datumₛ,
   Datumₜ,
