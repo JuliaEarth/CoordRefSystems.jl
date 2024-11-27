@@ -10,10 +10,10 @@ Identity transform.
 macro identity(Datumₛ, Datumₜ)
   expr = quote
     Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
-      Cartesian{Dₜ}(values(coords))
+      Cartesian{Dₜ}(coords.x, coords.y, coords.z)
 
     Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
-      Cartesian{Dₛ}(values(coords))
+      Cartesian{Dₛ}(coords.x, coords.y, coords.z)
   end
   esc(expr)
 end

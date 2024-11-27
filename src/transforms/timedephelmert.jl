@@ -28,15 +28,15 @@ See also [`@helmert`](@ref).
 macro timedephelmert(Datumₛ, Datumₜ, params)
   expr = quote
     function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = timedephelmertfwd(Dₛ, Dₜ, x; $params...)
-      Cartesian{Dₜ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = timedephelmertfwd(Dₛ, Dₜ, xyz; $params...)
+      Cartesian{Dₜ}(xyz′...)
     end
 
     function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = timedephelmertbwd(Dₛ, Dₜ, x; $params...)
-      Cartesian{Dₛ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = timedephelmertbwd(Dₛ, Dₜ, xyz; $params...)
+      Cartesian{Dₛ}(xyz′...)
     end
   end
   esc(expr)

@@ -22,15 +22,15 @@ and scale parameter `s` in ppm (parts per million).
 macro helmert(Datumₛ, Datumₜ, params)
   expr = quote
     function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = helmertfwd(x; $params...)
-      Cartesian{Dₜ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = helmertfwd(xyz; $params...)
+      Cartesian{Dₜ}(xyz′...)
     end
 
     function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = helmertbwd(x; $params...)
-      Cartesian{Dₛ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = helmertbwd(xyz; $params...)
+      Cartesian{Dₛ}(xyz′...)
     end
   end
   esc(expr)

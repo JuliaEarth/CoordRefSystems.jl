@@ -14,15 +14,15 @@ Geocentric translation with parameters `δx, δy, δz` in meters.
 macro geoctranslation(Datumₛ, Datumₜ, params)
   expr = quote
     function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = geoctranslationfwd(x; $params...)
-      Cartesian{Dₜ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = geoctranslationfwd(xyz; $params...)
+      Cartesian{Dₜ}(xyz′...)
     end
 
     function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
-      x = SVector(values(coords))
-      x′ = geoctranslationbwd(x; $params...)
-      Cartesian{Dₜ}(Tuple(x′))
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = geoctranslationbwd(xyz; $params...)
+      Cartesian{Dₜ}(xyz′...)
     end
   end
   esc(expr)
