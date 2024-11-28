@@ -5,7 +5,8 @@
 """
     @hgridshift Datumₛ Datumₜ
 
-TODO
+Horizontal Grid Shift transform that uses grid interpolation
+to calculate coordinate offsets.
 """
 macro hgridshift(Datumₛ, Datumₜ)
   expr = quote

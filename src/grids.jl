@@ -5,7 +5,7 @@
 """
     geotiff(Datumₛ, Datumₜ)
 
-TODO
+GeoTIFF file used in transforms that convert source `Datumₛ` to target `Datumₜ`.
 """
 function geotiff end
 
@@ -14,7 +14,8 @@ const INTERPOLATION = IdDict()
 """
     interpolation(Datumₛ, Datumₜ)
 
-TODO
+Linear interpolation of GeoTIFF grid that converts `Datumₛ` to `Datumₜ`.
+All of the GeoTIFF channels are combined into the interpolated grid as a vector.
 """
 function interpolation(Datumₛ, Datumₜ)
   if haskey(INTERPOLATION, (Datumₛ, Datumₜ))
