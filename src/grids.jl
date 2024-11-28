@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------
 
 """
-    gridfile(Datumₛ, Datumₜ)
+    geotiff(Datumₛ, Datumₜ)
 
 TODO
 """
-function gridfile end
+function geotiff end
 
-const INTERP_CACHE = IdDict()
+const INTERPOLATION = IdDict()
 
 """
     interpolation(Datumₛ, Datumₜ)
@@ -17,12 +17,13 @@ const INTERP_CACHE = IdDict()
 TODO
 """
 function interpolation(Datumₛ, Datumₜ)
-  if haskey(INTERP_CACHE, (Datumₛ, Datumₜ))
-    return INTERP_CACHE[(Datumₛ, Datumₜ)]
+  if haskey(INTERPOLATION, (Datumₛ, Datumₜ))
+    return INTERPOLATION[(Datumₛ, Datumₜ)]
   end
 
   # download geotiff from PROJ CDN
-  geotiff = downloadgrid(Datumₛ, Datumₜ)
+  file = download(Datumₛ, Datumₜ)
+  geotiff = GeoTIFF.load(file)
 
   # construct the interpolation grid
   N = GeoTIFF.nchannels(geotiff)
@@ -46,16 +47,16 @@ function interpolation(Datumₛ, Datumₜ)
   # create the interpolation
   interp = interpolate((lonrange, latrange), grid, Gridded(Linear()))
 
-  INTERP_CACHE[(Datumₛ, Datumₜ)] = interp
+  INTERPOLATION[(Datumₛ, Datumₜ)] = interp
 
   interp
 end
 
-function downloadgrid(Datumₛ, Datumₜ)
-  fname = gridfile(Datumₛ, Datumₜ)
+function download(Datumₛ, Datumₜ)
+  fname = geotiff(Datumₛ, Datumₜ)
   url = "https://cdn.proj.org/$fname"
 
-  file = try
+  try
     # if data is already on disk
     # we just return the path
     @datadep_str fname
@@ -69,14 +70,12 @@ function downloadgrid(Datumₛ, Datumₜ)
       throw(ErrorException("download failed due to internet and/or server issues"))
     end
   end
-
-  GeoTIFF.load(file)
 end
 
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
 
-gridfile(::Type{SAD69}, ::Type{SIRGAS2000}) = "br_ibge_SAD69_003.tif"
+geotiff(::Type{SAD69}, ::Type{SIRGAS2000}) = "br_ibge_SAD69_003.tif"
 
-gridfile(::Type{SAD96}, ::Type{SIRGAS2000}) = "br_ibge_SAD96_003.tif"
+geotiff(::Type{SAD96}, ::Type{SIRGAS2000}) = "br_ibge_SAD96_003.tif"
