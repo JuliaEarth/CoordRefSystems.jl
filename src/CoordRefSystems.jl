@@ -6,7 +6,7 @@ module CoordRefSystems
 
 using Unitful
 using Unitful: numtype
-using Unitful: m, rad, °
+using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
@@ -18,9 +18,9 @@ include("utils.jl")
 include("ioutils.jl")
 include("ellipsoids.jl")
 include("datums.jl")
-include("transforms.jl")
 include("modes.jl")
 include("crs.jl")
+include("transforms.jl")
 include("promotion.jl")
 include("utm.jl")
 include("shift.jl")

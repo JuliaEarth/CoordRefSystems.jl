@@ -3,12 +3,17 @@
 # ------------------------------------------------------------------
 
 """
-    Identity()
+    @identity Datumₛ Datumₜ
 
 Identity transform.
 """
-struct Identity <: Transform end
+macro identity(Datumₛ, Datumₜ)
+  expr = quote
+    Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
+      Cartesian{Dₜ}(coords.x, coords.y, coords.z)
 
-apply(::Identity, x) = x
-
-apply(::Reverse{<:Identity}, x) = x
+    Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
+      Cartesian{Dₛ}(coords.x, coords.y, coords.z)
+  end
+  esc(expr)
+end

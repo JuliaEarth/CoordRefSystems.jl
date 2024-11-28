@@ -3,40 +3,53 @@
 # ------------------------------------------------------------------
 
 """
-    HelmertTransform(; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+    @helmert Datumₛ Datumₜ (δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
 
 Helmert transform with translation parameters `δx, δy, δz` in meters, 
-rotation parameters `θx, θy, θz` in arc seconds, and scale parameter `s` in ppm (parts per million).
+rotation parameters `θx, θy, θz` in arc seconds,
+and scale parameter `s` in ppm (parts per million).
 
 ## References
 
 * Section 4.3.3 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
+
+### Notes
+
+* The convention used for rotation is the Position Vector. 
+  To set rotation parameters that use the Coordinate Frame convention,
+  simply invert the sign of the parameters.
 """
-struct HelmertTransform{T,R,S} <: Transform
-  δx::T
-  δy::T
-  δz::T
-  θx::R
-  θy::R
-  θz::R
-  s::S
+macro helmert(Datumₛ, Datumₜ, params)
+  expr = quote
+    function Base.convert(::Type{Cartesian{Dₜ}}, coords::Cartesian{Dₛ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = helmertfwd(xyz; $params...)
+      Cartesian{Dₜ}(xyz′...)
+    end
+
+    function Base.convert(::Type{Cartesian{Dₛ}}, coords::Cartesian{Dₜ,3}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ}
+      xyz = SVector(coords.x, coords.y, coords.z)
+      xyz′ = helmertbwd(xyz; $params...)
+      Cartesian{Dₛ}(xyz′...)
+    end
+  end
+  esc(expr)
 end
 
-HelmertTransform(; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0) =
-  HelmertTransform(δx * m, δy * m, δz * m, θx / 3600 * °, θy / 3600 * °, θz / 3600 * °, s * u"ppm")
-
-function apply(transform::HelmertTransform, x)
-  T = numtype(eltype(x))
-  δ = translation(T, transform)
-  R = rotation(T, transform)
-  s = numconvert(T, transform.s)
-  (1 + s) * R * x + δ
+function helmertfwd(xyz; kwargs...)
+  δ, R, S = helmertparams(xyz; kwargs...)
+  (1 + S) * R * xyz + δ
 end
 
-function apply(transform::Reverse{<:HelmertTransform}, x)
-  T = numtype(eltype(x))
-  δ = translation(T, transform)
-  R = rotation(T, transform)
-  s = numconvert(T, transform.s)
-  (1 / (1 + s)) * inv(R) * (x - δ)
+function helmertbwd(xyz; kwargs...)
+  δ, R, S = helmertparams(xyz; kwargs...)
+  (1 / (1 + S)) * inv(R) * (xyz - δ)
+end
+
+function helmertparams(xyz; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
+  T = numtype(eltype(xyz))
+  δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
+  R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)
+  S = T(s) * ppm
+  δ, R, S
 end

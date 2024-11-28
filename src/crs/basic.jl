@@ -354,18 +354,6 @@ Base.convert(::Type{Cartesian{Datum}}, (; r, θ, ϕ)::Spherical{Datum}) where {D
 Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
   Spherical{Datum}(hypot(x, y, z), atan(hypot(x, y), z) * rad, atanpos(y, x) * rad)
 
-# datum conversion
-function Base.convert(::Type{Cartesian{Datumₜ}}, coords::Cartesian{Datumₛ,3}) where {Datumₜ,Datumₛ}
-  x = SVector(_coords(coords))
-
-  x′ = apply(transform(Datumₛ, Datumₜ), x)
-
-  Cartesian{Datumₜ}(Tuple(x′))
-end
-
-# avoid converting coordinates with the same datum as the first argument
-Base.convert(::Type{Cartesian{Datum}}, coords::Cartesian{Datum,3}) where {Datum} = coords
-
 # ----------
 # FALLBACKS
 # ----------
