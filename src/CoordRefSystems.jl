@@ -5,11 +5,15 @@
 module CoordRefSystems
 
 using Unitful
+using GeoTIFF
 using Unitful: numtype
 using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using MappedArrays: mappedarray
+using Interpolations: interpolate, Gridded, Linear
+using DataDeps: @datadep_str, register, DataDep
 
 import Random
 import Base: ==
@@ -20,6 +24,7 @@ include("ellipsoids.jl")
 include("datums.jl")
 include("modes.jl")
 include("crs.jl")
+include("grids.jl")
 include("transforms.jl")
 include("promotion.jl")
 include("utm.jl")
