@@ -10,7 +10,7 @@ using Unitful: numtype
 using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
-using StaticArrays: SVector
+using StaticArrays: SVector, SA
 using MappedArrays: mappedarray
 using Interpolations: interpolate, Gridded, Linear
 using DataDeps: @datadep_str, register, DataDep
