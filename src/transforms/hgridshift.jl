@@ -20,9 +20,16 @@ macro hgridshift(Datumₛ, Datumₜ)
 end
 
 function hgridshiftfwd(Datumₛ, Datumₜ, (lat, lon))
+  latshift, lonshift = hgridshiftparams(Datumₛ, Datumₜ, (lat, lon))
+  lat + latshift, lon + lonshift
+end
+
+function hgridshiftparams(Datumₛ, Datumₜ, (lat, lon))
+  D = typeof(lon)
+  T = numtype(D)
   interp = interpolation(Datumₛ, Datumₜ)
   itp = interp(ustrip(lon), ustrip(lat))
-  latshift = itp[1] / 3600 * ° 
-  lonshift = itp[2] / 3600 * °
-  lat + latshift, lon + lonshift
+  latshift::D = T(itp[1]) / 3600 * °
+  lonshift::D = T(itp[2]) / 3600 * °
+  latshift, lonshift
 end
