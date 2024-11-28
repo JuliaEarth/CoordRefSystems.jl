@@ -5,7 +5,6 @@
 module CoordRefSystems
 
 using Unitful
-using GeoTIFF
 using Unitful: numtype
 using Unitful: m, rad, °, ppm
 using Zygote: gradient
@@ -15,6 +14,7 @@ using MappedArrays: mappedarray
 using Interpolations: interpolate, Gridded, Linear
 using DataDeps: @datadep_str, register, DataDep
 
+import GeoTIFF
 import Random
 import Base: ==
 
