@@ -18,6 +18,12 @@ using DataDeps: @datadep_str, register, DataDep
 import Random
 import Base: ==
 
+function __init__()
+  # make sure datasets are always downloaded
+  # without user interaction from DataDeps.jl
+  ENV["DATADEPS_ALWAYS_ACCEPT"] = true
+end
+
 include("utils.jl")
 include("ioutils.jl")
 include("ellipsoids.jl")

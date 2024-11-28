@@ -55,21 +55,25 @@ end
 function download(Datumₛ, Datumₜ)
   fname = geotiff(Datumₛ, Datumₜ)
   url = "https://cdn.proj.org/$fname"
+  ID = splitext(fname) |> first
 
-  try
+  dir = try
     # if data is already on disk
     # we just return the path
-    @datadep_str fname
+    @datadep_str ID
   catch
     # otherwise we register the data
     # and download using DataDeps.jl
     try
-      register(DataDep(fname, "Grid file provided by PROJ CDN", url, Any))
-      @datadep_str fname
+      register(DataDep(ID, "Grid file provided by PROJ CDN", url, Any))
+      @datadep_str ID
     catch
       throw(ErrorException("download failed due to internet and/or server issues"))
     end
   end
+
+  # file path
+  joinpath(dir, fname)
 end
 
 # ----------------
