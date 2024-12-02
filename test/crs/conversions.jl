@@ -875,11 +875,11 @@
       # SAD96 to SIRGAS2000
       c1 = LatLon{SAD96}(T(-15), T(-45))
       c2 = convert(LatLon{SIRGAS2000}, c1)
-      @test allapprox(c2, LatLon{SIRGAS2000}(T(-15.000444846039125), T(-45.00042459059841)))
+      @test allapprox(c2, LatLon{SIRGAS2000}(T(-15.000451566492272), T(-45.00042666174454)))
 
       c1 = LatLon{SAD96}(T(-10), T(-40))
       c2 = convert(LatLon{SIRGAS2000}, c1)
-      @test allapprox(c2, LatLon{SIRGAS2000}(T(-10.000495185715717), T(-40.00039491925015)))
+      @test allapprox(c2, LatLon{SIRGAS2000}(T(-10.000428915126209), T(-40.00037063898611)))
 
       # ITRF2008 to WGS84 (G2296)
       c1 = LatLon{ITRF{2008}}(T(30), T(40))

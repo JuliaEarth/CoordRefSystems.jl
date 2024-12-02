@@ -27,9 +27,9 @@ function interpolation(Datumₛ, Datumₜ)
   geotiff = GeoTIFF.load(file)
 
   # construct the interpolation grid
-  N = GeoTIFF.nchannels(geotiff)
   img = GeoTIFF.image(geotiff)
   grid = mappedarray(img) do color
+    N = GeoTIFF.nchannels(color)
     tup = ntuple(i -> GeoTIFF.channel(color, i), N)
     SVector(tup)
   end
@@ -38,12 +38,23 @@ function interpolation(Datumₛ, Datumₜ)
   m, n = size(grid)
   A, b = GeoTIFF.affineparams2D(GeoTIFF.metadata(geotiff))
   lon₀, lat₀ = muladd(A, SA[0, 0], b)
-  lonₘ, lat₀ = muladd(A, SA[m, 0], b)
-  lon₀, latₙ = muladd(A, SA[0, n], b)
-  lonₛ, lonₑ = lon₀ > lonₘ ? (lonₘ, lon₀) : (lon₀, lonₘ)
-  latₛ, latₑ = lat₀ > latₙ ? (latₙ, lat₀) : (lat₀, latₙ)
+  lonₘ, _ = muladd(A, SA[m, 0], b)
+  _, latₙ = muladd(A, SA[0, n], b)
+
+  swaplon = lon₀ > lonₘ
+  swaplat = lat₀ > latₙ
+  lonₛ, lonₑ = swaplon ? (lonₘ, lon₀) : (lon₀, lonₘ)
+  latₛ, latₑ = swaplat ? (latₙ, lat₀) : (lat₀, latₙ)
   lonrange = range(start=lonₛ, stop=lonₑ, length=m)
   latrange = range(start=latₛ, stop=latₑ, length=n)
+
+  if swaplon
+    grid = @view grid[m:-1:1, :]
+  end
+
+  if swaplat
+    grid = @view grid[:, n:-1:1]
+  end
 
   # create the interpolation
   interp = interpolate((lonrange, latrange), grid, Gridded(Linear()))
