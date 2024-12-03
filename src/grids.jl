@@ -49,6 +49,7 @@ function interpolator(Datumₛ, Datumₜ)
   lonrange = range(start=lonₛ, stop=lonₑ, length=m)
   latrange = range(start=latₛ, stop=latₑ, length=n)
 
+  # swaps the grid if the range is swapped
   if swaplon
     grid = @view grid[m:-1:1, :]
   end
