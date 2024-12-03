@@ -7,6 +7,7 @@ include("transforms/geoctranslation.jl")
 include("transforms/helmert.jl")
 include("transforms/timedephelmert.jl")
 include("transforms/sequential.jl")
+include("transforms/hgridshift.jl")
 
 # ----------------
 # IMPLEMENTATIONS
@@ -109,6 +110,9 @@ include("transforms/sequential.jl")
   dδz=1.8e-3,
   ds=-0.08e-3
 )
+
+# https://epsg.org/transformation_5529/SAD69-96-to-SIRGAS-2000-1.html
+@hgridshift SAD96 SIRGAS2000
 
 @sequential ITRF{2008} WGS84{1762} WGS84{2139} WGS84{2296}
 
