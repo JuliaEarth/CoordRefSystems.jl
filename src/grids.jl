@@ -24,7 +24,7 @@ function interpolator(Datumₛ, Datumₜ)
   end
 
   # download geotiff from PROJ CDN
-  file = download(Datumₛ, Datumₜ)
+  file = downloadgeotiff(Datumₛ, Datumₜ)
   geotiff = GeoTIFF.load(file)
 
   # construct the interpolation grid
@@ -65,7 +65,12 @@ function interpolator(Datumₛ, Datumₜ)
   interp
 end
 
-function download(Datumₛ, Datumₜ)
+"""
+    downloadgeotiff(Datumₛ, Datumₜ)
+
+Download the GeoTIFF file that converts `Datumₛ` to `Datumₜ` from PROJ CDN.
+"""
+function downloadgeotiff(Datumₛ, Datumₜ)
   fname = geotiff(Datumₛ, Datumₜ)
   url = "https://cdn.proj.org/$fname"
   ID = splitext(fname) |> first
