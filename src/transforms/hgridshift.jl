@@ -7,6 +7,10 @@
 
 Horizontal Grid Shift transform that uses grid interpolation
 to calculate coordinate offsets.
+
+## References
+
+* Section 4.4.6 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
 """
 macro hgridshift(Datumₛ, Datumₜ)
   expr = quote
@@ -25,11 +29,14 @@ function hgridshiftfwd(Datumₛ, Datumₜ, (lat, lon))
 end
 
 function hgridshiftparams(Datumₛ, Datumₜ, (lat, lon))
-  D = typeof(lon)
-  T = numtype(D)
+  T = numtype(lon)
   interp = interpolation(Datumₛ, Datumₜ)
   itp = interp(ustrip(lon), ustrip(lat))
-  latshift::D = T(itp[1]) / 3600 * °
-  lonshift::D = T(itp[2]) / 3600 * °
-  latshift, lonshift
+  # type assertion is necessary for type stability
+  latshift::T = T(itp[1])
+  lonshift::T = T(itp[2])
+  # convert arc seconds to degrees
+  latshift′ = latshift / 3600 * °
+  lonshift′ = lonshift / 3600 * °
+  latshift′, lonshift′
 end

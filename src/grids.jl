@@ -38,8 +38,7 @@ function interpolation(Datumₛ, Datumₜ)
   m, n = size(grid)
   A, b = GeoTIFF.affineparams2D(GeoTIFF.metadata(geotiff))
   lon₀, lat₀ = muladd(A, SA[0, 0], b)
-  lonₘ, _ = muladd(A, SA[m, 0], b)
-  _, latₙ = muladd(A, SA[0, n], b)
+  lonₘ, latₙ = muladd(A, SA[m, n], b)
 
   swaplon = lon₀ > lonₘ
   swaplat = lat₀ > latₙ

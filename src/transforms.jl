@@ -111,6 +111,7 @@ include("transforms/hgridshift.jl")
   ds=-0.08e-3
 )
 
+# https://epsg.org/transformation_5529/SAD69-96-to-SIRGAS-2000-1.html
 @hgridshift SAD96 SIRGAS2000
 
 @sequential ITRF{2008} WGS84{1762} WGS84{2139} WGS84{2296}
