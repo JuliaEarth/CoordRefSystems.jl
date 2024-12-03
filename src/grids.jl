@@ -42,19 +42,19 @@ function interpolator(Datumₛ, Datumₜ)
   lonₘ, latₙ = muladd(A, SA[m, n], b)
 
   # Interpolations.jl requires ordered ranges
-  swaplon = lon₀ > lonₘ
-  swaplat = lat₀ > latₙ
-  lonₛ, lonₑ = swaplon ? (lonₘ, lon₀) : (lon₀, lonₘ)
-  latₛ, latₑ = swaplat ? (latₙ, lat₀) : (lat₀, latₙ)
+  reverselon = lon₀ > lonₘ
+  reverselat = lat₀ > latₙ
+  lonₛ, lonₑ = reverselon ? (lonₘ, lon₀) : (lon₀, lonₘ)
+  latₛ, latₑ = reverselat ? (latₙ, lat₀) : (lat₀, latₙ)
   lonrange = range(start=lonₛ, stop=lonₑ, length=m)
   latrange = range(start=latₛ, stop=latₑ, length=n)
 
-  # swaps the grid if the range is swapped
-  if swaplon
+  # reverse dimensions if range is reversed
+  if reverselon
     grid = @view grid[m:-1:1, :]
   end
 
-  if swaplat
+  if reverselat
     grid = @view grid[:, n:-1:1]
   end
 
