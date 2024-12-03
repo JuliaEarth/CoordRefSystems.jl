@@ -9,7 +9,7 @@ GeoTIFF file used in transforms that convert source `Datumâ‚›` to target `Datumâ
 """
 function geotiff end
 
-# global interpolation cache to avoid interpolating the same grid twice
+# cache interpolator objects to avoid interpolating the same grid twice
 const INTERPOLATOR = IdDict()
 
 """
