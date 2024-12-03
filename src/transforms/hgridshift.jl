@@ -30,7 +30,7 @@ end
 
 function hgridshiftparams(Datumₛ, Datumₜ, (lat, lon))
   T = numtype(lon)
-  interp = interpolation(Datumₛ, Datumₜ)
+  interp = interpolator(Datumₛ, Datumₜ)
   itp = interp(ustrip(lon), ustrip(lat))
   # type assertion is necessary for type stability
   latshift::T = T(itp[1])

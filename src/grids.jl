@@ -9,15 +9,16 @@ GeoTIFF file used in transforms that convert source `Datumₛ` to target `Datum�
 """
 function geotiff end
 
+# global interpolation cache to avoid interpolating the same grid twice
 const INTERPOLATION = IdDict()
 
 """
-    interpolation(Datumₛ, Datumₜ)
+    interpolator(Datumₛ, Datumₜ)
 
 Linear interpolation of GeoTIFF grid that converts `Datumₛ` to `Datumₜ`.
 All of the GeoTIFF channels are combined into the interpolated grid as a vector.
 """
-function interpolation(Datumₛ, Datumₜ)
+function interpolator(Datumₛ, Datumₜ)
   if haskey(INTERPOLATION, (Datumₛ, Datumₜ))
     return INTERPOLATION[(Datumₛ, Datumₜ)]
   end
@@ -40,6 +41,7 @@ function interpolation(Datumₛ, Datumₜ)
   lon₀, lat₀ = muladd(A, SA[0, 0], b)
   lonₘ, latₙ = muladd(A, SA[m, n], b)
 
+  # Interpolations.jl requires ordered ranges
   swaplon = lon₀ > lonₘ
   swaplat = lat₀ > latₙ
   lonₛ, lonₑ = swaplon ? (lonₘ, lon₀) : (lon₀, lonₘ)
