@@ -8,6 +8,7 @@
   gettest(EPSG{3310}, CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m))
   gettest(EPSG{3857}, WebMercator{WGS84Latest})
   gettest(EPSG{4208}, LatLon{Aratu})
+  gettest(EPSG{4267}, LatLon{NAD27})
   gettest(EPSG{4269}, LatLon{NAD83})
   gettest(EPSG{4326}, LatLon{WGS84Latest})
   gettest(EPSG{4618}, LatLon{SAD69})

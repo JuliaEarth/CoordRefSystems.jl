@@ -18,6 +18,7 @@ const esriid2code = Dict(
   "GCS_NAD83_CSRS_v6" => EPSG{8252},
   "GCS_NAD83_CSRS_v7" => EPSG{8255},
   "GCS_NAD83_CSRS_v8" => EPSG{10414},
+  "GCS_North_American_1927" => EPSG{4267},
   "GCS_North_American_1983" => EPSG{4269},
   "GCS_SAD_1969_96" => EPSG{5527},
   "GCS_SIRGAS_2000" => EPSG{4674},

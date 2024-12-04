@@ -62,6 +62,7 @@ end
 @crscode EPSG{3395} Mercator{WGS84Latest}
 @crscode EPSG{3857} WebMercator{WGS84Latest}
 @crscode EPSG{4208} LatLon{Aratu}
+@crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
