@@ -42,30 +42,14 @@
 
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
 
-  @test ellipsoid(NAD83CSRS) === CoordRefSystems.GRS80🌎
-
-  @test ellipsoid(NAD83CSRSv1) === CoordRefSystems.GRS80🌎
-
-  @test ellipsoid(NAD83CSRSv2) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv2) == 1997.0
-
-  @test ellipsoid(NAD83CSRSv3) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv3) == 1997.0
-
-  @test ellipsoid(NAD83CSRSv4) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv4) == 2002.0
-
-  @test ellipsoid(NAD83CSRSv5) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv5) == 2006.0
-
-  @test ellipsoid(NAD83CSRSv6) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv6) == 2010.0
-
-  @test ellipsoid(NAD83CSRSv7) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv7) == 2010.0
-
-  @test ellipsoid(NAD83CSRSv8) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRSv8) == 2010.0
+  @test ellipsoid(NAD83CSRSLatest) === CoordRefSystems.GRS80🌎
+  @test epoch(NAD83CSRS{2}) == 1997.0
+  @test epoch(NAD83CSRS{3}) == 1997.0
+  @test epoch(NAD83CSRS{4}) == 2002.0
+  @test epoch(NAD83CSRS{5}) == 2006.0
+  @test epoch(NAD83CSRS{6}) == 2010.0
+  @test epoch(NAD83CSRS{7}) == 2010.0
+  @test epoch(NAD83CSRS{8}) == 2010.0
 
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
 

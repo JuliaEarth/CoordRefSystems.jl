@@ -206,117 +206,30 @@ abstract type NAD83 <: Datum end
 ellipsoid(::Type{NAD83}) = GRS80🌎
 
 """
-    NAD83CSRS
+    NAD83CSRS{Version}
 
-NAD83 Canadian Spatial Reference System.
+North American Datum of 1983 (CSRS) version `Version`.
 
-See <https://epsg.org/datum_6140/NAD83-Canadian-Spatial-Reference-System.html>
+Currently, NAD83CSRS has the following versions: 1, 2, 3, 4, 5, 6, 7 and 8.
 """
-abstract type NAD83CSRS <: Datum end
-
-ellipsoid(::Type{NAD83CSRS}) = GRS80🌎
+abstract type NAD83CSRS{Version} <: Datum end
 
 """
-    NAD83CSRSv1
+    NAD83CSRSLatest
 
-North American Datum of 1983 (CSRS96).
-
-See <https://epsg.org/datum_1192/North-American-Datum-of-1983-CSRS96.html>
+Alias to the latest version of the [`NAD83CSRS`](@ref) CRS.
 """
-abstract type NAD83CSRSv1 <: Datum end
+const NAD83CSRSLatest = NAD83CSRS{8}
 
-ellipsoid(::Type{NAD83CSRSv1}) = GRS80🌎
+ellipsoid(::Type{<:NAD83CSRS}) = GRS80🌎
 
-"""
-    NAD83CSRSv2
-
-North American Datum of 1983 (CSRS) version 2.
-
-See <https://epsg.org/datum_1193/North-American-Datum-of-1983-CSRS-version-2.html>
-"""
-abstract type NAD83CSRSv2 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv2}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv2}) = 1997.0
-
-"""
-    NAD83CSRSv3
-
-North American Datum of 1983 (CSRS) version 3.
-
-See <https://epsg.org/datum_1194/North-American-Datum-of-1983-CSRS-version-3.html>
-"""
-abstract type NAD83CSRSv3 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv3}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv3}) = 1997.0
-
-"""
-    NAD83CSRSv4
-
-North American Datum of 1983 (CSRS) version 4.
-
-See <https://epsg.org/datum_1195/North-American-Datum-of-1983-CSRS-version-4.html>
-"""
-abstract type NAD83CSRSv4 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv4}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv4}) = 2002.0
-
-"""
-    NAD83CSRSv5
-
-North American Datum of 1983 (CSRS) version 5.
-
-See <https://epsg.org/datum_1196/North-American-Datum-of-1983-CSRS-version-5.html>
-"""
-abstract type NAD83CSRSv5 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv5}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv5}) = 2006.0
-
-"""
-    NAD83CSRSv6
-
-North American Datum of 1983 (CSRS) version 6.
-
-See <https://epsg.org/datum_1197/North-American-Datum-of-1983-CSRS-version-6.html>
-"""
-abstract type NAD83CSRSv6 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv6}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv6}) = 2010.0
-
-"""
-    NAD83CSRSv7
-
-North American Datum of 1983 (CSRS) version 7.
-
-See <https://epsg.org/datum_1198/North-American-Datum-of-1983-CSRS-version-7.html>
-"""
-abstract type NAD83CSRSv7 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv7}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv7}) = 2010.0
-
-"""
-    NAD83CSRSv8
-
-North American Datum of 1983 (CSRS) version 8.
-
-See <https://epsg.org/datum_1365/North-American-Datum-of-1983-CSRS-version-8.html>
-"""
-abstract type NAD83CSRSv8 <: Datum end
-
-ellipsoid(::Type{NAD83CSRSv8}) = GRS80🌎
-
-epoch(::Type{NAD83CSRSv8}) = 2010.0
+epoch(::Type{NAD83CSRS{2}}) = 1997.0
+epoch(::Type{NAD83CSRS{3}}) = 1997.0
+epoch(::Type{NAD83CSRS{4}}) = 2002.0
+epoch(::Type{NAD83CSRS{5}}) = 2006.0
+epoch(::Type{NAD83CSRS{6}}) = 2010.0
+epoch(::Type{NAD83CSRS{7}}) = 2010.0
+epoch(::Type{NAD83CSRS{8}}) = 2010.0
 
 """
     Nzgd49
