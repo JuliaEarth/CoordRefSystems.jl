@@ -56,6 +56,8 @@ export
   IRENET95,
   NAD27,
   NAD83,
+  NAD83CSRS,
+  NAD83CSRSLatest,
   NZGD1949,
   OSGB36,
   Potsdam,

@@ -219,6 +219,32 @@ abstract type NAD83 <: Datum end
 ellipsoid(::Type{NAD83}) = GRS80🌎
 
 """
+    NAD83CSRS{Version}
+
+North American Datum of 1983 (CSRS) version `Version`.
+
+Currently, NAD83CSRS has the following versions: 1, 2, 3, 4, 5, 6, 7 and 8.
+"""
+abstract type NAD83CSRS{Version} <: Datum end
+
+"""
+    NAD83CSRSLatest
+
+Alias to the latest version of the [`NAD83CSRS`](@ref) CRS.
+"""
+const NAD83CSRSLatest = NAD83CSRS{8}
+
+ellipsoid(::Type{<:NAD83CSRS}) = GRS80🌎
+
+epoch(::Type{NAD83CSRS{2}}) = 1997.0
+epoch(::Type{NAD83CSRS{3}}) = 1997.0
+epoch(::Type{NAD83CSRS{4}}) = 2002.0
+epoch(::Type{NAD83CSRS{5}}) = 2006.0
+epoch(::Type{NAD83CSRS{6}}) = 2010.0
+epoch(::Type{NAD83CSRS{7}}) = 2010.0
+epoch(::Type{NAD83CSRS{8}}) = 2010.0
+
+"""
     Nzgd49
 
 New Zealand Geodetic Datum 1949.

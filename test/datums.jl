@@ -44,6 +44,15 @@
 
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
 
+  @test ellipsoid(NAD83CSRSLatest) === CoordRefSystems.GRS80🌎
+  @test epoch(NAD83CSRS{2}) == 1997.0
+  @test epoch(NAD83CSRS{3}) == 1997.0
+  @test epoch(NAD83CSRS{4}) == 2002.0
+  @test epoch(NAD83CSRS{5}) == 2006.0
+  @test epoch(NAD83CSRS{6}) == 2010.0
+  @test epoch(NAD83CSRS{7}) == 2010.0
+  @test epoch(NAD83CSRS{8}) == 2010.0
+
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎

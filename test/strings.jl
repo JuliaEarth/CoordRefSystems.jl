@@ -10,6 +10,16 @@
   crsstringtest(EPSG{4674})
   crsstringtest(EPSG{4686})
   crsstringtest(EPSG{5527})
+  # TODO: check the generated strings for these codes
+  # the datum of the ESRI WKT1 string does not have the "D_" suffix
+  # crsstringtest(EPSG{8232})
+  # crsstringtest(EPSG{8237})
+  # crsstringtest(EPSG{8240})
+  # crsstringtest(EPSG{8246})
+  # crsstringtest(EPSG{8249})
+  # crsstringtest(EPSG{8252})
+  # crsstringtest(EPSG{8255})
+  # crsstringtest(EPSG{10414})
   crsstringtest(EPSG{32662})
   crsstringtest(EPSG{32633})
   crsstringtest(EPSG{25832})
