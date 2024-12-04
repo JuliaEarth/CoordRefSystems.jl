@@ -3,6 +3,7 @@
   crsstringtest(EPSG{3310})
   crsstringtest(EPSG{3395})
   crsstringtest(EPSG{3857})
+  crsstringtest(EPSG{4267})
   crsstringtest(EPSG{4269})
   crsstringtest(EPSG{4326})
   crsstringtest(EPSG{4618})

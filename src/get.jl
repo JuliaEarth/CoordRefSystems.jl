@@ -62,6 +62,7 @@ end
 @crscode EPSG{3395} Mercator{WGS84Latest}
 @crscode EPSG{3857} WebMercator{WGS84Latest}
 @crscode EPSG{4208} LatLon{Aratu}
+@crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)

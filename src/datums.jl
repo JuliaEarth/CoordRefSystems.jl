@@ -197,9 +197,22 @@ abstract type IRENET95 <: Datum end
 ellipsoid(::Type{IRENET95}) = GRS80🌎
 
 """
+    NAD27
+
+North American Datum 1927.
+
+See <https://epsg.org/datum_6267/North-American-Datum-1927.html>.
+"""
+abstract type NAD27 <: Datum end
+
+ellipsoid(::Type{NAD27}) = Clrk66🌎
+
+"""
     NAD83
 
 North American Datum 1983.
+
+See <https://epsg.org/datum_6269/North-American-Datum-1983.html>
 """
 abstract type NAD83 <: Datum end
 

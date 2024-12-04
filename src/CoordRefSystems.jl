@@ -54,6 +54,7 @@ export
   IGS20,
   Ire65,
   IRENET95,
+  NAD27,
   NAD83,
   NZGD1949,
   OSGB36,

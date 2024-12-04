@@ -10,6 +10,7 @@ const esriid2code = Dict(
   "ETRF2000-PL_CS92" => EPSG{2180},
   "ETRS_1989_UTM_Zone_32N" => EPSG{25832},
   "GCS_MAGNA" => EPSG{4686},
+  "GCS_North_American_1927" => EPSG{4267},
   "GCS_North_American_1983" => EPSG{4269},
   "GCS_SAD_1969_96" => EPSG{5527},
   "GCS_SIRGAS_2000" => EPSG{4674},
