@@ -22,11 +22,32 @@
   @test epoch(ITRF{2014}) == 2010.0
   @test epoch(ITRF{2020}) == 2015.0
 
+  @test ellipsoid(ETRFLatest) === CoordRefSystems.GRS80🌎
+  @test epoch(ETRF{1989}) == 1989.0
+  @test epoch(ETRF{1990}) == 1989.0
+  @test epoch(ETRF{1991}) == 1989.0
+  @test epoch(ETRF{1992}) == 1989.0
+  @test epoch(ETRF{1993}) == 1989.0
+  @test epoch(ETRF{1994}) == 1989.0
+  @test epoch(ETRF{1996}) == 1989.0
+  @test epoch(ETRF{1997}) == 1989.0
+  @test epoch(ETRF{2000}) == 1989.0
+  @test epoch(ETRF{2005}) == 2000.0
+  @test epoch(ETRF{2014}) == 2010.0
+  @test epoch(ETRF{2020}) == 2015.0
+
+  @test ellipsoid(NAD83CSRSLatest) === CoordRefSystems.GRS80🌎
+  @test epoch(NAD83CSRS{2}) == 1997.0
+  @test epoch(NAD83CSRS{3}) == 1997.0
+  @test epoch(NAD83CSRS{4}) == 2002.0
+  @test epoch(NAD83CSRS{5}) == 2006.0
+  @test epoch(NAD83CSRS{6}) == 2010.0
+  @test epoch(NAD83CSRS{7}) == 2010.0
+  @test epoch(NAD83CSRS{8}) == 2010.0
+
   @test ellipsoid(Aratu) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
-
-  @test ellipsoid(ETRS89) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
 
@@ -43,15 +64,6 @@
   @test ellipsoid(NAD27) === CoordRefSystems.Clrk66🌎
 
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
-
-  @test ellipsoid(NAD83CSRSLatest) === CoordRefSystems.GRS80🌎
-  @test epoch(NAD83CSRS{2}) == 1997.0
-  @test epoch(NAD83CSRS{3}) == 1997.0
-  @test epoch(NAD83CSRS{4}) == 2002.0
-  @test epoch(NAD83CSRS{5}) == 2006.0
-  @test epoch(NAD83CSRS{6}) == 2010.0
-  @test epoch(NAD83CSRS{7}) == 2010.0
-  @test epoch(NAD83CSRS{8}) == 2010.0
 
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
 

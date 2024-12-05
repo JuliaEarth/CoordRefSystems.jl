@@ -81,7 +81,7 @@ end
 @crscode EPSG{9988} Cartesian3D{ITRF{2020}}
 @crscode EPSG{10176} Cartesian3D{IGS20}
 @crscode EPSG{10414} LatLon{NAD83CSRS{8}}
-@crscode EPSG{25832} shift(TransverseMercator{0.9996,0.0°,ETRS89}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m)
+@crscode EPSG{25832} shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m)
 @crscode EPSG{27700} shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
 @crscode EPSG{29903} shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
