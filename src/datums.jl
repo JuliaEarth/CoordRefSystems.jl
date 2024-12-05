@@ -114,6 +114,66 @@ epoch(::Type{ITRF{2014}}) = 2010.0
 epoch(::Type{ITRF{2020}}) = 2015.0
 
 """
+    ETRF{Year}
+
+ETRF (European Terrestrial Reference Frame) datum with a given `Year`.
+Each ETRF is a realization of the European Terrestrial Reference System 89 (ETRS89) ensemble.
+Currently, ETRF has realizations in the following years:
+1989, 1990, 1991, 1992, 1993, 1994, 1996, 1997, 2000, 2005, 2014 and 2020.
+
+See <http://etrs89.ensg.ign.fr/>
+"""
+abstract type ETRF{Year} <: Datum end
+
+"""
+    ETRFLatest
+
+Alias to the latest realization of [`ETRF`](@ref) in the ETRS89 ensemble.
+"""
+const ETRFLatest = ETRF{2020}
+
+ellipsoid(::Type{<:ETRF}) = GRS80🌎
+
+epoch(::Type{ETRF{1989}}) = 1989.0
+epoch(::Type{ETRF{1990}}) = 1989.0
+epoch(::Type{ETRF{1991}}) = 1989.0
+epoch(::Type{ETRF{1992}}) = 1989.0
+epoch(::Type{ETRF{1993}}) = 1989.0
+epoch(::Type{ETRF{1994}}) = 1989.0
+epoch(::Type{ETRF{1996}}) = 1989.0
+epoch(::Type{ETRF{1997}}) = 1989.0
+epoch(::Type{ETRF{2000}}) = 1989.0
+epoch(::Type{ETRF{2005}}) = 2000.0
+epoch(::Type{ETRF{2014}}) = 2010.0
+epoch(::Type{ETRF{2020}}) = 2015.0
+
+"""
+    NAD83CSRS{Version}
+
+North American Datum of 1983 (CSRS) version `Version`.
+
+Currently, NAD83CSRS has the following versions: 1, 2, 3, 4, 5, 6, 7 and 8.
+"""
+abstract type NAD83CSRS{Version} <: Datum end
+
+"""
+    NAD83CSRSLatest
+
+Alias to the latest version of the [`NAD83CSRS`](@ref) datum.
+"""
+const NAD83CSRSLatest = NAD83CSRS{8}
+
+ellipsoid(::Type{<:NAD83CSRS}) = GRS80🌎
+
+epoch(::Type{NAD83CSRS{2}}) = 1997.0
+epoch(::Type{NAD83CSRS{3}}) = 1997.0
+epoch(::Type{NAD83CSRS{4}}) = 2002.0
+epoch(::Type{NAD83CSRS{5}}) = 2006.0
+epoch(::Type{NAD83CSRS{6}}) = 2010.0
+epoch(::Type{NAD83CSRS{7}}) = 2010.0
+epoch(::Type{NAD83CSRS{8}}) = 2010.0
+
+"""
     Aratu
 
 Aratu datum.
@@ -130,17 +190,6 @@ Carthage 1934 Tunisia datum.
 abstract type Carthage <: Datum end
 
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
-
-"""
-    ETRS89
-
-European Terrestrial Reference System 1989.
-
-See <https://epsg.org/datum_6258/European-Terrestrial-Reference-System-1989-ensemble.html>
-"""
-abstract type ETRS89 <: Datum end
-
-ellipsoid(::Type{ETRS89}) = GRS80🌎
 
 """
     GGRS87
@@ -217,32 +266,6 @@ See <https://epsg.org/datum_6269/North-American-Datum-1983.html>
 abstract type NAD83 <: Datum end
 
 ellipsoid(::Type{NAD83}) = GRS80🌎
-
-"""
-    NAD83CSRS{Version}
-
-North American Datum of 1983 (CSRS) version `Version`.
-
-Currently, NAD83CSRS has the following versions: 1, 2, 3, 4, 5, 6, 7 and 8.
-"""
-abstract type NAD83CSRS{Version} <: Datum end
-
-"""
-    NAD83CSRSLatest
-
-Alias to the latest version of the [`NAD83CSRS`](@ref) CRS.
-"""
-const NAD83CSRSLatest = NAD83CSRS{8}
-
-ellipsoid(::Type{<:NAD83CSRS}) = GRS80🌎
-
-epoch(::Type{NAD83CSRS{2}}) = 1997.0
-epoch(::Type{NAD83CSRS{3}}) = 1997.0
-epoch(::Type{NAD83CSRS{4}}) = 2002.0
-epoch(::Type{NAD83CSRS{5}}) = 2006.0
-epoch(::Type{NAD83CSRS{6}}) = 2010.0
-epoch(::Type{NAD83CSRS{7}}) = 2010.0
-epoch(::Type{NAD83CSRS{8}}) = 2010.0
 
 """
     Nzgd49
