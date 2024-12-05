@@ -312,7 +312,9 @@ ellipsoid(::Type{NZGD1949}) = Intl🌎
 """
     OSGB36
 
-Airy 1830 datum.
+Ordnance Survey of Great Britain 1936 datum.
+
+See <https://epsg.org/datum_6277/Ordnance-Survey-of-Great-Britain-1936.html>
 """
 abstract type OSGB36 <: Datum end
 

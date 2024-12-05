@@ -10,6 +10,7 @@
   gettest(EPSG{4208}, LatLon{Aratu})
   gettest(EPSG{4267}, LatLon{NAD27})
   gettest(EPSG{4269}, LatLon{NAD83})
+  gettest(EPSG{4277}, LatLon{OSGB36})
   gettest(EPSG{4326}, LatLon{WGS84Latest})
   gettest(EPSG{4618}, LatLon{SAD69})
   gettest(EPSG{4659}, LatLon{ISN93})

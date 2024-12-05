@@ -5,6 +5,7 @@
   crsstringtest(EPSG{3857})
   crsstringtest(EPSG{4267})
   crsstringtest(EPSG{4269})
+  crsstringtest(EPSG{4277})
   crsstringtest(EPSG{4326})
   crsstringtest(EPSG{4618})
   crsstringtest(EPSG{4659})
