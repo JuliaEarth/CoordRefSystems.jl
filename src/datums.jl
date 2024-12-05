@@ -132,6 +132,15 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
+    Datum73
+
+Datum 73 from Portugal.
+"""
+abstract type Datum73 <: Datum end
+
+ellipsoid(::Type{Datum73}) = Intl🌎
+
+"""
     ETRS89
 
 European Terrestrial Reference System 1989.
@@ -195,6 +204,28 @@ Ireland 1995 datum.
 abstract type IRENET95 <: Datum end
 
 ellipsoid(::Type{IRENET95}) = GRS80🌎
+
+"""
+    Lisbon1890
+
+Lisbon 1890 datum.
+
+See <https://epsg.org/datum_6666/Lisbon-1890.html>
+"""
+abstract type Lisbon1890 <: Datum end
+
+ellipsoid(::Type{Lisbon1890}) = Bessel🌎
+
+"""
+    Lisbon1937
+
+Lisbon 1937 datum.
+
+See <https://epsg.org/datum_6207/Lisbon-1937.html>
+"""
+abstract type Lisbon1937 <: Datum end
+
+ellipsoid(::Type{Lisbon1937}) = Intl🌎
 
 """
     NAD27
