@@ -40,6 +40,12 @@
 
   @test ellipsoid(IRENET95) === CoordRefSystems.GRS80🌎
 
+  @test ellipsoid(ISN93) === CoordRefSystems.GRS80🌎
+
+  @test ellipsoid(ISN2004) === CoordRefSystems.GRS80🌎
+
+  @test ellipsoid(ISN2016) === CoordRefSystems.GRS80🌎
+
   @test ellipsoid(NAD27) === CoordRefSystems.Clrk66🌎
 
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
