@@ -64,6 +64,7 @@ end
 @crscode EPSG{4208} LatLon{Aratu}
 @crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
+@crscode EPSG{4277} LatLon{OSGB36}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
