@@ -246,6 +246,39 @@ abstract type IRENET95 <: Datum end
 ellipsoid(::Type{IRENET95}) = GRS80🌎
 
 """
+    ISN93
+
+Islands Net 1993 datum.
+
+See <https://epsg.org/datum_6659/Islands-Net-1993.html>
+"""
+abstract type ISN93 <: Datum end
+
+ellipsoid(::Type{ISN93}) = GRS80🌎
+
+"""
+    ISN2004
+
+Islands Net 2004 datum.
+
+See <https://epsg.org/datum_1060/Islands-Net-2004.html>
+"""
+abstract type ISN2004 <: Datum end
+
+ellipsoid(::Type{ISN2004}) = GRS80🌎
+
+"""
+    ISN2016
+
+Islands Net 2016 datum.
+
+See <https://epsg.org/datum_1187/Islands-Net-2016.html>
+"""
+abstract type ISN2016 <: Datum end
+
+ellipsoid(::Type{ISN2016}) = GRS80🌎
+
+"""
     NAD27
 
 North American Datum 1927.

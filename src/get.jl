@@ -66,11 +66,14 @@ end
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
+@crscode EPSG{4659} LatLon{ISN93}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{4989} LatLonAlt{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
+@crscode EPSG{5324} LatLon{ISN2004}
 @crscode EPSG{5527} LatLon{SAD96}
+@crscode EPSG{8086} LatLon{ISN2016}
 @crscode EPSG{8232} LatLon{NAD83CSRS{1}}
 @crscode EPSG{8237} LatLon{NAD83CSRS{2}}
 @crscode EPSG{8240} LatLon{NAD83CSRS{3}}
