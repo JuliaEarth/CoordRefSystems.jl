@@ -20,6 +20,7 @@
   crsstringtest(EPSG{4674})
   crsstringtest(EPSG{4666})
   crsstringtest(EPSG{4745})
+  crsstringtest(EPSG{4746})
   crsstringtest(EPSG{4686})
   crsstringtest(EPSG{5324})
   crsstringtest(EPSG{5527})

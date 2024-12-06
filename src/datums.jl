@@ -409,6 +409,17 @@ abstract type OSGB36 <: Datum end
 ellipsoid(::Type{OSGB36}) = Airy🌎
 
 """
+    PD83
+
+Potsdam Datum/83.
+
+See <https://epsg.org/datum_6746/Potsdam-Datum-83.html>
+"""
+abstract type PD83 <: Datum end
+
+ellipsoid(::Type{PD83}) = Bessel🌎
+
+"""
     Potsdam
 
 Potsdam Rauenberg 1950 DHDN datum.

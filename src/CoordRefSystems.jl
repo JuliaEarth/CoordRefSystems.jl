@@ -72,6 +72,7 @@ export
   NTF,
   NZGD1949,
   OSGB36,
+  PD83,
   Potsdam,
   RD83,
   RGF93v1,
