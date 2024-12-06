@@ -70,7 +70,7 @@ end
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4659} LatLon{ISN93}
-crscode EPSG{4666} LatLon{Lisbon1890}
+@crscode EPSG{4666} LatLon{Lisbon1890}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{4989} LatLonAlt{shift(ITRF{2000}, 2000.4)}
