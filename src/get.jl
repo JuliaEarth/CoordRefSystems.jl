@@ -63,6 +63,8 @@ end
 @crscode EPSG{3857} WebMercator{WGS84Latest}
 @crscode EPSG{4207} LatLon{Lisbon1937}
 @crscode EPSG{4208} LatLon{Aratu}
+@crscode EPSG{4230} LatLon{ED50}
+@crscode EPSG{4231} LatLon{ED87}
 @crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4274} LatLon{Datum73}
@@ -71,6 +73,7 @@ end
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4659} LatLon{ISN93}
 @crscode EPSG{4666} LatLon{Lisbon1890}
+@crscode EPSG{4668} LatLon{ED79}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{4989} LatLonAlt{shift(ITRF{2000}, 2000.4)}
