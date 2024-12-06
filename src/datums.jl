@@ -203,6 +203,17 @@ abstract type Datum73 <: Datum end
 ellipsoid(::Type{Datum73}) = Intl🌎
 
 """
+    DHDN
+
+Deutsches Hauptdreiecksnetz datum.
+
+See <https://epsg.org/datum_6314/Deutsches-Hauptdreiecksnetz.html>
+"""
+abstract type DHDN <: Datum end
+
+ellipsoid(::Type{DHDN}) = Bessel🌎
+
+"""
     ED50
 
 European Datum 1950.
@@ -405,6 +416,17 @@ Potsdam Rauenberg 1950 DHDN datum.
 abstract type Potsdam <: Datum end
 
 ellipsoid(::Type{Potsdam}) = Bessel🌎
+
+"""
+    RD83
+
+Rauenberg Datum/83.
+
+See <https://epsg.org/datum_6745/Rauenberg-Datum-83.html>
+"""
+abstract type RD83 <: Datum end
+
+ellipsoid(::Type{RD83}) = Bessel🌎
 
 """
     RGF93v1

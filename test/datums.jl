@@ -51,6 +51,8 @@
 
   @test ellipsoid(Datum73) === CoordRefSystems.Intl🌎
 
+  @test ellipsoid(DHDN) === CoordRefSystems.Bessel🌎
+
   @test ellipsoid(ED50) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(ED79) === CoordRefSystems.Intl🌎
@@ -90,6 +92,8 @@
   @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
 
   @test ellipsoid(Potsdam) === CoordRefSystems.Bessel🌎
+
+  @test ellipsoid(RD83) === CoordRefSystems.Bessel🌎
 
   @test ellipsoid(RGF93v1) === CoordRefSystems.GRS80🌎
 
