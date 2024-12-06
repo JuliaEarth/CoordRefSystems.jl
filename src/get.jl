@@ -66,14 +66,18 @@ end
 @crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4274} LatLon{Datum73}
+@crscode EPSG{4277} LatLon{OSGB36}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
-@crscode EPSG{4666} LatLon{Lisbon1890}
+@crscode EPSG{4659} LatLon{ISN93}
+crscode EPSG{4666} LatLon{Lisbon1890}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{4989} LatLonAlt{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
+@crscode EPSG{5324} LatLon{ISN2004}
 @crscode EPSG{5527} LatLon{SAD96}
+@crscode EPSG{8086} LatLon{ISN2016}
 @crscode EPSG{8232} LatLon{NAD83CSRS{1}}
 @crscode EPSG{8237} LatLon{NAD83CSRS{2}}
 @crscode EPSG{8240} LatLon{NAD83CSRS{3}}
@@ -84,7 +88,7 @@ end
 @crscode EPSG{9988} Cartesian3D{ITRF{2020}}
 @crscode EPSG{10176} Cartesian3D{IGS20}
 @crscode EPSG{10414} LatLon{NAD83CSRS{8}}
-@crscode EPSG{25832} shift(TransverseMercator{0.9996,0.0°,ETRS89}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m)
+@crscode EPSG{25832} shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m)
 @crscode EPSG{27700} shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
 @crscode EPSG{29903} shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
