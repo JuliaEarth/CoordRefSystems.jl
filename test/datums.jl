@@ -74,7 +74,7 @@
   @test ellipsoid(ISN2004) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(ISN2016) === CoordRefSystems.GRS80🌎
-  
+
   @test ellipsoid(Lisbon1890) === CoordRefSystems.Bessel🌎
 
   @test ellipsoid(Lisbon1937) === CoordRefSystems.Intl🌎
