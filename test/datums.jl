@@ -51,6 +51,12 @@
 
   @test ellipsoid(Datum73) === CoordRefSystems.Intl🌎
 
+  @test ellipsoid(ED50) === CoordRefSystems.Intl🌎
+
+  @test ellipsoid(ED79) === CoordRefSystems.Intl🌎
+
+  @test ellipsoid(ED87) === CoordRefSystems.Intl🌎
+
   @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎

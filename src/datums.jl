@@ -203,6 +203,39 @@ abstract type Datum73 <: Datum end
 ellipsoid(::Type{Datum73}) = Intl🌎
 
 """
+    ED50
+
+European Datum 1950.
+
+See <https://epsg.org/datum_6230/European-Datum-1950.html>
+"""
+abstract type ED50 <: Datum end
+
+ellipsoid(::Type{ED50}) = Intl🌎
+
+"""
+    ED79
+
+European Datum 1979.
+
+See <https://epsg.org/datum_6668/European-Datum-1979.html>
+"""
+abstract type ED79 <: Datum end
+
+ellipsoid(::Type{ED79}) = Intl🌎
+
+"""
+    ED87
+
+European Datum 1987.
+
+See <https://epsg.org/datum_6231/European-Datum-1987.html>
+"""
+abstract type ED87 <: Datum end
+
+ellipsoid(::Type{ED87}) = Intl🌎
+
+"""
     GGRS87
 
 Greek Geodetic Reference System 1987 datum.
