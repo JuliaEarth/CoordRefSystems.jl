@@ -14,6 +14,9 @@ This package addresses various design issues encountered in previous attempts su
 Our [benchmarks](benchmark/output.csv) show that CoordRefSystems.jl is sometimes faster than [PROJ](https://github.com/OSGeo/PROJ),
 which is the most widely used software library for cartography in the world (written in C/C++).
 
+For datum conversions with [offset grids](https://cdn.proj.org), please install the accompanying
+[CoordGridTransforms.jl](https://github.com/JuliaEarth/CoordGridTransforms.jl) package.
+
 ## Installation
 
 Get the latest stable release with Julia's package manager:
