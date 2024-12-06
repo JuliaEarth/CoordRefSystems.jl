@@ -91,6 +91,8 @@
 
   @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
 
+  @test ellipsoid(PD83) === CoordRefSystems.Bessel🌎
+
   @test ellipsoid(Potsdam) === CoordRefSystems.Bessel🌎
 
   @test ellipsoid(RD83) === CoordRefSystems.Bessel🌎

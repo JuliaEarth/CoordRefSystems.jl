@@ -32,6 +32,7 @@ const esriid2code = Dict(
   "GCS_North_American_1983" => EPSG{4269},
   "GCS_NTF" => EPSG{4275},
   "GCS_OSGB_1936" => EPSG{4277},
+  "GCS_PD/83" => EPSG{4746},
   "GCS_RD/83" => EPSG{4745},
   "GCS_RGF_1993" => EPSG{4171},
   "GCS_SAD_1969_96" => EPSG{5527},

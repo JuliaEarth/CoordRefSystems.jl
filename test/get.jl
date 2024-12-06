@@ -25,6 +25,7 @@
   gettest(EPSG{4668}, LatLon{ED79})
   gettest(EPSG{4674}, LatLon{SIRGAS2000})
   gettest(EPSG{4745}, LatLon{RD83})
+  gettest(EPSG{4746}, LatLon{PD83})
   gettest(EPSG{4988}, Cartesian{CoordRefSystems.shift(ITRF{2000}, 2000.4),3})
   gettest(EPSG{4989}, LatLonAlt{CoordRefSystems.shift(ITRF{2000}, 2000.4)})
   gettest(EPSG{5070}, CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°))
