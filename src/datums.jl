@@ -192,10 +192,11 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
-
     Datum73
 
 Datum 73 from Portugal.
+
+See <https://epsg.org/datum_6274/Datum-73.html>
 """
 abstract type Datum73 <: Datum end
 
