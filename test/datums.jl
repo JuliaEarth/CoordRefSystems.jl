@@ -49,6 +49,8 @@
 
   @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
 
+  @test ellipsoid(Datum73) === CoordRefSystems.Intl🌎
+
   @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎
@@ -66,6 +68,10 @@
   @test ellipsoid(ISN2004) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(ISN2016) === CoordRefSystems.GRS80🌎
+  
+  @test ellipsoid(Lisbon1890) === CoordRefSystems.Bessel🌎
+
+  @test ellipsoid(Lisbon1937) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(NAD27) === CoordRefSystems.Clrk66🌎
 

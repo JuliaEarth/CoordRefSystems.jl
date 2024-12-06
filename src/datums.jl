@@ -192,6 +192,17 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
+    Datum73
+
+Datum 73 from Portugal.
+
+See <https://epsg.org/datum_6274/Datum-73.html>
+"""
+abstract type Datum73 <: Datum end
+
+ellipsoid(::Type{Datum73}) = Intl🌎
+
+"""
     GGRS87
 
 Greek Geodetic Reference System 1987 datum.
@@ -277,6 +288,28 @@ See <https://epsg.org/datum_1187/Islands-Net-2016.html>
 abstract type ISN2016 <: Datum end
 
 ellipsoid(::Type{ISN2016}) = GRS80🌎
+
+"""
+    Lisbon1890
+
+Lisbon 1890 datum.
+
+See <https://epsg.org/datum_6666/Lisbon-1890.html>
+"""
+abstract type Lisbon1890 <: Datum end
+
+ellipsoid(::Type{Lisbon1890}) = Bessel🌎
+
+"""
+    Lisbon1937
+
+Lisbon 1937 datum.
+
+See <https://epsg.org/datum_6207/Lisbon-1937.html>
+"""
+abstract type Lisbon1937 <: Datum end
+
+ellipsoid(::Type{Lisbon1937}) = Intl🌎
 
 """
     NAD27
