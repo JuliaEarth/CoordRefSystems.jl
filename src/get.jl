@@ -71,12 +71,14 @@ end
 @crscode EPSG{4274} LatLon{Datum73}
 @crscode EPSG{4275} LatLon{NTF}
 @crscode EPSG{4277} LatLon{OSGB36}
+@crscode EPSG{4314} LatLon{DHDN}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
 @crscode EPSG{4659} LatLon{ISN93}
 @crscode EPSG{4666} LatLon{Lisbon1890}
 @crscode EPSG{4668} LatLon{ED79}
 @crscode EPSG{4674} LatLon{SIRGAS2000}
+@crscode EPSG{4745} LatLon{RD83}
 @crscode EPSG{4988} Cartesian3D{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{4989} LatLonAlt{shift(ITRF{2000}, 2000.4)}
 @crscode EPSG{5070} shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°)
