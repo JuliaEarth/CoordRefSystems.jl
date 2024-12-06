@@ -334,6 +334,17 @@ abstract type NAD83 <: Datum end
 ellipsoid(::Type{NAD83}) = GRS80🌎
 
 """
+    NTF
+
+Nouvelle Triangulation Francaise.
+
+See <https://epsg.org/datum_6275/Nouvelle-Triangulation-Francaise.html>
+"""
+abstract type NTF <: Datum end
+
+ellipsoid(::Type{NTF}) = Clrk80IGN🌎
+
+"""
     Nzgd49
 
 New Zealand Geodetic Datum 1949.
@@ -361,6 +372,39 @@ Potsdam Rauenberg 1950 DHDN datum.
 abstract type Potsdam <: Datum end
 
 ellipsoid(::Type{Potsdam}) = Bessel🌎
+
+"""
+    RGF93v1
+
+Reseau Geodesique Francais 1993 version 1.
+
+See <https://epsg.org/datum_6171/Reseau-Geodesique-Francais-1993-v1.html>
+"""
+abstract type RGF93v1 <: Datum end
+
+ellipsoid(::Type{RGF93v1}) = GRS80🌎
+
+"""
+    RGF93v2
+
+Reseau Geodesique Francais 1993 version 2.
+
+See <https://epsg.org/datum_1312/Reseau-Geodesique-Francais-1993-v2.html>
+"""
+abstract type RGF93v2 <: Datum end
+
+ellipsoid(::Type{RGF93v2}) = GRS80🌎
+
+"""
+    RGF93v2b
+
+Reseau Geodesique Francais 1993 version 2b.
+
+See <https://epsg.org/datum_1313/Reseau-Geodesique-Francais-1993-v2b.html>
+"""
+abstract type RGF93v2b <: Datum end
+
+ellipsoid(::Type{RGF93v2b}) = GRS80🌎
 
 """
     SAD69

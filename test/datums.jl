@@ -77,11 +77,19 @@
 
   @test ellipsoid(NAD83) === CoordRefSystems.GRS80🌎
 
+  @test ellipsoid(NTF) === CoordRefSystems.Clrk80IGN🌎
+
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
 
   @test ellipsoid(Potsdam) === CoordRefSystems.Bessel🌎
+
+  @test ellipsoid(RGF93v1) === CoordRefSystems.GRS80🌎
+
+  @test ellipsoid(RGF93v2) === CoordRefSystems.GRS80🌎
+
+  @test ellipsoid(RGF93v2b) === CoordRefSystems.GRS80🌎
 
   @test ellipsoid(SAD69) === CoordRefSystems.GRS67Modified🌎
 

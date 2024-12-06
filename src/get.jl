@@ -61,11 +61,13 @@ end
 @crscode EPSG{3310} shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m)
 @crscode EPSG{3395} Mercator{WGS84Latest}
 @crscode EPSG{3857} WebMercator{WGS84Latest}
+@crscode EPSG{4171} LatLon{RGF93v1}
 @crscode EPSG{4207} LatLon{Lisbon1937}
 @crscode EPSG{4208} LatLon{Aratu}
 @crscode EPSG{4267} LatLon{NAD27}
 @crscode EPSG{4269} LatLon{NAD83}
 @crscode EPSG{4274} LatLon{Datum73}
+@crscode EPSG{4275} LatLon{NTF}
 @crscode EPSG{4277} LatLon{OSGB36}
 @crscode EPSG{4326} LatLon{WGS84Latest}
 @crscode EPSG{4618} LatLon{SAD69}
@@ -85,6 +87,8 @@ end
 @crscode EPSG{8249} LatLon{NAD83CSRS{5}}
 @crscode EPSG{8252} LatLon{NAD83CSRS{6}}
 @crscode EPSG{8255} LatLon{NAD83CSRS{7}}
+@crscode EPSG{9777} LatLon{RGF93v2}
+@crscode EPSG{9782} LatLon{RGF93v2b}
 @crscode EPSG{9988} Cartesian3D{ITRF{2020}}
 @crscode EPSG{10176} Cartesian3D{IGS20}
 @crscode EPSG{10414} LatLon{NAD83CSRS{8}}
