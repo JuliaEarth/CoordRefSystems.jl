@@ -1,13 +1,5 @@
 @testset "Projection domain" begin
-  for P in projected
-    C = if P <: TransverseMercator
-      P{WGS84Latest}
-    elseif P <: Albers
-      P{WGS84Latest}
-    else
-      P
-    end
-
+  for C in projected
     # forward
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
