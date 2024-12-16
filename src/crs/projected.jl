@@ -69,7 +69,10 @@ end
 
 Checks whether `λ` and `ϕ` in radians are within the `CRS` domain.
 """
-inbounds(::Type{<:Projected}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ π / 2
+function inbounds(::Type{<:Projected}, λ, ϕ)
+  T = typeof(λ)
+  -T(π) ≤ λ ≤ T(π) && -T(π) / 2 ≤ ϕ ≤ T(π) / 2
+end
 
 """
     indomain(CRS::Type{<:Projected}, latlon::LatLon)

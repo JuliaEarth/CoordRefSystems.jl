@@ -92,14 +92,21 @@ const OrthoSouth{Datum,Shift} = Orthographic{EllipticalMode,-90°,Datum,Shift}
 #                     https://epsg.org/guidance-notes.html
 
 function inbounds(::Type{<:Orthographic{Mode,latₒ}}, λ, ϕ) where {Mode,latₒ}
+  T = typeof(λ)
   ϕₒ = ustrip(deg2rad(latₒ))
   c = acos(sin(ϕₒ) * sin(ϕ) + cos(ϕₒ) * cos(ϕ) * cos(λ))
-  -π / 2 < c < π / 2
+  -T(π) / 2 < c < T(π) / 2
 end
 
-inbounds(::Type{<:OrthoNorth}, λ, ϕ) = -π ≤ λ ≤ π && 0 ≤ ϕ ≤ π / 2
+function inbounds(::Type{<:OrthoNorth}, λ, ϕ)
+  T = typeof(λ)  
+  -T(π) ≤ λ ≤ T(π) && T(0) ≤ ϕ ≤ T(π) / 2
+end
 
-inbounds(::Type{<:OrthoSouth}, λ, ϕ) = -π ≤ λ ≤ π && -π / 2 ≤ ϕ ≤ 0
+function inbounds(::Type{<:OrthoSouth}, λ, ϕ)
+  T = typeof(λ)  
+  -T(π) ≤ λ ≤ T(π) && -T(π) / 2 ≤ ϕ ≤ T(0)
+end
 
 function formulas(::Type{<:Orthographic{EllipticalMode,latₒ,Datum}}, ::Type{T}) where {latₒ,Datum,T}
   ϕₒ = T(ustrip(deg2rad(latₒ)))
