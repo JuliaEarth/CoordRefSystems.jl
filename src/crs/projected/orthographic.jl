@@ -99,12 +99,12 @@ function inbounds(::Type{<:Orthographic{Mode,latₒ}}, λ, ϕ) where {Mode,lat�
 end
 
 function inbounds(::Type{<:OrthoNorth}, λ, ϕ)
-  T = typeof(λ)  
+  T = typeof(λ)
   -T(π) ≤ λ ≤ T(π) && T(0) ≤ ϕ ≤ T(π) / 2
 end
 
 function inbounds(::Type{<:OrthoSouth}, λ, ϕ)
-  T = typeof(λ)  
+  T = typeof(λ)
   -T(π) ≤ λ ≤ T(π) && -T(π) / 2 ≤ ϕ ≤ T(0)
 end
 
