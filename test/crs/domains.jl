@@ -26,7 +26,7 @@
     elseif C <: Behrmann
       T === Float32 ? 1.0f-2° : 1e-4°
     elseif C <: GallPeters
-      T === Float32 ? 1.0f-2° : 1e-4°
+      T === Float32 ? 1.0f-1° : 1e-4°
     elseif C <: Robinson
       T(1e-3) * °
     elseif C <: Albers

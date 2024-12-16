@@ -51,7 +51,10 @@ isconformal(::Type{<:Mercator}) = true
 # CONVERSIONS
 # ------------
 
-inbounds(::Type{<:Mercator}, λ, ϕ) = -π ≤ λ ≤ π && -deg2rad(80) ≤ ϕ ≤ deg2rad(84)
+function inbounds(::Type{<:Mercator}, λ, ϕ)
+  T = typeof(λ)
+  -T(π) ≤ λ ≤ T(π) && deg2rad(-T(80)) ≤ ϕ ≤ deg2rad(T(84))
+end
 
 function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
   e = T(eccentricity(ellipsoid(Datum)))
