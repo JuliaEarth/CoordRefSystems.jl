@@ -149,6 +149,9 @@ end
 # FALLBACKS
 # ----------
 
+inbounds(::Type{TransverseMercator{k₀,latₒ}}, λ, ϕ) where {k₀,latₒ} =
+  inbounds(TransverseMercator{k₀,latₒ,WGS84Latest}, λ, ϕ)
+
 Base.convert(::Type{TransverseMercator{k₀,latₒ}}, coords::CRS{Datum}) where {k₀,latₒ,Datum} =
   convert(TransverseMercator{k₀,latₒ,Datum}, coords)
 
