@@ -139,13 +139,13 @@ function backward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, x, y) where
   Rq = sqrt(qₚ / 2)
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
   ρ = sqrt((x / D)^2 + (D * y)^2)
-  C = 2 * asin(ρ / 2Rq)
+  C = 2 * asinclamp(ρ / 2Rq)
   sinC = sin(C)
   cosC = cos(C)
 
-  β′ = asin((cosC * sinβₒ) + ((D * y * sinC * cosβₒ) / ρ))
+  β′ = asinclamp((cosC * sinβₒ) + ((D * y * sinC * cosβₒ) / ρ))
 
-  λ = atan(X * sinC, (D * ρ * cosβₒ * cosC) - (D^2 * y * sinβₒ * sinC))
+  λ = atan(x * sinC, (D * ρ * cosβₒ * cosC) - (D^2 * y * sinβₒ * sinC))
   ϕ = auth2geod(β′, e²)
 
   λ, ϕ
