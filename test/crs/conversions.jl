@@ -1305,7 +1305,7 @@
       @inferred convert(LatLon, c2)
     end
 
-    @testset "LatLon <> OrthoNorth" begin
+    @testset "LatLon <> Orthographic (Elliptical)" begin
       # forward tested against Proj.Transformation("""
       # proj=pipeline
       # step proj=axisswap order=2,1
@@ -1330,14 +1330,6 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
-      # type stability
-      c1 = LatLon(T(30), T(60))
-      c2 = OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
-      @inferred convert(OrthoNorth, c1)
-      @inferred convert(LatLon, c2)
-    end
-
-    @testset "LatLon <> OrthoSouth" begin
       # forward tested against Proj.Transformation("""
       # proj=pipeline
       # step proj=axisswap order=2,1
@@ -1362,14 +1354,27 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
+      # invert central coordinates
+      ShiftedOrthoElliptical =
+        CoordRefSystems.shift(CoordRefSystems.Orthographic{CoordRefSystems.EllipticalMode,30.0°,WGS84Latest}, lonₒ=60°)
+      c1 = LatLon(T(30), T(60))
+      c2 = convert(ShiftedOrthoElliptical, c1)
+      @test allapprox(c2, ShiftedOrthoElliptical(T(0), T(0)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
       # type stability
-      c1 = LatLon(-T(30), T(60))
-      c2 = OrthoSouth(T(4787610.688267582), T(2764128.319646418))
-      @inferred convert(OrthoSouth, c1)
-      @inferred convert(LatLon, c2)
+      c1 = LatLon(T(30), T(60))
+      c3 = OrthoNorth(T(4787610.688267582), T(-2764128.319646418))
+      c2 = LatLon(-T(30), T(60))
+      c4 = OrthoSouth(T(4787610.688267582), T(2764128.319646418))
+      @inferred convert(OrthoNorth, c1)
+      @inferred convert(OrthoSouth, c2)
+      @inferred convert(LatLon, c3)
+      @inferred convert(LatLon, c4)
     end
 
-    @testset "LatLon <> OrthoSpherical" begin
+    @testset "LatLon <> Orthographic (Spherical)" begin
       OrthoNorthSpherical = CoordRefSystems.get(ESRI{102035})
       OrthoSouthSpherical = CoordRefSystems.get(ESRI{102037})
 
@@ -1396,6 +1401,15 @@
       c1 = LatLon(-T(30), -T(60))
       c2 = convert(OrthoSouthSpherical, c1)
       @test allapprox(c2, OrthoSouthSpherical(-T(4783602.75), T(2761814.335408735)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # invert central coordinates
+      ShiftedOrthoSpherical =
+        CoordRefSystems.shift(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,30.0°,WGS84Latest}, lonₒ=60°)
+      c1 = LatLon(T(30), T(60))
+      c2 = convert(ShiftedOrthoSpherical, c1)
+      @test allapprox(c2, ShiftedOrthoSpherical(T(0), T(0)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
@@ -1574,6 +1588,14 @@
       c1 = LatLon(-T(45), -T(90))
       c2 = convert(LAEA, c1)
       @test allapprox(c2, LAEA(-T(7.066637230781689e6), -T(6.783200716618443e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # invert central coordinates
+      ShiftedLAEA = CoordRefSystems.shift(LambertAzimuthalEqualArea{30.0°,WGS84Latest}, lonₒ=60°)
+      c1 = LatLon(T(30), T(60))
+      c2 = convert(ShiftedLAEA, c1)
+      @test allapprox(c2, ShiftedLAEA(T(0), T(0)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 

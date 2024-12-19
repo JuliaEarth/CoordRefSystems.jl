@@ -141,18 +141,16 @@ end
 
 function backward(C::Type{<:Orthographic{EllipticalMode,latₒ}}, x, y) where {latₒ}
   T = typeof(x)
-  λₒ = T(ustrip(deg2rad(projshift(C).lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
-  λₛ, ϕₛ = sphericalinv(x, y, λₒ, ϕₒ)
+  λₛ, ϕₛ = sphericalinv(x, y, ϕₒ)
   fx, fy = formulas(C, T)
   projinv(fx, fy, x, y, λₛ, ϕₛ)
 end
 
-function backward(C::Type{<:Orthographic{SphericalMode,latₒ}}, x, y) where {latₒ}
+function backward(::Type{<:Orthographic{SphericalMode,latₒ}}, x, y) where {latₒ}
   T = typeof(x)
-  λₒ = T(ustrip(deg2rad(projshift(C).lonₒ)))
   ϕₒ = T(ustrip(deg2rad(latₒ)))
-  sphericalinv(x, y, λₒ, ϕₒ)
+  sphericalinv(x, y, ϕₒ)
 end
 
 # ----------
@@ -166,10 +164,10 @@ Base.convert(::Type{Orthographic{Mode,latₒ}}, coords::CRS{Datum}) where {Mode,
 # HELPER FUNCTIONS
 # -----------------
 
-function sphericalinv(x, y, λₒ, ϕₒ)
+function sphericalinv(x, y, ϕₒ)
   ρ = hypot(x, y)
   if ρ < atol(x)
-    λₒ, ϕₒ
+    zero(x), ϕₒ
   else
     c = asinclamp(ρ)
     sinc = sin(c)
