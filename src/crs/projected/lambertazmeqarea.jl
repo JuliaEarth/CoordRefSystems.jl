@@ -47,6 +47,14 @@ isequalarea(::Type{<:LambertAzimuthalEqualArea}) = true
 # CONVERSIONS
 # ------------
 
+# Adapted from PROJ coordinate transformation software
+# Initial PROJ 4.3 public domain code was put as Frank Warmerdam as copyright
+# holder, but he didn't mean to imply he did the work. Essentially all work was
+# done by Gerald Evenden.
+
+# reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/laea.cpp
+# reference formula: Section 3.6.2 of EPSG Guidance Note 7-2 (https://epsg.org/guidance-notes.html)
+
 function inbounds(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(λ, eccentricity(🌎))
@@ -59,13 +67,11 @@ function inbounds(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) whe
   q = authq(ϕ, e, ome²)
   βₒ = geod2auth(qₒ, qₚ)
   β = geod2auth(q, qₚ)
-  sinβₒ = sin(βₒ)
-  cosβₒ = cos(βₒ)
+  sinβₒ, cosβₒ = sincos(βₒ)
+  sinβ, cosβ = sincos(β)
   cosλ = cos(λ)
-  sinβ = sin(β)
-  cosβ = cos(β)
 
-  # check if the denominator of the B equation is not equal or approx to zero
+  # check if the denominator of the B equation is not equal (or approx) to zero
   Bden = 1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ)
   abs(Bden) > atol(λ)
 end
@@ -80,10 +86,8 @@ function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) 
   qₚ = authqₚ(e, ome²)
   qₒ = authq(ϕₒ, e, ome²)
   βₒ = geod2auth(qₒ, qₚ)
-  sinβₒ = sin(βₒ)
-  cosβₒ = cos(βₒ)
-  sinϕₒ = sin(ϕₒ)
-  cosϕₒ = cos(ϕₒ)
+  sinβₒ, cosβₒ = sincos(βₒ)
+  sinϕₒ, cosϕₒ = sincos(ϕₒ)
 
   Rq = sqrt(qₚ / 2)
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
@@ -92,10 +96,8 @@ function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) 
   function fx(λ, ϕ)
     q = authq(ϕ, e, ome²)
     β = geod2auth(q, qₚ)
-    sinλ = sin(λ)
-    cosλ = cos(λ)
-    sinβ = sin(β)
-    cosβ = cos(β)
+    sinβ, cosβ = sincos(β)
+    sinλ, cosλ = sincos(λ)
     B = fB(cosλ, sinβ, cosβ)
     (B * D) * (cosβ * sinλ)
   end
@@ -103,9 +105,8 @@ function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) 
   function fy(λ, ϕ)
     q = authq(ϕ, e, ome²)
     β = geod2auth(q, qₚ)
+    sinβ, cosβ = sincos(β)
     cosλ = cos(λ)
-    sinβ = sin(β)
-    cosβ = cos(β)
     B = fB(cosλ, sinβ, cosβ)
     (B / D) * ((cosβₒ * sinβ) - (sinβₒ * cosβ * cosλ))
   end
@@ -125,17 +126,13 @@ function forward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) wher
   q = authq(ϕ, e, ome²)
   βₒ = geod2auth(qₒ, qₚ)
   β = geod2auth(q, qₚ)
-  sinβₒ = sin(βₒ)
-  cosβₒ = cos(βₒ)
-  sinϕₒ = sin(ϕₒ)
-  cosϕₒ = cos(ϕₒ)
-  sinλ = sin(λ)
-  cosλ = cos(λ)
-  sinβ = sin(β)
-  cosβ = cos(β)
+  sinβₒ, cosβₒ = sincos(βₒ)
+  sinϕₒ, cosϕₒ = sincos(ϕₒ)
+  sinβ, cosβ = sincos(β)
+  sinλ, cosλ = sincos(λ)
 
   Rq = sqrt(qₚ / 2)
-  # check if the denominator of the B equation is not equal or approx to zero
+  # check if the denominator of the B equation is not equal (or approx) to zero
   Bden = (1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ))
   if abs(Bden) < atol(λ)
     throw(ArgumentError("coordinates outside of the projection domain"))
@@ -160,10 +157,8 @@ function backward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, x, y) where
   qₚ = authqₚ(e, ome²)
   qₒ = authq(ϕₒ, e, ome²)
   βₒ = geod2auth(qₒ, qₚ)
-  sinβₒ = sin(βₒ)
-  cosβₒ = cos(βₒ)
-  sinϕₒ = sin(ϕₒ)
-  cosϕₒ = cos(ϕₒ)
+  sinβₒ, cosβₒ = sincos(βₒ)
+  sinϕₒ, cosϕₒ = sincos(ϕₒ)
 
   Rq = sqrt(qₚ / 2)
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
@@ -173,8 +168,7 @@ function backward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, x, y) where
     zero(x), ϕₒ
   else
     C = 2 * asinclamp(ρ / 2Rq)
-    sinC = sin(C)
-    cosC = cos(C)
+    sinC, cosC = sincos(C)
 
     β′ = asinclamp((cosC * sinβₒ) + ((D * y * sinC * cosβₒ) / ρ))
 
