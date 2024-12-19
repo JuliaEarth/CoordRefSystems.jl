@@ -1539,6 +1539,51 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> LambertAzimuthalEqualArea" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=laea lat_0=15 ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=laea inv lat_0=15 ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
+      LAEA = LambertAzimuthalEqualArea{15.0°}
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(LAEA, c1)
+      @test allapprox(c2, LAEA(T(5.879661317585923e6), T(5.643833348229035e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(LAEA, c1)
+      @test allapprox(c2, LAEA(T(7.066637230781689e6), -T(6.783200716618443e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(T(45), -T(90))
+      c2 = convert(LAEA, c1)
+      @test allapprox(c2, LAEA(-T(5.879661317585923e6), T(5.643833348229035e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(LAEA, c1)
+      @test allapprox(c2, LAEA(-T(7.066637230781689e6), -T(6.783200716618443e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = LAEA(T(5.879661317585923e6), T(5.643833348229035e6))
+      @inferred convert(LAEA, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "LatLon <> UTM" begin
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)
