@@ -4,8 +4,9 @@
     EPSG{2157},
     CoordRefSystems.shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
   )
-  gettest(EPSG{3395}, Mercator{WGS84Latest})
+  gettest(EPSG{3035}, CoordRefSystems.shift(LambertAzimuthalEqualArea{52.0°,ETRFLatest}, lonₒ=-10.0°, xₒ=4321000.0m, yₒ=-3210000.0m))
   gettest(EPSG{3310}, CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m))
+  gettest(EPSG{3395}, Mercator{WGS84Latest})
   gettest(EPSG{3857}, WebMercator{WGS84Latest})
   gettest(EPSG{4171}, LatLon{RGF93v1})
   gettest(EPSG{4207}, LatLon{Lisbon1937})
