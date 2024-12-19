@@ -75,13 +75,26 @@ function inbounds(::Type{<:Projected}, λ, ϕ)
 end
 
 """
-    indomain(CRS::Type{<:Projected}, latlon::LatLon)
+    indomain(CRS::Type{<:Projected}, coords)
 
-Checks whether `latlon` coordinates are within the `CRS` domain.
+Checks whether `coords` coordinates are within the `CRS` domain.
 """
-function indomain(C::Type{<:Projected}, (; lat, lon)::LatLon)
-  lonₒ = oftype(lon, projshift(C).lonₒ)
-  inbounds(C, ustrip(deg2rad(lon - lonₒ)), ustrip(deg2rad(lat)))
+indomain(C::Type{<:Projected}, coords::CRS) = indomain(C, convert(LatLon, coords))
+
+indomain(C::Type{<:Projected}, coords::LatLon) = _indomain(C, coords)
+
+indomain(C::Type{<:Projected{Datum}}, coords::LatLon{Datum}) where {Datum} = _indomain(C, coords)
+
+indomain(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₛ,Datumₜ} =
+  _indomain(C, convert(LatLon{Datumₜ}, coords))
+
+indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{NoDatum,2}) where {Datum} = true
+
+indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = true
+
+function _indomain(C, coords)
+  lonₒ = oftype(coords.lon, projshift(C).lonₒ)
+  inbounds(C, ustrip(deg2rad(coords.lon - lonₒ)), ustrip(deg2rad(coords.lat)))
 end
 
 # convert to Cartesian3D through a common LatLon
