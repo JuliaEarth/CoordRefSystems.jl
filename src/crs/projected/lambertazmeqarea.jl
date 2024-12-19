@@ -47,6 +47,29 @@ isequalarea(::Type{<:LambertAzimuthalEqualArea}) = true
 # CONVERSIONS
 # ------------
 
+function inbounds(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
+  🌎 = ellipsoid(Datum)
+  e = oftype(λ, eccentricity(🌎))
+  e² = oftype(λ, eccentricity²(🌎))
+  ϕₒ = oftype(λ, ustrip(deg2rad(latₒ)))
+  ome² = 1 - e²
+
+  qₚ = authqₚ(e, ome²)
+  qₒ = authq(ϕₒ, e, ome²)
+  q = authq(ϕ, e, ome²)
+  βₒ = geod2auth(qₒ, qₚ)
+  β = geod2auth(q, qₚ)
+  sinβₒ = sin(βₒ)
+  cosβₒ = cos(βₒ)
+  cosλ = cos(λ)
+  sinβ = sin(β)
+  cosβ = cos(β)
+
+  # check if the denominator of the B equation is not equal or approx to zero
+  Bden = 1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ)
+  abs(Bden) > atol(λ)
+end
+
 function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) where {latₒ,Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
@@ -99,8 +122,8 @@ function forward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) wher
 
   qₚ = authqₚ(e, ome²)
   qₒ = authq(ϕₒ, e, ome²)
-  βₒ = geod2auth(qₒ, qₚ)
   q = authq(ϕ, e, ome²)
+  βₒ = geod2auth(qₒ, qₚ)
   β = geod2auth(q, qₚ)
   sinβₒ = sin(βₒ)
   cosβₒ = cos(βₒ)
@@ -112,8 +135,14 @@ function forward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) wher
   cosβ = cos(β)
 
   Rq = sqrt(qₚ / 2)
+  # check if the denominator of the B equation is not equal or approx to zero
+  Bden = (1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ))
+  if abs(Bden) < atol(λ)
+    throw(ArgumentError("coordinates outside of the projection domain"))
+  end
+
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
-  B = Rq * sqrt(2 / (1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ)))
+  B = Rq * sqrt(2 / Bden)
 
   x = (B * D) * (cosβ * sinλ)
   y = (B / D) * ((cosβₒ * sinβ) - (sinβₒ * cosβ * cosλ))
@@ -139,21 +168,29 @@ function backward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, x, y) where
   Rq = sqrt(qₚ / 2)
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
   ρ = sqrt((x / D)^2 + (D * y)^2)
-  C = 2 * asinclamp(ρ / 2Rq)
-  sinC = sin(C)
-  cosC = cos(C)
 
-  β′ = asinclamp((cosC * sinβₒ) + ((D * y * sinC * cosβₒ) / ρ))
+  if ρ < atol(x)
+    zero(x), ϕₒ
+  else
+    C = 2 * asinclamp(ρ / 2Rq)
+    sinC = sin(C)
+    cosC = cos(C)
 
-  λ = atan(x * sinC, (D * ρ * cosβₒ * cosC) - (D^2 * y * sinβₒ * sinC))
-  ϕ = auth2geod(β′, e²)
+    β′ = asinclamp((cosC * sinβₒ) + ((D * y * sinC * cosβₒ) / ρ))
 
-  λ, ϕ
+    λ = atan(x * sinC, (D * ρ * cosβₒ * cosC) - (D^2 * y * sinβₒ * sinC))
+    ϕ = auth2geod(β′, e²)
+
+    λ, ϕ
+  end
 end
 
 # ----------
 # FALLBACKS
 # ----------
+
+inbounds(::Type{LambertAzimuthalEqualArea{latₒ}}, λ, ϕ) where {latₒ} =
+  inbounds(LambertAzimuthalEqualArea{latₒ,WGS84Latest}, λ, ϕ)
 
 Base.convert(::Type{LambertAzimuthalEqualArea{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
   convert(LambertAzimuthalEqualArea{latₒ,Datum}, coords)
