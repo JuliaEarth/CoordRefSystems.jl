@@ -118,6 +118,7 @@ export
   TransverseMercator,
   Albers,
   Sinusoidal,
+  LambertAzimuthalEqualArea,
   datum,
   indomain,
   isconformal,

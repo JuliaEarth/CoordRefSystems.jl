@@ -38,21 +38,7 @@ function Base.convert(::Type{AuthalicLatLon{Datum}}, coords::LatLon{Datum}) wher
   ϕ = ustrip(deg2rad(coords.lat))
   e = oftype(ϕ, eccentricity(🌎))
   e² = oftype(ϕ, eccentricity²(🌎))
-
-  ome² = 1 - e²
-  sinϕ = sin(ϕ)
-  esinϕ = e * sinϕ
-  q = ome² * (sinϕ / (1 - esinϕ^2) - (1 / 2e) * log((1 - esinϕ) / (1 + esinϕ)))
-  # same formula as q, but ϕ = 90°
-  qₚ = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
-  qqₚ⁻¹ = q / qₚ
-
-  if abs(qqₚ⁻¹) > 1
-    # rounding error
-    qqₚ⁻¹ = sign(qqₚ⁻¹)
-  end
-
-  β = asin(qqₚ⁻¹)
+  β = geod2auth(ϕ, e, e²)
   AuthalicLatLon{Datum}(rad2deg(β) * °, coords.lon)
 end
 
@@ -111,6 +97,34 @@ end
 # -----------------
 # HELPER FUNCTIONS
 # -----------------
+
+# convert geodetic latitude ϕ to authalic latitude β
+function geod2auth(ϕ, e, e²)
+  ome² = 1 - e²
+  qₚ = authqₚ(e, ome²)
+  q = authq(ϕ, e, ome²)
+  geod2auth(q, qₚ)
+end
+
+function geod2auth(q, qₚ)
+  qqₚ⁻¹ = q / qₚ
+
+  if abs(qqₚ⁻¹) > 1
+    # rounding error
+    qqₚ⁻¹ = sign(qqₚ⁻¹)
+  end
+
+  asin(qqₚ⁻¹)
+end
+
+function authq(ϕ, e, ome²)
+  sinϕ = sin(ϕ)
+  esinϕ = e * sinϕ
+  ome² * (sinϕ / (1 - esinϕ^2) - (1 / 2e) * log((1 - esinϕ) / (1 + esinϕ)))
+end
+
+# same formula as q, but ϕ = 90°
+authqₚ(e, ome²) = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
 
 const _P₁₁ = 0.33333333333333333333 # 1 / 3
 const _P₁₂ = 0.17222222222222222222 # 31 / 180
