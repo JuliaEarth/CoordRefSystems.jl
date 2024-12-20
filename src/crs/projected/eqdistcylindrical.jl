@@ -90,5 +90,8 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{EquidistantCylindrical{latₜₛ}}, coords::CRS{Datum}) where {latₜₛ,Datum} =
+  indomain(EquidistantCylindrical{latₜₛ,Datum}, coords)
+
 Base.convert(::Type{EquidistantCylindrical{latₜₛ}}, coords::CRS{Datum}) where {latₜₛ,Datum} =
   convert(EquidistantCylindrical{latₜₛ,Datum}, coords)

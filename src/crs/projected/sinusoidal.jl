@@ -72,4 +72,6 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{Sinusoidal}, coords::CRS{Datum}) where {Datum} = indomain(Sinusoidal{Datum}, coords)
+
 Base.convert(::Type{Sinusoidal}, coords::CRS{Datum}) where {Datum} = convert(Sinusoidal{Datum}, coords)

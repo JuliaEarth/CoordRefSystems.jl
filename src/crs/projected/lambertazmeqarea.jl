@@ -183,8 +183,8 @@ end
 # FALLBACKS
 # ----------
 
-inbounds(::Type{LambertAzimuthalEqualArea{latₒ}}, λ, ϕ) where {latₒ} =
-  inbounds(LambertAzimuthalEqualArea{latₒ,WGS84Latest}, λ, ϕ)
+indomain(::Type{LambertAzimuthalEqualArea{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
+  indomain(LambertAzimuthalEqualArea{latₒ,Datum}, coords)
 
 Base.convert(::Type{LambertAzimuthalEqualArea{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
   convert(LambertAzimuthalEqualArea{latₒ,Datum}, coords)

@@ -97,4 +97,6 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{Mercator}, coords::CRS{Datum}) where {Datum} = indomain(Mercator{Datum}, coords)
+
 Base.convert(::Type{Mercator}, coords::CRS{Datum}) where {Datum} = convert(Mercator{Datum}, coords)
