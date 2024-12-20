@@ -81,18 +81,18 @@ Checks whether `coords` coordinates are within the `CRS` domain.
 """
 indomain(C::Type{<:Projected}, coords::CRS) = indomain(C, convert(LatLon, coords))
 
-indomain(C::Type{<:Projected}, coords::LatLon) = _indomain(C, coords)
+indomain(C::Type{<:Projected}, coords::LatLon) = _indomainlatlon(C, coords)
 
-indomain(C::Type{<:Projected{Datum}}, coords::LatLon{Datum}) where {Datum} = _indomain(C, coords)
+indomain(C::Type{<:Projected{Datum}}, coords::LatLon{Datum}) where {Datum} = _indomainlatlon(C, coords)
 
 indomain(C::Type{<:Projected{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datumₛ,Datumₜ} =
-  _indomain(C, convert(LatLon{Datumₜ}, coords))
+  _indomainlatlon(C, convert(LatLon{Datumₜ}, coords))
 
 indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{NoDatum,2}) where {Datum} = true
 
 indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = true
 
-function _indomain(C, coords)
+function _indomainlatlon(C, coords)
   lonₒ = oftype(coords.lon, projshift(C).lonₒ)
   inbounds(C, ustrip(deg2rad(coords.lon - lonₒ)), ustrip(deg2rad(coords.lat)))
 end
