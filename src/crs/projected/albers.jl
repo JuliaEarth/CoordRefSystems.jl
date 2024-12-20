@@ -160,8 +160,8 @@ _albersα(ϕ, e, e²) =
 # FALLBACKS
 # ----------
 
-inbounds(::Type{Albers{latₒ,lat₁,lat₂}}, λ, ϕ) where {latₒ,lat₁,lat₂} =
-  inbounds(Albers{latₒ,lat₁,lat₂,WGS84Latest}, λ, ϕ)
+indomain(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  indomain(Albers{latₒ,lat₁,lat₂,Datum}, coords)
 
 Base.convert(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
   convert(Albers{latₒ,lat₁,lat₂,Datum}, coords)

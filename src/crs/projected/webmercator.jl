@@ -76,4 +76,6 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{WebMercator}, coords::CRS{Datum}) where {Datum} = indomain(WebMercator{Datum}, coords)
+
 Base.convert(::Type{WebMercator}, coords::CRS{Datum}) where {Datum} = convert(WebMercator{Datum}, coords)

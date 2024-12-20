@@ -158,5 +158,8 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{EqualAreaCylindrical{latₜₛ}}, coords::CRS{Datum}) where {latₜₛ,Datum} =
+  indomain(EqualAreaCylindrical{latₜₛ,Datum}, coords)
+
 Base.convert(::Type{EqualAreaCylindrical{latₜₛ}}, coords::CRS{Datum}) where {latₜₛ,Datum} =
   convert(EqualAreaCylindrical{latₜₛ,Datum}, coords)

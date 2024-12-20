@@ -171,4 +171,6 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = indomain(Robinson{Datum}, coords)
+
 Base.convert(::Type{Robinson}, coords::CRS{Datum}) where {Datum} = convert(Robinson{Datum}, coords)

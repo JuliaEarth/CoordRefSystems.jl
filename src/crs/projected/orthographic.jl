@@ -157,6 +157,9 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{Orthographic{Mode,latₒ}}, coords::CRS{Datum}) where {Mode,latₒ,Datum} =
+  indomain(Orthographic{Mode,latₒ,Datum}, coords)
+
 Base.convert(::Type{Orthographic{Mode,latₒ}}, coords::CRS{Datum}) where {Mode,latₒ,Datum} =
   convert(Orthographic{Mode,latₒ,Datum}, coords)
 

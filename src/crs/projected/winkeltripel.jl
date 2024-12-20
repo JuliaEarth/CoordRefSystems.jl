@@ -98,4 +98,6 @@ end
 # FALLBACKS
 # ----------
 
+indomain(::Type{Winkel{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} = indomain(Winkel{lat₁,Datum}, coords)
+
 Base.convert(::Type{Winkel{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} = convert(Winkel{lat₁,Datum}, coords)
