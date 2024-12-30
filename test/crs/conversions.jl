@@ -169,6 +169,62 @@
       @inferred convert(Cartesian, c2)
     end
 
+    @testset "Cylindrical <> Spherical" begin
+      c1 = Cylindrical(T(√2), T(π / 4), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√3), atan(T(√2)), T(π / 4)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(√2), T(3π / 4), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√3), atan(T(√2)), T(3π / 4)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(√2), T(5π / 4), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√3), atan(T(√2)), T(5π / 4)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(√2), T(7π / 4), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√3), atan(T(√2)), T(7π / 4)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(1), T(π / 2), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√2), T(π / 4), T(π / 2)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(1), T(3π / 2), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√2), T(π / 4), T(3π / 2)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(1), T(0), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√2), T(π / 4), T(0)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      c1 = Cylindrical(T(1), T(π), T(1))
+      c2 = convert(Spherical, c1)
+      @test allapprox(c2, Spherical(T(√2), T(π / 4), T(π)))
+      c3 = convert(Cylindrical, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = Cylindrical(T(√2), T(π / 4), T(1))
+      c2 = Spherical(T(√3), atan(T(√2)), T(π / 4))
+      @inferred convert(Spherical, c1)
+      @inferred convert(Cylindrical, c2)
+    end
+
     @testset "Cartesian: Datum conversion" begin
       # WGS84 (G1762) to ITRF2008
       c1 = Cartesian{WGS84{1762}}(T(0), T(0), T(0))
