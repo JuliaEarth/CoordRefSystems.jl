@@ -338,21 +338,31 @@ Random.rand(rng::Random.AbstractRNG, ::Type{Spherical}) = rand(rng, Spherical{No
 # ------------
 
 # Cartesian <> Polar
+# https://en.wikipedia.org/wiki/Polar_coordinate_system#Converting_between_polar_and_Cartesian_coordinates
 Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ)::Polar{Datum}) where {Datum} = Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ))
 Base.convert(::Type{Polar{Datum}}, (; x, y)::Cartesian{Datum,2}) where {Datum} =
   Polar{Datum}(hypot(x, y), atanpos(y, x) * rad)
 
 # Cartesian <> Cylindrical
+# https://en.wikipedia.org/wiki/Cylindrical_coordinate_system#Cartesian_coordinates
 Base.convert(::Type{Cartesian{Datum}}, (; ρ, ϕ, z)::Cylindrical{Datum}) where {Datum} =
   Cartesian{Datum}(ρ * cos(ϕ), ρ * sin(ϕ), z)
 Base.convert(::Type{Cylindrical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
   Cylindrical{Datum}(hypot(x, y), atanpos(y, x) * rad, z)
 
 # Cartesian <> Spherical
+# https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
 Base.convert(::Type{Cartesian{Datum}}, (; r, θ, ϕ)::Spherical{Datum}) where {Datum} =
   Cartesian{Datum}(r * sin(θ) * cos(ϕ), r * sin(θ) * sin(ϕ), r * cos(θ))
 Base.convert(::Type{Spherical{Datum}}, (; x, y, z)::Cartesian{Datum,3}) where {Datum} =
   Spherical{Datum}(hypot(x, y, z), atan(hypot(x, y), z) * rad, atanpos(y, x) * rad)
+
+# Cylindrical <> Spherical
+# https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cylindrical_coordinates
+Base.convert(::Type{Cylindrical{Datum}}, (; r, θ, ϕ)::Spherical{Datum}) where {Datum} =
+  Cylindrical{Datum}(r * sin(θ), ϕ, r * cos(θ))
+Base.convert(::Type{Spherical{Datum}}, (; ρ, ϕ, z)::Cylindrical{Datum}) where {Datum} =
+  Spherical{Datum}(hypot(ρ, z), atan(ρ, z) * rad, ϕ)
 
 # ----------
 # FALLBACKS
