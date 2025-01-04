@@ -119,6 +119,7 @@ export
   Albers,
   Sinusoidal,
   LambertAzimuthalEqualArea,
+  EqualEarth,
   datum,
   indomain,
   isconformal,

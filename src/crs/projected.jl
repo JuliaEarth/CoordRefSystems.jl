@@ -169,6 +169,7 @@ include("projected/transversemercator.jl")
 include("projected/albers.jl")
 include("projected/sinusoidal.jl")
 include("projected/lambertazmeqarea.jl")
+include("projected/equalearth.jl")
 
 # ----------
 # FALLBACKS
