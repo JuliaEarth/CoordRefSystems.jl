@@ -156,3 +156,11 @@ function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
 
   λ, ϕ
 end
+
+# ----------
+# FALLBACKS
+# ----------
+
+indomain(::Type{EqualEarth}, coords::CRS{Datum}) where {Datum} = indomain(EqualEarth{Datum}, coords)
+
+Base.convert(::Type{EqualEarth}, coords::CRS{Datum}) where {Datum} = convert(EqualEarth{Datum}, coords)
