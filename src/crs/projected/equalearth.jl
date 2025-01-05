@@ -137,12 +137,14 @@ function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
   function fy(θ)
     θ² = θ^2
     θ⁶ = θ²^3
+
     θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
   end
 
   function dfy(θ)
     θ² = θ^2
     θ⁶ = θ²^3
+
     A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)
   end
 
