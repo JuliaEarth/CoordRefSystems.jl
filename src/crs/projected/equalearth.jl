@@ -133,7 +133,7 @@ function forward(::Type{<:EqualEarth{Datum}}, λ, ϕ) where {Datum}
   θ⁶ = θ²^3
 
   # spherical formulas using authalic coordinates
-  xₛ = λ * cos(θ) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
+  xₛ = (λ * cos(θ)) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
   yₛ = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
 
   # authalic radius
