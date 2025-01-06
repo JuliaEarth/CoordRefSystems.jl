@@ -90,7 +90,7 @@ function formulas(::Type{<:EqualEarth{Datum}}, ::Type{T}) where {Datum,T}
     θ² = θ^2
     θ⁶ = θ²^3
 
-    # spherical forward using authalic coordinates
+    # spherical formulas using authalic coordinates
     xₛ = (λ * cos(θ)) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
     Rq * xₛ # authalic radius
   end
@@ -102,7 +102,7 @@ function formulas(::Type{<:EqualEarth{Datum}}, ::Type{T}) where {Datum,T}
     θ² = θ^2
     θ⁶ = θ²^3
 
-    # spherical forward using authalic coordinates
+    # spherical formulas using authalic coordinates
     yₛ = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
     Rq * yₛ # authalic radius
   end
@@ -132,7 +132,7 @@ function forward(::Type{<:EqualEarth{Datum}}, λ, ϕ) where {Datum}
   θ² = θ^2
   θ⁶ = θ²^3
 
-  # spherical forward using authalic coordinates
+  # spherical formulas using authalic coordinates
   xₛ = λ * cos(θ) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
   yₛ = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
 
@@ -164,7 +164,7 @@ function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
   yₛ = y / Rq
 
   function fyₛ(θ)
-    # for avoid boxing
+    # to avoid variable capture
     local θ² = θ^2
     local θ⁶ = θ²^3
 
@@ -172,7 +172,7 @@ function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
   end
 
   function dfyₛ(θ)
-    # for avoid boxing
+    # to avoid variable capture
     local θ² = θ^2
     local θ⁶ = θ²^3
 
