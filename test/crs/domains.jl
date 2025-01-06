@@ -42,6 +42,8 @@
       T(1e-3) * °
     elseif C <: Albers
       T === Float32 ? 1.0f-1° : 1e-5°
+    elseif C <: EqualEarth && T === Float64
+      1e-5°
     else
       nothing
     end

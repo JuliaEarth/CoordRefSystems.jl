@@ -70,6 +70,7 @@ function formulas(::Type{<:EqualEarth{Datum}}, ::Type{T}) where {Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
+  ome² = 1 - e²
 
   A₁ = T(_EEA₁)
   A₂ = T(_EEA₂)
@@ -77,24 +78,33 @@ function formulas(::Type{<:EqualEarth{Datum}}, ::Type{T}) where {Datum,T}
   A₄ = T(_EEA₄)
   M = sqrt(T(3)) / T(2)
 
+  qₚ = authqₚ(e, ome²)
+  Rq = sqrt(qₚ / 2)
+
   fθ(β) = asin(M * sin(β))
 
   function fx(λ, ϕ)
-    β = geod2auth(ϕ, e, e²)
+    q = authq(ϕ, e, ome²)
+    β = geod2auth(q, qₚ)
     θ = fθ(β)
     θ² = θ^2
     θ⁶ = θ²^3
 
-    (λ * cos(θ)) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
+    # spherical forward using authalic coordinates
+    xₛ = (λ * cos(θ)) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
+    Rq * xₛ # authalic radius
   end
 
   function fy(λ, ϕ)
-    β = geod2auth(ϕ, e, e²)
+    q = authq(ϕ, e, ome²)
+    β = geod2auth(q, qₚ)
     θ = fθ(β)
     θ² = θ^2
     θ⁶ = θ²^3
 
-    θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
+    # spherical forward using authalic coordinates
+    yₛ = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
+    Rq * yₛ # authalic radius
   end
 
   fx, fy
@@ -105,6 +115,7 @@ function forward(::Type{<:EqualEarth{Datum}}, λ, ϕ) where {Datum}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
+  ome² = 1 - e²
 
   A₁ = T(_EEA₁)
   A₂ = T(_EEA₂)
@@ -112,13 +123,22 @@ function forward(::Type{<:EqualEarth{Datum}}, λ, ϕ) where {Datum}
   A₄ = T(_EEA₄)
   M = sqrt(T(3)) / T(2)
 
-  β = geod2auth(ϕ, e, e²)
+  qₚ = authqₚ(e, ome²)
+  Rq = sqrt(qₚ / 2)
+
+  q = authq(ϕ, e, ome²)
+  β = geod2auth(q, qₚ)
   θ = asin(M * sin(β))
   θ² = θ^2
   θ⁶ = θ²^3
 
-  x = (λ * cos(θ)) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
-  y = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
+  # spherical forward using authalic coordinates
+  xₛ = λ * cos(θ) / (M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)))
+  yₛ = θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
+
+  # authalic radius
+  x = Rq * xₛ
+  y = Rq * yₛ
 
   x, y
 end
@@ -126,7 +146,9 @@ end
 function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
   T = typeof(x)
   🌎 = ellipsoid(Datum)
+  e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
+  ome² = 1 - e²
 
   A₁ = T(_EEA₁)
   A₂ = T(_EEA₂)
@@ -134,27 +156,36 @@ function backward(::Type{<:EqualEarth{Datum}}, x, y) where {Datum}
   A₄ = T(_EEA₄)
   M = sqrt(T(3)) / T(2)
 
-  function fy(θ)
-    θ² = θ^2
-    θ⁶ = θ²^3
+  qₚ = authqₚ(e, ome²)
+  Rq = sqrt(qₚ / 2)
+
+  # authalic radius
+  xₛ = x / Rq
+  yₛ = y / Rq
+
+  function fyₛ(θ)
+    # for avoid boxing
+    local θ² = θ^2
+    local θ⁶ = θ²^3
 
     θ * (A₁ + A₂ * θ² + θ⁶ * (A₃ + A₄ * θ²))
   end
 
-  function dfy(θ)
-    θ² = θ^2
-    θ⁶ = θ²^3
+  function dfyₛ(θ)
+    # for avoid boxing
+    local θ² = θ^2
+    local θ⁶ = θ²^3
 
     A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²)
   end
 
-  θ = newton(θ -> fy(θ) - y, dfy, y)
-  β = asin(sin(θ) / M)
+  θ = newton(θ -> fyₛ(θ) - yₛ, dfyₛ, yₛ)
+  β = asinclamp(sin(θ) / M)
   θ² = θ^2
   θ⁶ = θ²^3
 
   ϕ = auth2geod(β, e²)
-  λ = (x * M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²))) / cos(θ)
+  λ = (xₛ * M * (A₁ + 3 * A₂ * θ² + θ⁶ * (7 * A₃ + 9 * A₄ * θ²))) / cos(θ)
 
   λ, ϕ
 end

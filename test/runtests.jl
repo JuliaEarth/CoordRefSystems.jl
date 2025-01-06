@@ -30,7 +30,8 @@ projected = [
   TransverseMercator{0.9996,0.0°},
   Albers{23.0°,29.5°,45.0°},
   Sinusoidal,
-  LambertAzimuthalEqualArea{15.0°}
+  LambertAzimuthalEqualArea{15.0°},
+  EqualEarth
 ]
 
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
