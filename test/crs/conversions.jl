@@ -1662,6 +1662,50 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> EqualEarth" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=eqearth ellps=WGS84
+      # """)
+      # inverse tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=eqearth inv ellps=WGS84
+      # step proj=unitconvert xy_in=rad xy_out=deg
+      # step proj=axisswap order=2,1
+      # """)
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(EqualEarth, c1)
+      @test allapprox(c2, EqualEarth(T(7.396237374497802e6), T(5.466867760213717e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(EqualEarth, c1)
+      @test allapprox(c2, EqualEarth(T(7.396237374497802e6), -T(5.466867760213717e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(T(45), -T(90))
+      c2 = convert(EqualEarth, c1)
+      @test allapprox(c2, EqualEarth(-T(7.396237374497802e6), T(5.466867760213717e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(EqualEarth, c1)
+      @test allapprox(c2, EqualEarth(-T(7.396237374497802e6), -T(5.466867760213717e6)))
+      c3 = convert(LatLon, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = EqualEarth(T(7.396237374497802e6), T(5.466867760213717e6))
+      @inferred convert(EqualEarth, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "LatLon <> UTM" begin
       UTMNorth32 = utmnorth(32)
       UTMSouth59 = utmsouth(59)
