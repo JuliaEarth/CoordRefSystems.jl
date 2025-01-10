@@ -33,6 +33,9 @@ include("transforms/sequential.jl")
 # https://epsg.org/transformation_10608/WGS-84-G2296-to-ITRF2020-1.html
 @identity WGS84{2296} ITRF{2020}
 
+# https://epsg.org/transformation_1149/ETRS89-to-WGS-84-1.html
+@identity ETRF{2020} WGS84{2296}
+
 # https://epsg.org/transformation_1130/Carthage-to-WGS-84-1.html
 @geoctranslation Carthage WGS84 (δx=-263.0, δy=6.0, δz=431.0)
 

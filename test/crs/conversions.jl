@@ -1819,6 +1819,15 @@
       c2 = convert(LatLon{WGS84{1762}}, c1)
       @test allapprox(c2, LatLon{WGS84{1762}}(T(45), T(90)))
 
+      # WGS84 (G2296) to ETRF2020
+      c1 = LatLon{WGS84{2296}}(T(45), T(90))
+      c2 = convert(LambertAzimuthalEqualArea{52.0°,ETRF{2020}}, c1)
+      @test allapprox(c2, LambertAzimuthalEqualArea{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063)))
+
+      c1 = LambertAzimuthalEqualArea{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063))
+      c2 = convert(LatLon{WGS84{2296}}, c1)
+      @test allapprox(c2, LatLon{WGS84{2296}}(T(45), T(90)))
+
       # type stability
       c1 = LatLon{WGS84{1762}}(T(45), T(90))
       c2 = Mercator{WGS84{1762}}(T(10018754.171394622), T(5591295.9185533915))
