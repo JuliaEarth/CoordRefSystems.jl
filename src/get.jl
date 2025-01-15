@@ -58,6 +58,8 @@ end
 # ----------------
 
 @crscode EPSG{2157} shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
+# TODO: is WGS84Latest the correct thing to use here?
+@crscode EPSG{3031} PolarStereographicB{-71°,0°,WGS84Latest}
 @crscode EPSG{3035} shift(LambertAzimuthalEqualArea{52.0°,ETRFLatest}, lonₒ=-10.0°, xₒ=4321000.0m, yₒ=-3210000.0m)
 @crscode EPSG{3310} shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m)
 @crscode EPSG{3395} Mercator{WGS84Latest}
