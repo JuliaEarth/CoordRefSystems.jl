@@ -5,7 +5,12 @@
 """
     PolarStereographicB{latF, lngₒ, Datum,Shift}
 
-Equidistant Cylindrical CRS with latitude of true scale `latF, lngₒ` in degrees, `Datum` and `Shift`.
+Polar Stereographic CRS Variant B with latitude of standard parallel `latF` and  longitude of 
+origin `lngₒ` in degrees, `Datum` and `Shift`. Latitude of origin is taken to be ±90°,
+with the sign matching the sign of `latF`.
+
+See conversion formulas at [epsg.org](https://epsg.org/coord-operation-method_9829/Polar-Stereographic-variant-B.html)
+and in [EPSG guidance note #7-2 (pdf)](https://www.iogp.org/wp-content/uploads/2019/09/373-07-02.pdf).
 """
 struct PolarStereographicB{latF,lngₒ,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
@@ -150,7 +155,7 @@ function backward(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, x, y) where 
   🌎 = ellipsoid(Datum)
   e = eccentricity(🌎)
   semimajoraxis = majoraxis(🌎)
-  a = ustrip(uconvert(m, semimajoraxis)) # TODO do we need to enforce a type here?
+  a = ustrip(uconvert(m, semimajoraxis)) # TODO do we need to enforce a type here? `oftype` is used above
 
   E = x * a
   N = y * a
@@ -166,7 +171,7 @@ function backward(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, x, y) where 
   mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
   kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
-  # Document uses a variable 'capital chi' (\Chi, Χ) but I'm using just 
+  # EPSG guidance note #7-2 uses a variable 'capital chi' (\Chi, Χ) but I'm using just 
   # a 'capital X' (X) because they looks the same in my font
   ρ′ = sqrt((E - FE)^2 + (N - FN)^2)
   t′ = ρ′ * sqrt(((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * a * kO)
@@ -182,6 +187,8 @@ function backward(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, x, y) where 
     (7e^6 / 120 + 81e^8 / 1120) * sin(6X) +
     (4279e^8 / 161280) * sin(8X)
   # south pole case only! TODO add north pole case
+  # TODO: the atan can be dropped if FE and FN are zero, which might
+  #   be possible if Shift takes care of FE and FN
   λ = λₒ + atan(E - FE, N - FN)
 
   λ, ϕ
