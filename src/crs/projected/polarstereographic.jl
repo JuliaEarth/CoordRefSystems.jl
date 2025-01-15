@@ -64,7 +64,8 @@ See [EPSG:32662](https://epsg.io/32662).
 const PlateCarree{Datum,Shift} = EquidistantCylindrical{0.0°,Datum,Shift}
 =#
 
-const EPSG3031{Shift} = PolarStereographicB{-71°,0°,WGS84,Shift}
+# TODO: is WGS84Latest the correct thing to use here?
+const EPSG3031 = PolarStereographicB{-71°,0°,WGS84Latest,Shift(xₒ=0m, yₒ=0m)}
 
 # ------------
 # CONVERSIONS
