@@ -79,8 +79,6 @@ function formulas(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, ::Type{T}) w
   FE = 0
   FN = 0
 
-  # TODO: NOTE: are there docs on what fx and fy are supposed to be?
-  # that'd be nice info to add into a guide for contribution
   function fx(λ, ϕ)
     # TODO: this is only for the south pole case
     tF = tan(π / 4 + ϕF / 2) / (((1 + ecc * sin(ϕF)) / (1 - ecc * sin(ϕF)))^(ecc / 2))
