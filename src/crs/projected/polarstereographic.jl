@@ -152,7 +152,7 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   semimajoraxis = majoraxis(🌎)
-  a = T(ustrip(uconvert(m, semimajoraxis))) # TODO do we need to enforce a type here? `oftype` is used above
+  a = T(ustrip(uconvert(m, semimajoraxis)))
   π = T(pi)
 
   E = x * a
