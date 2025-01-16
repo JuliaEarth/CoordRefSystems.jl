@@ -1721,40 +1721,40 @@
       # step proj=axisswap order=2,1
       # """)
       c1 = LatLon(T(-80), T(0))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,0°,WGS84Latest}(T(0.0), T(1.0891794556261837e6)))
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(0.0), T(1.0891794556261837e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(T(-80), T(90))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,0°,WGS84Latest}(T(1.0891794556261837e6), T(0.0)))
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(1.0891794556261837e6), T(0.0)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(T(-80), T(-90))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,0°,WGS84Latest}(T(-1.0891794556261837e6), T(0.0)))
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(-1.0891794556261837e6), T(0.0)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(T(-80), T(180))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,0°,WGS84Latest}(T(0.0), T(-1.0891794556261837e6)))
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(0.0), T(-1.0891794556261837e6)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
       c1 = LatLon(T(-89), T(10))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,0°,WGS84Latest}(T(18867.758184287333), T(107004.37396749199)))
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(18867.758184287333), T(107004.37396749199)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
 
       # type stability
       c1 = LatLon(T(-80), T(0))
-      c2 = convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
-      @inferred convert(PolarStereographicB{-71°,0°,WGS84Latest}, c1)
+      c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
+      @inferred convert(PolarStereographicB{-71°,WGS84Latest}, c1)
       @inferred convert(LatLon, c2)
     end
 

@@ -32,7 +32,7 @@ projected = [
   Sinusoidal,
   LambertAzimuthalEqualArea{15.0°},
   EqualEarth,
-  PolarStereographicB{-71°,0°}
+  PolarStereographicB{-71°}
 ]
 
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
