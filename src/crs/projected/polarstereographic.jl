@@ -70,13 +70,10 @@ function formulas(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, ::Type{T}) w
 
   🌎 = ellipsoid(Datum)
 
+   # TODO do we need to enforce a type T for ecc and a here?
   ecc = eccentricity(🌎)
   semimajoraxis = majoraxis(🌎)
-  a = ustrip(uconvert(m, semimajoraxis)) # TODO do we need to enforce a type here?
-
-  # TODO: remove these? FE and FN can be covered by Shift I think
-  FE = 0
-  FN = 0
+  a = ustrip(uconvert(m, semimajoraxis))
 
   function fx(λ, ϕ)
     # TODO: this is only for the south pole case
