@@ -3,47 +3,47 @@
 # ------------------------------------------------------------------
 
 """
-    PolarStereographicB{latF, Datum,Shift}
+    PolarStereographicB{lat₁, Datum,Shift}
 
-Polar Stereographic CRS Variant B with latitude of standard parallel `latF`, `Datum`, and `Shift`. Latitude of origin is taken to be ±90°,
-with the sign matching the sign of `latF`. Longitude of origin is taken to be 0° and can be changed with a `Shift`.
+Polar Stereographic CRS Variant B with latitude of standard parallel `lat₁`, `Datum`, and `Shift`. Latitude of origin is taken to be ±90°,
+with the sign matching the sign of `lat₁`. Longitude of origin is taken to be 0° and can be changed with a `Shift`.
 
 See conversion formulas at [epsg.org](https://epsg.org/coord-operation-method_9829/Polar-Stereographic-variant-B.html)
 and in [EPSG guidance note #7-2 (pdf)](https://www.iogp.org/wp-content/uploads/2019/09/373-07-02.pdf).
 """
-struct PolarStereographicB{latF,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
+struct PolarStereographicB{lat₁,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-PolarStereographicB{latF,Datum,Shift}(x::M, y::M) where {latF,Datum,Shift,M<:Met} =
-  PolarStereographicB{latF,Datum,Shift,float(M)}(x, y)
-PolarStereographicB{latF,Datum,Shift}(x::Met, y::Met) where {latF,Datum,Shift} =
-  PolarStereographicB{latF,Datum,Shift}(promote(x, y)...)
-PolarStereographicB{latF,Datum,Shift}(x::Len, y::Len) where {latF,Datum,Shift} =
-  PolarStereographicB{latF,Datum,Shift}(uconvert(m, x), uconvert(m, y))
-PolarStereographicB{latF,Datum,Shift}(x::Number, y::Number) where {latF,Datum,Shift} =
-  PolarStereographicB{latF,Datum,Shift}(addunit(x, m), addunit(y, m))
+PolarStereographicB{lat₁,Datum,Shift}(x::M, y::M) where {lat₁,Datum,Shift,M<:Met} =
+  PolarStereographicB{lat₁,Datum,Shift,float(M)}(x, y)
+PolarStereographicB{lat₁,Datum,Shift}(x::Met, y::Met) where {lat₁,Datum,Shift} =
+  PolarStereographicB{lat₁,Datum,Shift}(promote(x, y)...)
+PolarStereographicB{lat₁,Datum,Shift}(x::Len, y::Len) where {lat₁,Datum,Shift} =
+  PolarStereographicB{lat₁,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+PolarStereographicB{lat₁,Datum,Shift}(x::Number, y::Number) where {lat₁,Datum,Shift} =
+  PolarStereographicB{lat₁,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-PolarStereographicB{latF,Datum}(args...) where {latF,Datum} =
-  PolarStereographicB{latF,Datum,Shift()}(args...)
+PolarStereographicB{lat₁,Datum}(args...) where {lat₁,Datum} =
+  PolarStereographicB{lat₁,Datum,Shift()}(args...)
 
-PolarStereographicB{latF}(args...) where {latF} = PolarStereographicB{latF,WGS84Latest}(args...)
+PolarStereographicB{lat₁}(args...) where {lat₁} = PolarStereographicB{lat₁,WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{PolarStereographicB{latF,Datum,Shift,M}},
-  coords::PolarStereographicB{latF,Datum,Shift}
-) where {latF,Datum,Shift,M} = PolarStereographicB{latF,Datum,Shift,M}(coords.x, coords.y)
+  ::Type{PolarStereographicB{lat₁,Datum,Shift,M}},
+  coords::PolarStereographicB{lat₁,Datum,Shift}
+) where {lat₁,Datum,Shift,M} = PolarStereographicB{lat₁,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:PolarStereographicB{latF,Datum,Shift}}) where {latF,Datum,Shift} =
-  PolarStereographicB{latF,Datum,Shift}
+constructor(::Type{<:PolarStereographicB{lat₁,Datum,Shift}}) where {lat₁,Datum,Shift} =
+  PolarStereographicB{lat₁,Datum,Shift}
 
-lentype(::Type{<:PolarStereographicB{latF,Datum,Shift,M}}) where {latF,Datum,Shift,M} = M
+lentype(::Type{<:PolarStereographicB{lat₁,Datum,Shift,M}}) where {lat₁,Datum,Shift,M} = M
 
 ==(
-  coords₁::PolarStereographicB{latF,Datum,Shift},
-  coords₂::PolarStereographicB{latF,Datum,Shift}
-) where {latF,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+  coords₁::PolarStereographicB{lat₁,Datum,Shift},
+  coords₂::PolarStereographicB{lat₁,Datum,Shift}
+) where {lat₁,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 # ------------
 # CONVERSIONS
@@ -63,8 +63,8 @@ PolarStereographicB{WGS84Latest} coordinates with lonₒ: 0.0°, xₒ: 6.0e6 m, 
 ├─ x: 7.255380793258386e6 m
 └─ y: 7.053389560610154e6 m
 =#
-function formulas(::Type{<:PolarStereographicB{latF,Datum}}, ::Type{T}) where {latF,Datum,T}
-  ϕF = T(ustrip(deg2rad(latF)))
+function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
+  ϕF = T(ustrip(deg2rad(lat₁)))
   lngₒ = 0 # any longitude-of-origin changes can be handled by a `shift`
   λₒ = T(ustrip(deg2rad(lngₒ)))
 
@@ -144,8 +144,8 @@ GeodeticLatLon{WGS84Latest} coordinates
 ├─ lat: -75.00000002614524°
 └─ lon: 119.9999999431146°
 =#
-function backward(::Type{<:PolarStereographicB{latF,Datum}}, x, y) where {latF,Datum}
-  ϕF = oftype(x, ustrip(deg2rad(latF)))
+function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat₁,Datum}
+  ϕF = oftype(x, ustrip(deg2rad(lat₁)))
   lngₒ = 0 # any longitude-of-origin changes can be handled by a `shift`
   λₒ = oftype(x, ustrip(deg2rad(lngₒ)))
 
@@ -194,8 +194,8 @@ end
 # FALLBACKS
 # ----------
 
-indomain(::Type{PolarStereographicB{latF}}, coords::CRS{Datum}) where {latF,Datum} =
-  indomain(PolarStereographicB{latF,Datum}, coords)
+indomain(::Type{PolarStereographicB{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} =
+  indomain(PolarStereographicB{lat₁,Datum}, coords)
 
-Base.convert(::Type{PolarStereographicB{latF}}, coords::CRS{Datum}) where {latF,Datum} =
-  convert(PolarStereographicB{latF,Datum}, coords)
+Base.convert(::Type{PolarStereographicB{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} =
+  convert(PolarStereographicB{lat₁,Datum}, coords)
