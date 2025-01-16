@@ -64,7 +64,6 @@ PolarStereographicB{WGS84Latest} coordinates with lonₒ: 0.0°, xₒ: 6.0e6 m, 
 ├─ x: 7.255380793258386e6 m
 └─ y: 7.053389560610154e6 m
 =#
-# TODO: can FE and FN (false east and north) be removed by composing with a shift?
 function formulas(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, ::Type{T}) where {latF,lngₒ,Datum,T}
   ϕF = T(ustrip(deg2rad(latF)))
   λₒ = T(ustrip(deg2rad(lngₒ)))
@@ -98,8 +97,9 @@ function formulas(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, ::Type{T}) w
 
     @debug "Values" tF mF kO t ρ
 
-    E = FE + dE
-    N = FN + dN
+    # takes FE and FN to be zero
+    E = dE
+    N = dN
 
     E
   end
@@ -117,8 +117,9 @@ function formulas(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, ::Type{T}) w
     dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
-    E = FE + dE
-    N = FN + dN
+    # takes FE and FN to be zero
+    E = dE
+    N = dN
 
     N
   end
@@ -160,7 +161,7 @@ function backward(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, x, y) where 
 
   @debug "Inputs" x y E N
 
-  # TODO: remove these? FE and FN can be covered by Shift I think
+  # nonzero FE and FN are covered by `shift` operations
   FE = 0
   FN = 0
 
@@ -185,8 +186,7 @@ function backward(::Type{<:PolarStereographicB{latF,lngₒ,Datum}}, x, y) where 
     (7e^6 / 120 + 81e^8 / 1120) * sin(6X) +
     (4279e^8 / 161280) * sin(8X)
   # south pole case only! TODO add north pole case
-  # TODO: the atan can be dropped if FE and FN are zero, which might
-  #   be possible if Shift takes care of FE and FN
+  # TODO: the atan can be dropped because FE and FN are zero!
   λ = λₒ + atan(E - FE, N - FN)
 
   λ, ϕ
