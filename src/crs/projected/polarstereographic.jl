@@ -70,26 +70,25 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
 
   🌎 = ellipsoid(Datum)
 
-   # TODO do we need to enforce a type T for ecc and a here?
-  ecc = T(eccentricity(🌎))
+  e = T(eccentricity(🌎))
   semimajoraxis = majoraxis(🌎)
   a = T(ustrip(uconvert(m, semimajoraxis)))
   π = T(pi)
 
   function fx(λ, ϕ)
     # TODO: this is only for the south pole case
-    tF = tan(π / 4 + ϕF / 2) / (((1 + ecc * sin(ϕF)) / (1 - ecc * sin(ϕF)))^(ecc / 2))
-    mF = cos(ϕF) / sqrt(1 - ecc^2 * sin(ϕF)^2)
-    kO = mF * (sqrt((1 + ecc)^(1 + ecc) * (1 - ecc)^(1 - ecc))) / (2 * tF)
+    tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
+    mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
+    kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
     θ = λ - λₒ
     # calculate t, ρ, E, and N as in Variant A south pole case:
-    t = tan(π / 4 + ϕ / 2) / (((1 + ecc * sin(ϕ)) / (1 - ecc * sin(ϕ)))^(ecc / 2))
+    t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     # Geomatics Guidance Note number 7, part 2 defines
     #   ρ = 2 * a * kO * ... but it seems like CoordRefSystems.jl
     # multiplies the result of fx and fy by a, so a is not included in
     # the definition of ρ here
-    ρ = 2 * kO * t / sqrt((1 + ecc)^(1 + ecc) * (1 - ecc)^(1 - ecc))
+    ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
     dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
@@ -104,14 +103,14 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
 
   function fy(λ, ϕ)
     # TODO: this is only for the south pole case
-    tF = tan(π / 4 + ϕF / 2) / (((1 + ecc * sin(ϕF)) / (1 - ecc * sin(ϕF)))^(ecc / 2))
-    mF = cos(ϕF) / sqrt(1 - ecc^2 * sin(ϕF)^2)
-    kO = mF * (sqrt((1 + ecc)^(1 + ecc) * (1 - ecc)^(1 - ecc))) / (2 * tF)
+    tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
+    mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
+    kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
     θ = λ - λₒ
     # calculate t, ρ, E, and N as in Variant A south pole case:
-    t = tan(π / 4 + ϕ / 2) / (((1 + ecc * sin(ϕ)) / (1 - ecc * sin(ϕ)))^(ecc / 2))
-    ρ = 2 * kO * t / sqrt((1 + ecc)^(1 + ecc) * (1 - ecc)^(1 - ecc))
+    t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
+    ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
     dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
