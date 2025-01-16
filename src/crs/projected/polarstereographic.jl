@@ -71,9 +71,10 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
   🌎 = ellipsoid(Datum)
 
    # TODO do we need to enforce a type T for ecc and a here?
-  ecc = eccentricity(🌎)
+  ecc = T(eccentricity(🌎))
   semimajoraxis = majoraxis(🌎)
-  a = ustrip(uconvert(m, semimajoraxis))
+  a = T(ustrip(uconvert(m, semimajoraxis)))
+  π = T(pi)
 
   function fx(λ, ϕ)
     # TODO: this is only for the south pole case
@@ -145,14 +146,16 @@ GeodeticLatLon{WGS84Latest} coordinates
 └─ lon: 119.9999999431146°
 =#
 function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat₁,Datum}
-  ϕF = oftype(x, ustrip(deg2rad(lat₁)))
+  T = typeof(x)
+  ϕF = T(ustrip(deg2rad(lat₁)))
   lngₒ = 0 # any longitude-of-origin changes can be handled by a `shift`
-  λₒ = oftype(x, ustrip(deg2rad(lngₒ)))
+  λₒ = T(ustrip(deg2rad(lngₒ)))
 
   🌎 = ellipsoid(Datum)
-  e = eccentricity(🌎)
+  e = T(eccentricity(🌎))
   semimajoraxis = majoraxis(🌎)
-  a = ustrip(uconvert(m, semimajoraxis)) # TODO do we need to enforce a type here? `oftype` is used above
+  a = T(ustrip(uconvert(m, semimajoraxis))) # TODO do we need to enforce a type here? `oftype` is used above
+  π = T(pi)
 
   E = x * a
   N = y * a
