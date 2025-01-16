@@ -1751,7 +1751,6 @@
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
-
       # type stability
       c1 = LatLon(T(-80), T(0))
       c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)

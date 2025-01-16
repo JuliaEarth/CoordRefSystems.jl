@@ -25,8 +25,7 @@ PolarStereographicB{lat₁,Datum,Shift}(x::Len, y::Len) where {lat₁,Datum,Shif
 PolarStereographicB{lat₁,Datum,Shift}(x::Number, y::Number) where {lat₁,Datum,Shift} =
   PolarStereographicB{lat₁,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-PolarStereographicB{lat₁,Datum}(args...) where {lat₁,Datum} =
-  PolarStereographicB{lat₁,Datum,Shift()}(args...)
+PolarStereographicB{lat₁,Datum}(args...) where {lat₁,Datum} = PolarStereographicB{lat₁,Datum,Shift()}(args...)
 
 PolarStereographicB{lat₁}(args...) where {lat₁} = PolarStereographicB{lat₁,WGS84Latest}(args...)
 
