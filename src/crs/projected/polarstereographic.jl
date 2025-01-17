@@ -68,8 +68,6 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
   🌎 = ellipsoid(Datum)
 
   e = T(eccentricity(🌎))
-  semimajoraxis = majoraxis(🌎)
-  a = T(ustrip(uconvert(m, semimajoraxis)))
   π = T(pi)
 
   function fx(λ, ϕ)
@@ -144,11 +142,10 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   semimajoraxis = majoraxis(🌎)
-  a = T(ustrip(uconvert(m, semimajoraxis)))
   π = T(pi)
 
-  E = x * a
-  N = y * a
+  E = x
+  N = y
 
   @debug "Inputs" x y E N
 
@@ -163,8 +160,8 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
 
   # EPSG guidance note #7-2 uses a variable 'capital chi' (\Chi, Χ) but I'm using just 
   # a 'capital X' (X) because they looks the same in my font
-  ρ′ = sqrt((E - FE)^2 + (N - FN)^2)
-  t′ = ρ′ * sqrt(((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * a * kO)
+  ρ′ = sqrt(E^2 + N^2)
+  t′ = ρ′ * sqrt(((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * kO)
   X = 2atan(t′) - π / 2 # south pole case. TODO: add north pole case
 
   @debug "Intermediates" tF mF kO ρ′ t′ X
