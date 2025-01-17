@@ -149,10 +149,6 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
 
   @debug "Inputs" x y E N
 
-  # nonzero FE and FN are covered by `shift` operations
-  FE = 0
-  FN = 0
-
   # TODO: this is only for the south pole case
   tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
   mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
@@ -175,7 +171,7 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
     (4279e^8 / 161280) * sin(8X)
   # south pole case only! TODO add north pole case
   # TODO: the atan can be dropped because FE and FN are zero!
-  λ = λₒ + atan(E - FE, N - FN)
+  λ = atan(E, N)
 
   λ, ϕ
 end
