@@ -70,12 +70,12 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
   e = T(eccentricity(🌎))
   π = T(pi)
 
-  function fx(λ, ϕ)
-    # TODO: this is only for the south pole case
-    tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
-    mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
-    kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
+  # TODO: this is only for the south pole case
+  tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
+  mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
+  kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
+  function fx(λ, ϕ)
     θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
@@ -93,11 +93,6 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
   end
 
   function fy(λ, ϕ)
-    # TODO: this is only for the south pole case
-    tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
-    mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
-    kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
-
     θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
