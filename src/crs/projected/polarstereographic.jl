@@ -70,10 +70,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
   e = T(eccentricity(🌎))
   π = T(pi)
 
-  # TODO: this is only for the south pole case
-  tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
-  mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
-  kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
+  kO = scale_at_natural_origin(ϕF, e)
 
   function fx(λ, ϕ)
     θ = λ
@@ -83,7 +80,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
-    @debug "Values" tF mF kO t ρ
+    @debug "Values" kO t ρ
 
     # takes FE and FN to be zero
     E = dE
@@ -144,10 +141,7 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
 
   @debug "Inputs" x y E N
 
-  # TODO: this is only for the south pole case
-  tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
-  mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
-  kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
+  kO = scale_at_natural_origin(ϕF, e)
 
   # EPSG guidance note #7-2 uses a variable 'capital chi' (\Chi, Χ) but I'm using just 
   # a 'capital X' (X) because they looks the same in my font
@@ -155,7 +149,7 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
   t′ = ρ′ * sqrt(((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * kO)
   X = 2atan(t′) - π / 2 # south pole case. TODO: add north pole case
 
-  @debug "Intermediates" tF mF kO ρ′ t′ X
+  @debug "Intermediates" kO ρ′ t′ X
 
   # ϕ and λ are found as for variant A:
   ϕ =
@@ -180,3 +174,18 @@ indomain(::Type{PolarStereographicB{lat₁}}, coords::CRS{Datum}) where {lat₁,
 
 Base.convert(::Type{PolarStereographicB{lat₁}}, coords::CRS{Datum}) where {lat₁,Datum} =
   convert(PolarStereographicB{lat₁,Datum}, coords)
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+function scale_at_natural_origin(ϕF::T, e::T) where T
+  π = T(pi)
+  # TODO: this is only for the south pole case
+  tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
+  mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
+  kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
+
+  @assert kO isa T
+  kO
+end
