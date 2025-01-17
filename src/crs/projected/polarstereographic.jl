@@ -64,8 +64,6 @@ PolarStereographicB{WGS84Latest} coordinates with lonₒ: 0.0°, xₒ: 6.0e6 m, 
 =#
 function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
   ϕF = T(ustrip(deg2rad(lat₁)))
-  lngₒ = 0 # any longitude-of-origin changes can be handled by a `shift`
-  λₒ = T(ustrip(deg2rad(lngₒ)))
 
   🌎 = ellipsoid(Datum)
 
@@ -80,7 +78,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
     kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
-    θ = λ - λₒ
+    θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e)) # factor of `a` is handled elsewhere
@@ -102,7 +100,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     mF = cos(ϕF) / sqrt(1 - e^2 * sin(ϕF)^2)
     kO = mF * (sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * tF)
 
-    θ = λ - λₒ
+    θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
@@ -142,8 +140,6 @@ GeodeticLatLon{WGS84Latest} coordinates
 function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat₁,Datum}
   T = typeof(x)
   ϕF = T(ustrip(deg2rad(lat₁)))
-  lngₒ = 0 # any longitude-of-origin changes can be handled by a `shift`
-  λₒ = T(ustrip(deg2rad(lngₒ)))
 
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
