@@ -83,11 +83,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     θ = λ - λₒ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
-    # Geomatics Guidance Note number 7, part 2 defines
-    #   ρ = 2 * a * kO * ... but it seems like CoordRefSystems.jl
-    # multiplies the result of fx and fy by a, so a is not included in
-    # the definition of ρ here
-    ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
+    ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e)) # factor of `a` is handled elsewhere
     dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
