@@ -63,16 +63,17 @@ PolarStereographicB{WGS84Latest} coordinates with lonₒ: 0.0°, xₒ: 6.0e6 m, 
 └─ y: 7.053389560610154e6 m
 =#
 function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
-  ϕF = T(ustrip(deg2rad(lat₁)))
+  ϕF = Float64(ustrip(deg2rad(Float64(lat₁))))
 
   🌎 = ellipsoid(Datum)
 
-  e = T(eccentricity(🌎))
-  π = T(pi)
+  e = Float64(eccentricity(🌎))
+  π = Float64(pi)
 
   kO = scale_at_natural_origin(ϕF, e)
 
   function fx(λ, ϕ)
+    λ, ϕ = Float64.((λ, ϕ))
     θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
@@ -84,10 +85,11 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     # takes FE to be zero
     E = dE
 
-    E
+    T(E)
   end
 
   function fy(λ, ϕ)
+    λ, ϕ = Float64.((λ, ϕ))
     θ = λ
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
@@ -97,7 +99,7 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     # takes FN to be zero
     N = dN
 
-    N
+    T(N)
   end
   fx, fy
 end
