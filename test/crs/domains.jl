@@ -130,7 +130,7 @@
           end
         end
       else
-        atol = 1e10°
+        atol = 1e-6°
         for lat in T.(-89:89), lon in T.(-180:180)
           c1 = LatLon(lat, lon)
           if indomain(C, c1)
