@@ -140,6 +140,30 @@
           end
         end
       end
+    elseif C <: PolarStereographicB
+      # coordinates at the singularity of the projection (lat ≈ +90) cannot be inverted
+      if T === Float32
+        atol = 1.0f-2°
+        for lat in T.(-89:89), lon in T.(-180:180)
+          c1 = LatLon(lat, lon)
+          if indomain(C, c1)
+            c2 = convert(C, c1)
+            c3 = convert(LatLon, c2)
+            @test allapprox(c3, c1; atol)
+          end
+        end
+      else
+        atol = 1e-8°
+        for lat in T.(-89:89), lon in T.(-180:180)
+          c1 = LatLon(lat, lon)
+          if indomain(C, c1)
+            c2 = convert(C, c1)
+            c3 = convert(LatLon, c2)
+            @info "Float64 vals" c1 c3
+            @test allapprox(c3, c1; atol)
+          end
+        end
+      end
     else
       kwargs = isnothing(atol) ? (;) : (; atol)
 
