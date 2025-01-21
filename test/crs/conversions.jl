@@ -1735,7 +1735,7 @@
 
       c1 = LatLon(T(-80), T(-90))
       c2 = convert(PolarStereographicB{-71°,WGS84Latest}, c1)
-      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(1.0891794556261837e6), T(-6.669300670148313e-11)))
+      @test allapprox(c2, PolarStereographicB{-71°,WGS84Latest}(T(-1.0891794556261837e6), T(6.669300670148313e-11)))
       c3 = convert(LatLon, c2)
       @test allapprox(c3, c1)
 
