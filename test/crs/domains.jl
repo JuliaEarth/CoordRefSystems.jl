@@ -159,7 +159,6 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @info "Float64 vals" c1 c3
             @test allapprox(c3, c1; atol)
           end
         end
