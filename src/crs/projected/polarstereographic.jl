@@ -78,13 +78,11 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e)) # factor of `a` is handled elsewhere
     dE = ρ * sin(θ)
-    dN = ρ * cos(θ)
 
     @debug "Values" kO t ρ
 
-    # takes FE and FN to be zero
+    # takes FE to be zero
     E = dE
-    N = dN
 
     E
   end
@@ -94,11 +92,9 @@ function formulas(::Type{<:PolarStereographicB{lat₁,Datum}}, ::Type{T}) where 
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
-    dE = ρ * sin(θ)
     dN = ρ * cos(θ)
 
-    # takes FE and FN to be zero
-    E = dE
+    # takes FN to be zero
     N = dN
 
     N
@@ -133,7 +129,6 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
 
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
-  semimajoraxis = majoraxis(🌎)
   π = T(pi)
 
   E = x
@@ -159,7 +154,6 @@ function backward(::Type{<:PolarStereographicB{lat₁,Datum}}, x, y) where {lat�
     (7e^6 / 120 + 81e^8 / 1120) * sin(6X) +
     (4279e^8 / 161280) * sin(8X)
   # south pole case only! TODO add north pole case
-  # TODO: the atan can be dropped because FE and FN are zero!
   λ = atan(E, N)
 
   λ, ϕ
