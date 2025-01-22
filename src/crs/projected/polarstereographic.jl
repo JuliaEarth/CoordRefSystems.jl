@@ -35,8 +35,6 @@ See also [`Variant`](@ref)
 """
 abstract type C <: Variant end
 
-
-
 """
     PolarStereographic{Variant,lat₁, Datum,Shift}
 
@@ -60,7 +58,8 @@ PolarStereographic{Variant,lat₁,Datum,Shift}(x::Len, y::Len) where {Variant,la
 PolarStereographic{Variant,lat₁,Datum,Shift}(x::Number, y::Number) where {Variant,lat₁,Datum,Shift} =
   PolarStereographic{Variant,lat₁,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-PolarStereographic{Variant,lat₁,Datum}(args...) where {Variant,lat₁,Datum} = PolarStereographic{Variant,lat₁,Datum,Shift()}(args...)
+PolarStereographic{Variant,lat₁,Datum}(args...) where {Variant,lat₁,Datum} =
+  PolarStereographic{Variant,lat₁,Datum,Shift()}(args...)
 
 PolarStereographic{Variant,lat₁}(args...) where {Variant,lat₁} = PolarStereographic{Variant,lat₁,WGS84Latest}(args...)
 
@@ -197,7 +196,7 @@ Base.convert(::Type{PolarStereographic{Variant,lat₁}}, coords::CRS{Datum}) whe
 # HELPER FUNCTIONS
 # -----------------
 
-function scale_at_natural_origin(ϕF::T, e::T) where T
+function scale_at_natural_origin(ϕF::T, e::T) where {T}
   π = T(pi)
   # TODO: this is only for the south pole case
   tF = tan(π / 4 + ϕF / 2) / (((1 + e * sin(ϕF)) / (1 - e * sin(ϕF)))^(e / 2))
