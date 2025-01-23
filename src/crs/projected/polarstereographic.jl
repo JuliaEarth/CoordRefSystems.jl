@@ -17,7 +17,7 @@ abstract type Variant end
 Variant A (i.e. for variants of the PolarStereographic projection).
 See also [`Variant`](@ref)
 """
-abstract type A <: Variant end
+abstract type VariantA <: Variant end
 
 """
     B
@@ -25,7 +25,7 @@ abstract type A <: Variant end
 Variant B (i.e. for variants of the PolarStereographic projection).
 See also [`Variant`](@ref)
 """
-abstract type B <: Variant end
+abstract type VariantB <: Variant end
 
 """
     C
@@ -33,7 +33,7 @@ abstract type B <: Variant end
 Variant C (i.e. for variants of the PolarStereographic projection).
 See also [`Variant`](@ref)
 """
-abstract type C <: Variant end
+abstract type VariantC <: Variant end
 
 """
     PolarStereographic{Variant,lat₁, Datum,Shift}
@@ -98,13 +98,13 @@ PolarStereographicB{-71°}(1.0m, 1.0m)
 PolarStereographicB{-71°,WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const PolarStereographicB{lat₁,Datum,Shift} = PolarStereographic{B,lat₁,Datum,Shift}
+const PolarStereographicB{lat₁,Datum,Shift} = PolarStereographic{VariantB,lat₁,Datum,Shift}
 
 # ------------
 # CONVERSIONS
 # ------------
 
-function formulas(::Type{<:PolarStereographic{B,lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
+function formulas(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, ::Type{T}) where {lat₁,Datum,T}
   ϕF = Float64(ustrip(deg2rad(Float64(lat₁))))
 
   🌎 = ellipsoid(Datum)
@@ -141,12 +141,12 @@ function formulas(::Type{<:PolarStereographic{B,lat₁,Datum}}, ::Type{T}) where
     # takes FN to be zero
     N = dN
 
-    T(N)
+    N
   end
   fx, fy
 end
 
-function backward(::Type{<:PolarStereographic{B,lat₁,Datum}}, x, y) where {lat₁,Datum}
+function backward(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, x, y) where {lat₁,Datum}
   T = typeof(x)
   ϕF = T(ustrip(deg2rad(lat₁)))
 
