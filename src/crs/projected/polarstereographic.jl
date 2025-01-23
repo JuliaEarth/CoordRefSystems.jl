@@ -119,14 +119,8 @@ function formulas(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, ::Type{T}
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e)) # factor of `a` is handled elsewhere
-    dE = ρ * sin(θ)
-
-    @debug "Values" kO t ρ
-
     # takes FE to be zero
-    E = dE
-
-    E
+    E = ρ * sin(θ)
   end
 
   function fy(λ, ϕ)
@@ -134,12 +128,8 @@ function formulas(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, ::Type{T}
     # calculate t, ρ, E, and N as in Variant A south pole case:
     t = tan(π / 4 + ϕ / 2) / (((1 + e * sin(ϕ)) / (1 - e * sin(ϕ)))^(e / 2))
     ρ = 2 * kO * t / sqrt((1 + e)^(1 + e) * (1 - e)^(1 - e))
-    dN = ρ * cos(θ)
-
     # takes FN to be zero
-    N = dN
-
-    N
+    N = ρ * cos(θ)
   end
   fx, fy
 end
@@ -155,8 +145,6 @@ function backward(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, x, y) whe
   E = x
   N = y
 
-  @debug "Inputs" x y E N
-
   kO = scale_at_natural_origin(ϕF, e)
 
   # EPSG guidance note #7-2 uses a variable 'capital chi' (\Chi, Χ) but I'm using just 
@@ -164,8 +152,6 @@ function backward(::Type{<:PolarStereographic{VariantB,lat₁,Datum}}, x, y) whe
   ρ′ = sqrt(E^2 + N^2)
   t′ = ρ′ * sqrt(((1 + e)^(1 + e) * (1 - e)^(1 - e))) / (2 * kO)
   X = 2atan(t′) - π / 2 # south pole case. TODO: add north pole case
-
-  @debug "Intermediates" kO ρ′ t′ X
 
   # ϕ and λ are found as for variant A:
   ϕ =
