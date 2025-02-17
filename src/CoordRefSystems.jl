@@ -10,6 +10,7 @@ using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using WKTWriter: wkt
 
 import Random
 import Base: ==
@@ -27,7 +28,7 @@ include("shift.jl")
 include("codes.jl")
 include("strings.jl")
 include("get.jl")
-
+include("wktwriter.jl")
 export
   # revolution ellipsoids
   RevolutionEllipsoid,
@@ -136,4 +137,6 @@ export
   EPSG,
   ESRI
 
+  # WKT Writer
+  wkt
 end

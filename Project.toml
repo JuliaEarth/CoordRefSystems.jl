@@ -9,6 +9,7 @@ Rotations = "6038ab10-8711-5258-84ad-4b1120ba62dc"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
+DataDeps = "124859b0-ceae-595e-8997-d05f6a7a8dfe"
 
 [compat]
 Random = "1.9"
@@ -17,3 +18,4 @@ StaticArrays = "1.9"
 Unitful = "1.19"
 Zygote = "0.6, 0.7"
 julia = "1.9"
+DataDeps = "0.7.13"
