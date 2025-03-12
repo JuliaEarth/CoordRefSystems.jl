@@ -1,4 +1,4 @@
-@testset "CRS strings" begin
+@testset "CRS string to code" begin
   crsstringtest(EPSG{2157})
   crsstringtest(EPSG{3035})
   crsstringtest(EPSG{3310})
@@ -105,4 +105,13 @@
     AXIS["Longitude",EAST]]
   """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+end
+
+@testset "CRS code to string" begin
+  crs_string_dataset_test(EPSG{2157})
+  crs_string_dataset_test(EPSG{3035})
+  crs_string_dataset_test(EPSG{3310})
+  crs_string_dataset_test(EPSG{4275})
+  crs_string_dataset_test(EPSG{4686})
+  crs_string_dataset_test(EPSG{4674})
 end

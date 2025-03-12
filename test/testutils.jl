@@ -98,6 +98,11 @@ function randtest(CRS)
   @inferred rand(rng, CRS, 10)
 end
 
+function crs_string_dataset_test(code)
+  GDALstring = wktstring(code)
+  datasetstring = CoordRefSystems.wkt(code)
+  @test CoordRefSystems.string2code(datasetstring) === CoordRefSystems.string2code(GDALstring)
+end
 function wktstring(code; format="WKT2", multiline=false)
   spref = ArchGDAL.importUserInput(codestring(code))
   options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]

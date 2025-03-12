@@ -10,6 +10,7 @@ using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using DataDeps
 
 import Random
 import Base: ==
@@ -27,6 +28,10 @@ include("shift.jl")
 include("codes.jl")
 include("strings.jl")
 include("get.jl")
+
+function __init__()
+  _init_epsg_datadep_registration()
+end
 
 export
   # revolution ellipsoids
