@@ -125,7 +125,7 @@ function parseerror()
 end
 
 
-function _init_epsg_datadep_registration()
+function epsgregistration()
   epsg_dataset_metadata = DataDep(
     "epsg",
 

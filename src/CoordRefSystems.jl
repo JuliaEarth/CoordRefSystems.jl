@@ -30,7 +30,7 @@ include("strings.jl")
 include("get.jl")
 
 function __init__()
-  _init_epsg_datadep_registration()
+  epsgregistration()
 end
 
 export
