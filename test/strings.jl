@@ -1,4 +1,4 @@
-@testset "CRS strings" begin
+@testset "strings" begin
   crsstringtest(EPSG{2157})
   crsstringtest(EPSG{3035})
   crsstringtest(EPSG{3310})
@@ -43,7 +43,7 @@
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
-  crsstringtest(ESRI{54017})
+  crsstringtest1(ESRI{54017})
   crsstringtest1(ESRI{54030})
   crsstringtest1(ESRI{54034})
   crsstringtest1(ESRI{54042})
