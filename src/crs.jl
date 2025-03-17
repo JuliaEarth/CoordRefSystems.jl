@@ -146,10 +146,8 @@ wkt(coords::CRS) = wkt(typeof(coords))
 wkt(C::Type{<:CRS}) = wkt(code(C))
 
 function wkt(code::Type{EPSG{I}}) where I
-  # TODO: fix dir name 
-  basedir = joinpath(datadep"epsg-wkt2", "EPSG-v12_003-WKT")
   filename = "EPSG-CRS-$(I).wkt"
-  filepath = joinpath(basedir, filename)
+  filepath = joinpath(datadep"epsg-wkt2", filename)
   if !isfile(filepath)
     throw(ArgumentError("A WKT string for EPSG:$I was not found in the EPSG dataset."))
   end
@@ -164,7 +162,7 @@ function epsgregistration()
     For terms of use and more information, see https://epsg.org/terms-of-use.html
     """,
     # TODO: update the URL to JuliaEarth hosted version
-    "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-v12_003-WKT.tar.gz",
+    "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-latest-WKT.Zip",
     Any,
     # unpack the tarball
     post_fetch_method=unpack
