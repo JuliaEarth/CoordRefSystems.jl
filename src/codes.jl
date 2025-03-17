@@ -29,9 +29,9 @@ ESRI dataset `code`. Codes can be searched at [epsg.io](https://epsg.io).
 abstract type ESRI{Code} <: CRSCode end
 
 """
-    CoordRefSystems.code(CRS)
+    CoordRefSystems.code(coords)
 
-Get the EPSG/ESRI code from the `CRS` type.
+EPSG/ESRI code of given `coords`.
 
 For the inverse operation, see the [`CoordRefSystems.get`](@ref) function.
 """
