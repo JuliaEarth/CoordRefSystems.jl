@@ -122,12 +122,10 @@ function crsstringtest(code)
   @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, format="WKT1_ESRI", multiline=true)
   @test CoordRefSystems.string2code(str) === code
-end
 
-function wktstringtest(code)
-  GDALstring = wktstring(code)
-  EPSGstring = CoordRefSystems.wkt2(code)
-  @test CoordRefSystems.string2code(EPSGstring) == CoordRefSystems.string2code(GDALstring)
+  gdal = wktstring(code)
+  epsg = CoordRefSystems.wkt2(code)
+  @test CoordRefSystems.string2code(gdal) == CoordRefSystems.string2code(epsg)
 end
 
 function gettest(code, CRS)
