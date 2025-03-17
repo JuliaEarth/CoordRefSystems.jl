@@ -20,19 +20,49 @@ include("ioutils.jl")
 include("ellipsoids.jl")
 include("datums.jl")
 include("modes.jl")
-include("codes.jl")
 include("crs.jl")
 include("transforms.jl")
 include("promotion.jl")
 include("utm.jl")
 include("shift.jl")
+include("codes.jl")
 include("strings.jl")
 include("get.jl")
 
 function __init__()
-  # download datasets without user interaction from DataDeps.jl
+  # make sure datasets are always downloaded
+  # without user interaction from DataDeps.jl
   ENV["DATADEPS_ALWAYS_ACCEPT"] = true
-  epsgregistration()
+
+  # register EPSG dataset
+  registerEPSG()
+end
+
+function registerEPSG()
+  ID = "epsg-wkt2"
+  try
+    # if data is already on disk
+    # we just return the path
+    @datadep_str ID
+  catch
+    # otherwise we register the data
+    # and download using DataDeps.jl
+    try
+      register(DataDep(ID,
+        """
+        EPSG dataset providing coordinate reference system definitions in WKT 2 format.
+        For terms of use and more information, please check https://epsg.org/terms-of-use.html
+        """,
+        # TODO: update the URL to JuliaEarth hosted version
+        "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-latest-WKT.Zip",
+        Any,
+        post_fetch_method=DataDeps.unpack
+      ))
+      @datadep_str ID
+    catch
+      throw(ErrorException("download failed due to internet and/or server issues"))
+    end
+  end
 end
 
 export

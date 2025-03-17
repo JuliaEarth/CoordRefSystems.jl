@@ -27,20 +27,6 @@ function get(code::Type{<:CRSCode})
 end
 
 """
-    CoordRefSystems.code(CRS)
-
-Get the EPSG/ESRI code from the `CRS` type.
-
-For the inverse operation, see the [`CoordRefSystems.get`](@ref) function.
-"""
-function code(crs::Type{<:CRS})
-  throw(ArgumentError("""
-  The provided CRS type `$crs` does not have an EPSG/ESRI code.
-  Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/get.jl
-  """))
-end
-
-"""
     @crscode(Code, CRS)
 
 Define both `get` and `code` functions for `Code` and `CRS`.
