@@ -108,10 +108,10 @@
 end
 
 @testset "CRS code to string" begin
-  crs_string_dataset_test(EPSG{2157})
-  crs_string_dataset_test(EPSG{3035})
-  crs_string_dataset_test(EPSG{3310})
-  crs_string_dataset_test(EPSG{4275})
-  crs_string_dataset_test(EPSG{4686})
-  crs_string_dataset_test(EPSG{4674})
+  wktstringtest(EPSG{2157})
+  wktstringtest(EPSG{3035})
+  wktstringtest(EPSG{3310})
+  wktstringtest(EPSG{4275})
+  wktstringtest(EPSG{4686})
+  wktstringtest(EPSG{4674})
 end
