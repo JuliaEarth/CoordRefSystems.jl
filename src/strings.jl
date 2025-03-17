@@ -123,33 +123,3 @@ function parseerror()
   Please make sure that the string follows any of the following Well-Known-Text formats: OGC WKT1, ESRI WKT1, WKT2.
   """))
 end
-
-
-function epsgregistration()
-  epsg_dataset_metadata = DataDep(
-    "epsg",
-
-    # TODO: do we want this proper message here or just auto download?
-    """
-    EPSG Dataset providing coordinate reference system definitions
-
-    This dataset contains standard CRS definitions in WKT format from the EPSG geodetic parameter dataset.
-    For terms of use and more information, see https://epsg.org/terms-of-use.html
-    """,
-
-    # TODO: update the URL to JuliaEarth hosted version
-    "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-v12_003-WKT.tar.gz",
-    "5713560df018ff89a56cb258f08b0bd8057c75b439b848e9b297026dded739c0",
-
-    # unpack the tarball
-    post_fetch_method=unpack
-)
-  register(epsg_dataset_metadata)
-end
-
-function wkt(epsg::Type{EPSG{I}}) where I
-  basedir = joinpath(datadep"epsg", "EPSG-v12_003-WKT")
-  filename = "EPSG-CRS-$(I).wkt"
-  filepath = joinpath(basedir, filename)
-  return read(filepath, String)
-end

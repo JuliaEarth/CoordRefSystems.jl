@@ -30,6 +30,8 @@ include("strings.jl")
 include("get.jl")
 
 function __init__()
+  # download datasets without user interaction from DataDeps.jl
+  ENV["DATADEPS_ALWAYS_ACCEPT"] = true
   epsgregistration()
 end
 

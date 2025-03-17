@@ -135,6 +135,44 @@ The result inherits the unit of the `coords` after conversion to [`Cartesian`](@
 """
 tol(coords::CRS) = tol(convert(Cartesian, coords))
 
+
+"""
+    CoordRefSystems.wkt(crs)
+
+Get the WKT2 `string` representation from a CRS object.
+"""
+wkt(coords::CRS) = wkt(typeof(coords))
+
+wkt(C::Type{<:CRS}) = wkt(code(C))
+
+function wkt(code::Type{EPSG{I}}) where I
+  # TODO: fix dir name 
+  basedir = joinpath(datadep"epsg-wkt2", "EPSG-v12_003-WKT")
+  filename = "EPSG-CRS-$(I).wkt"
+  filepath = joinpath(basedir, filename)
+  if !isfile(filepath)
+    throw(ArgumentError("A WKT string for EPSG:$I was not found in the EPSG dataset."))
+  end
+  return read(filepath, String)
+end
+
+function epsgregistration()
+  epsg_dataset_metadata = DataDep(
+    "epsg-wkt2",
+    """
+    EPSG dataset providing coordinate reference system definitions in WKT 2 format.
+    For terms of use and more information, see https://epsg.org/terms-of-use.html
+    """,
+    # TODO: update the URL to JuliaEarth hosted version
+    "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-v12_003-WKT.tar.gz",
+    Any,
+    # unpack the tarball
+    post_fetch_method=unpack
+)
+  register(epsg_dataset_metadata)
+end
+
+
 # -------------
 # RAND METHODS
 # -------------
