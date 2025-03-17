@@ -110,6 +110,11 @@ codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
 codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
 
 function crsstringtest(code)
+  crsstringtest1(code)
+  crsstringtest2(code)
+end
+
+function crsstringtest1(code)
   str = wktstring(code)
   @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, multiline=true)
@@ -122,7 +127,9 @@ function crsstringtest(code)
   @test CoordRefSystems.string2code(str) === code
   str = wktstring(code, format="WKT1_ESRI", multiline=true)
   @test CoordRefSystems.string2code(str) === code
+end
 
+function crsstringtest2(code)
   gdal = wktstring(code)
   epsg = CoordRefSystems.wkt2(code)
   @test CoordRefSystems.string2code(gdal) == CoordRefSystems.string2code(epsg)

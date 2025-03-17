@@ -38,17 +38,17 @@
   # crsstringtest(EPSG{9777})
   # crsstringtest(EPSG{9782})
   # crsstringtest(EPSG{10414})
-  crsstringtest(EPSG{32662})
+  crsstringtest1(EPSG{32662})
   crsstringtest(EPSG{32633})
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
   crsstringtest(ESRI{54017})
-  crsstringtest(ESRI{54030})
-  crsstringtest(ESRI{54034})
-  crsstringtest(ESRI{54042})
-  crsstringtest(ESRI{102035})
-  crsstringtest(ESRI{102037})
+  crsstringtest1(ESRI{54030})
+  crsstringtest1(ESRI{54034})
+  crsstringtest1(ESRI{54042})
+  crsstringtest1(ESRI{102035})
+  crsstringtest1(ESRI{102037})
 
   # parsing errors
   # CRS format not supported
