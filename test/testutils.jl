@@ -129,10 +129,14 @@ function crsstringtest1(code)
   @test CoordRefSystems.string2code(str) === code
 end
 
-function crsstringtest2(code)
+function crsstringtest2(code::Type{<:EPSG})
   gdal = wktstring(code)
   epsg = CoordRefSystems.wkt2(code)
   @test CoordRefSystems.string2code(gdal) == CoordRefSystems.string2code(epsg)
+end
+
+function crsstringtest2(code::Type{<:ESRI})
+  @test_throws ArgumentError CoordRefSystems.wkt2(code)
 end
 
 function gettest(code, CRS)

@@ -46,12 +46,12 @@
   crsstringtest(EPSG{29903})
 
   # ESRI codes
-  crsstringtest1(ESRI{54017})
-  crsstringtest1(ESRI{54030})
-  crsstringtest1(ESRI{54034})
-  crsstringtest1(ESRI{54042})
-  crsstringtest1(ESRI{102035})
-  crsstringtest1(ESRI{102037})
+  crsstringtest(ESRI{54017})
+  crsstringtest(ESRI{54030})
+  crsstringtest(ESRI{54034})
+  crsstringtest(ESRI{54042})
+  crsstringtest(ESRI{102035})
+  crsstringtest(ESRI{102037})
 
   # parsing errors
   # CRS format not supported

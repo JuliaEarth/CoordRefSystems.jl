@@ -51,10 +51,21 @@ OGC WKT-CRS 2 standard: https://www.ogc.org/publications/standard/wkt-crs
 """
 wkt2(coords::CRS) = wkt2(typeof(coords))
 wkt2(C::Type{<:CRS}) = wkt2(code(C))
-function wkt2(::Type{EPSG{I}}) where I
-  filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$(I).wkt")
+
+function wkt2(::Type{EPSG{Code}}) where {Code}
+  filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$(Code).wkt")
   if !isfile(filepath)
-    throw(ArgumentError("WKT2 string for EPSG:$I not found in EPSG dataset"))
+    throw(ArgumentError("WKT2 string for EPSG:$Code not found in EPSG dataset"))
   end
   read(filepath, String)
+end
+
+function wkt2(::Type{ESRI{Code}}) where {Code}
+  throw(ArgumentError(
+  """
+  WKT2 string is not defined for ESRI:$Code code.
+  If you are attempting to save data to disk, please
+  reproject the data to a CRS supported by the OGC
+  standard.
+  """))
 end
