@@ -53,14 +53,14 @@ wkt2(coords::CRS) = wkt2(typeof(coords))
 wkt2(C::Type{<:CRS}) = wkt2(code(C))
 
 function wkt2(::Type{EPSG{Code}}) where {Code}
-  filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$(Code).wkt")
+  filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$Code.wkt")
   if !isfile(filepath)
     throw(ArgumentError(
     """
-    EPSG:$(Code) not found. This EPSG code may be deprecated.
-    Supported and deprecated codes can be checked at epsg.io.
-    Please reproject the data to a CRS supported 
-    by the latest release of the EPSG dataset.
+    EPSG:$Code not found. This EPSG code may be deprecated.
+    Supported and deprecated codes can be checked at https://epsg.io.
+    Please reproject the data to a CRS supported by the latest release
+    of the EPSG dataset.
     """))
   end
   read(filepath, String)
@@ -69,9 +69,7 @@ end
 function wkt2(::Type{ESRI{Code}}) where {Code}
   throw(ArgumentError(
   """
-  WKT2 string is not defined for ESRI:$Code code.
-  If you are attempting to save data to disk, please
-  reproject the data to a CRS supported by the OGC
-  standard.
+  OGC WKT-CRS version 2 does not support ESRI:$Code.
+  Please reproject the data to a CRS with EPSG code.
   """))
 end
