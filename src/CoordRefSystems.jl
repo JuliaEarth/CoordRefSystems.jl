@@ -54,7 +54,7 @@ function registerEPSG()
         For terms of use and more information, please check https://epsg.org/terms-of-use.html
         """,
         # TODO: update the URL to JuliaEarth hosted version
-        "https://github.com/Omar-Elrefaei/epsg-dataset/raw/refs/heads/main/EPSG-latest-WKT.Zip",
+        "https://github.com/Omar-Elrefaei/EPSG-WKT2/raw/refs/heads/main/EPSG-latest-WKT.Zip",
         Any,
         post_fetch_method=DataDeps.unpack
       ))
