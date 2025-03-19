@@ -55,7 +55,13 @@ wkt2(C::Type{<:CRS}) = wkt2(code(C))
 function wkt2(::Type{EPSG{Code}}) where {Code}
   filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$(Code).wkt")
   if !isfile(filepath)
-    throw(ArgumentError("WKT2 string for EPSG:$Code not found in EPSG dataset"))
+    throw(ArgumentError(
+    """
+    EPSG:$(Code) not found. This EPSG code may be deprecated.
+    Supported and deprecated codes can be checked at epsg.io.
+    Please reproject the data to a CRS supported 
+    by the latest release of the EPSG dataset.
+    """))
   end
   read(filepath, String)
 end
