@@ -4,7 +4,6 @@ authors = ["Elias Carvalho <eliascarvdev@gmail.com>", "Júlio Hoffimann <julio.h
 version = "0.16.9"
 
 [deps]
-DataDeps = "124859b0-ceae-595e-8997-d05f6a7a8dfe"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Rotations = "6038ab10-8711-5258-84ad-4b1120ba62dc"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
@@ -12,7 +11,6 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
-DataDeps = "0.7"
 Random = "1.9"
 Rotations = "1.7"
 StaticArrays = "1.9"

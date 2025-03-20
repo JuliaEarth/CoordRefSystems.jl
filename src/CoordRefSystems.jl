@@ -10,7 +10,6 @@ using Unitful: m, rad, °, ppm
 using Zygote: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
-using DataDeps
 
 import Random
 import Base: ==
@@ -28,42 +27,6 @@ include("shift.jl")
 include("codes.jl")
 include("strings.jl")
 include("get.jl")
-
-function __init__()
-  # make sure datasets are always downloaded
-  # without user interaction from DataDeps.jl
-  ENV["DATADEPS_ALWAYS_ACCEPT"] = true
-
-  # register EPSG dataset
-  registerEPSG()
-end
-
-function registerEPSG()
-  ID = "epsg-wkt2"
-  try
-    # if data is already on disk
-    # we just return the path
-    @datadep_str ID
-  catch
-    # otherwise we register the data
-    # and download using DataDeps.jl
-    try
-      register(DataDep(ID,
-        """
-        EPSG dataset providing coordinate reference system definitions in WKT 2 format.
-        For terms of use and more information, please check https://epsg.org/terms-of-use.html
-        """,
-        # TODO: update the URL to JuliaEarth hosted version
-        "https://github.com/Omar-Elrefaei/EPSG-WKT2/raw/refs/heads/main/EPSG-latest-WKT.Zip",
-        Any,
-        post_fetch_method=DataDeps.unpack
-      ))
-      @datadep_str ID
-    catch
-      throw(ErrorException("download failed due to internet and/or server issues"))
-    end
-  end
-end
 
 export
   # revolution ellipsoids

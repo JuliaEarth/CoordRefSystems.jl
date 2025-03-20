@@ -53,7 +53,8 @@ wkt2(coords::CRS) = wkt2(typeof(coords))
 wkt2(C::Type{<:CRS}) = wkt2(code(C))
 
 function wkt2(::Type{EPSG{Code}}) where {Code}
-  filepath = joinpath(datadep"epsg-wkt2", "EPSG-CRS-$Code.wkt")
+  datasetpath =  pkgdir(CoordRefSystems, "artifacts/epsg-wkt2")
+  filepath = joinpath(datasetpath, "EPSG-CRS-$Code.wkt")
   if !isfile(filepath)
     throw(ArgumentError(
     """
