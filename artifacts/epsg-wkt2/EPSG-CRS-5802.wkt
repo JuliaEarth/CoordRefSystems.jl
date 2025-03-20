@@ -1,0 +1,1 @@
+ENGCRS["Barcelona Grid B2",EDATUM["Barcelona",ID["EPSG",9301]],CS[Cartesian,2,ID["EPSG",4500]],AXIS["Northing (N)",north],AXIS["Easting (E)",east],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5802]]

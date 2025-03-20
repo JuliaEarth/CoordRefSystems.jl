@@ -1,0 +1,1 @@
+VERTCRS["GLMSL(2023) depth",VDATUM["Greenland Mean Sea Level (2023)",ID["EPSG",1387]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["GR96 to GLMSL(2023) depth (1)",ID["EPSG",10653]],ID["EPSG",10649]]

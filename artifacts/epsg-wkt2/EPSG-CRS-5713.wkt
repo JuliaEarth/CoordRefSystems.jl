@@ -1,0 +1,1 @@
+VERTCRS["CGVD28 height",VDATUM["Canadian Geodetic Vertical Datum of 1928",ID["EPSG",5114]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5713]]

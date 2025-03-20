@@ -1,0 +1,1 @@
+VERTCRS["KOC WD height",VDATUM["KOC Well Datum",ID["EPSG",5187]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7979]]

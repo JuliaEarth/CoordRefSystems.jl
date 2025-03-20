@@ -1,0 +1,1 @@
+VERTCRS["LAT NL depth",VDATUM["Lowest Astronomical Tide Netherlands",ID["EPSG",1290]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to LAT NL depth (1)",ID["EPSG",10350]],ID["EPSG",9287]]

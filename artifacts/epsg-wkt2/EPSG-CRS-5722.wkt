@@ -1,0 +1,1 @@
+VERTCRS["Maputo height",VDATUM["Maputo",ID["EPSG",5121]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5722]]

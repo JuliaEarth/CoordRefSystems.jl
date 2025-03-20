@@ -1,0 +1,1 @@
+VERTCRS["NAP height",VDATUM["Normaal Amsterdams Peil",ID["EPSG",5109]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to NAP height (2)",ID["EPSG",9283]],ID["EPSG",5709]]

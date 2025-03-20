@@ -1,0 +1,1 @@
+VERTCRS["KOC CD height",VDATUM["KOC Construction Datum",ID["EPSG",5188]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5790]]

@@ -1,0 +1,1 @@
+VERTCRS["Cais da Madalena depth",BASEVERTCRS["Cais da Madalena height",VDATUM["Cais da Madalena",ID["EPSG",1105]],ID["EPSG",6182]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",10374]]

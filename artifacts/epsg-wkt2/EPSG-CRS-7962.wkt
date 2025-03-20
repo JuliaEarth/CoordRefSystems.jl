@@ -1,0 +1,1 @@
+VERTCRS["Poolbeg height (m)",BASEVERTCRS["Poolbeg height (ft(Br36))",VDATUM["Poolbeg",ID["EPSG",5152]],ID["EPSG",5754]],DERIVINGCONVERSION["Vertical Axis Unit Conversion",METHOD["Change of Vertical Unit",ID["EPSG",1104]],ID["EPSG",7813]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7962]]

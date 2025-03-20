@@ -1,0 +1,1 @@
+VERTCRS["Foula height",VDATUM["Foula",ID["EPSG",5141]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Foula height (1)",ID["EPSG",10026]],ID["EPSG",5743]]

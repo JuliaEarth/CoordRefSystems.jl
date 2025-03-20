@@ -1,0 +1,1 @@
+VERTCRS["MSL height (ftUS)",BASEVERTCRS["MSL height",VDATUM["Mean Sea Level",ID["EPSG",5100]],ID["EPSG",5714]],DERIVINGCONVERSION["Vertical Axis Unit Conversion",METHOD["Change of Vertical Unit",ID["EPSG",1104]],ID["EPSG",7813]],CS[vertical,1,ID["EPSG",6497]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["US survey foot",0.304800609601219,ID["EPSG",9003]],ID["EPSG",8052]]

@@ -1,0 +1,1 @@
+VERTCRS["INAGeoid2020 v1 height",VDATUM["Indonesian Geoid 2020 version 1",ID["EPSG",1294]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["SRGI2013 to INAGeoid2020 v1 height (1)",ID["EPSG",9305]],ID["EPSG",9471]]

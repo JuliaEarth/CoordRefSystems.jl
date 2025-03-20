@@ -1,0 +1,1 @@
+VERTCRS["GHA height",VDATUM["Gebrauchshohen ADRIA",ID["EPSG",5176]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to GHA height (1)",ID["EPSG",9278]],ID["EPSG",5778]]

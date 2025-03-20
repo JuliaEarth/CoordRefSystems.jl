@@ -1,0 +1,1 @@
+VERTCRS["MSL depth",BASEVERTCRS["MSL height",VDATUM["Mean Sea Level",ID["EPSG",5100]],ID["EPSG",5714]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5715]]

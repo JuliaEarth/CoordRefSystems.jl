@@ -1,0 +1,1 @@
+VERTCRS["EVRF2007 height",VDATUM["European Vertical Reference Frame 2007",ID["EPSG",5215]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to ETRS89 + EVRF2007 height (1)",ID["EPSG",8362]],ID["EPSG",5621]]

@@ -1,0 +1,1 @@
+VERTCRS["EOMA 1980 height",VDATUM["Baltic 1980",ID["EPSG",5185]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5787]]

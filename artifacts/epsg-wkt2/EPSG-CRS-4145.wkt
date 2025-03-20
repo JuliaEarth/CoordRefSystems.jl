@@ -1,0 +1,1 @@
+GEOGCRS["Kalianpur 1962",DATUM["Kalianpur 1962",ELLIPSOID["Everest 1830 (1962 Definition)",6377301.243,300.8017255,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7044]],ID["EPSG",6145]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4145]]

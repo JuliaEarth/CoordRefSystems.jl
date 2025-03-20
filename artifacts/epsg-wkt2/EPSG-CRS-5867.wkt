@@ -1,0 +1,1 @@
+VERTCRS["MLW depth",VDATUM["Mean Low Water",ID["EPSG",1091]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5867]]

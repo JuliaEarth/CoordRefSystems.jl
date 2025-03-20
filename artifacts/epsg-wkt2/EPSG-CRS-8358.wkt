@@ -1,0 +1,1 @@
+VERTCRS["Baltic 1957 depth",BASEVERTCRS["Baltic 1957 height",VDATUM["Baltic 1957",ID["EPSG",1202]],ID["EPSG",8357]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",8358]]

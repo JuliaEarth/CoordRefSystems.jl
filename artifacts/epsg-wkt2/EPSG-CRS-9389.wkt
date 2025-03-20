@@ -1,0 +1,1 @@
+VERTCRS["EVRF2019 height",VDATUM["European Vertical Reference Frame 2019",ID["EPSG",1274]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",9389]]

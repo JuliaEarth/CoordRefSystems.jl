@@ -1,0 +1,1 @@
+VERTCRS["NGVD29 height (ftUS)",VDATUM["National Geodetic Vertical Datum 1929",ID["EPSG",5102]],CS[vertical,1,ID["EPSG",6497]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["US survey foot",0.304800609601219,ID["EPSG",9003]],ID["EPSG",5702]]

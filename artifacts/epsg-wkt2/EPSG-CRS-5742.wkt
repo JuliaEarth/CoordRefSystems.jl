@@ -1,0 +1,1 @@
+VERTCRS["Lerwick height",VDATUM["Lerwick",ID["EPSG",5140]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Lerwick height (2)",ID["EPSG",7714]],GEOIDMODEL["ETRS89 to Lerwick height (1)",ID["EPSG",10027]],ID["EPSG",5742]]

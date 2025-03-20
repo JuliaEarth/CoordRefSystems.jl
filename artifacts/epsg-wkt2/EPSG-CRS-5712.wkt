@@ -1,0 +1,1 @@
+VERTCRS["AHD (Tasmania) height",VDATUM["Australian Height Datum (Tasmania)",ID["EPSG",5112]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["GDA94 to AHD (Tasmania) height (2)",ID["EPSG",5657]],ID["EPSG",5712]]

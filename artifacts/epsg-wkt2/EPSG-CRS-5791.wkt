@@ -1,0 +1,1 @@
+VERTCRS["NGC 1948 height",VDATUM["Nivellement General de la Corse 1948",ID["EPSG",5189]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5791]]

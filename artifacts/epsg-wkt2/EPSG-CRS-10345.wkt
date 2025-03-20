@@ -1,0 +1,1 @@
+GEOGCRS["Hughes 1980",DATUM["Hughes 1980",ELLIPSOID["Hughes 1980",6378273,298.279411123061,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7058]],ID["EPSG",1359]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",10345]]

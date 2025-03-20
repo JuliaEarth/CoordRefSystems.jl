@@ -1,0 +1,1 @@
+VERTCRS["Ha Tien 1960 height",VDATUM["Ha Tien 1960",ID["EPSG",5125]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5726]]

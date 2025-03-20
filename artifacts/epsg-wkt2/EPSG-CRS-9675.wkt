@@ -1,0 +1,1 @@
+VERTCRS["Pago Pago 2020 height",VDATUM["Local Tidal Datum at Pago Pago 2020",ID["EPSG",1302]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",9675]]

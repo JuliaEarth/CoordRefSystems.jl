@@ -1,0 +1,1 @@
+GEOGCRS["Vanua Levu 1915",DATUM["Vanua Levu 1915",ELLIPSOID["Clarke 1880 (international foot)",20926202,293.466307655625,LENGTHUNIT["foot",0.3048,ID["EPSG",9002]],ID["EPSG",7055]],ID["EPSG",6748]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4748]]

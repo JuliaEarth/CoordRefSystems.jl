@@ -1,0 +1,1 @@
+VERTCRS["Instantaneous Water Level height",VDATUM["Instantaneous Water Level",ID["EPSG",5113]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5829]]

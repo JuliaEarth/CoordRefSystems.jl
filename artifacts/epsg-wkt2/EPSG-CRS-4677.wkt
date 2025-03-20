@@ -1,0 +1,1 @@
+GEOGCRS["Lao 1993",DATUM["Lao 1993",ELLIPSOID["Krassowsky 1940",6378245,298.3,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7024]],ID["EPSG",6677]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4677]]

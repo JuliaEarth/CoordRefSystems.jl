@@ -1,0 +1,1 @@
+VERTCRS["HKCD depth",VDATUM["Hong Kong Chart Datum",ID["EPSG",5136]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5739]]

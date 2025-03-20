@@ -1,0 +1,1 @@
+GEOGCRS["Sierra Leone 1924",DATUM["Sierra Leone Colony 1924",ELLIPSOID["War Office",6378300,296,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7029]],ID["EPSG",6174]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4174]]

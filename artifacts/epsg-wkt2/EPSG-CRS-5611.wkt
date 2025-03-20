@@ -1,0 +1,1 @@
+VERTCRS["Caspian height",VDATUM["Caspian Sea",ID["EPSG",5106]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5611]]

@@ -1,0 +1,1 @@
+VERTCRS["GUVD04 height",VDATUM["Guam Vertical Datum of 2004",ID["EPSG",1126]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["NAD83(MA11) to GUVD04 height (1)",ID["EPSG",7648]],GEOIDMODEL["NAD83(FBN) to GUVD04 height (1)",ID["EPSG",9171]],ID["EPSG",6644]]

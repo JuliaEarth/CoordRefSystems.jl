@@ -1,0 +1,1 @@
+VERTCRS["Fao 1979 height",VDATUM["Fao 1979",ID["EPSG",1028]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",3886]]

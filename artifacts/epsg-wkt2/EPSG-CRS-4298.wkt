@@ -1,0 +1,1 @@
+GEOGCRS["Timbalai 1948",DATUM["Timbalai 1948",ELLIPSOID["Everest 1830 (1967 Definition)",6377298.556,300.8017,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7016]],ID["EPSG",6298]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4298]]

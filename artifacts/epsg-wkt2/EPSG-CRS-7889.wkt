@@ -1,0 +1,1 @@
+VERTCRS["St. Helena Tritan 2011 height",VDATUM["St. Helena Tritan Vertical Datum 2011",ID["EPSG",1176]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7889]]

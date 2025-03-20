@@ -1,0 +1,1 @@
+GEOGCRS["Marshall Islands 1960",DATUM["Marshall Islands 1960",ELLIPSOID["Hough 1960",6378270,297,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7053]],ID["EPSG",6732]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4732]]

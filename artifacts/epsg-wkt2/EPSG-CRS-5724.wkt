@@ -1,0 +1,1 @@
+VERTCRS["PHD93 height",VDATUM["PDO Height Datum 1993",ID["EPSG",5123]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5724]]

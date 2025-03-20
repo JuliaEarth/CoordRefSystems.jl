@@ -1,0 +1,1 @@
+GEOGCRS["Kertau (RSO)",DATUM["Kertau (RSO)",ELLIPSOID["Everest 1830 (RSO 1969)",6377295.664,300.8017,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7056]],ID["EPSG",6751]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4751]]

@@ -1,0 +1,1 @@
+VERTCRS["Kiunga height",VDATUM["Kiunga",ID["EPSG",1151]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["EGM2008 height to Kiunga height (1)",ID["EPSG",7654]],ID["EPSG",7652]]

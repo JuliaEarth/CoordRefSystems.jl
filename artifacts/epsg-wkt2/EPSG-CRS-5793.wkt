@@ -1,0 +1,1 @@
+VERTCRS["Mayotte 1950 height",VDATUM["Mayotte 1950",ID["EPSG",5191]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5793]]

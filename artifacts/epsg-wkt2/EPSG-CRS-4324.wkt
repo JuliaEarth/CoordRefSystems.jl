@@ -1,0 +1,1 @@
+GEOGCRS["WGS 72BE", DYNAMIC[FRAMEEPOCH[1972.0]],DATUM["WGS 72 Transit Broadcast Ephemeris",ELLIPSOID["WGS 72",6378135,298.26,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7043]],ID["EPSG",6324]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4324]]

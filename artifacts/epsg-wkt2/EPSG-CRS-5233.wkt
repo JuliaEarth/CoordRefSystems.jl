@@ -1,0 +1,1 @@
+GEOGCRS["SLD99",DATUM["Sri Lanka Datum 1999",ELLIPSOID["Everest 1830 (1937 Adjustment)",6377276.345,300.8017,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7015]],ID["EPSG",1053]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",5233]]

@@ -1,0 +1,1 @@
+VERTCRS["Stornoway height",VDATUM["Stornoway",ID["EPSG",5144]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Stornoway height (2)",ID["EPSG",7715]],GEOIDMODEL["ETRS89 to Stornoway height (1)",ID["EPSG",10033]],ID["EPSG",5746]]

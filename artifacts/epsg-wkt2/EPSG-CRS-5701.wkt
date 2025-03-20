@@ -1,0 +1,1 @@
+VERTCRS["ODN height",VDATUM["Ordnance Datum Newlyn",ID["EPSG",5101]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to ODN height (2)",ID["EPSG",7711]],GEOIDMODEL["ETRS89 to ODN height (1)",ID["EPSG",10021]],ID["EPSG",5701]]

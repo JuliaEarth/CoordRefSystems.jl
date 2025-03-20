@@ -1,0 +1,1 @@
+VERTCRS["Cais da Figueirinha depth",BASEVERTCRS["Cais da Figueirinha height",VDATUM["Cais da Figueirinha",ID["EPSG",1107]],ID["EPSG",6184]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",10377]]

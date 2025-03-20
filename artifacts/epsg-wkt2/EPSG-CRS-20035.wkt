@@ -1,0 +1,1 @@
+VERTCRS["CGVD2013a(1997) height",VDATUM["Canadian Geodetic Vertical Datum of 2013 (CGG2013a) epoch 1997", ANCHOREPOCH[1997],ID["EPSG",1326]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",20035]]

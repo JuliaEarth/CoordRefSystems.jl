@@ -1,0 +1,1 @@
+VERTCRS["Ibiza height",VDATUM["Ibiza",ID["EPSG",1277]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Ibiza height (1)",ID["EPSG",9413]],ID["EPSG",9394]]

@@ -1,0 +1,1 @@
+VERTCRS["FCSVR10 height",VDATUM["Fehmarnbelt Vertical Reference 2010",ID["EPSG",1079]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["FEH2010 to FCSVR10 height (1)",ID["EPSG",5626]],ID["EPSG",5597]]
