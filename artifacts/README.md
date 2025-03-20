@@ -9,7 +9,6 @@ This directory contains only the CRS definition files `EPSG-CRS-#.wkt` from the 
 1. **Login** to [epsg.org/download-dataset.html](https://epsg.org/download-dataset.html)
 2. **Download** an updated version of the WKT dataset (for example `EPSG-v12_005-WKT.Zip`)
 3. **Extract** the file using `unzip -q EPSG-v12_005-WKT.Zip -d epsg-wkt2` (for example)
-   - `-q` is for quiet, `-o` is to overwrite existing files
 4. **Run** the preparation script to clean up the dataset: `julia prepare-wkt2.jl`
    - This will delete non-CRS WKT files and ensure the directory only contains wkt files that follow the expected naming convention
 5. **Update** the version number below and commit
