@@ -1,0 +1,1 @@
+VERTCRS["Lanzarote height",VDATUM["Lanzarote",ID["EPSG",1278]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["REGCAN95 to Lanzarote height (1)",ID["EPSG",9415]],ID["EPSG",9395]]

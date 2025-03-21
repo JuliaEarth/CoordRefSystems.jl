@@ -1,0 +1,1 @@
+VERTCRS["GLLMSL(2022) height",VDATUM["Greenland Local Mean Sea Level (2022)",ID["EPSG",1378]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",10565]]

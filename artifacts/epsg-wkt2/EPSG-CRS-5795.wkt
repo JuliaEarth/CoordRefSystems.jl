@@ -1,0 +1,1 @@
+VERTCRS["Guadeloupe 1951 height",VDATUM["Guadeloupe 1951",ID["EPSG",5193]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5795]]

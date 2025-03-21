@@ -1,0 +1,1 @@
+VERTCRS["EPSG example wellbore local vertical CRS",VDATUM["EPSG example wellbore vertical datum",ID["EPSG",1205]],CS[vertical,1,ID["EPSG",1049]],AXIS["Local depth (d)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",8378]]

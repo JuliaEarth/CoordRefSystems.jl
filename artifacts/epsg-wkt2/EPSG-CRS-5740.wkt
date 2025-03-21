@@ -1,0 +1,1 @@
+VERTCRS["ODN Orkney height",VDATUM["Ordnance Datum Newlyn (Orkney Isles)",ID["EPSG",5138]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to ODN Orkney height (2)",ID["EPSG",7712]],GEOIDMODEL["ETRS89 to ODN Orkney height (1)",ID["EPSG",10029]],ID["EPSG",5740]]

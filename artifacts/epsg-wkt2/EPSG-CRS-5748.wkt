@@ -1,0 +1,1 @@
+VERTCRS["Flannan Isles height",VDATUM["Flannan Isles",ID["EPSG",5146]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Flannan Isles height (1)",ID["EPSG",10025]],ID["EPSG",5748]]

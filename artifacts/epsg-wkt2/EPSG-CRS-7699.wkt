@@ -1,0 +1,1 @@
+VERTCRS["DHHN12 height",VDATUM["Deutsches Haupthoehennetz 1912",ID["EPSG",1161]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7699]]

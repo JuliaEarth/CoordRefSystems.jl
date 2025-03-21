@@ -1,0 +1,1 @@
+VERTCRS["High Water height",VDATUM["High Water",ID["EPSG",1094]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5874]]

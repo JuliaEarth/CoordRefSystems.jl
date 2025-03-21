@@ -1,0 +1,1 @@
+VERTCRS["Poolbeg height (ft(Br36))",VDATUM["Poolbeg",ID["EPSG",5152]],CS[vertical,1,ID["EPSG",6496]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["British foot (1936)",0.3048007491,ID["EPSG",9095]],ID["EPSG",5754]]

@@ -1,0 +1,1 @@
+VERTCRS["Famagusta 1960 height",VDATUM["Famagusta 1960",ID["EPSG",1148]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7446]]

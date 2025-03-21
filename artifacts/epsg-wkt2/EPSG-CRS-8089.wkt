@@ -1,0 +1,1 @@
+VERTCRS["ISH2004 height",VDATUM["Landshaedarkerfi Islands 2004",ID["EPSG",1190]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ISN93 to ISH2004 height (1)",ID["EPSG",9954]],GEOIDMODEL["ISN2004 to ISH2004 height (1)",ID["EPSG",9956]],GEOIDMODEL["ISN2016 to ISH2004 height (1)",ID["EPSG",9958]],ID["EPSG",8089]]

@@ -1,0 +1,1 @@
+VERTCRS["DNN height",VDATUM["Dansk Normal Nul",ID["EPSG",5132]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5733]]

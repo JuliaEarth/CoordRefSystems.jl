@@ -1,0 +1,1 @@
+VERTCRS["CBVD61 height (ft)",VDATUM["Cayman Brac Vertical Datum 1961",ID["EPSG",1099]],CS[vertical,1,ID["EPSG",1030]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["foot",0.3048,ID["EPSG",9002]],GEOIDMODEL["CIGD11 to CBVD61 height (ft) (1)",ID["EPSG",6140]],ID["EPSG",6132]]

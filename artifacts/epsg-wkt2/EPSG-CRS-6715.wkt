@@ -1,0 +1,1 @@
+ENGCRS["Christmas Island Grid 1985",EDATUM["Christmas Island Datum 1985",ID["EPSG",1134]],CS[Cartesian,2,ID["EPSG",4400]],AXIS["Easting (E)",east],AXIS["Northing (N)",north],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",6715]]

@@ -1,0 +1,1 @@
+VERTCRS["Santa Cruz das Flores height",VDATUM["Santa Cruz das Flores",ID["EPSG",1108]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",6185]]

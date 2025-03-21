@@ -1,0 +1,1 @@
+VERTCRS["Danger 1950 height",VDATUM["Danger 1950",ID["EPSG",5190]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["RGSPM06 to Danger 1950 height (1)",ID["EPSG",9137]],GEOIDMODEL["RGSPM06 to Danger 1950 height (2)",ID["EPSG",9228]],ID["EPSG",5792]]

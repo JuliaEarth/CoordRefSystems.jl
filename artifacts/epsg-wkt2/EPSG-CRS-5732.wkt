@@ -1,0 +1,1 @@
+VERTCRS["Belfast height",VDATUM["Belfast Lough",ID["EPSG",5131]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Belfast height (1)",ID["EPSG",5334]],GEOIDMODEL["ETRS89 to Belfast height (2)",ID["EPSG",7958]],ID["EPSG",5732]]

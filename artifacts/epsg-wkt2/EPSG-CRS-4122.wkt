@@ -1,0 +1,1 @@
+GEOGCRS["ATS77",DATUM["Average Terrestrial System 1977",ELLIPSOID["Average Terrestrial System 1977",6378135,298.257,LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7041]],ID["EPSG",6122]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4122]]

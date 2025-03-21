@@ -1,0 +1,1 @@
+VERTCRS["SHVD2015 height",VDATUM["St. Helena Vertical Datum 2015",ID["EPSG",1177]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["SHGD2015 to SHVD2015 height (1)",ID["EPSG",7891]],ID["EPSG",7890]]

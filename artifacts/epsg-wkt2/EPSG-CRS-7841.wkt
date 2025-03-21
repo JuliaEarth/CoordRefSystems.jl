@@ -1,0 +1,1 @@
+VERTCRS["POM08 height",VDATUM["Port Moresby 2008",ID["EPSG",1172]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["EGM2008 height to POM08 height (1)",ID["EPSG",7874]],ID["EPSG",7841]]

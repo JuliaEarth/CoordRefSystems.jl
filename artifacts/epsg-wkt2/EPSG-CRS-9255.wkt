@@ -1,0 +1,1 @@
+VERTCRS["SRVN16 height",VDATUM["Sistema de Referencia Vertical Nacional 2016",ID["EPSG",1260]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["POSGAR 2007 to SRVN16 height (1)",ID["EPSG",9256]],ID["EPSG",9255]]

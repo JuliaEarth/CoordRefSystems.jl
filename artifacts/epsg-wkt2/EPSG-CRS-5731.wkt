@@ -1,0 +1,1 @@
+VERTCRS["Malin Head height",VDATUM["Malin Head",ID["EPSG",5130]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Malin Head height (1)",ID["EPSG",5335]],GEOIDMODEL["ETRS89 to Malin Head height (2)",ID["EPSG",7959]],ID["EPSG",5731]]

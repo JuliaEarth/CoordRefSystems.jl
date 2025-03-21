@@ -1,0 +1,1 @@
+VERTCRS["PNG08 height",VDATUM["PNG08",ID["EPSG",1149]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["PNG94 to PNG08 height (1)",ID["EPSG",7655]],ID["EPSG",7447]]

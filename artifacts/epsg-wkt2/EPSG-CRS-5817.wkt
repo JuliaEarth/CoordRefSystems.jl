@@ -1,0 +1,1 @@
+ENGCRS["Tombak LNG plant",EDATUM["Tombak LNG plant",ID["EPSG",9314]],CS[Cartesian,2,ID["EPSG",6510]],AXIS["Plant East (x)",northEast],AXIS["Plant North (y)",northWest],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5817]]

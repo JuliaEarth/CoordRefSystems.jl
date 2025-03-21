@@ -1,0 +1,1 @@
+VERTCRS["Stewart Island 1977 height",VDATUM["Stewart Island 1977",ID["EPSG",5170]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5772]]

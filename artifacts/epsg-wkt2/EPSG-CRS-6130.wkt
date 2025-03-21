@@ -1,0 +1,1 @@
+VERTCRS["GCVD54 height (ft)",VDATUM["Grand Cayman Vertical Datum 1954",ID["EPSG",1097]],CS[vertical,1,ID["EPSG",1030]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["foot",0.3048,ID["EPSG",9002]],GEOIDMODEL["CIGD11 to GCVD54 height (ft) (1)",ID["EPSG",6138]],ID["EPSG",6130]]

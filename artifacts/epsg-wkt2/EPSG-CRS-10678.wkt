@@ -1,0 +1,1 @@
+VERTCRS["BSCD2000 depth",VDATUM["Baltic Sea Chart Datum 2000",ID["EPSG",1390]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to BSCD2000 depth (1)",ID["EPSG",10680]],ID["EPSG",10678]]

@@ -1,0 +1,1 @@
+VERTCRS["Kumul 34 height",VDATUM["Kumul 34",ID["EPSG",1150]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["EGM96 height to Kumul 34 height (1)",ID["EPSG",7653]],ID["EPSG",7651]]

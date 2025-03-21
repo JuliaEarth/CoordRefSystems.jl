@@ -1,0 +1,1 @@
+VERTCRS["GVR2016 height",VDATUM["Greenland Vertical Reference 2016",ID["EPSG",1200]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["GR96 to GVR2016 height (1)",ID["EPSG",8269]],ID["EPSG",8267]]

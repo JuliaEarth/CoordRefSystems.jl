@@ -1,0 +1,1 @@
+VERTCRS["DVR90(2000) height",VDATUM["Dansk Vertikal Reference 1990 (2000)",ID["EPSG",5206]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",10482]]

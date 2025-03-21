@@ -1,0 +1,1 @@
+VERTCRS["NZVD2016 height",VDATUM["New Zealand Vertical Datum 2016",ID["EPSG",1169]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["NZGD2000 to NZVD2016 height (1)",ID["EPSG",7840]],ID["EPSG",7839]]

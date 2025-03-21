@@ -1,0 +1,1 @@
+VERTCRS["MHWS height",VDATUM["Mean High Water Spring Tides",ID["EPSG",1088]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5870]]

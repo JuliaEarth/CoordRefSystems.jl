@@ -1,0 +1,1 @@
+ENGCRS["Astra Minas Grid",EDATUM["Astra Minas",ID["EPSG",9300]],CS[Cartesian,2,ID["EPSG",6507]],AXIS["First local axis (X)",north],AXIS["Second local axis (Y)",west],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5800]]

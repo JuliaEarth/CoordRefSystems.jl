@@ -1,0 +1,1 @@
+VERTCRS["Fuerteventura height",VDATUM["Fuerteventura",ID["EPSG",1279]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["REGCAN95 to Fuerteventura height (1)",ID["EPSG",9416]],ID["EPSG",9396]]

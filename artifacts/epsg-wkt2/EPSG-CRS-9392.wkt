@@ -1,0 +1,1 @@
+VERTCRS["Mallorca height",VDATUM["Mallorca",ID["EPSG",1275]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Mallorca height (1)",ID["EPSG",9411]],ID["EPSG",9392]]

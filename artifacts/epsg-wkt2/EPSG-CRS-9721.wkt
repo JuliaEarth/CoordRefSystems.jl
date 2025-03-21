@@ -1,0 +1,1 @@
+VERTCRS["Catania 1965 height",VDATUM["Catania 1965",ID["EPSG",1306]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",9721]]

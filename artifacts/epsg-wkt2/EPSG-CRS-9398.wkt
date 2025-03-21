@@ -1,0 +1,1 @@
+VERTCRS["Tenerife height",VDATUM["Tenerife",ID["EPSG",1281]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["REGCAN95 to Tenerife height (1)",ID["EPSG",9418]],ID["EPSG",9398]]

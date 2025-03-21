@@ -1,0 +1,1 @@
+VERTCRS["MSL NL depth",VDATUM["Mean Sea Level Netherlands",ID["EPSG",1270]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to MSL NL depth (1)",ID["EPSG",10466]],ID["EPSG",9288]]

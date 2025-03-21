@@ -1,0 +1,1 @@
+VERTCRS["TWVD 2001 height",VDATUM["Taiwan Vertical Datum 2001",ID["EPSG",1224]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",8904]]

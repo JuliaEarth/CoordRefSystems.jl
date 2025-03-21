@@ -1,0 +1,1 @@
+VERTCRS["KSA-VRF14 height",VDATUM["Kingdom of Saudi Arabia Vertical Reference Frame Jeddah 2014",ID["EPSG",1269]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",9335]]

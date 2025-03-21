@@ -1,0 +1,1 @@
+VERTCRS["EVRF2000 Austria height",VDATUM["European Vertical Reference Frame 2000 Austria",ID["EPSG",1261]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to EVRF2000 Austria height (1)",ID["EPSG",9276]],GEOIDMODEL["MGI to EVRF2000 Austria height (1)",ID["EPSG",9277]],ID["EPSG",9274]]

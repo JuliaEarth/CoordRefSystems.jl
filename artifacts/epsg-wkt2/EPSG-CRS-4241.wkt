@@ -1,0 +1,1 @@
+GEOGCRS["Jamaica 1875",DATUM["Jamaica 1875",ELLIPSOID["Clarke 1880",20926202,293.466307655625,LENGTHUNIT["Clarke's foot",0.3047972654,ID["EPSG",9005]],ID["EPSG",7034]],ID["EPSG",6241]],CS[ellipsoidal,2,ID["EPSG",6422]],AXIS["Geodetic latitude (Lat)",north],AXIS["Geodetic longitude (Lon)",east],ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9102]],ID["EPSG",4241]]

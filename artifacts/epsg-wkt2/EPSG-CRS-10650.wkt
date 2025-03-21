@@ -1,0 +1,1 @@
+VERTCRS["GLLAT(2023) depth",VDATUM["Greenland Lowest Astronomic Tide (2023)",ID["EPSG",1388]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["GR96 to GLLAT(2023) depth (1)",ID["EPSG",10655]],ID["EPSG",10650]]

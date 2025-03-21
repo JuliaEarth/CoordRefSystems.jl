@@ -1,0 +1,1 @@
+VERTCRS["Guam 1963 height",VDATUM["Guam Vertical Datum of 1963",ID["EPSG",1122]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",6639]]

@@ -1,0 +1,1 @@
+ENGCRS["EPSG example wellbore local horizontal CRS - true north",EDATUM["EPSG example wellbore local horizontal datum - true north",ID["EPSG",1203]],CS[Cartesian,2,ID["EPSG",1047]],AXIS["Local northing (n)",north],AXIS["Local easting (e)",east],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",8377]]

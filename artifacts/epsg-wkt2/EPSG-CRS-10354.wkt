@@ -1,0 +1,1 @@
+VERTCRS["Melilla height",VDATUM["Melilla",ID["EPSG",1364]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to Melilla height (1)",ID["EPSG",10362]],ID["EPSG",10354]]

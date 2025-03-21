@@ -1,0 +1,1 @@
+VERTCRS["JSLD72 height",VDATUM["Japanese Standard Levelling Datum 1972",ID["EPSG",1129]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",6693]]

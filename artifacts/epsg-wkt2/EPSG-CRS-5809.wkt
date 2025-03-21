@@ -1,0 +1,1 @@
+ENGCRS["Maracaibo Cross Grid M5",EDATUM["Maracaibo Cross",ID["EPSG",9303]],CS[Cartesian,2,ID["EPSG",4500]],AXIS["Northing (N)",north],AXIS["Easting (E)",east],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5809]]

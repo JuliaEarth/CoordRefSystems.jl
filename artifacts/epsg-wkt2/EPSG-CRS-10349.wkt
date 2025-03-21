@@ -1,0 +1,1 @@
+VERTCRS["ZH Portugal depth",VDATUM["Chart Datum Portugal ",ID["EPSG",1361]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",10349]]

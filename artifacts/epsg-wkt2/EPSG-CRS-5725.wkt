@@ -1,0 +1,1 @@
+VERTCRS["Fahud HD height",VDATUM["Fahud Height Datum",ID["EPSG",5124]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5725]]

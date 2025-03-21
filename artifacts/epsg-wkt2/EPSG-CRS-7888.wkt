@@ -1,0 +1,1 @@
+VERTCRS["Jamestown 1971 height",VDATUM["Jamestown 1971",ID["EPSG",1175]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",7888]]

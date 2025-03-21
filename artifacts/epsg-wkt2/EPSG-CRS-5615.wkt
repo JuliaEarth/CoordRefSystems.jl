@@ -1,0 +1,1 @@
+VERTCRS["RH00 height",VDATUM["Rikets hojdsystem 1900",ID["EPSG",5209]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5615]]

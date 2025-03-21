@@ -145,6 +145,34 @@ Random.rand(::Type{C}, n::Int) where {C<:CRS} = rand(Random.default_rng(), C, n)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(rng, C) for _ in 1:n]
 
+# ----------------------------
+# EPSG/ESRI CODES AND STRINGS
+# ----------------------------
+
+"""
+    CoordRefSystems.code(coords)
+
+EPSG/ESRI code of given `coords`.
+
+For the inverse operation, see the [`CoordRefSystems.get`](@ref) function.
+"""
+code(coords::CRS) = code(typeof(coords))
+function code(crs::Type{<:CRS})
+  throw(ArgumentError("""
+  The provided CRS type `$crs` does not have an EPSG/ESRI code.
+  Please check https://github.com/JuliaEarth/CoordRefSystems.jl/blob/main/src/get.jl
+  """))
+end
+
+"""
+    CoordRefSystems.wkt2(coords)
+
+Well-Known-Text (WKT) representation of given `coords` compliant with the
+OGC WKT-CRS 2 standard: https://www.ogc.org/publications/standard/wkt-crs
+"""
+wkt2(coords::CRS) = wkt2(typeof(coords))
+wkt2(C::Type{<:CRS}) = wkt2(code(C))
+
 # ----------
 # FALLBACKS
 # ----------

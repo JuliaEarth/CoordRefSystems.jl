@@ -1,0 +1,1 @@
+VERTCRS["DKMSL(2022) depth",VDATUM["Denmark Mean Sea Level (2022)",ID["EPSG",1372]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to DKMSL(2022) depth (1)",ID["EPSG",10557]],ID["EPSG",10547]]

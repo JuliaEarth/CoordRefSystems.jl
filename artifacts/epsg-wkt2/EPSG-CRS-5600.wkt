@@ -1,0 +1,1 @@
+VERTCRS["NGPF height",VDATUM["Nivellement General de Polynesie Francaise",ID["EPSG",5195]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5600]]

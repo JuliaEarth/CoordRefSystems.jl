@@ -1,0 +1,1 @@
+VERTCRS["Instantaneous Water Level depth",BASEVERTCRS["Instantaneous Water Level height",VDATUM["Instantaneous Water Level",ID["EPSG",5113]],ID["EPSG",5829]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5831]]

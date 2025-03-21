@@ -1,0 +1,1 @@
+VERTCRS["AIOC95 depth",BASEVERTCRS["AIOC95 height",VDATUM["AIOC 1995",ID["EPSG",5133]],ID["EPSG",5797]],DERIVINGCONVERSION["Height <> Depth Conversion",METHOD["Height Depth Reversal",ID["EPSG",1068]],ID["EPSG",7812]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5734]]

@@ -1,0 +1,1 @@
+VERTCRS["LCVD61 height (ft)",VDATUM["Little Cayman Vertical Datum 1961",ID["EPSG",1098]],CS[vertical,1,ID["EPSG",1030]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["foot",0.3048,ID["EPSG",9002]],GEOIDMODEL["CIGD11 to LCVD61 height (ft) (1)",ID["EPSG",6139]],ID["EPSG",6131]]

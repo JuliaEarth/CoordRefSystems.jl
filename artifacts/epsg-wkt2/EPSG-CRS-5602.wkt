@@ -1,0 +1,1 @@
+VERTCRS["Moorea SAU 1981 height",VDATUM["Moorea SAU 1981",ID["EPSG",5197]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5602]]

@@ -1,0 +1,1 @@
+VERTCRS["EGM2008 height",VDATUM["EGM2008 geoid",ID["EPSG",1027]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["WGS 84 to EGM2008 height (1)",ID["EPSG",3858]],GEOIDMODEL["WGS 84 to EGM2008 height (2)",ID["EPSG",3859]],ID["EPSG",3855]]

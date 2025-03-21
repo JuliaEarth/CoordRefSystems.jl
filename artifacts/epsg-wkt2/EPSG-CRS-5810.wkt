@@ -1,0 +1,1 @@
+ENGCRS["La Rosa Grid",EDATUM["La Rosa",ID["EPSG",9304]],CS[Cartesian,2,ID["EPSG",4500]],AXIS["Northing (N)",north],AXIS["Easting (E)",east],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5810]]

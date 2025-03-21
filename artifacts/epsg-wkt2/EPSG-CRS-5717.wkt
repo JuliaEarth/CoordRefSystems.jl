@@ -1,0 +1,1 @@
+VERTCRS["N60 height",VDATUM["Helsinki 1960",ID["EPSG",5116]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5717]]

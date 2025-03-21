@@ -1,0 +1,1 @@
+VERTCRS["NG95 height",VDATUM["Nivellement General du Luxembourg 1995",ID["EPSG",5172]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5774]]

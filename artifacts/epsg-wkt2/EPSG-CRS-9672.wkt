@@ -1,0 +1,1 @@
+VERTCRS["CD Norway depth",VDATUM["Norwegian Chart Datum",ID["EPSG",1301]],CS[vertical,1,ID["EPSG",6498]],AXIS["Depth (D)",down],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["ETRS89 to CD Norway depth (1)",ID["EPSG",9884]],ID["EPSG",9672]]

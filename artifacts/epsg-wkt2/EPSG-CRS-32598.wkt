@@ -1,0 +1,1 @@
+ENGCRS["EPSG example I=J+90 local bin grid (real values)",EDATUM["EPSG example datum for local bin grid",ID["EPSG",9315]],CS[affine,2,ID["EPSG",1051]],AXIS["Bin grid I (I)",columnPositive],AXIS["Bin grid J (J)",rowPositive],SCALEUNIT["(bin)",1,ID["EPSG",1024]],ID["EPSG",32598]]

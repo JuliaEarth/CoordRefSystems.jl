@@ -1,0 +1,1 @@
+VERTCRS["AVWS height",VDATUM["Australian Vertical Working Surface",ID["EPSG",1292]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],GEOIDMODEL["GDA2020 to AVWS height (2)",ID["EPSG",9692]],ID["EPSG",9458]]

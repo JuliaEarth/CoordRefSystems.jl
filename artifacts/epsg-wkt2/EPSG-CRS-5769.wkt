@@ -1,0 +1,1 @@
+VERTCRS["Taranaki 1970 height",VDATUM["Taranaki 1970",ID["EPSG",5167]],CS[vertical,1,ID["EPSG",6499]],AXIS["Gravity-related height (H)",up],LENGTHUNIT["metre",1,ID["EPSG",9001]],ID["EPSG",5769]]

@@ -1,0 +1,1 @@
+ENGCRS["EPSG moving platform example",EDATUM["EPSG example moving platform reference point",ID["EPSG",1163]],CS[Cartesian,3,ID["EPSG",1042]],AXIS["Starboard (x)",starboard,LENGTHUNIT["metre",1,ID["EPSG",9001]]],AXIS["Forward (y)",forward,LENGTHUNIT["metre",1,ID["EPSG",9001]]],AXIS["Platform Up (z)",up,LENGTHUNIT["metre",1,ID["EPSG",9001]]],ID["EPSG",7706]]
