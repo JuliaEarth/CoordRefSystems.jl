@@ -150,13 +150,12 @@ Random.rand(rng::Random.AbstractRNG, ::Type{C}, n::Int) where {C<:CRS} = [rand(r
 # ----------------------------
 
 """
-    CoordRefSystems.code(coords)
+    CoordRefSystems.code(CRS)
 
-EPSG/ESRI code of given `coords`.
+EPSG/ESRI code of given `CRS`.
 
 For the inverse operation, see the [`CoordRefSystems.get`](@ref) function.
 """
-code(coords::CRS) = code(typeof(coords))
 function code(crs::Type{<:CRS})
   throw(ArgumentError("""
   The provided CRS type `$crs` does not have an EPSG/ESRI code.
@@ -165,12 +164,11 @@ function code(crs::Type{<:CRS})
 end
 
 """
-    CoordRefSystems.wkt2(coords)
+    CoordRefSystems.wkt2(CRS)
 
-Well-Known-Text (WKT) representation of given `coords` compliant with the
+Well-Known-Text (WKT) representation of given `CRS` compliant with the
 OGC WKT-CRS 2 standard: https://www.ogc.org/publications/standard/wkt-crs
 """
-wkt2(coords::CRS) = wkt2(typeof(coords))
 wkt2(C::Type{<:CRS}) = wkt2(code(C))
 
 # ----------
