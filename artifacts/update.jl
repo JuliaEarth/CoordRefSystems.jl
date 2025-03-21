@@ -39,3 +39,9 @@ function epsgwkt2()
     @info """Files in "$(relpath(datasetdir))" are as expected. It is ready to be committed."""
   end
 end
+
+# ------------
+# RUN UPDATES
+# ------------
+
+epsgwkt2()
