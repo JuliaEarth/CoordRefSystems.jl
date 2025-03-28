@@ -21,9 +21,9 @@ See also [`@helmert`](@ref).
 
 ### Notes
 
-* The convention used for rotation is the Position Vector. 
-  To set rotation parameters that use the Coordinate Frame convention,
-  simply invert the sign of the parameters.
+The convention used for rotation is the Position Vector. 
+To set rotation parameters that use the Coordinate Frame
+convention, simply invert the sign of the parameters.
 """
 macro timedephelmert(Datumₛ, Datumₜ, params)
   expr = quote
