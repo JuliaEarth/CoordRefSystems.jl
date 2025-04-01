@@ -23,6 +23,24 @@ Returns the reference epoch of the datum type `D`.
 """
 function epoch end
 
+"""
+    ShiftedDatum{Datum,Epoch}
+
+Shifted `Datum` with a given `Epoch` in decimalyear.
+"""
+abstract type ShiftedDatum{D,Epoch} <: Datum end
+
+ellipsoid(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = ellipsoid(D)
+
+epoch(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = Epoch
+
+"""
+    CoordRefSystems.shift(Datum, epoch)
+
+Shifts the `Datum` with a given `epoch` in decimalyear.
+"""
+shift(D::Type{<:Datum}, epoch) = ShiftedDatum{D,epoch}
+
 # ----------------
 # IMPLEMENTATIONS
 # ----------------
@@ -40,17 +58,6 @@ function epoch end
 Represents the absence of datum in a CRS.
 """
 abstract type NoDatum <: Datum end
-
-"""
-    ShiftedDatum{Datum,Epoch}
-
-Shifted `Datum` with a given `Epoch` in decimalyear.
-"""
-abstract type ShiftedDatum{D,Epoch} <: Datum end
-
-ellipsoid(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = ellipsoid(D)
-
-epoch(::Type{ShiftedDatum{D,Epoch}}) where {D,Epoch} = Epoch
 
 """
     WGS84{GPSWeek}
@@ -245,6 +252,15 @@ See <https://epsg.org/datum_6231/European-Datum-1987.html>
 abstract type ED87 <: Datum end
 
 ellipsoid(::Type{ED87}) = Intl🌎
+
+"""
+    GDA94
+
+Geocentric datum of Australia 1994.
+
+See <https://epsg.org/datum_6283/Geocentric-Datum-of-Australia-1994.html>
+"""
+const GDA94 = shift(ITRF{1992}, 1994.0)
 
 """
     GGRS87
