@@ -31,7 +31,8 @@ projected = [
   Albers{23.0°,29.5°,45.0°},
   Sinusoidal,
   LambertAzimuthalEqualArea{15.0°},
-  EqualEarth
+  EqualEarth,
+  PolarStereographicB{-71°}
 ]
 
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]

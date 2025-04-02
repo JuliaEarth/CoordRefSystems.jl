@@ -121,6 +121,7 @@ export
   Sinusoidal,
   LambertAzimuthalEqualArea,
   EqualEarth,
+  PolarStereographicB,
   datum,
   indomain,
   isconformal,
