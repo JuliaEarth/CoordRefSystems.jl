@@ -23,10 +23,3 @@ Shifts the `CRS` with given longitude origin `lonₒ` in degrees, false easting 
 and false northing `yₒ` in meters.
 """
 shift(CRS::Type{<:Projected}; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = CRS{Shift(; lonₒ, xₒ, yₒ)}
-
-"""
-    CoordRefSystems.shift(Datum, epoch)
-
-Shifts the `Datum` with a given `epoch` in decimalyear.
-"""
-shift(D::Type{<:Datum}, epoch) = ShiftedDatum{D,epoch}

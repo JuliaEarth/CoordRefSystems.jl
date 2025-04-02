@@ -45,6 +45,10 @@
   @test epoch(NAD83CSRS{7}) == 2010.0
   @test epoch(NAD83CSRS{8}) == 2010.0
 
+  ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
+  @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
+  @test epoch(ShiftedWGS84) == 2024.0
+
   @test ellipsoid(Aratu) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
@@ -58,6 +62,9 @@
   @test ellipsoid(ED79) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(ED87) === CoordRefSystems.Intl🌎
+
+  @test ellipsoid(GDA94) === CoordRefSystems.GRS80🌎
+  @test epoch(GDA94) == 1994.0
 
   @test ellipsoid(GGRS87) === CoordRefSystems.GRS80🌎
 
@@ -108,8 +115,4 @@
   @test ellipsoid(SAD96) === CoordRefSystems.GRS67Modified🌎
 
   @test ellipsoid(SIRGAS2000) === CoordRefSystems.GRS80🌎
-
-  ShiftedWGS84 = CoordRefSystems.shift(WGS84Latest, 2024.0)
-  @test ellipsoid(ShiftedWGS84) === CoordRefSystems.WGS84🌎
-  @test epoch(ShiftedWGS84) == 2024.0
 end

@@ -56,6 +56,7 @@ export
   ED50,
   ED79,
   ED87,
+  GDA94,
   GGRS87,
   GRS80S,
   Hermannskogel,
