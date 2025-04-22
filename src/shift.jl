@@ -22,4 +22,4 @@ Shift(; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = Shift(float(asdeg(lonₒ)), float(
 Shifts the `CRS` with given longitude origin `lonₒ` in degrees, false easting `xₒ`
 and false northing `yₒ` in meters.
 """
-shift(CRS::Type{<:Projected}; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = CRS{Shift(; lonₒ, xₒ, yₒ)}
+shift(CRS::Type{<:Projected}; lonₒ=0.0°, xₒ=0.0m, yₒ=0.0m) = CRS{Shift(;lonₒ,xₒ,yₒ)}
