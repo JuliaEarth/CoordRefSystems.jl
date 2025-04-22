@@ -18,4 +18,4 @@ the `update.jl` recipes.
      which is `EPSG-CRS-*.wkt`.
 5. **Update** the version number below and commit
 
-Current version: 12.005
+Current version: 12.007
