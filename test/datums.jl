@@ -96,6 +96,8 @@
 
   @test ellipsoid(NZGD1949) === CoordRefSystems.Intl🌎
 
+  @test ellipsoid(NZGD2000) === CoordRefSystems.GRS80🌎
+
   @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
 
   @test ellipsoid(PD83) === CoordRefSystems.Bessel🌎
