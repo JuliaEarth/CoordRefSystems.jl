@@ -414,7 +414,7 @@ abstract type NZGD1949 <: Datum end
 ellipsoid(::Type{NZGD1949}) = Intl🌎
 
 """
-    Nzgd2000
+    NZGD2000
 
 New Zealand Geodetic Datum 2000.
 """
