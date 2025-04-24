@@ -414,6 +414,15 @@ abstract type NZGD1949 <: Datum end
 ellipsoid(::Type{NZGD1949}) = Intl🌎
 
 """
+    NZGD2000
+
+New Zealand Geodetic Datum 2000.
+"""
+abstract type NZGD2000 <: Datum end
+
+ellipsoid(::Type{NZGD2000}) = GRS80🌎
+
+"""
     OSGB36
 
 Ordnance Survey of Great Britain 1936 datum.
