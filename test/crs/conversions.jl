@@ -785,6 +785,19 @@
       c3 = convert(LatLon{NZGD1949}, c2)
       @test allapprox(c3, c1)
 
+      # NZGD2000 to WGS84
+      c1 = LatLon{NZGD2000}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(30.000000001862645), T(40.00000000023283)))
+      c3 = convert(LatLon{NZGD2000}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NZGD2000}(T(35), T(45))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test allapprox(c2, LatLon{WGS84{1762}}(T(35.000000001862645), T(45.000000001396984)))
+      c3 = convert(LatLon{NZGD2000}, c2)
+      @test allapprox(c3, c1)
+
       # OSGB36 to WGS84
       c1 = LatLon{OSGB36}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
