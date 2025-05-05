@@ -72,7 +72,10 @@
     EPSG{2180},
     CoordRefSystems.shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
   )
-  gettest(EPSG{31370}, LambertConic{RNB72})
+  gettest(
+    EPSG{31370},
+    CoordRefSystems.shift(LambertConic{90.0°,51.1667°,49.8333°, RNB72}, lonₒ=4.3675°, xₒ=150000m, yₒ=5400088m)
+  )
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
   gettest(ESRI{54030}, Robinson{WGS84Latest})
