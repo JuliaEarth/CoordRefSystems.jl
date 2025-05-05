@@ -12,32 +12,32 @@ struct LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,
   y::M
 end
 
-LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(x::M, y::M) where {latₒ,lat₁,lat₂,Datum,Shift,M<:Met} =
-  LamberConic{latₒ,lat₁,lat₂,Datum,Shift,float(M)}(x, y)
-LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Met, y::Met) where {latₒ,lat₁,lat₂,Datum,Shift} =
-  LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(promote(x, y)...)
-LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Len, y::Len) where {latₒ,lat₁,lat₂,Datum,Shift} =
-  LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(uconvert(m, x), uconvert(m, y))
-LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat₁,lat₂,Datum,Shift} =
-  LamberConic{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
+LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::M, y::M) where {latₒ,lat₁,lat₂,Datum,Shift,M<:Met} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift,float(M)}(x, y)
+LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Met, y::Met) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(promote(x, y)...)
+LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Len, y::Len) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-LamberConic{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = LamberConic{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
+LambertConic{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = LambertConic{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
 
-LamberConic{latₒ,lat₁,lat₂}(args...) where {latₒ,lat₁,lat₂} = LamberConic{latₒ,lat₁,lat₂,WGS84Latest}(args...)
+LambertConic{latₒ,lat₁,lat₂}(args...) where {latₒ,lat₁,lat₂} = LambertConic{latₒ,lat₁,lat₂,WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{LamberConic{latₒ,lat₁,lat₂,Datum,Shift,M}},
-  coords::LamberConic{latₒ,lat₁,lat₂,Datum,Shift}
-) where {latₒ,lat₁,lat₂,Datum,Shift,M} = LamberConic{latₒ,lat₁,lat₂,Datum,Shift,M}(coords.x, coords.y)
+  ::Type{LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}},
+  coords::LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
+) where {latₒ,lat₁,lat₂,Datum,Shift,M} = LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:LamberConic{latₒ,lat₁,lat₂,Datum,Shift}}) where {latₒ,lat₁,lat₂,Datum,Shift} =
-  LamberConic{latₒ,lat₁,lat₂,Datum,Shift}
+constructor(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift}}) where {latₒ,lat₁,lat₂,Datum,Shift} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 
-lentype(::Type{<:LamberConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat₁,lat₂,Datum,Shift,M} = M
+lentype(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat₁,lat₂,Datum,Shift,M} = M
 
 ==(
-  coords₁::LamberConic{latₒ,lat₁,lat₂,Datum,Shift},
-  coords₂::LamberConic{latₒ,lat₁,lat₂,Datum,Shift}
+  coords₁::LambertConic{latₒ,lat₁,lat₂,Datum,Shift},
+  coords₂::LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 ) where {latₒ,lat₁,lat₂,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
 
@@ -45,7 +45,7 @@ lentype(::Type{<:LamberConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ
 # CONVERSIONS
 # ------------
 
-function formulas(::Type{<:LamberConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
+function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
@@ -94,8 +94,8 @@ _lambertr(F, t, n) = F * t^n
 # FALLBACKS
 # ----------
 
-indomain(::Type{LamberConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  indomain(LamberConic{latₒ,lat₁,lat₂,Datum}, coords)
+indomain(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  indomain(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
 
-Base.convert(::Type{LamberConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  convert(LamberConic{latₒ,lat₁,lat₂,Datum}, coords)
+Base.convert(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  convert(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
