@@ -90,7 +90,7 @@ end
 @crscode EPSG{27700} shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m)
 @crscode EPSG{28355} shift(TransverseMercator{0.9996,0.0°,GDA94}, lonₒ=147.0°, xₒ=500000.0m, yₒ=10000000.0m)
 @crscode EPSG{29903} shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
-@crscode EPSG{31370} Cartesian2D{RNB72}
+@crscode EPSG{31370} shift(LambertConic{90.0°,51.3667°,49.3667°, RNB72}, lonₒ=4.2675°, xₒ=150000.013m, yₒ=5400088.438m)
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
 @crscode ESRI{54017} Behrmann{WGS84Latest}
 @crscode ESRI{54030} Robinson{WGS84Latest}

@@ -80,6 +80,7 @@ export
   RGF93v1,
   RGF93v2,
   RGF93v2b,
+  RNB72,
   SAD69,
   SAD96,
   SIRGAS2000,
