@@ -31,6 +31,7 @@ projected = [
   Albers{23.0°,29.5°,45.0°},
   Sinusoidal,
   LambertAzimuthalEqualArea{15.0°},
+  LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°},
   EqualEarth
 ]
 

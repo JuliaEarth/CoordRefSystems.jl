@@ -1590,6 +1590,24 @@
       @inferred convert(LatLon{NAD83}, c2)
     end
 
+    @testset "LatLon <> LambertConic" begin
+      # tested against Proj.Transformation("EPSG:4267", "EPSG:32040")
+      LambertTexasSouthCentral = CoordRefSystems.shift(
+        LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27}, 
+        lonₒ=-99°, xₒ=uconvert(u"m", 2000000u"ft"))
+      c1 = LatLon{NAD27}(T(28.5), T(-96))
+      c2 = convert(LambertTexasSouthCentral, c1)
+      @test allapprox(c2, LambertTexasSouthCentral(T(2.963503912819197e6), T(254759.80064647231)))
+      c3 = convert(LatLon{NAD27}, c2)
+      @test allapprox(c3, c1)
+
+      # type stability
+      c1 = LatLon{NAD27}(T(28.5), T(-96))
+      c2 = LambertTexasSouthCentral(T(2.963503912819197e6), T(254759.80064647231))
+      @inferred convert(LambertTexasSouthCentral, c1)
+      @inferred convert(LatLon{NAD27}, c2)
+    end
+
     @testset "LatLon <> Sinusoidal" begin
       c1 = LatLon(T(45), T(90))
       c2 = convert(Sinusoidal, c1)
