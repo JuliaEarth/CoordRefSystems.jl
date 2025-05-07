@@ -1,4 +1,5 @@
 @testset "Projection domain" begin
+  c0 = LatLon(T(90), T(0))
   c1 = LatLon(T(30), T(60))
   c2 = LatLon(T(85), T(60))
   c3 = LatLon{ITRF{2008}}(T(30), T(60))
@@ -7,16 +8,20 @@
   c6 = convert(Lambert, c2)
   c7 = Cartesian(T(1), T(2))
   c8 = Cartesian{WGS84Latest}(T(1), T(2))
-  @test indomain(Mercator, c1)
-  @test !indomain(Mercator, c2)
-  @test indomain(Mercator{WGS84Latest}, c1)
-  @test !indomain(Mercator{WGS84Latest}, c2)
-  @test indomain(Mercator{WGS84{1762}}, c3)
-  @test !indomain(Mercator{WGS84{1762}}, c4)
-  @test indomain(Mercator, c5)
-  @test !indomain(Mercator, c6)
-  @test indomain(Mercator{WGS84Latest}, c7)
-  @test indomain(Mercator{WGS84Latest}, c8)
+  for C in [Mercator, WebMercator]
+    @test !indomain(C, c0)
+    @test indomain(C, c1)
+    @test indomain(C, c2)
+    @test !indomain(C{WGS84Latest}, c0)
+    @test indomain(C{WGS84Latest}, c1)
+    @test indomain(C{WGS84Latest}, c2)
+    @test indomain(C{WGS84{1762}}, c3)
+    @test indomain(C{WGS84{1762}}, c4)
+    @test indomain(C, c5)
+    @test indomain(C, c6)
+    @test indomain(C{WGS84Latest}, c7)
+    @test indomain(C{WGS84Latest}, c8)
+  end
 
   for C in projected
     # forward

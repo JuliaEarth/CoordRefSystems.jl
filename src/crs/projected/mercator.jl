@@ -53,7 +53,7 @@ isconformal(::Type{<:Mercator}) = true
 
 function inbounds(::Type{<:Mercator}, λ, ϕ)
   T = typeof(λ)
-  -T(π) ≤ λ ≤ T(π) && deg2rad(-T(80)) ≤ ϕ ≤ deg2rad(T(84))
+  -T(π) ≤ λ ≤ T(π) && -T(π) / 2 < ϕ < T(π) / 2
 end
 
 function formulas(::Type{<:Mercator{Datum}}, ::Type{T}) where {Datum,T}
