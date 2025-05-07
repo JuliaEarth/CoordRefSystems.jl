@@ -40,10 +40,15 @@ lentype(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {lat�
   coords₂::LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 ) where {latₒ,lat₁,lat₂,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isconformal(::Type{<:LambertConic}) = true
 
 # ------------
 # CONVERSIONS
 # ------------
+
+function inbounds(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum}
+  !(ϕ ≈ -π/2)
+end
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
