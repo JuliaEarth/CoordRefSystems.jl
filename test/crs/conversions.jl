@@ -1594,15 +1594,35 @@
       # tested against Proj.Transformation("EPSG:4267", "EPSG:32040")
       LambertTexasSouthCentral = CoordRefSystems.shift(
         LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27}, 
-        lonₒ=-99°, xₒ=uconvert(u"m", 2000000u"ft"))
-      c1 = LatLon{NAD27}(T(28.5), T(-96))
+        lonₒ=-99°, xₒ=uconvert(u"m", 2000000u"ft")
+      )
+  
+      c1 = LatLon{NAD27}(T(28.5), -T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
       @test allapprox(c2, LambertTexasSouthCentral(T(903275.9926272912), T(77650.78723704476)))
       c3 = convert(LatLon{NAD27}, c2)
       @test allapprox(c3, c1)
 
+      c1 = LatLon{NAD27}(-T(28.5), -T(96))
+      c2 = convert(LambertTexasSouthCentral, c1)
+      @test allapprox(c2, LambertTexasSouthCentral(T(1.0965362114624127e6), T(-7.454689588257735e6)))
+      c3 = convert(LatLon{NAD27}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD27}(T(28.5), T(96))
+      c2 = convert(LambertTexasSouthCentral, c1)
+      @test allapprox(c2, LambertTexasSouthCentral(T(-1.0694071382712817e7), T(9.700116473337056e6)))
+      c3 = convert(LatLon{NAD27}, c2)
+      @test allapprox(c3, c1)
+
+      c1 = LatLon{NAD27}(-T(28.5), T(96))
+      c2 = convert(LambertTexasSouthCentral, c1)
+      @test allapprox(c2, LambertTexasSouthCentral(T(-1.813271144831676e7), T(8.500060216787027e6)))
+      c3 = convert(LatLon{NAD27}, c2)
+      @test allapprox(c3, c1)
+
       # type stability
-      c1 = LatLon{NAD27}(T(28.5), T(-96))
+      c1 = LatLon{NAD27}(T(28.5), T-(96))
       c2 = LambertTexasSouthCentral(T(903275.9926272912), T(77650.78723704476))
       @inferred convert(LambertTexasSouthCentral, c1)
       @inferred convert(LatLon{NAD27}, c2)
