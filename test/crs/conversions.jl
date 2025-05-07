@@ -1597,13 +1597,13 @@
         lonₒ=-99°, xₒ=uconvert(u"m", 2000000u"ft"))
       c1 = LatLon{NAD27}(T(28.5), T(-96))
       c2 = convert(LambertTexasSouthCentral, c1)
-      @test allapprox(c2, LambertTexasSouthCentral(T(2.963503912819197e6), T(254759.80064647231)))
+      @test allapprox(c2, LambertTexasSouthCentral(T(903275.9926272912), T(77650.78723704476)))
       c3 = convert(LatLon{NAD27}, c2)
       @test allapprox(c3, c1)
 
       # type stability
       c1 = LatLon{NAD27}(T(28.5), T(-96))
-      c2 = LambertTexasSouthCentral(T(2.963503912819197e6), T(254759.80064647231))
+      c2 = LambertTexasSouthCentral(T(903275.9926272912), T(77650.78723704476))
       @inferred convert(LambertTexasSouthCentral, c1)
       @inferred convert(LatLon{NAD27}, c2)
     end
