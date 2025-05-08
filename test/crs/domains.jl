@@ -23,7 +23,7 @@
     @test indomain(C{WGS84Latest}, c8)
   end
 
-  for C in projected
+  @testset "C" for C in projected
     # forward
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
