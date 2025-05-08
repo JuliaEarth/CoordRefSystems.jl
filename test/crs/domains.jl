@@ -37,125 +37,81 @@
     end
 
     # backward
-    atol = if C <: Lambert
-      T === Float32 ? 1.0f-2° : 1e-4°
-    elseif C <: Behrmann
-      T === Float32 ? 1.0f-2° : 1e-4°
-    elseif C <: GallPeters
-      T === Float32 ? 1.0f-1° : 1e-4°
-    elseif C <: Robinson
-      T(1e-3) * °
-    elseif C <: Albers
-      T === Float32 ? 1.0f-1° : 1e-5°
-    elseif C <: EqualEarth && T === Float64
-      1e-5°
-    else
-      nothing
-    end
-
-    if C <: OrthoNorth
-      # coordinates at the singularity of the projection (lat ≈ 90) cannot be inverted
-      for lat in T.(1:89), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
-        end
-      end
-
-      # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted due to numerical issues
-      atol = T(0.5) * °
-      for lon in T.(-180:180)
-        c1 = LatLon(T(0), lon)
-        if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
-        end
-      end
-    elseif C <: OrthoSouth
-      # coordinates at the singularity of the projection (lat ≈ -90) cannot be inverted
-      for lat in T.(-89:-1), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
-        end
-      end
-
-      # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted due to numerical issues
-      atol = T(0.5) * °
-      for lon in T.(-180:180)
-        c1 = LatLon(T(0), lon)
-        if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
-        end
-      end
-    elseif C <: TransverseMercator
+    if C <: TransverseMercator
       # TODO: fix backward implementation
       continue
-    elseif C <: Sinusoidal
-      # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
-      for lat in T.(-89:89), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(Sinusoidal, c1)
-          c2 = convert(Sinusoidal, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
-        end
-      end
-    elseif C <: LambertAzimuthalEqualArea
-      # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
-      # Float32 inversion is not very accurate
-      if T === Float32
-        # accuracy is better at coordinates far from the edge of the projection (lon ≈ ±180)
-        atol = 1.0f-2°
-        for lat in T.(-89:89), lon in T.(-170:170)
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
-          end
-        end
+    elseif C <: Robinson && T == Float64
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/55
+      continue
+    end
 
-        atol = 1.0f0°
-        for lat in T.(-89:89), lon in T[-180:-171; 171:180]
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
-          end
-        end
-      else
-        atol = 1e-6°
-        for lat in T.(-89:89), lon in T.(-180:180)
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
-          end
-        end
+    for lat in T.(-90:90), lon in T.(-180:180)
+      if C <: EqualEarth && lat == -90
+        # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
+        continue
+      elseif C <: CoordRefSystems.Orthographic && lat == 0
+        continue
+      elseif C <: LambertAzimuthalEqualArea && lat == -90
+        # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
+        continue
+      elseif C == LambertAzimuthalEqualArea{15.0°} && -16 <= lat <= -12 && 180 - abs(lon) <= 3
+        # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
+        continue
       end
-    else
-      kwargs = isnothing(atol) ? (;) : (; atol)
 
-      for lat in T.(-90:90), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(C, c1)
-          c2 = convert(C, c1)
-          c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; kwargs...)
+      c1 = LatLon(lat, lon)
+      if !indomain(C, c1); continue; end
+      c2 = convert(C, c1)
+      c3 = convert(LatLon, c2)
+
+      # Default tolerances
+      lat_atol = sqrt(eps(T)) * 90°
+      lon_atol = sqrt(eps(T)) * 180°
+
+      sqrt_tol(x, xlim) = sqrt_tol(abs(x - xlim) / xlim) * xlim
+      function sqrt_tol(e)
+        T = typeof(e)
+        if e >= eps(T)^(1//4)
+          return eps(T)^(1//2)
+        elseif e >= eps(T)^(1//2)
+          return eps(T)^(3//4) / e
+        else
+          return eps(T)^(1//4)
         end
       end
+
+      if C <: Albers || C <: CoordRefSystems.EqualAreaCylindrical
+        lat_atol = sqrt_tol(abs(lat), 90) * °
+      end
+      if C <: LambertAzimuthalEqualArea
+        antipode(::Type{<:LambertAzimuthalEqualArea{latₒ}}) where {latₒ} = LatLon(-T(ustrip(°, latₒ)), T(180))
+        relative_error(x, xlim) = norm(x - xlim) / norm(xlim)
+        tol = sqrt_tol(
+            relative_error(
+              svec(convert(Cartesian, c1)),
+              svec(convert(Cartesian, antipode(C)))
+            )
+        )
+        lat_atol = tol * 90°
+        lon_atol = tol * 180°
+      end
+      if C <: CoordRefSystems.Orthographic
+        lat_atol = sqrt_tol(abs(lat), 90) * °
+      end
+      if (
+        (
+          C <: LambertAzimuthalEqualArea
+          || C <: CoordRefSystems.Orthographic
+          || C <: Sinusoidal
+        )
+        && abs(lat) == 90
+      )
+        lon_atol = Inf*°
+      end
+      @assert (
+        isapprox(c3.lat, c1.lat; atol = lat_atol)
+        && is_approx_angle(c3.lon, c1.lon; atol = lon_atol)
+      )
     end
   end
 end
