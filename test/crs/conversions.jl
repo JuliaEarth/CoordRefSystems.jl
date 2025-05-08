@@ -1,6 +1,5 @@
 @testset "Conversions" begin
   @testset "Basic" begin
-    atol = CoordRefSystems.atol(T) * m
     @testset "Cartesian <> Polar" begin
       c1 = Cartesian(T(1), T(1))
       c2 = convert(Polar, c1)
@@ -30,25 +29,25 @@
       c2 = convert(Polar, c1)
       @test allapprox(c2, Polar(T(1), T(π / 2)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(0), -T(1))
       c2 = convert(Polar, c1)
       @test allapprox(c2, Polar(T(1), T(3π / 2)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(1), T(0))
       c2 = convert(Polar, c1)
       @test allapprox(c2, Polar(T(1), T(0)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(-T(1), T(0))
       c2 = convert(Polar, c1)
       @test allapprox(c2, Polar(T(1), T(π)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       # type stability
       c1 = Cartesian(T(1), T(1))
@@ -86,25 +85,25 @@
       c2 = convert(Cylindrical, c1)
       @test allapprox(c2, Cylindrical(T(1), T(π / 2), T(1)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(0), -T(1), T(1))
       c2 = convert(Cylindrical, c1)
       @test allapprox(c2, Cylindrical(T(1), T(3π / 2), T(1)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(1), T(0), T(1))
       c2 = convert(Cylindrical, c1)
       @test allapprox(c2, Cylindrical(T(1), T(0), T(1)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(-T(1), T(0), T(1))
       c2 = convert(Cylindrical, c1)
       @test allapprox(c2, Cylindrical(T(1), T(π), T(1)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       # type stability
       c1 = Cartesian(T(1), T(1), T(1))
@@ -142,25 +141,25 @@
       c2 = convert(Spherical, c1)
       @test allapprox(c2, Spherical(T(√2), T(π / 4), T(π / 2)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(0), -T(1), T(1))
       c2 = convert(Spherical, c1)
       @test allapprox(c2, Spherical(T(√2), T(π / 4), T(3π / 2)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(T(1), T(0), T(1))
       c2 = convert(Spherical, c1)
       @test allapprox(c2, Spherical(T(√2), T(π / 4), T(0)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       c1 = Cartesian(-T(1), T(0), T(1))
       c2 = convert(Spherical, c1)
       @test allapprox(c2, Spherical(T(√2), T(π / 4), T(π)))
       c3 = convert(Cartesian, c2)
-      @test isapprox(c3, c1; atol)
+      @test allapprox(c3, c1)
 
       # type stability
       c1 = Cartesian(T(1), T(1), T(1))
