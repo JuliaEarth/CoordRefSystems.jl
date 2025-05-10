@@ -50,6 +50,7 @@
         # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
         continue
       elseif C <: Orthographic && lat == 0
+        # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/272
         continue
       elseif C <: LambertAzimuthalEqualArea && lat == -90
         # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
