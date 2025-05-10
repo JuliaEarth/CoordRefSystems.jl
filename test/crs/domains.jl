@@ -89,7 +89,7 @@
         lon_atol = tol * 180°
       end
       if C <: Orthographic
-        lat_atol = sqrt_tol(abs(lat), 90) * °
+        lat_atol = sqrt_tol(abs(lat)) * 90°
       end
       if (
         (
@@ -101,7 +101,7 @@
       )
         lon_atol = Inf*°
       end
-      @assert (
+      @test (
         isapprox(c3.lat, c1.lat; atol = lat_atol)
         && isapproxangle(c3.lon, c1.lon; atol = lon_atol)
       )
