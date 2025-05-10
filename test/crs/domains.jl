@@ -60,8 +60,14 @@
       end
 
       c1 = LatLon(lat, lon)
-      if !indomain(C, c1); continue; end
+      
+      # skip if not in domain
+      indomain(C, c1) || continue
+      
+      # convert forward
       c2 = convert(C, c1)
+      
+      # convert backward
       c3 = convert(LatLon, c2)
 
       # Default tolerances
