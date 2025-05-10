@@ -8,6 +8,23 @@ using Test
 using CoordRefSystems: Met, Deg, Rad
 using Unitful: m, mm, cm, km, rad, °, s
 
+# environment settings
+isCI = "CI" ∈ keys(ENV)
+islinux = Sys.islinux()
+visualtests = !isCI || (isCI && islinux)
+datadir = joinpath(@__DIR__, "data")
+
+# float settings
+T = if isCI
+  if ENV["FLOAT_TYPE"] == "Float32"
+    Float32
+  elseif ENV["FLOAT_TYPE"] == "Float64"
+    Float64
+  end
+else
+  Float64
+end
+
 include("testutils.jl")
 
 basic2D = [Cartesian2D, Polar]
@@ -36,24 +53,7 @@ projected = [
 
 testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
 
-# --------------------------------
-# RUN TESTS WITH SINGLE PRECISION
-# --------------------------------
-
-T = Float32
-@testset "CoordRefSystems.jl ($T)" begin
-  for testfile in testfiles
-    println("Testing $testfile...")
-    include(testfile)
-  end
-end
-
-# --------------------------------
-# RUN TESTS WITH DOUBLE PRECISION
-# --------------------------------
-
-T = Float64
-@testset "CoordRefSystems.jl ($T)" begin
+@testset "CoordRefSystems.jl" begin
   for testfile in testfiles
     println("Testing $testfile...")
     include(testfile)
