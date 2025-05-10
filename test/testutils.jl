@@ -1,23 +1,58 @@
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
-  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
-
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian2D}
-  isapprox(coords₁.x, coords₂.x, kwargs...) && isapprox(coords₁.y, coords₂.y, kwargs...)
+sqrt_tol(x, xlim) = sqrt_tol(abs(x - xlim) / xlim) * xlim
+function sqrt_tol(e)
+  T = typeof(e)
+  if e >= eps(T)^(1//4)
+    return eps(T)^(1//2)
+  elseif e >= eps(T)^(1//2)
+    return eps(T)^(3//4) / e
+  else
+    return eps(T)^(1//4)
+  end
 end
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian3D}
-  isapprox(coords₁.x, coords₂.x, kwargs...) &&
-    isapprox(coords₁.y, coords₂.y, kwargs...) &&
-    isapprox(coords₁.z, coords₂.z, kwargs...)
-end
+svec(coords::Cartesian) = SVector(getfield(coords, :coords))
+svec(coords::Projected) = SVector(coords.x, coords.y)
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
-  isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
-    isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
-    (isapproxlon180(coords₁.lon; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
+relative_error(x, xlim) = norm(x - xlim) / norm(xlim)
+
+isapproxangle(
+  α, β;
+  atol = sqrt(eps(2 * promote(π, ustrip(α), ustrip(β))[1])),
+) = abs(rem2pi(ustrip(rad, α - β), RoundNearest)) <= ustrip(rad, atol)
+
+allapprox(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}) where {Datum} = svec(coords₁) ≈ svec(coords₂)
+allapprox(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ ≈ coords₂.ρ && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+allapprox(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} = SVector(coords₁.ρ, coords₁.z) ≈ SVector(coords₁.ρ, coords₂.z) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+allapprox(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} = coords₁.r ≈ coords₂.r && isapproxangle(coords₁.θ, coords₂.θ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+
+const LatLonType = Union{AuthalicLatLon, GeocentricLatLon, GeodeticLatLon}
+const LatLonAltType = Union{GeocentricLatLonAlt, GeodeticLatLonAlt}
+function allapprox(coords₁::LL, coords₂::LL) where {LL <: LatLonType}
+  T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
+  return (
+    isapprox(coords₁.lat, coords₂.lat; atol = sqrt(eps(T(90)))°)
+    && isapproxangle(coords₁.lon, coords₂.lon)
   )
+end
+function allapprox(coords₁::LLA, coords₂::LLA) where {LLA <: LatLonAltType}
+  T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
+  a = T(majoraxis(ellipsoid(datum(coords₁))))
+  return (
+    isapprox(coords₁.lat, coords₂.lat; atol = sqrt(eps(T(90))) * °)
+    && isapproxangle(coords₁.lon, coords₂.lon)
+    && isapprox(a + coords₁.alt, a + coords₂.alt)
+  )
+end
 
-isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
+function allapprox(coords₁::C, coords₂::C) where {C <: Projected}
+  T = promote_type(Unitful.numtype.((coords₁.x, coords₂.x))...)
+  return isapprox(
+    svec(coords₁),
+    svec(coords₂);
+    rtol = sqrt(eps(T)),
+    atol = sqrt(eps(T(ustrip(m, majoraxis(ellipsoid(datum(C))))))) * m,
+  )
+end
 
 function isapproxtest2D(CRS; datum=WGS84{1762})
   c1 = convert(CRS, Cartesian{datum}(T(1), T(2)))
