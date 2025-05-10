@@ -49,7 +49,7 @@
       if C <: EqualEarth && lat == -90
         # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
         continue
-      elseif C <: CoordRefSystems.Orthographic && lat == 0
+      elseif C <: Orthographic && lat == 0
         continue
       elseif C <: LambertAzimuthalEqualArea && lat == -90
         # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
@@ -60,13 +60,13 @@
       end
 
       c1 = LatLon(lat, lon)
-      
+
       # skip if not in domain
       indomain(C, c1) || continue
-      
+
       # convert forward
       c2 = convert(C, c1)
-      
+
       # convert backward
       c3 = convert(LatLon, c2)
 
@@ -74,19 +74,7 @@
       lat_atol = sqrt(eps(T)) * 90°
       lon_atol = sqrt(eps(T)) * 180°
 
-      sqrt_tol(x, xlim) = sqrt_tol(abs(x - xlim) / xlim) * xlim
-      function sqrt_tol(e)
-        T = typeof(e)
-        if e >= eps(T)^(1//4)
-          return eps(T)^(1//2)
-        elseif e >= eps(T)^(1//2)
-          return eps(T)^(3//4) / e
-        else
-          return eps(T)^(1//4)
-        end
-      end
-
-      if C <: Albers || C <: CoordRefSystems.EqualAreaCylindrical
+      if C <: Albers || C <: EqualAreaCylindrical
         lat_atol = sqrt_tol(abs(lat), 90) * °
       end
       if C <: LambertAzimuthalEqualArea
@@ -101,13 +89,13 @@
         lat_atol = tol * 90°
         lon_atol = tol * 180°
       end
-      if C <: CoordRefSystems.Orthographic
+      if C <: Orthographic
         lat_atol = sqrt_tol(abs(lat), 90) * °
       end
       if (
         (
           C <: LambertAzimuthalEqualArea
-          || C <: CoordRefSystems.Orthographic
+          || C <: Orthographic
           || C <: Sinusoidal
         )
         && abs(lat) == 90
@@ -116,7 +104,7 @@
       end
       @assert (
         isapprox(c3.lat, c1.lat; atol = lat_atol)
-        && is_approx_angle(c3.lon, c1.lon; atol = lon_atol)
+        && isapproxangle(c3.lon, c1.lon; atol = lon_atol)
       )
     end
   end
