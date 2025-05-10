@@ -79,7 +79,6 @@
       end
       if C <: LambertAzimuthalEqualArea
         antipode(::Type{<:LambertAzimuthalEqualArea{latₒ}}) where {latₒ} = LatLon(-T(ustrip(°, latₒ)), T(180))
-        relative_error(x, xlim) = norm(x - xlim) / norm(xlim)
         tol = sqrt_tol(
             relative_error(
               svec(convert(Cartesian, c1)),

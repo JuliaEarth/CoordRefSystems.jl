@@ -13,6 +13,8 @@ end
 svec(coords::Cartesian) = SVector(getfield(coords, :coords))
 svec(coords::Projected) = SVector(coords.x, coords.y)
 
+relative_error(x, xlim) = norm(x - xlim) / norm(xlim)
+
 isapproxangle(
   α, β;
   atol = sqrt(eps(2 * ustrip(rad, promote(π, α, β)[1]))),
