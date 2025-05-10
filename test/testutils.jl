@@ -17,7 +17,7 @@ relative_error(x, xlim) = norm(x - xlim) / norm(xlim)
 
 isapproxangle(
   α, β;
-  atol = sqrt(eps(2 * ustrip(rad, promote(π, α, β)[1]))),
+  atol = sqrt(eps(2 * promote(π, ustrip(α), ustrip(β))[1])),
 ) = abs(rem2pi(ustrip(rad, α - β), RoundNearest)) <= ustrip(rad, atol)
 
 allapprox(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}) where {Datum} = svec(coords₁) ≈ svec(coords₂)
