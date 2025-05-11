@@ -1,4 +1,5 @@
 @testset "Projection domain" begin
+  # Mercator/WebMercator
   c0 = LatLon(T(90), T(0))
   c1 = LatLon(T(30), T(60))
   c2 = LatLon(T(85), T(60))
@@ -23,15 +24,19 @@
     @test indomain(C{WGS84Latest}, c8)
   end
 
-  @testset "C" for C in projected
-    # forward
+  # generic tests
+  for C in projected
     for lat in T.(-90:90), lon in T.(-180:180)
       c1 = LatLon(lat, lon)
       if indomain(C, c1)
+        # lat/lon values in projection domain
+        # are mapped to finite x/y coordinates
         c2 = convert(C, c1)
         @test isfinite(c2.x)
         @test isfinite(c2.y)
       else
+        # throw argument error if lat/lon values
+        # are not in projection domain
         @test_throws ArgumentError convert(C, c1)
       end
     end
