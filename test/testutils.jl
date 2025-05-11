@@ -35,22 +35,22 @@ codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
 # -----------------
 
 # basic CRS
-allapprox(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}) where {Datum} = svec(coords₁) ≈ svec(coords₂)
-allapprox(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ ≈ coords₂.ρ && isapproxangle(coords₁.ϕ, coords₂.ϕ)
-allapprox(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} = SVector(coords₁.ρ, coords₁.z) ≈ SVector(coords₁.ρ, coords₂.z) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
-allapprox(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} = coords₁.r ≈ coords₂.r && isapproxangle(coords₁.θ, coords₂.θ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+isapproxcoords(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}) where {Datum} = svec(coords₁) ≈ svec(coords₂)
+isapproxcoords(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ ≈ coords₂.ρ && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+isapproxcoords(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} = SVector(coords₁.ρ, coords₁.z) ≈ SVector(coords₁.ρ, coords₂.z) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+isapproxcoords(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} = coords₁.r ≈ coords₂.r && isapproxangle(coords₁.θ, coords₂.θ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
 
 # geographic CRS
 const LatLonType = Union{AuthalicLatLon, GeocentricLatLon, GeodeticLatLon}
 const LatLonAltType = Union{GeocentricLatLonAlt, GeodeticLatLonAlt}
-function allapprox(coords₁::LL, coords₂::LL) where {LL <: LatLonType}
+function isapproxcoords(coords₁::LL, coords₂::LL) where {LL <: LatLonType}
   T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
   return (
     isapprox(coords₁.lat, coords₂.lat; atol = sqrt(eps(T(90)))°)
     && isapproxangle(coords₁.lon, coords₂.lon)
   )
 end
-function allapprox(coords₁::LLA, coords₂::LLA) where {LLA <: LatLonAltType}
+function isapproxcoords(coords₁::LLA, coords₂::LLA) where {LLA <: LatLonAltType}
   T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
   a = T(majoraxis(ellipsoid(datum(coords₁))))
   return (
@@ -61,7 +61,7 @@ function allapprox(coords₁::LLA, coords₂::LLA) where {LLA <: LatLonAltType}
 end
 
 # projected CRS
-function allapprox(coords₁::C, coords₂::C) where {C <: Projected}
+function isapproxcoords(coords₁::C, coords₂::C) where {C <: Projected}
   T = promote_type(Unitful.numtype.((coords₁.x, coords₂.x))...)
   return isapprox(
     svec(coords₁),
