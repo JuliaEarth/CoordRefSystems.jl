@@ -38,7 +38,7 @@
 
     # backward
     if C <: TransverseMercator
-      # TODO: fix backward implementation
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/40
       continue
     elseif C <: Robinson && T == Float64
       # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/55
