@@ -76,12 +76,12 @@
       lon_atol = sqrt(eps(T)) * 180°
 
       if C <: Albers || C <: EqualAreaCylindrical
-        lat_atol = sqrt_tol(abs(lat), 90) * °
+        lat_atol = sqrttol(abs(lat), 90) * °
       end
       if C <: LambertAzimuthalEqualArea
         antipode(::Type{<:LambertAzimuthalEqualArea{latₒ}}) where {latₒ} = LatLon(-T(ustrip(°, latₒ)), T(180))
-        tol = sqrt_tol(
-            relative_error(
+        tol = sqrttol(
+            relativeerror(
               svec(convert(Cartesian, c1)),
               svec(convert(Cartesian, antipode(C)))
             )
@@ -90,7 +90,7 @@
         lon_atol = tol * 180°
       end
       if C <: Orthographic
-        lat_atol = sqrt_tol(abs(lat)) * 90°
+        lat_atol = sqrttol(abs(lat)) * 90°
       end
       if (
         (
