@@ -4,8 +4,11 @@ using StableRNGs
 using ArchGDAL
 using ArchGDAL.GDAL
 using Test
+using LinearAlgebra
+using StaticArrays
 
 using CoordRefSystems: Met, Deg, Rad
+using CoordRefSystems: Projected, Orthographic, EqualAreaCylindrical
 using Unitful: m, mm, cm, km, rad, °, s
 
 # environment settings

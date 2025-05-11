@@ -1,23 +1,84 @@
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
-  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+# ----------------
+# BASIC UTILITIES
+# ----------------
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian2D}
-  isapprox(coords₁.x, coords₂.x, kwargs...) && isapprox(coords₁.y, coords₂.y, kwargs...)
+sqrttol(x, xo) = sqrttol(abs(x - xo) / xo) * xo
+function sqrttol(e)
+  T = typeof(e) 
+  if e >= eps(T)^(1//4)
+    return eps(T)^(1//2)
+  elseif e >= eps(T)^(1//2)
+    return eps(T)^(3//4) / e
+  else
+    return eps(T)^(1//4)
+  end
 end
 
-function allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian3D}
-  isapprox(coords₁.x, coords₂.x, kwargs...) &&
-    isapprox(coords₁.y, coords₂.y, kwargs...) &&
-    isapprox(coords₁.z, coords₂.z, kwargs...)
+relativeerror(x, xo) = norm(x - xo) / norm(xo)
+
+svec(coords::Cartesian) = SVector(getfield(coords, :coords))
+svec(coords::Projected) = SVector(coords.x, coords.y)
+
+function wktstring(code; format="WKT2", multiline=false)
+  spref = ArchGDAL.importUserInput(codestring(code))
+  options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
+  wktptr = Ref{Cstring}()
+  GDAL.osrexporttowktex(spref, wktptr, options)
+  unsafe_string(wktptr[])
 end
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
-  isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
-    isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
-    (isapproxlon180(coords₁.lon; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
+codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
+codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
+
+# -----------------
+# ISAPPROX FOR CRS
+# -----------------
+
+# basic CRS
+isapproxcoords(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}) where {Datum} = svec(coords₁) ≈ svec(coords₂)
+isapproxcoords(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ ≈ coords₂.ρ && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+isapproxcoords(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} = SVector(coords₁.ρ, coords₁.z) ≈ SVector(coords₁.ρ, coords₂.z) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+isapproxcoords(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} = coords₁.r ≈ coords₂.r && isapproxangle(coords₁.θ, coords₂.θ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+
+# geographic CRS
+const LatLonType = Union{AuthalicLatLon, GeocentricLatLon, GeodeticLatLon}
+const LatLonAltType = Union{GeocentricLatLonAlt, GeodeticLatLonAlt}
+function isapproxcoords(coords₁::LL, coords₂::LL) where {LL <: LatLonType}
+  T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
+  return (
+    isapprox(coords₁.lat, coords₂.lat; atol = sqrt(eps(T(90)))°)
+    && isapproxangle(coords₁.lon, coords₂.lon)
   )
+end
+function isapproxcoords(coords₁::LLA, coords₂::LLA) where {LLA <: LatLonAltType}
+  T = promote_type(Unitful.numtype.((coords₁.lon, coords₂.lon))...)
+  a = T(majoraxis(ellipsoid(datum(coords₁))))
+  return (
+    isapprox(coords₁.lat, coords₂.lat; atol = sqrt(eps(T(90))) * °)
+    && isapproxangle(coords₁.lon, coords₂.lon)
+    && isapprox(a + coords₁.alt, a + coords₂.alt)
+  )
+end
 
-isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
+# projected CRS
+function isapproxcoords(coords₁::C, coords₂::C) where {C <: Projected}
+  T = promote_type(Unitful.numtype.((coords₁.x, coords₂.x))...)
+  return isapprox(
+    svec(coords₁),
+    svec(coords₂);
+    rtol = sqrt(eps(T)),
+    atol = sqrt(eps(T(ustrip(m, majoraxis(ellipsoid(datum(C))))))) * m,
+  )
+end
+
+isapproxangle(
+  α, β;
+  atol = sqrt(eps(2 * first(promote(π, ustrip(α), ustrip(β))))),
+) = abs(rem2pi(ustrip(rad, α - β), RoundNearest)) <= ustrip(rad, atol)
+
+# ---------------
+# TEST UTILITIES
+# ---------------
 
 function isapproxtest2D(CRS; datum=WGS84{1762})
   c1 = convert(CRS, Cartesian{datum}(T(1), T(2)))
@@ -97,17 +158,6 @@ function randtest(CRS)
   @inferred rand(CRS, 10)
   @inferred rand(rng, CRS, 10)
 end
-
-function wktstring(code; format="WKT2", multiline=false)
-  spref = ArchGDAL.importUserInput(codestring(code))
-  options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
-  wktptr = Ref{Cstring}()
-  GDAL.osrexporttowktex(spref, wktptr, options)
-  unsafe_string(wktptr[])
-end
-
-codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
-codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
 
 function crsstringtest(code)
   crsstringtest1(code)
