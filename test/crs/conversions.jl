@@ -1625,7 +1625,7 @@
       @test allapprox(c3, c1)
 
       # type stability
-      c1 = LatLon{NAD27}(T(28.5), T-(96))
+      c1 = LatLon{NAD27}(T(28.5), -T(96))
       c2 = LambertTexasSouthCentral(T(903277.7991828895), T(77650.94253892983))
       @inferred convert(LambertTexasSouthCentral, c1)
       @inferred convert(LatLon{NAD27}, c2)
