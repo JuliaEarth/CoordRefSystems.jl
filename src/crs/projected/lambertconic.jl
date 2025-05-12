@@ -91,7 +91,7 @@ end
 
 _lambertm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
-_lambertt(ϕ::T, e::T) where T = tan(T(π/4) - ϕ/2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e/2)
+_lambertt(ϕ, e) = tan(oftype(ϕ, π/4) - ϕ/2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e/2)
 
 _lambertr(F, t, n) = F * t^n
 
