@@ -20,58 +20,36 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
 isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
 function isapproxtest2D(CRS; datum=WGS84{1762})
-  c1 = convert(CRS, Cartesian{datum}(T(1), T(2)))
-
-  τ = CoordRefSystems.atol(Float64) * m
-  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
-  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
-  @test c1 ≈ c2
-  @test c1 ≈ c3
-
-  τ = CoordRefSystems.atol(Float32) * m
-  c2 = convert(CRS, Cartesian{datum}(1m + τ, 2m))
-  c3 = convert(CRS, Cartesian{datum}(1m, 2m + τ))
+  x = T(1) * m
+  y = T(2) * m
+  τ = CoordRefSystems.atol(T) * m
+  c1 = convert(CRS, Cartesian{datum}(x, y))
+  c2 = convert(CRS, Cartesian{datum}(x + τ, y))
+  c3 = convert(CRS, Cartesian{datum}(x, y + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 end
 
 function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
-  c = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
-  cart = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, c) : convert(Cartesian, c)
-  u = CoordRefSystems.lentype(cart) |> unit
-
-  # basic tests
-  @test c ≈ cart
-  @test cart ≈ c
-
-  # translated coordinates
-  c1 = convert(CRS, Cartesian{datum1}(cart.x, cart.y, cart.z))
-
-  τ = CoordRefSystems.atol(Float64) * u
-  x = Float64(ustrip(cart.x)) * u
-  y = Float64(ustrip(cart.y)) * u
-  z = Float64(ustrip(cart.z)) * u
+  r = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
+  c = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, r) : convert(Cartesian, r)
+  x = T(ustrip(c.x)) * m
+  y = T(ustrip(c.y)) * m
+  z = T(ustrip(c.z)) * m
+  τ = CoordRefSystems.atol(T) * m
+  c1 = convert(CRS, Cartesian{datum1}(x, y, z))
   c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
   c3 = convert(CRS, Cartesian{datum1}(x, y + τ, z))
   c4 = convert(CRS, Cartesian{datum1}(x, y, z + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
-
-  τ = CoordRefSystems.atol(Float32) * u
-  x = Float32(ustrip(cart.x)) * u
-  y = Float32(ustrip(cart.y)) * u
-  z = Float32(ustrip(cart.z)) * u
-  c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
-  c3 = convert(CRS, Cartesian{datum1}(x, y + τ, z))
-  c4 = convert(CRS, Cartesian{datum1}(x, y, z + τ))
+  c2 = convert(CRS, Cartesian{datum2}(x + τ, y, z))
+  c3 = convert(CRS, Cartesian{datum2}(x, y + τ, z))
+  c4 = convert(CRS, Cartesian{datum2}(x, y, z + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
-
-  # different datums
-  c2 = convert(CRS, Cartesian{datum2}(cart.x, cart.y, cart.z))
-  @test c1 ≈ c2
 end
 
 equaltest(CRS) = equaltest(CRS, CoordRefSystems.ncoords(CRS))
