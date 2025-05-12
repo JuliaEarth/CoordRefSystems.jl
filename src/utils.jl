@@ -205,6 +205,6 @@ approximately equal with an appropriate tolerance.
 """
 function isapproxangle(α, β)
   diff = rem2pi(ustrip(rad, α - β), RoundNearest)
-  atol = sqrt(eps(2 * typeof(diff)(π)))
+  atol = sqrt(eps(2 * oftype(diff, π)))
   abs(diff) ≤ atol
 end
