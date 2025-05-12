@@ -33,9 +33,9 @@ end
 function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
   r = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
   c = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, r) : convert(Cartesian, r)
-  x = T(ustrip(c.x)) * m
-  y = T(ustrip(c.y)) * m
-  z = T(ustrip(c.z)) * m
+  x = T(ustrip(m, c.x)) * m
+  y = T(ustrip(m, c.y)) * m
+  z = T(ustrip(m, c.z)) * m
   τ = CoordRefSystems.atol(T) * m
   c1 = convert(CRS, Cartesian{datum1}(x, y, z))
   c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
