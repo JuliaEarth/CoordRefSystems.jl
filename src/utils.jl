@@ -196,3 +196,15 @@ function ellipfromab(a, b)
   e = √e²
   (; a, b, e, e², f, f⁻¹)
 end
+
+"""
+    isapproxangle(α, β)
+
+Checks whether or not the angles `α` and `β` are
+approximately equal with an appropriate tolerance.
+"""
+function isapproxangle(α, β)
+  diff = rem2pi(ustrip(rad, α - β), RoundNearest)
+  atol = sqrt(eps(2 * typeof(diff)(π)))
+  abs(diff) ≤ atol
+end

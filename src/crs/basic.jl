@@ -208,6 +208,12 @@ lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
+Base.isapprox(coords₁::Polar{Datum₁}, coords₂::Polar{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(Polar{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::Polar{D}, coords₂::Polar{D}; kwargs...) where {D<:Datum} =
+  isapprox(coords₁.ρ, coords₂.ρ; kwargs...) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+
 Random.rand(rng::Random.AbstractRNG, ::Type{Polar{Datum}}) where {Datum} = Polar{Datum}(rand(rng), 2π * rand(rng))
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Polar}) = rand(rng, Polar{NoDatum})
