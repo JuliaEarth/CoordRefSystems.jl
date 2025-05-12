@@ -128,14 +128,14 @@ lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
-Base.isapprox(coords₁::Cartesian{Datum₁,3}, coords₂::Cartesian{Datum₂,3}; kwargs...) where {Datum₁,Datum₂} =
+Base.isapprox(coords₁::Cartesian{Datum₁}, coords₂::Cartesian{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
   isapprox(coords₁, convert(Cartesian{Datum₁}, coords₂); kwargs...)
 
-Base.isapprox(coords₁::Cartesian{Datum,3}, coords₂::Cartesian{Datum,3}; kwargs...) where {Datum} =
-  _isapprox(coords₁, coords₂; kwargs...)
-
-Base.isapprox(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}; kwargs...) where {Datum,N} =
-  _isapprox(coords₁, coords₂; kwargs...)
+function Base.isapprox(coords₁::Cartesian{D}, coords₂::Cartesian{D}; kwargs...) where {D<:Datum}
+  c₁ = SVector(_coords(coords₁))
+  c₂ = SVector(_coords(coords₂))
+  isapprox(c₁, c₂; kwargs...)
+end
 
 function tol(coords::Cartesian)
   Q = eltype(_coords(coords))
@@ -161,13 +161,6 @@ function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}
   else
     ntuple(i -> Symbol(:x, i), N)
   end
-end
-
-function _isapprox(coords₁, coords₂; kwargs...)
-  # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/53
-  c₁ = SVector(_coords(coords₁))
-  c₂ = SVector(_coords(coords₂))
-  isapprox(c₁, c₂; kwargs...)
 end
 
 """
