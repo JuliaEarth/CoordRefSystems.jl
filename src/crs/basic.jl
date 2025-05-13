@@ -212,7 +212,7 @@ Base.isapprox(coords₁::Polar{Datum₁}, coords₂::Polar{Datum₂}; kwargs...)
   isapprox(coords₁, convert(Polar{Datum₁}, coords₂); kwargs...)
 
 Base.isapprox(coords₁::Polar{D}, coords₂::Polar{D}; kwargs...) where {D<:Datum} =
-  isapprox(coords₁.ρ, coords₂.ρ; kwargs...) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
+  isapproxlength(coords₁.ρ, coords₂.ρ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Polar{Datum}}) where {Datum} = Polar{Datum}(rand(rng), 2π * rand(rng))
 
