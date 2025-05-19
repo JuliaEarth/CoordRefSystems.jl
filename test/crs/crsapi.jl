@@ -8,6 +8,8 @@
     for C in basic3D
       c = C(T(1), T(2), T(3))
       @test datum(c) === NoDatum
+      c = C{WGS84Latest}(T(1), T(2), T(3))
+      @test datum(c) === WGS84Latest
     end
 
     for C in geographic2D
@@ -75,10 +77,10 @@
   @testset "names" begin
     c = Cartesian(T(1), T(2))
     @test CoordRefSystems.names(c) == (:x, :y)
-    c = Cartesian(T(1), T(2), T(3))
-    @test CoordRefSystems.names(c) == (:x, :y, :z)
     c = Polar(T(1), T(2))
     @test CoordRefSystems.names(c) == (:ρ, :ϕ)
+    c = Cartesian(T(1), T(2), T(3))
+    @test CoordRefSystems.names(c) == (:x, :y, :z)
     c = Cylindrical(T(1), T(2), T(3))
     @test CoordRefSystems.names(c) == (:ρ, :ϕ, :z)
     c = Spherical(T(1), T(2), T(3))
@@ -103,10 +105,10 @@
   @testset "values" begin
     c = Cartesian(T(1), T(2))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)
-    c = Cartesian(T(1), T(2), T(3))
-    @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m, T(3) * m)
     c = Polar(T(1), T(2))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * rad)
+    c = Cartesian(T(1), T(2), T(3))
+    @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m, T(3) * m)
     c = Cylindrical(T(1), T(2), T(3))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * rad, T(3) * m)
     c = Spherical(T(1), T(2), T(3))
@@ -131,10 +133,10 @@
   @testset "raw" begin
     c = Cartesian(T(1) * mm, T(2) * mm)
     @test CoordRefSystems.raw(c) == (T(1), T(2))
-    c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
-    @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
     c = Polar(T(1) * km, T(2) * rad)
     @test CoordRefSystems.raw(c) == (T(1), T(2))
+    c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
+    @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
     c = Cylindrical(T(1) * cm, T(2) * rad, T(3) * cm)
     @test CoordRefSystems.raw(c) == (T(1), T(2), T(3))
     c = Spherical(T(1) * mm, T(2) * rad, T(3) * rad)
@@ -159,10 +161,10 @@
   @testset "units" begin
     c = Cartesian(T(1) * mm, T(1) * mm)
     @test CoordRefSystems.units(c) == (mm, mm)
-    c = Cartesian(T(1) * cm, T(1) * cm, T(1) * cm)
-    @test CoordRefSystems.units(c) == (cm, cm, cm)
     c = Polar(T(1) * km, T(1) * rad)
     @test CoordRefSystems.units(c) == (km, rad)
+    c = Cartesian(T(1) * cm, T(1) * cm, T(1) * cm)
+    @test CoordRefSystems.units(c) == (cm, cm, cm)
     c = Cylindrical(T(1) * cm, T(1) * rad, T(1) * cm)
     @test CoordRefSystems.units(c) == (cm, rad, cm)
     c = Spherical(T(1) * mm, T(1) * rad, T(1) * rad)
@@ -187,10 +189,10 @@
   @testset "constructor" begin
     c = Cartesian(T(1), T(2))
     @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
-    c = Cartesian(T(1), T(2), T(3))
-    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
     c = Polar(T(1), T(2))
     @test CoordRefSystems.constructor(c) === Polar{NoDatum}
+    c = Cartesian(T(1), T(2), T(3))
+    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
     c = Cylindrical(T(1), T(2), T(3))
     @test CoordRefSystems.constructor(c) === Cylindrical{NoDatum}
     c = Spherical(T(1), T(2), T(3))
@@ -216,10 +218,10 @@
     c = Cartesian(T(1) * mm, T(2) * mm)
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
+    c = Polar(T(1) * km, T(2) * rad)
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Polar(T(1) * km, T(2) * rad)
+    c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
     rv = CoordRefSystems.raw(c)
     @test CoordRefSystems.reconstruct(typeof(c), rv) == c
     c = Cylindrical(T(1) * cm, T(2) * rad, T(3) * cm)
@@ -253,6 +255,8 @@
     @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
     c = Polar(T(1) * km, T(2) * rad)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * km)
+    c = Cartesian(T(1) * mm, T(2) * mm, T(3) * mm)
+    @test CoordRefSystems.lentype(c) == typeof(T(1) * mm)
     c = Cylindrical(T(1) * cm, T(2) * rad, T(3) * cm)
     @test CoordRefSystems.lentype(c) == typeof(T(1) * cm)
     c = Spherical(T(1) * mm, T(3) * rad, T(3) * rad)
@@ -295,6 +299,7 @@
   @testset "isapprox" begin
     isapproxtest2D(Cartesian)
     isapproxtest2D(Polar)
+
     isapproxtest3D(Cartesian)
     isapproxtest3D(Cylindrical)
     isapproxtest3D(Spherical)
