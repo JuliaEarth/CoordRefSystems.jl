@@ -22,10 +22,10 @@ macro identity(Datumₛ, Datumₜ)
       Cylindrical{Dₛ}(coords.ρ, coords.ϕ, coords.z)
 
     Base.convert(::Type{Spherical{Dₜ}}, coords::Spherical{Dₛ}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
-      Spherical{Dₜ}(coords.ρ, coords.θ, coords.ϕ)
+      Spherical{Dₜ}(coords.r, coords.θ, coords.ϕ)
 
     Base.convert(::Type{Spherical{Dₛ}}, coords::Spherical{Dₜ}) where {Dₛ<:$Datumₛ,Dₜ<:$Datumₜ} =
-      Spherical{Dₛ}(coords.ρ, coords.θ, coords.ϕ)
+      Spherical{Dₛ}(coords.r, coords.θ, coords.ϕ)
   end
   esc(expr)
 end
