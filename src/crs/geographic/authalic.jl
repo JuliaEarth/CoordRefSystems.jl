@@ -48,6 +48,12 @@ lentype(::Type{<:AuthalicLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::AuthalicLatLon{Datum}, coords₂::AuthalicLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
+Base.isapprox(coords₁::AuthalicLatLon{Datum₁}, coords₂::AuthalicLatLon{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(AuthalicLatLon{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::AuthalicLatLon{D}, coords₂::AuthalicLatLon{D}; kwargs...) where {D<:Datum} =
+  isapproxangle(coords₁.lat, coords₂.lat) && isapproxangle(coords₁.lon, coords₂.lon)
+
 Random.rand(rng::Random.AbstractRNG, ::Type{AuthalicLatLon{Datum}}) where {Datum} =
   AuthalicLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
 

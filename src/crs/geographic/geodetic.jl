@@ -50,6 +50,12 @@ lentype(::Type{<:GeodeticLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::GeodeticLatLon{Datum}, coords₂::GeodeticLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
+Base.isapprox(coords₁::GeodeticLatLon{Datum₁}, coords₂::GeodeticLatLon{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(GeodeticLatLon{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::GeodeticLatLon{D}, coords₂::GeodeticLatLon{D}; kwargs...) where {D<:Datum} =
+  isapproxangle(coords₁.lat, coords₂.lat) && isapproxangle(coords₁.lon, coords₂.lon)
+
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLon{Datum}}) where {Datum} =
   GeodeticLatLon{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng))
 
@@ -128,6 +134,12 @@ lentype(::Type{<:GeodeticLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 
 ==(coords₁::GeodeticLatLonAlt{Datum}, coords₂::GeodeticLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
+
+Base.isapprox(coords₁::GeodeticLatLonAlt{Datum₁}, coords₂::GeodeticLatLonAlt{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(GeodeticLatLonAlt{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::GeodeticLatLonAlt{D}, coords₂::GeodeticLatLonAlt{D}; kwargs...) where {D<:Datum} =
+  isapproxangle(coords₁.lat, coords₂.lat) && isapproxangle(coords₁.lon, coords₂.lon) && isapproxlength(coords₁.alt, coords₂.alt)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeodeticLatLonAlt{Datum}}) where {Datum} =
   GeodeticLatLonAlt{Datum}(-90 + 180 * rand(rng), -180 + 360 * rand(rng), rand(rng))
