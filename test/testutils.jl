@@ -58,13 +58,11 @@ function equaltest(CRS, n)
 end
 
 function randtest(CRS)
-  rng = StableRNG(123)
-
+  rng = StableRNG(2025)
   @test rand(CRS) isa CRS
   @test rand(rng, CRS) isa CRS
   @test eltype(rand(CRS, 10)) <: CRS
   @test eltype(rand(rng, CRS, 10)) <: CRS
-
   @inferred rand(CRS)
   @inferred rand(rng, CRS)
   @inferred rand(CRS, 10)
