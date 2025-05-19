@@ -19,34 +19,29 @@ allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
 
 isapproxlon180(lon; kwargs...) = isapprox(abs(lon), 180°; kwargs...)
 
-function isapproxtest2D(CRS; datum=WGS84{1762})
+function isapproxtest2D(CRS)
   x = T(1) * m
   y = T(2) * m
   τ = CoordRefSystems.atol(T) * m
-  c1 = convert(CRS, Cartesian{datum}(x, y))
-  c2 = convert(CRS, Cartesian{datum}(x + τ, y))
-  c3 = convert(CRS, Cartesian{datum}(x, y + τ))
+  c1 = convert(CRS, Cartesian(x, y))
+  c2 = convert(CRS, Cartesian(x + τ, y))
+  c3 = convert(CRS, Cartesian(x, y + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
 end
 
-function isapproxtest3D(CRS; datum1=WGS84{1762}, datum2=ITRF{2008})
-  r = CRS <: Cartesian ? rand(Cartesian{datum1,3}) : rand(CRS{datum1})
+function isapproxtest3D(CRS; datum=WGS84{1762})
+  rng = StableRNG(2025)
+  r = CRS <: Cartesian ? rand(rng, Cartesian{datum,3}) : rand(rng, CRS{datum})
   c = CRS <: CoordRefSystems.Projected ? convert(Cartesian3D, r) : convert(Cartesian, r)
   x = T(ustrip(m, c.x)) * m
   y = T(ustrip(m, c.y)) * m
   z = T(ustrip(m, c.z)) * m
   τ = CoordRefSystems.atol(T) * m
-  c1 = convert(CRS, Cartesian{datum1}(x, y, z))
-  c2 = convert(CRS, Cartesian{datum1}(x + τ, y, z))
-  c3 = convert(CRS, Cartesian{datum1}(x, y + τ, z))
-  c4 = convert(CRS, Cartesian{datum1}(x, y, z + τ))
-  @test c1 ≈ c2
-  @test c1 ≈ c3
-  @test c1 ≈ c4
-  c2 = convert(CRS, Cartesian{datum2}(x + τ, y, z))
-  c3 = convert(CRS, Cartesian{datum2}(x, y + τ, z))
-  c4 = convert(CRS, Cartesian{datum2}(x, y, z + τ))
+  c1 = convert(CRS, Cartesian{datum}(x, y, z))
+  c2 = convert(CRS, Cartesian{datum}(x + τ, y, z))
+  c3 = convert(CRS, Cartesian{datum}(x, y + τ, z))
+  c4 = convert(CRS, Cartesian{datum}(x, y, z + τ))
   @test c1 ≈ c2
   @test c1 ≈ c3
   @test c1 ≈ c4
