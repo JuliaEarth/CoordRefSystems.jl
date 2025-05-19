@@ -272,6 +272,12 @@ lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
+Base.isapprox(coords₁::Cylindrical{Datum₁}, coords₂::Cylindrical{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(Cylindrical{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::Cylindrical{D}, coords₂::Cylindrical{D}; kwargs...) where {D<:Datum} =
+  isapproxlength(coords₁.ρ, coords₂.ρ) && isapproxangle(coords₁.ϕ, coords₂.ϕ) && isapproxlength(coords₁.z, coords₂.z)
+
 Random.rand(rng::Random.AbstractRNG, ::Type{Cylindrical{Datum}}) where {Datum} =
   Cylindrical{Datum}(rand(rng), 2π * rand(rng), rand(rng))
 
@@ -326,6 +332,12 @@ lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
+
+Base.isapprox(coords₁::Spherical{Datum₁}, coords₂::Spherical{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
+  isapprox(coords₁, convert(Spherical{Datum₁}, coords₂); kwargs...)
+
+Base.isapprox(coords₁::Spherical{D}, coords₂::Spherical{D}; kwargs...) where {D<:Datum} =
+  isapproxlength(coords₁.r, coords₂.r) && isapproxangle(coords₁.θ, coords₂.θ) && isapproxangle(coords₁.ϕ, coords₂.ϕ)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Spherical{Datum}}) where {Datum} =
   Spherical{Datum}(rand(rng), 2π * rand(rng), 2π * rand(rng))
