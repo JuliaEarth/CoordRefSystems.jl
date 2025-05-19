@@ -1,10 +1,39 @@
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} = isapprox(coords₁, coords₂; kwargs...)
+# ------------------
+# BASIC UTILITITIES
+# ------------------
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
+isclose(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} = isapprox(coords₁, coords₂; kwargs...)
+
+isclose(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
   isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
     isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
     (isapprox(abs(coords₁.lon), 180°; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
   )
+
+function wktstring(code; format="WKT2", multiline=false)
+  spref = ArchGDAL.importUserInput(codestring(code))
+  options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
+  wktptr = Ref{Cstring}()
+  GDAL.osrexporttowktex(spref, wktptr, options)
+  unsafe_string(wktptr[])
+end
+
+codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
+codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
+
+# ---------------
+# TEST FUNCTIONS
+# ---------------
+
+isequaltest(CRS) = isequaltest(CRS, CoordRefSystems.ncoords(CRS))
+
+function isequaltest(CRS, n)
+  c1 = CRS(ntuple(_ -> T(1), n)...)
+  c2 = CRS(ntuple(_ -> 1.0, n)...)
+  c3 = CRS(ntuple(_ -> 1.0f0, n)...)
+  @test c1 == c2
+  @test c1 == c3
+end
 
 function isapproxtest2D(CRS)
   x = T(1) * m
@@ -34,16 +63,6 @@ function isapproxtest3D(CRS; datum=WGS84{1762})
   @test c1 ≈ c4
 end
 
-isequaltest(CRS) = isequaltest(CRS, CoordRefSystems.ncoords(CRS))
-
-function isequaltest(CRS, n)
-  c1 = CRS(ntuple(_ -> T(1), n)...)
-  c2 = CRS(ntuple(_ -> 1.0, n)...)
-  c3 = CRS(ntuple(_ -> 1.0f0, n)...)
-  @test c1 == c2
-  @test c1 == c3
-end
-
 function randtest(CRS)
   rng = StableRNG(2025)
   @test rand(CRS) isa CRS
@@ -55,17 +74,6 @@ function randtest(CRS)
   @inferred rand(CRS, 10)
   @inferred rand(rng, CRS, 10)
 end
-
-function wktstring(code; format="WKT2", multiline=false)
-  spref = ArchGDAL.importUserInput(codestring(code))
-  options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
-  wktptr = Ref{Cstring}()
-  GDAL.osrexporttowktex(spref, wktptr, options)
-  unsafe_string(wktptr[])
-end
-
-codestring(::Type{EPSG{Code}}) where {Code} = "EPSG:$Code"
-codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
 
 function crsstringtest(code)
   crsstringtest1(code)

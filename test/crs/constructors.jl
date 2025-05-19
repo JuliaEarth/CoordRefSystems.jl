@@ -81,7 +81,7 @@
 
     # Polar
     @test Polar(T(1), T(2)) == Polar(T(1) * m, T(2) * rad)
-    @test allapprox(Polar(T(1) * m, T(45) * °), Polar(T(1) * m, T(π / 4) * rad))
+    @test isclose(Polar(T(1) * m, T(45) * °), Polar(T(1) * m, T(π / 4) * rad))
 
     c = Polar(T(1), T(2))
     @test sprint(show, c) == "Polar{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad)"
@@ -106,7 +106,7 @@
     # Cylindrical
     @test Cylindrical(T(1), T(2), T(3)) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
     @test Cylindrical(T(1) * m, T(2) * rad, 3 * m) == Cylindrical(T(1) * m, T(2) * rad, T(3) * m)
-    @test allapprox(Cylindrical(T(1) * m, T(45) * °, T(1) * m), Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m))
+    @test isclose(Cylindrical(T(1) * m, T(45) * °, T(1) * m), Cylindrical(T(1) * m, T(π / 4) * rad, T(1) * m))
 
     c = Cylindrical(T(1), T(2), T(3))
     @test sprint(show, c) == "Cylindrical{NoDatum}(ρ: 1.0 m, ϕ: 2.0 rad, z: 3.0 m)"
@@ -134,7 +134,7 @@
     # Spherical
     @test Spherical(T(1), T(2), T(3)) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
     @test Spherical(T(1) * m, T(2) * rad, 3 * rad) == Spherical(T(1) * m, T(2) * rad, T(3) * rad)
-    @test allapprox(Spherical(T(1) * m, T(45) * °, T(45) * °), Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad))
+    @test isclose(Spherical(T(1) * m, T(45) * °, T(45) * °), Spherical(T(1) * m, T(π / 4) * rad, T(π / 4) * rad))
 
     c = Spherical(T(1), T(2), T(3))
     @test sprint(show, c) == "Spherical{NoDatum}(r: 1.0 m, θ: 2.0 rad, ϕ: 3.0 rad)"
@@ -164,7 +164,7 @@
     for C in geographic2D
       @test C(T(1), T(2)) == C(T(1) * °, T(2) * °)
       @test C(T(1) * °, 2 * °) == C(T(1) * °, T(2) * °)
-      @test allapprox(C(T(π / 4) * rad, T(π / 4) * rad), C(T(45) * °, T(45) * °))
+      @test isclose(C(T(π / 4) * rad, T(π / 4) * rad), C(T(45) * °, T(45) * °))
 
       # fix longitude
       @test C(T(0), T(225)) == C(T(0), T(-135))
@@ -205,7 +205,7 @@
     for C in geographic3D
       @test C(T(1), T(2), T(3)) == C(T(1) * °, T(2) * °, T(3) * m)
       @test C(T(1) * °, 2 * °, T(3) * m) == C(T(1) * °, T(2) * °, T(3) * m)
-      @test allapprox(C(T(π / 4) * rad, T(π / 4) * rad, T(1) * km), C(T(45) * °, T(45) * °, T(1000) * m))
+      @test isclose(C(T(π / 4) * rad, T(π / 4) * rad, T(1) * km), C(T(45) * °, T(45) * °, T(1000) * m))
 
       # fix longitude
       @test C(T(0), T(225), T(0)) == C(T(0), T(-135), T(0))
