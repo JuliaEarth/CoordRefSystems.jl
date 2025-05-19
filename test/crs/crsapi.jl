@@ -294,8 +294,8 @@
 
   @testset "isapprox" begin
     isapproxtest2D(Cartesian)
-    isapproxtest3D(Cartesian)
     isapproxtest2D(Polar)
+    isapproxtest3D(Cartesian)
     isapproxtest3D(Cylindrical)
     isapproxtest3D(Spherical)
 
