@@ -47,9 +47,9 @@ function isapproxtest3D(CRS; datum=WGS84{1762})
   @test c1 ≈ c4
 end
 
-equaltest(CRS) = equaltest(CRS, CoordRefSystems.ncoords(CRS))
+isequaltest(CRS) = isequaltest(CRS, CoordRefSystems.ncoords(CRS))
 
-function equaltest(CRS, n)
+function isequaltest(CRS, n)
   c1 = CRS(ntuple(_ -> T(1), n)...)
   c2 = CRS(ntuple(_ -> 1.0, n)...)
   c3 = CRS(ntuple(_ -> 1.0f0, n)...)

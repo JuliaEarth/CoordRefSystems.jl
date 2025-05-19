@@ -290,9 +290,9 @@
     end
   end
 
-  @testset "equality" begin
+  @testset "isequal" begin
     for C in [basic; geographic; projected]
-      equaltest(C)
+      isequaltest(C)
     end
   end
 
