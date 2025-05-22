@@ -225,7 +225,7 @@
       @inferred convert(Cylindrical, c2)
     end
 
-    @testset "Cartesian: Datum conversion" begin
+    @testset "Datum conversion" begin
       # WGS84 (G1762) to ITRF2008
       c1 = Cartesian{WGS84{1762}}(T(0), T(0), T(0))
       c2 = convert(Cartesian{ITRF{2008}}, c1)
@@ -256,6 +256,23 @@
       c2 = Cartesian{ITRF{2008}}(T(0), T(0), T(0))
       @inferred convert(Cartesian{ITRF{2008}}, c1)
       @inferred convert(Cartesian{ITRF{2020}}, c2)
+
+      # other basic CRS
+      c1 = Cylindrical{WGS84{1762}}(T(0), T(0), T(0))
+      c2 = convert(Cylindrical{ITRF{2008}}, c1)
+      @test allapprox(c2, Cylindrical{ITRF{2008}}(T(0), T(0), T(0)))
+
+      c1 = Spherical{WGS84{1762}}(T(0), T(0), T(0))
+      c2 = convert(Spherical{ITRF{2008}}, c1)
+      @test allapprox(c2, Spherical{ITRF{2008}}(T(0), T(0), T(0)))
+
+      c1 = Cylindrical{ITRF{2008}}(T(0), T(0), T(0))
+      c2 = convert(Cylindrical{ITRF{2020}}, c1)
+      @test allapprox(c2, Cylindrical{ITRF{2020}}(T(0.002009975124224178), T(4.612720327893528), T(-0.0023)))
+
+      c1 = Spherical{ITRF{2008}}(T(0), T(0), T(0))
+      c2 = convert(Spherical{ITRF{2020}}, c1)
+      @test allapprox(c2, Spherical{ITRF{2020}}(T(0.003054504869860253), T(2.4233847393369694), T(4.612720327893528)))
     end
   end
 
