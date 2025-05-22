@@ -120,15 +120,9 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 """
     isapprox(coords₁, coords₂; kwargs...)
 
-Checks whether or not `coords₁` and `coords₂` are approximately equal,
-i.e., their coordinate values are the same up to floating point precision.
-
-`Cartesian` coordinates are treated as static vectors. Other coordinates
-may require custom comparison criteria (e.g., angle comparisons).
-
-A default fallback method is implemented for all `CRS` subtypes, which
-first converts `coords₁` and `coords₂` to `Cartesian` coordinates. This
-fallback handles possibly different datums.
+Converts `coords₁` and `coords₂` to `Cartesian` coordinates and compare the coordinate
+values with the `isapprox` method of vectors. The conversion to `Cartesian` coordinates
+takes care of possibly different `Datum`.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)

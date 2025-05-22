@@ -196,23 +196,3 @@ function ellipfromab(a, b)
   e = √e²
   (; a, b, e, e², f, f⁻¹)
 end
-
-"""
-    isapproxlength(a, b)
-
-Checks whether or not the lengths `a` and `b` are
-approximately equal with an appropriate tolerance.
-"""
-isapproxlength(a, b) = isapprox(a, b)
-
-"""
-    isapproxangle(α, β)
-
-Checks whether or not the angles `α` and `β` are
-approximately equal with an appropriate tolerance.
-"""
-function isapproxangle(α, β)
-  diff = abs(ustrip(rad, α - β))
-  atol = sqrt(eps(2 * oftype(diff, π)))
-  diff ≤ atol
-end
