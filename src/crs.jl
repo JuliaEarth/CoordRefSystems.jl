@@ -190,6 +190,9 @@ function Base.convert(::Type{C}, coords::CRS) where {C<:CRS}
   convert(C, coords′)
 end
 
+# avoid converting coordinates to the same type at compile time
+Base.convert(::Type{C}, coords::C) where {C<:CRS} = coords
+
 # -----------
 # IO METHODS
 # -----------
