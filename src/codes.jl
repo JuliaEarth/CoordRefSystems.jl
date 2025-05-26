@@ -43,7 +43,11 @@ function wkt2(::Type{EPSG{Code}}) where {Code}
       )
     )
   end
-  read(file, String)
+  str = read(file, String)
+  if startswith(str, "WKT is not supported")
+    throw(ArgumentError(str))
+  end
+  str
 end
 
 function wkt2(::Type{ESRI{Code}}) where {Code}
