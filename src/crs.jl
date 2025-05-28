@@ -122,6 +122,9 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
 Checks whether or not `coords₁` and `coords₂` are approximately equal,
 i.e., their coordinate values are the same up to floating point precision.
+
+In the case of different datums, converts the datum of `coords₂` to the
+same datum of `coords₁` before comparison.
 """
 Base.isapprox(coords₁::CRS{Datum₁}, coords₂::CRS{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
   isapprox(coords₁, convert(constructor(coords₁), coords₂); kwargs...)
