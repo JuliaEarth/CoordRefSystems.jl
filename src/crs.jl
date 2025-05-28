@@ -129,6 +129,9 @@ same datum of `coords₁` before comparison.
 Base.isapprox(coords₁::CRS{Datum₁}, coords₂::CRS{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
   isapprox(coords₁, convert(constructor(coords₁), coords₂); kwargs...)
 
+Base.isapprox(coords₁::CRS{Datum}, coords₂::CRS{Datum}; kwargs...) where {Datum} =
+  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
+
 """
     CoordRefSystems.tol(coords)
 
