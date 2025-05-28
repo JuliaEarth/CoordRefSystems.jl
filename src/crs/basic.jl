@@ -129,9 +129,9 @@ lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
 function Base.isapprox(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}; kwargs...) where {Datum}
-  v₁ = SVector(_coords(coords₁))
-  v₂ = SVector(_coords(coords₂))
-  isapprox(v₁, v₂; kwargs...)
+  ctuple₁ = _coords(coords₁)
+  ctuple₂ = _coords(coords₂)
+  all(c -> isapprox(c[1], c[2]; kwargs...), zip(ctuple₁, ctuple₂))
 end
 
 function tol(coords::Cartesian)

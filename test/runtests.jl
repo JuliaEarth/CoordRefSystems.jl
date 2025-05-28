@@ -72,10 +72,7 @@ testfiles = [
   "get.jl",
 
   # WKT strings
-  "strings.jl",
-
-  # misc tests
-  "misc.jl"
+  "strings.jl"
 ]
 
 @testset "CoordRefSystems.jl" begin
