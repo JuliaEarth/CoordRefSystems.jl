@@ -2,8 +2,6 @@
 # BASIC UTILITITIES
 # ------------------
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} = isapprox(coords₁, coords₂; kwargs...)
-
 allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
   isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
     isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
