@@ -128,7 +128,7 @@ lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
-function Base.isapprox(coords₁::Cartesian{D}, coords₂::Cartesian{D}; kwargs...) where {D<:Datum}
+function Base.isapprox(coords₁::Cartesian{Datum}, coords₂::Cartesian{Datum}; kwargs...) where {Datum}
   v₁ = SVector(_coords(coords₁))
   v₂ = SVector(_coords(coords₂))
   isapprox(v₁, v₂; kwargs...)
@@ -205,7 +205,7 @@ lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
 
-Base.isapprox(coords₁::Polar{D}, coords₂::Polar{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::Polar{Datum}, coords₂::Polar{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.ρ, coords₂.ρ; kwargs...) && isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Polar{Datum}}) where {Datum} = Polar{Datum}(rand(rng), 2π * rand(rng))
@@ -266,7 +266,7 @@ lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =
   coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ && coords₁.z == coords₂.z
 
-Base.isapprox(coords₁::Cylindrical{D}, coords₂::Cylindrical{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.ρ, coords₂.ρ; kwargs...) &&
   isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...) &&
   isapprox(coords₁.z, coords₂.z; kwargs...)
@@ -326,7 +326,7 @@ lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =
   coords₁.r == coords₂.r && coords₁.θ == coords₂.θ && coords₁.ϕ == coords₂.ϕ
 
-Base.isapprox(coords₁::Spherical{D}, coords₂::Spherical{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.r, coords₂.r; kwargs...) &&
   isapprox(coords₁.θ, coords₂.θ; kwargs...) &&
   isapprox(coords₁.ϕ, coords₂.ϕ; kwargs...)

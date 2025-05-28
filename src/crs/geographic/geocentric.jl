@@ -50,7 +50,7 @@ lentype(::Type{<:GeocentricLatLon{Datum,D}}) where {Datum,D} = Met{numtype(D)}
 ==(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon
 
-Base.isapprox(coords₁::GeocentricLatLon{D}, coords₂::GeocentricLatLon{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::GeocentricLatLon{Datum}, coords₂::GeocentricLatLon{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.lat, coords₂.lat; kwargs...) && isapprox(coords₁.lon, coords₂.lon; kwargs...)
 
 Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon{Datum}}) where {Datum} =
@@ -101,7 +101,7 @@ lentype(::Type{<:GeocentricLatLonAlt{Datum,D,M}}) where {Datum,D,M} = M
 ==(coords₁::GeocentricLatLonAlt{Datum}, coords₂::GeocentricLatLonAlt{Datum}) where {Datum} =
   coords₁.lat == coords₂.lat && coords₁.lon == coords₂.lon && coords₁.alt == coords₂.alt
 
-Base.isapprox(coords₁::GeocentricLatLonAlt{D}, coords₂::GeocentricLatLonAlt{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::GeocentricLatLonAlt{Datum}, coords₂::GeocentricLatLonAlt{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.lat, coords₂.lat; kwargs...) &&
   isapprox(coords₁.lon, coords₂.lon; kwargs...) &&
   isapprox(coords₁.alt, coords₂.alt; kwargs...)

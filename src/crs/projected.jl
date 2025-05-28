@@ -93,7 +93,7 @@ indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{NoDatum,2}) where {Datum
 
 indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = true
 
-Base.isapprox(coords₁::Projected{D}, coords₂::Projected{D}; kwargs...) where {D<:Datum} =
+Base.isapprox(coords₁::Projected{Datum}, coords₂::Projected{Datum}; kwargs...) where {Datum} =
   isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
