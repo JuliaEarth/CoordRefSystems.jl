@@ -93,15 +93,8 @@ indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{NoDatum,2}) where {Datum
 
 indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = true
 
-# convert to Cartesian3D through a common LatLon
-Base.isapprox(coords₁::Projected, coords₂::Projected; kwargs...) =
-  isapprox(convert(Cartesian3D, coords₁), convert(Cartesian3D, coords₂); kwargs...)
-
-Base.isapprox(coords₁::Projected, coords₂::CRS; kwargs...) =
-  isapprox(convert(Cartesian3D, coords₁), convert(Cartesian, coords₂); kwargs...)
-
-Base.isapprox(coords₁::CRS, coords₂::Projected; kwargs...) =
-  isapprox(convert(Cartesian, coords₁), convert(Cartesian3D, coords₂); kwargs...)
+Base.isapprox(coords₁::Projected{D}, coords₂::Projected{D}; kwargs...) where {D<:Datum} =
+  isapprox(coords₁.x, coords₂.x; kwargs...) && isapprox(coords₁.y, coords₂.y; kwargs...)
 
 function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   try
