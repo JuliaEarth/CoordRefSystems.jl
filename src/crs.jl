@@ -120,16 +120,17 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 """
     isapprox(coords₁, coords₂; kwargs...)
 
-Checks whether or not `coords₁` and `coords₂` are approximately equal,
-i.e., their coordinate values are the same up to floating point precision.
+Checks whether or not `coords₁` and `coords₂` are approximately equal as
+if they were tuples, i.e., their coordinate values are compared one by one
+with `isapprox` and the forwarded `kwargs`.
 
-In the case of different datums, converts the datum of `coords₂` to the
-same datum of `coords₁` before comparison.
+In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
+handing possibly different datums.
 """
-Base.isapprox(coords₁::CRS{Datum₁}, coords₂::CRS{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
-  isapprox(coords₁, convert(constructor(coords₁), coords₂); kwargs...)
+Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
+  isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
 
-Base.isapprox(coords₁::CRS{Datum}, coords₂::CRS{Datum}; kwargs...) where {Datum} =
+Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
 """
