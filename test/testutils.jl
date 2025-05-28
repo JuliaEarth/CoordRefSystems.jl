@@ -2,7 +2,8 @@
 # BASIC UTILITITIES
 # ------------------
 
-allapprox(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
+# helper function to compare LatLon coordinates after roundtrip projections
+isclose(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
   isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
     isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
     (isapprox(abs(coords₁.lon), 180°; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
