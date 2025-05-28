@@ -125,7 +125,7 @@ if they were tuples, i.e., their coordinate values are compared one by one
 with `isapprox` and the forwarded `kwargs`.
 
 In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
-handing possibly different datums.
+handling possibly different datums, units and machine types.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
