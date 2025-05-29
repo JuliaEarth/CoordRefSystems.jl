@@ -127,14 +127,6 @@ takes care of possibly different `Datum`.
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
   isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
 
-"""
-    CoordRefSystems.tol(coords)
-
-Absolute tolerance for the underlying machine type (e.g. `Float64`) used to represent the `coords`. 
-The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
-"""
-tol(coords::CRS) = tol(convert(Cartesian, coords))
-
 # -------------
 # RAND METHODS
 # -------------

@@ -312,22 +312,6 @@
     end
   end
 
-  @testset "tol" begin
-    tol = CoordRefSystems.atol(T) * m
-    for C in [basic2D; geographic2D; projected]
-      # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
-      if !(C <: AuthalicLatLon)
-        c = C(T(1), T(2))
-        @test CoordRefSystems.tol(c) == tol
-      end
-    end
-
-    for C in [basic3D; geographic3D]
-      c = C(T(1), T(2), T(3))
-      @test CoordRefSystems.tol(c) == tol
-    end
-  end
-
   @testset "convert fallback" begin
     # concrete type
     C = typeof(Polar(T(0), T(0)))
