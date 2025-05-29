@@ -137,11 +137,6 @@ function Base.isapprox(coords₁::Cartesian{D}, coords₂::Cartesian{D}; kwargs.
   isapprox(v₁, v₂; kwargs...)
 end
 
-function tol(coords::Cartesian)
-  Q = eltype(_coords(coords))
-  atol(numtype(Q)) * unit(Q)
-end
-
 Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian{Datum,N}}) where {Datum,N} =
   Cartesian{Datum}(ntuple(i -> rand(rng), N)...)
 
