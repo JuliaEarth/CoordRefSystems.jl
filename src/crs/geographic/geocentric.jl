@@ -19,7 +19,7 @@ GeocentricLatLon(45.0°, 45.0°)
 GeocentricLatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 """
-struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum}
+struct GeocentricLatLon{Datum,D<:Deg} <: Geographic{Datum,2}
   lat::D
   lon::D
 end
@@ -62,7 +62,7 @@ Random.rand(rng::Random.AbstractRNG, ::Type{GeocentricLatLon}) = rand(rng, Geoce
 Geocentric latitude `lat ∈ [-90°,90°]` and longitude `lon ∈ [-180°,180°]` in angular units (default to degree)
 and altitude in length units (default to meter) with a given `Datum` (default to `WGS84Latest`).
 """
-struct GeocentricLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
+struct GeocentricLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum,3}
   lat::D
   lon::D
   alt::M
