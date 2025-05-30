@@ -310,6 +310,10 @@
         isapproxtest3D(C)
       end
     end
+
+    # make sure isapprox is not too permissive
+    @test !isapprox(LatLon(T(30), T(60)), AuthalicLatLon(30, 60))
+    @test !isapprox(Mercator(T(100), T(100)), Robinson(100, 100))
   end
 
   @testset "convert fallback" begin

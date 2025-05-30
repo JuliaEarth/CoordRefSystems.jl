@@ -60,7 +60,7 @@
         if indomain(OrthoNorth, c1)
           c2 = convert(OrthoNorth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
 
@@ -72,7 +72,7 @@
         if indomain(OrthoNorth, c1)
           c2 = convert(OrthoNorth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
+          @test isclose(c3, c1; atol)
         end
       end
     elseif C <: OrthoSouth
@@ -82,7 +82,7 @@
         if indomain(OrthoSouth, c1)
           c2 = convert(OrthoSouth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
 
@@ -94,7 +94,7 @@
         if indomain(OrthoSouth, c1)
           c2 = convert(OrthoSouth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
+          @test isclose(c3, c1; atol)
         end
       end
     elseif C <: TransverseMercator
@@ -107,7 +107,7 @@
         if indomain(Sinusoidal, c1)
           c2 = convert(Sinusoidal, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
     elseif C <: LambertAzimuthalEqualArea
@@ -121,7 +121,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
 
@@ -131,7 +131,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
       else
@@ -141,7 +141,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
       end
@@ -153,7 +153,7 @@
         if indomain(C, c1)
           c2 = convert(C, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; kwargs...)
+          @test isclose(c3, c1; kwargs...)
         end
       end
     end

@@ -128,13 +128,10 @@ lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
-Base.isapprox(coords₁::Cartesian{Datum₁}, coords₂::Cartesian{Datum₂}; kwargs...) where {Datum₁,Datum₂} =
-  isapprox(coords₁, convert(Cartesian{Datum₁}, coords₂); kwargs...)
-
-function Base.isapprox(coords₁::Cartesian{D}, coords₂::Cartesian{D}; kwargs...) where {D<:Datum}
-  v₁ = SVector(_coords(coords₁))
-  v₂ = SVector(_coords(coords₂))
-  isapprox(v₁, v₂; kwargs...)
+function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
+  ctuple₁ = _coords(coords₁)
+  ctuple₂ = _coords(coords₂)
+  all(c -> isapprox(c[1], c[2]; kwargs...), zip(ctuple₁, ctuple₂))
 end
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian{Datum,N}}) where {Datum,N} =

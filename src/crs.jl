@@ -120,12 +120,18 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 """
     isapprox(coords₁, coords₂; kwargs...)
 
-Converts `coords₁` and `coords₂` to `Cartesian` coordinates and compare the coordinate
-values with the `isapprox` method of vectors. The conversion to `Cartesian` coordinates
-takes care of possibly different `Datum`.
+Checks whether or not `coords₁` and `coords₂` are approximately equal as
+if they were tuples, i.e., their coordinate values are compared one by one
+with `isapprox` and the forwarded `kwargs`.
+
+In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
+handling possibly different datums, units and machine types.
 """
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
-  isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
+  isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
+
+Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
+  all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
 
 # -------------
 # RAND METHODS

@@ -51,7 +51,29 @@ projected = [
   EqualEarth
 ]
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
+testfiles = [
+  # ellipsoids
+  "ellipsoids.jl",
+
+  # datums
+  "datums.jl",
+
+  # crs
+  "crs/crsapi.jl",
+  "crs/constructors.jl",
+  "crs/conversions.jl",
+  "crs/promotions.jl",
+  "crs/mactype.jl",
+  "crs/domains.jl",
+  "crs/rand.jl",
+  "crs/traits.jl",
+
+  # EPSG/ESRI codes
+  "get.jl",
+
+  # WKT strings
+  "strings.jl"
+]
 
 @testset "CoordRefSystems.jl" begin
   for testfile in testfiles
