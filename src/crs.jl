@@ -127,8 +127,7 @@ with `isapprox` and the forwarded `kwargs`.
 In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
 handling possibly different datums, units and machine types.
 """
-Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
-  isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
+Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) = isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
 
 Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS} =
   all(ntuple(i -> isapprox(getfield(coords₁, i), getfield(coords₂, i); kwargs...), nfields(coords₁)))
