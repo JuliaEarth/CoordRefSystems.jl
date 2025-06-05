@@ -130,18 +130,24 @@ handling possibly different datums, units and machine types.
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) = isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
-  rtol = _rtol(coords₁)
-  atol = _atol(coords₁)
+  a = _majoraxis(coords₁)
   all(1:nfields(coords₁)) do i
     c₁ = getfield(coords₁, i)
     c₂ = getfield(coords₂, i)
-    atolu = atol * unit(c₁)
-    isapprox(c₁, c₂; rtol=rtol, atol=atolu, kwargs...)
+    rtol = _rtol(c₁)
+    atol = _atol(c₁, a)
+    isapprox(c₁, c₂; rtol, atol, kwargs...)
   end
 end
 
-_rtol(coords) = sqrt(eps(mactype(coords)))
-_atol(coords) = _rtol(coords) * ustrip(m, _majoraxis(coords))
+_rtol(::Len{T}) where {T} = sqrt(eps(T))
+_rtol(::Deg{T}) where {T} = zero(T)
+_rtol(::Rad{T}) where {T} = zero(T)
+
+_atol(c::Len{T}, a) where {T} = _rtol(c) * a
+_atol(::Deg{T}, _) where {T} = eps(T(360)°) / 2
+_atol(::Rad{T}, _) where {T} = eps(T(2π)rad) / 2
+
 _majoraxis(coords) = majoraxis(ellipsoid(datum(coords)))
 _majoraxis(::CRS{NoDatum}) = majoraxis(WGS84🌎)
 
