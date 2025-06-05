@@ -122,9 +122,16 @@ lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesian}
-  ctuple₁ = _coords(coords₁)
-  ctuple₂ = _coords(coords₂)
-  all(c -> isapprox(c[1], c[2]; kwargs...), zip(ctuple₁, ctuple₂))
+  rtol = _rtol(coords₁)
+  atol = _atol(coords₁)
+  tuple₁ = _coords(coords₁)
+  tuple₂ = _coords(coords₂)
+  all(1:length(tuple₁)) do i
+    c₁ = getfield(tuple₁, i)
+    c₂ = getfield(tuple₂, i)
+    atolu = atol * unit(c₁)
+    isapprox(c₁, c₂; rtol=rtol, atol=atolu, kwargs...)
+  end
 end
 
 Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian{Datum,N}}) where {Datum,N} =
