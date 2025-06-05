@@ -145,8 +145,8 @@ _rtol(::Deg{T}) where {T} = zero(T)
 _rtol(::Rad{T}) where {T} = zero(T)
 
 _atol(::Len{T}, a) where {T} = sqrt(eps(T)) * a
-_atol(::Deg{T}, _) where {T} = eps(T(360)°) / 2
-_atol(::Rad{T}, _) where {T} = eps(T(2π)rad) / 2
+_atol(::Deg{T}, _) where {T} = sqrt(eps(T(360)°))
+_atol(::Rad{T}, _) where {T} = sqrt(eps(T(2π)rad))
 
 _majoraxis(coords) = majoraxis(ellipsoid(datum(coords)))
 _majoraxis(::CRS{NoDatum}) = majoraxis(WGS84🌎)
