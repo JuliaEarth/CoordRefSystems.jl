@@ -144,7 +144,7 @@ _rtol(::Len{T}) where {T} = sqrt(eps(T))
 _rtol(::Deg{T}) where {T} = zero(T)
 _rtol(::Rad{T}) where {T} = zero(T)
 
-_atol(c::Len{T}, a) where {T} = _rtol(c) * a
+_atol(::Len{T}, a) where {T} = sqrt(eps(T)) * a
 _atol(::Deg{T}, _) where {T} = eps(T(360)°) / 2
 _atol(::Rad{T}, _) where {T} = eps(T(2π)rad) / 2
 
