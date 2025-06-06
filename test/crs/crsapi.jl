@@ -313,7 +313,7 @@
 
     # make sure isapprox is not too permissive
     @test !isapprox(LatLon(T(30), T(60)), AuthalicLatLon(T(30), T(60)))
-    @test !isapprox(Mercator(T(100), T(100)), Robinson(T(100), T(100)))
+    @test !isapprox(Mercator(T(300), T(300)), Robinson(T(300), T(300)))
   end
 
   @testset "convert fallback" begin
