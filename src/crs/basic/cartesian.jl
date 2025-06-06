@@ -128,9 +128,7 @@ function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:Cartesia
   all(1:length(tuple₁)) do i
     c₁ = getfield(tuple₁, i)
     c₂ = getfield(tuple₂, i)
-    rtol = _rtol(c₁)
-    atol = _atol(c₁, a)
-    isapprox(c₁, c₂; rtol, atol, kwargs...)
+    isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁, a), kwargs...)
   end
 end
 

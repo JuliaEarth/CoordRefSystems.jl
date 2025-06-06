@@ -134,19 +134,9 @@ function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
   all(1:nfields(coords₁)) do i
     c₁ = getfield(coords₁, i)
     c₂ = getfield(coords₂, i)
-    rtol = _rtol(c₁)
-    atol = _atol(c₁, a)
-    isapprox(c₁, c₂; rtol, atol, kwargs...)
+    isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁, a), kwargs...)
   end
 end
-
-_rtol(::Len{T}) where {T} = sqrt(eps(T))
-_rtol(::Deg{T}) where {T} = zero(T)
-_rtol(::Rad{T}) where {T} = zero(T)
-
-_atol(::Len{T}, a) where {T} = eps(T)^(3 // 4) * T(a)
-_atol(::Deg{T}, _) where {T} = sqrt(eps(T(360)°))
-_atol(::Rad{T}, _) where {T} = sqrt(eps(T(2π)rad))
 
 _majoraxis(coords) = majoraxis(ellipsoid(datum(coords)))
 _majoraxis(::CRS{NoDatum}) = majoraxis(WGS84🌎)
