@@ -310,7 +310,7 @@
 
     # Polar
     ρ = T(1) * m
-    ϕ = T(π/4) * rad
+    ϕ = T(π / 4) * rad
     τρ = CoordRefSystems.atol(ρ)
     τϕ = CoordRefSystems.atol(ϕ)
     c1 = Polar(ρ, ϕ)
@@ -319,9 +319,50 @@
     @test c1 ≈ c2
     @test c1 ≈ c3
 
-    isapproxtest3D(Cartesian)
-    isapproxtest3D(Cylindrical)
-    isapproxtest3D(Spherical)
+    # Cartesian3D
+    x = T(1) * m
+    y = T(2) * m
+    z = T(3) * m
+    τx = CoordRefSystems.atol(x)
+    τy = CoordRefSystems.atol(y)
+    τz = CoordRefSystems.atol(z)
+    c1 = Cartesian(x, y, z)
+    c2 = Cartesian(x + τx, y, z)
+    c3 = Cartesian(x, y + τy, z)
+    c4 = Cartesian(x, y, z + τz)
+    @test c1 ≈ c2
+    @test c1 ≈ c3
+    @test c1 ≈ c4
+
+    # Cylindrical
+    ρ = T(1) * m
+    ϕ = T(π / 4) * rad
+    z = T(2) * m
+    τρ = CoordRefSystems.atol(ρ)
+    τϕ = CoordRefSystems.atol(ϕ)
+    τz = CoordRefSystems.atol(z)
+    c1 = Cylindrical(ρ, ϕ, z)
+    c2 = Cylindrical(ρ + τρ, ϕ, z)
+    c3 = Cylindrical(ρ, ϕ + τϕ, z)
+    c4 = Cylindrical(ρ, ϕ, z + τz)
+    @test c1 ≈ c2
+    @test c1 ≈ c3
+    @test c1 ≈ c4
+
+    # Spherical
+    r = T(1) * m
+    θ = T(π / 4) * rad
+    ϕ = T(π / 4) * rad
+    τr = CoordRefSystems.atol(r)
+    τθ = CoordRefSystems.atol(θ)
+    τϕ = CoordRefSystems.atol(ϕ)
+    c1 = Spherical(r, θ, ϕ)
+    c2 = Spherical(r + τr, θ, ϕ)
+    c3 = Spherical(r, θ + τθ, ϕ)
+    c4 = Spherical(r, θ, ϕ + τϕ)
+    @test c1 ≈ c2
+    @test c1 ≈ c3
+    @test c1 ≈ c4
 
     for C in [geographic; projected]
       # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
