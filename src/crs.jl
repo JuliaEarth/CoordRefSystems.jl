@@ -130,16 +130,12 @@ handling possibly different datums, units and machine types.
 Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) = isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
-  a = _majoraxis(coords₁)
   all(1:nfields(coords₁)) do i
     c₁ = getfield(coords₁, i)
     c₂ = getfield(coords₂, i)
-    isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁, a), kwargs...)
+    isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁), kwargs...)
   end
 end
-
-_majoraxis(coords) = majoraxis(ellipsoid(datum(coords)))
-_majoraxis(::CRS{NoDatum}) = majoraxis(WGS84🌎)
 
 # -------------
 # RAND METHODS

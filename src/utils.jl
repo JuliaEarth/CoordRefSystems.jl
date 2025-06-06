@@ -32,15 +32,14 @@ asmet(::Quantity) = error("invalid unit, please pass a value in meters")
     atol(T)
     atol(x::T)
 
-Absolute tolerance used in source code for approximate
-comparison with numbers of type `T`.
+Absolute tolerance for approximate comparison with numbers of type `T`.
 """
 atol(x) = atol(typeof(x))
 atol(::Type{T}) where {T} = eps(T)^(3 // 4)
 
-atol(::Len{T}, a) where {T} = eps(T)^(3 // 4) * T(a)
-atol(::Deg{T}, _) where {T} = sqrt(eps(T(360)°))
-atol(::Rad{T}, _) where {T} = sqrt(eps(T(2π)rad))
+atol(::Len{T}) where {T} = eps(T)^(3 // 4) * 6378137m
+atol(::Deg{T}) where {T} = sqrt(eps(T(360)°))
+atol(::Rad{T}) where {T} = sqrt(eps(T(2π)rad))
 
 rtol(::Len{T}) where {T} = sqrt(eps(T))
 rtol(::Deg{T}) where {T} = zero(T)
