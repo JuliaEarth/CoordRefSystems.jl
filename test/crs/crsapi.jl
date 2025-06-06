@@ -297,8 +297,27 @@
   end
 
   @testset "isapprox" begin
-    isapproxtest2D(Cartesian)
-    isapproxtest2D(Polar)
+    # Cartesian2D
+    x = T(1) * m
+    y = T(2) * m
+    τx = CoordRefSystems.atol(x)
+    τy = CoordRefSystems.atol(y)
+    c1 = Cartesian(x, y)
+    c2 = Cartesian(x + τx, y)
+    c3 = Cartesian(x, y + τy)
+    @test c1 ≈ c2
+    @test c1 ≈ c3
+
+    # Polar
+    ρ = T(1) * m
+    ϕ = T(π/4) * rad
+    τρ = CoordRefSystems.atol(ρ)
+    τϕ = CoordRefSystems.atol(ϕ)
+    c1 = Polar(ρ, ϕ)
+    c2 = Polar(ρ + τρ, ϕ)
+    c3 = Polar(ρ, ϕ + τϕ)
+    @test c1 ≈ c2
+    @test c1 ≈ c3
 
     isapproxtest3D(Cartesian)
     isapproxtest3D(Cylindrical)

@@ -34,17 +34,6 @@ function isequaltest(CRS, n)
   @test c1 == c3
 end
 
-function isapproxtest2D(CRS)
-  x = T(1) * m
-  y = T(2) * m
-  τ = CoordRefSystems.atol(T) * m
-  c1 = convert(CRS, Cartesian(x, y))
-  c2 = convert(CRS, Cartesian(x + τ, y))
-  c3 = convert(CRS, Cartesian(x, y + τ))
-  @test c1 ≈ c2
-  @test c1 ≈ c3
-end
-
 function isapproxtest3D(CRS; datum=WGS84{1762})
   rng = StableRNG(2025)
   r = CRS <: Cartesian ? rand(rng, Cartesian{datum,3}) : rand(rng, CRS{datum})
