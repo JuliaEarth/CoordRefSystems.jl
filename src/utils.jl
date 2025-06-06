@@ -38,8 +38,8 @@ atol(x) = atol(typeof(x))
 atol(::Type{T}) where {T} = eps(T)^(3 // 4)
 
 atol(::Len{T}) where {T} = eps(T)^(3 // 4) * 6378137m
-atol(::Deg{T}) where {T} = sqrt(eps(T(360)°))
-atol(::Rad{T}) where {T} = sqrt(eps(T(2π)rad))
+atol(::Deg{T}) where {T} = sqrt(eps(T(360))) * 1°
+atol(::Rad{T}) where {T} = sqrt(eps(T(2π))) * 1rad
 
 rtol(::Len{T}) where {T} = sqrt(eps(T))
 rtol(::Deg{T}) where {T} = zero(T)
