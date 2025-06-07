@@ -37,8 +37,8 @@ atol(x::Number) = atol(typeof(x))
 atol(::Type{T}) where {T} = eps(T)^(3 // 4)
 
 atol(::Len{T}) where {T} = atol(T) * 6378137m
-atol(::Deg{T}) where {T} = sqrt(eps(T(360))) * 1°
-atol(::Rad{T}) where {T} = sqrt(eps(T(2π))) * 1rad
+atol(::Deg{T}) where {T} = sqrt(eps(T(360))) * °
+atol(::Rad{T}) where {T} = sqrt(eps(T(2π))) * rad
 
 rtol(::Len{T}) where {T} = sqrt(eps(T))
 rtol(::Deg{T}) where {T} = zero(T)
