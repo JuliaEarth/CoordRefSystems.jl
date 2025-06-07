@@ -29,15 +29,14 @@ asmet(x::Number) = x * m
 asmet(::Quantity) = error("invalid unit, please pass a value in meters")
 
 """
-    atol(T)
-    atol(x::T)
+    atol(x)
 
-Absolute tolerance for approximate comparison with numbers of type `T`.
+Absolute tolerance for approximate comparison.
 """
-atol(x) = atol(typeof(x))
+atol(x::Number) = atol(typeof(x))
 atol(::Type{T}) where {T} = eps(T)^(3 // 4)
 
-atol(::Len{T}) where {T} = eps(T)^(3 // 4) * 6378137m
+atol(::Len{T}) where {T} = atol(T) * 6378137m
 atol(::Deg{T}) where {T} = sqrt(eps(T(360))) * 1°
 atol(::Rad{T}) where {T} = sqrt(eps(T(2π))) * 1rad
 
