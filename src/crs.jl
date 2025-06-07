@@ -122,7 +122,9 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 
 Checks whether or not `coords₁` and `coords₂` are approximately equal as
 if they were tuples, i.e., their coordinate values are compared one by one
-with `isapprox` and the forwarded `kwargs`.
+with `isapprox` and the forwarded `kwargs`, except for `rtol` and `atol`.
+The `rtol` and `atol` are fixed based on the coordinate types. For example,
+angular coordinates in radians are compared with `rtol=0` and `atol=√eps(2π)`.
 
 In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
 handling possibly different datums, units and machine types.
