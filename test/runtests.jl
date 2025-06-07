@@ -59,7 +59,7 @@ testfiles = [
   "datums.jl",
 
   # crs
-  "crs/crsapi.jl",
+  "crs/api.jl",
   "crs/constructors.jl",
   "crs/conversions.jl",
   "crs/promotions.jl",
