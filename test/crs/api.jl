@@ -364,11 +364,47 @@
     @test c1 ≈ c3
     @test c1 ≈ c4
 
-    for C in [geographic; projected]
-      # TODO conversion from `AuthalicLatLon` to `Cartesian` is not defined
-      if !(C <: AuthalicLatLon)
-        isapproxtest3D(C)
-      end
+    # Geographic 2D
+    for C in geographic2D
+      lat = T(30) * °
+      lon = T(60) * °
+      τlat = CoordRefSystems.atol(lat)
+      τlon = CoordRefSystems.atol(lon)
+      c1 = C(lat, lon)
+      c2 = C(lat + τlat, lon)
+      c3 = C(lat, lon + τlon)
+      @test c1 ≈ c2
+      @test c1 ≈ c3
+    end
+
+    # Geographic 3D
+    for C in geographic3D
+      lat = T(30) * °
+      lon = T(60) * °
+      alt = T(1) * m
+      τlat = CoordRefSystems.atol(lat)
+      τlon = CoordRefSystems.atol(lon)
+      τalt = CoordRefSystems.atol(alt)
+      c1 = C(lat, lon, alt)
+      c2 = C(lat + τlat, lon, alt)
+      c3 = C(lat, lon + τlon, alt)
+      c4 = C(lat, lon, alt + τalt)
+      @test c1 ≈ c2
+      @test c1 ≈ c3
+      @test c1 ≈ c4
+    end
+
+    # Projected
+    for C in projected
+      x = T(100) * m
+      y = T(200) * m
+      τx = CoordRefSystems.atol(x)
+      τy = CoordRefSystems.atol(y)
+      c1 = C(x, y)
+      c2 = C(x + τx, y)
+      c3 = C(x, y + τy)
+      @test c1 ≈ c2
+      @test c1 ≈ c3
     end
 
     # make sure isapprox is not too permissive
