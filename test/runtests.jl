@@ -37,7 +37,7 @@ projected = [
   Mercator,
   WebMercator,
   PlateCarree,
-  Lambert,
+  LambertCylindrical,
   Behrmann,
   GallPeters,
   WinkelTripel,
