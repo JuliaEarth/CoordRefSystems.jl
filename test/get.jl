@@ -75,7 +75,7 @@
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
   gettest(ESRI{54030}, Robinson{WGS84Latest})
-  gettest(ESRI{54034}, Lambert{WGS84Latest})
+  gettest(ESRI{54034}, LambertCylindrical{WGS84Latest})
   gettest(ESRI{54042}, WinkelTripel{WGS84Latest})
   gettest(ESRI{102035}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest})
   gettest(ESRI{102037}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest})

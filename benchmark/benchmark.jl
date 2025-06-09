@@ -168,7 +168,7 @@ projargs = let
     "Transverse Mercator" => (Proj=(pfwdtmerc, pinvtmerc), Geodesy=missing, CoordRefSystems=TM),
     "Mercator" => (Proj=(pfwdmerc, pinvmerc), Geodesy=missing, CoordRefSystems=Mercator),
     "Plate Carrée" => (Proj=(pfwdplate, pinvplate), Geodesy=missing, CoordRefSystems=PlateCarree),
-    "Lambert" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, CoordRefSystems=Lambert),
+    "Lambert Cylindrical" => (Proj=(pfwdlambert, pinvlambert), Geodesy=missing, CoordRefSystems=LambertCylindrical),
     "Winkel Tripel" => (Proj=(pfwdwinkel, pinvwinkel), Geodesy=missing, CoordRefSystems=WinkelTripel),
     "Robinson" => (Proj=(pfwdrobin, pinvrobin), Geodesy=missing, CoordRefSystems=Robinson),
     "Orthographic Spherical" =>

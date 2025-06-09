@@ -93,7 +93,7 @@ end
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
 @crscode ESRI{54017} Behrmann{WGS84Latest}
 @crscode ESRI{54030} Robinson{WGS84Latest}
-@crscode ESRI{54034} Lambert{WGS84Latest}
+@crscode ESRI{54034} LambertCylindrical{WGS84Latest}
 @crscode ESRI{54042} WinkelTripel{WGS84Latest}
 @crscode ESRI{102035} Orthographic{SphericalMode,90°,WGS84Latest}
 @crscode ESRI{102037} Orthographic{SphericalMode,-90°,WGS84Latest}

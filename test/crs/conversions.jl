@@ -1205,36 +1205,36 @@
       @inferred convert(LatLon, c2)
     end
 
-    @testset "LatLon <> Lambert" begin
+    @testset "LatLon <> LambertCylindrical" begin
       # tested against Proj.Transformation("EPSG:4326", "ESRI:54034")
       c1 = LatLon(T(45), T(90))
-      c2 = convert(Lambert, c1)
-      @test isapprox(c2, Lambert(T(10018754.171394622), T(4489858.8869480025)))
+      c2 = convert(LambertCylindrical, c1)
+      @test isapprox(c2, LambertCylindrical(T(10018754.171394622), T(4489858.8869480025)))
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
       c1 = LatLon(-T(45), T(90))
-      c2 = convert(Lambert, c1)
-      @test isapprox(c2, Lambert(T(10018754.171394622), -T(4489858.8869480025)))
+      c2 = convert(LambertCylindrical, c1)
+      @test isapprox(c2, LambertCylindrical(T(10018754.171394622), -T(4489858.8869480025)))
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
       c1 = LatLon(T(45), -T(90))
-      c2 = convert(Lambert, c1)
-      @test isapprox(c2, Lambert(-T(10018754.171394622), T(4489858.8869480025)))
+      c2 = convert(LambertCylindrical, c1)
+      @test isapprox(c2, LambertCylindrical(-T(10018754.171394622), T(4489858.8869480025)))
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
       c1 = LatLon(-T(45), -T(90))
-      c2 = convert(Lambert, c1)
-      @test isapprox(c2, Lambert(-T(10018754.171394622), -T(4489858.8869480025)))
+      c2 = convert(LambertCylindrical, c1)
+      @test isapprox(c2, LambertCylindrical(-T(10018754.171394622), -T(4489858.8869480025)))
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
       # type stability
       c1 = LatLon(T(45), T(90))
-      c2 = Lambert(T(10018754.171394622), T(4489858.8869480025))
-      @inferred convert(Lambert, c1)
+      c2 = LambertCylindrical(T(10018754.171394622), T(4489858.8869480025))
+      @inferred convert(LambertCylindrical, c1)
       @inferred convert(LatLon, c2)
     end
 
@@ -2044,7 +2044,7 @@
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
 
       # same datum
-      c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
+      c1 = LambertCylindrical(T(10018754.171394622), T(4489858.8869480025))
       c2 = convert(WinkelTripel, c1)
       @test isapprox(c2, WinkelTripel(T(7044801.69820402), T(5231448.051016482)))
 
@@ -2057,7 +2057,7 @@
       @test isapprox(c2, ShiftedMercator(T(8349161.809495518), T(5591495.9185533915)))
 
       # different datums
-      c1 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
+      c1 = LambertCylindrical{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
       c2 = convert(WinkelTripel{ITRF{2020}}, c1)
       @test isapprox(c2, WinkelTripel{ITRF{2020}}(T(7044801.699171027), T(5231448.049360464)))
 
@@ -2065,8 +2065,8 @@
       c2 = convert(Robinson{ITRF{2020}}, c1)
       @test isapprox(c2, Robinson{ITRF{2020}}(T(7620313.811209339), T(4805075.1317550065)))
 
-      c1 = Lambert(T(10018754.171394622), T(4489858.8869480025))
-      c2 = Lambert{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
+      c1 = LambertCylindrical(T(10018754.171394622), T(4489858.8869480025))
+      c2 = LambertCylindrical{ITRF{2008}}(T(10018754.171394622), T(4489858.886849141))
       @inferred convert(WinkelTripel, c1)
       @inferred convert(WinkelTripel{ITRF{2020}}, c2)
     end

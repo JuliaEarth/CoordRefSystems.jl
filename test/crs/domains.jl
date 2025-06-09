@@ -4,8 +4,8 @@
   c2 = LatLon(T(85), T(60))
   c3 = LatLon{ITRF{2008}}(T(30), T(60))
   c4 = LatLon{ITRF{2008}}(T(85), T(60))
-  c5 = convert(Lambert, c1)
-  c6 = convert(Lambert, c2)
+  c5 = convert(LambertCylindrical, c1)
+  c6 = convert(LambertCylindrical, c2)
   c7 = Cartesian(T(1), T(2))
   c8 = Cartesian{WGS84Latest}(T(1), T(2))
   for C in [Mercator, WebMercator]
@@ -37,7 +37,7 @@
     end
 
     # backward
-    atol = if C <: Lambert
+    atol = if C <: LambertCylindrical
       T === Float32 ? 1.0f-2° : 1e-4°
     elseif C <: Behrmann
       T === Float32 ? 1.0f-2° : 1e-4°
