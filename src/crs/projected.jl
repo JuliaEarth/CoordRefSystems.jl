@@ -158,7 +158,7 @@ include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
 include("projected/albers.jl")
 include("projected/sinusoidal.jl")
-include("projected/lambertazmeqarea.jl")
+include("projected/lambertazm.jl")
 include("projected/equalearth.jl")
 
 # ----------

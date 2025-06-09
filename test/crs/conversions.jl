@@ -1635,7 +1635,7 @@
       @inferred convert(LatLon, c2)
     end
 
-    @testset "LatLon <> LambertAzimuthalEqualArea" begin
+    @testset "LatLon <> LambertAzimuthal" begin
       # forward tested against Proj.Transformation("""
       # proj=pipeline
       # step proj=axisswap order=2,1
@@ -1648,7 +1648,7 @@
       # step proj=unitconvert xy_in=rad xy_out=deg
       # step proj=axisswap order=2,1
       # """)
-      LAEA = LambertAzimuthalEqualArea{15.0°}
+      LAEA = LambertAzimuthal{15.0°}
       c1 = LatLon(T(45), T(90))
       c2 = convert(LAEA, c1)
       @test isapprox(c2, LAEA(T(5.879661317585923e6), T(5.643833348229035e6)))
@@ -1674,7 +1674,7 @@
       @test isapprox(c3, c1)
 
       # invert central coordinates
-      ShiftedLAEA = CoordRefSystems.shift(LambertAzimuthalEqualArea{30.0°,WGS84Latest}, lonₒ=60°)
+      ShiftedLAEA = CoordRefSystems.shift(LambertAzimuthal{30.0°,WGS84Latest}, lonₒ=60°)
       c1 = LatLon(T(30), T(60))
       c2 = convert(ShiftedLAEA, c1)
       @test isapprox(c2, ShiftedLAEA(T(0), T(0)))
@@ -1847,10 +1847,10 @@
 
       # WGS84 (G2296) to ETRF2020
       c1 = LatLon{WGS84{2296}}(T(45), T(90))
-      c2 = convert(LambertAzimuthalEqualArea{52.0°,ETRF{2020}}, c1)
-      @test isapprox(c2, LambertAzimuthalEqualArea{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063)))
+      c2 = convert(LambertAzimuthal{52.0°,ETRF{2020}}, c1)
+      @test isapprox(c2, LambertAzimuthal{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063)))
 
-      c1 = LambertAzimuthalEqualArea{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063))
+      c1 = LambertAzimuthal{52.0°,ETRF{2020}}(T(5122666.32147123), T(3145786.6707593063))
       c2 = convert(LatLon{WGS84{2296}}, c1)
       @test isapprox(c2, LatLon{WGS84{2296}}(T(45), T(90)))
 
