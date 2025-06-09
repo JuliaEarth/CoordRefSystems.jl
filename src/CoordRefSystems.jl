@@ -120,7 +120,7 @@ export
   TransverseMercator,
   Albers,
   Sinusoidal,
-  LambertAzimuthalEqualArea,
+  LambertAzimuthal,
   EqualEarth,
   datum,
   indomain,

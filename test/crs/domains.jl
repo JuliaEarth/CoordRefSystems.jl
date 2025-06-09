@@ -110,7 +110,7 @@
           @test isclose(c3, c1)
         end
       end
-    elseif C <: LambertAzimuthalEqualArea
+    elseif C <: LambertAzimuthal
       # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
       # Float32 inversion is not very accurate
       if T === Float32

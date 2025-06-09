@@ -47,7 +47,7 @@ projected = [
   TransverseMercator{0.9996,0.0°},
   Albers{23.0°,29.5°,45.0°},
   Sinusoidal,
-  LambertAzimuthalEqualArea{15.0°},
+  LambertAzimuthal{15.0°},
   EqualEarth
 ]
 
