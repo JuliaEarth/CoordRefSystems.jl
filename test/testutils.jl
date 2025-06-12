@@ -2,13 +2,6 @@
 # BASIC UTILITITIES
 # ------------------
 
-# helper function to compare LatLon coordinates after roundtrip projections
-isclose(coords₁::C, coords₂::C; kwargs...) where {C<:LatLon} =
-  isapprox(coords₁.lat, coords₂.lat; kwargs...) && (
-    isapprox(coords₁.lon, coords₂.lon; kwargs...) ||
-    (isapprox(abs(coords₁.lon), 180°; kwargs...) && isapprox(coords₁.lon, -coords₂.lon; kwargs...))
-  )
-
 function wktstring(code; format="WKT2", multiline=false)
   spref = ArchGDAL.importUserInput(codestring(code))
   options = ["FORMAT=$format", "MULTILINE=$(multiline ? "YES" : "NO")"]
