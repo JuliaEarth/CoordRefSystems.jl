@@ -46,9 +46,7 @@ isconformal(::Type{<:LambertConic}) = true
 # CONVERSIONS
 # ------------
 
-function inbounds(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {latₒ,lat₁,lat₂,Datum}
-  !(ϕ ≈ -π/2)
-end
+inbounds(::Type{<:LambertConic}, λ, ϕ) = !(ϕ ≈ -π/2)
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
