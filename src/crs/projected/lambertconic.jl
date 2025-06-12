@@ -73,37 +73,37 @@ function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T})
   fx, fy
 end
 
-# function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
-#   🌎 = ellipsoid(Datum)
-#   e = oftype(x, eccentricity(🌎))
-#   e² = oftype(x, eccentricity²(🌎))
-#   ϕₒ = oftype(x, ustrip(deg2rad(latₒ)))
-#   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
-#   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
+function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
+  🌎 = ellipsoid(Datum)
+  e = oftype(x, eccentricity(🌎))
+  e² = oftype(x, eccentricity²(🌎))
+  ϕₒ = oftype(x, ustrip(deg2rad(latₒ)))
+  ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
+  ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-#   pi_half = oftype(x, π/2)
+  pi_half = oftype(x, π/2)
 
-#   F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
-#   t₀ = _lambertt(ϕₒ, e)
-#   r₀ = _lambertr(F, t₀, n)
+  F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
+  t₀ = _lambertt(ϕₒ, e)
+  r₀ = _lambertr(F, t₀, n)
 
-#   θ′ = atan(x, r₀ - y)
-#   r′ = sign(n) * sqrt(x^2 + (r₀ - y)^2)
-#   t′ = (r′/F)^(1/n)
+  θ′ = atan(x, r₀ - y)
+  r′ = sign(n) * sqrt(x^2 + (r₀ - y)^2)
+  t′ = (r′/F)^(1/n)
 
-#   λ = θ′ / n
-#   ϕᵢ = pi_half - 2 * atan(t′)
-#   Δϕ = Inf - ϕᵢ
-#   tol = 1e-16
-#   n = 0
-#   nmax = 1000
-#   while (abs(Δϕ) > tol) && (n < nmax)
-#     Δϕ = pi_half - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
-#     ϕᵢ = ϕᵢ + Δϕ
-#     n = n + 1
-#   end
-#   λ, ϕᵢ
-# end
+  λ = θ′ / n
+  ϕᵢ = pi_half - 2 * atan(t′)
+  Δϕ = Inf - ϕᵢ
+  tol = 1e-16
+  n = 0
+  nmax = 1000
+  while (abs(Δϕ) > tol) && (n < nmax)
+    Δϕ = pi_half - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
+    ϕᵢ = ϕᵢ + Δϕ
+    n = n + 1
+  end
+  λ, ϕᵢ
+end
 
 # -----------------
 # HELPER FUNCTIONS
