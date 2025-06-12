@@ -93,16 +93,6 @@ indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{NoDatum,2}) where {Datum
 
 indomain(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,2}) where {Datum} = true
 
-# convert to Cartesian3D through a common LatLon
-Base.isapprox(coords₁::Projected, coords₂::Projected; kwargs...) =
-  isapprox(convert(Cartesian3D, coords₁), convert(Cartesian3D, coords₂); kwargs...)
-
-Base.isapprox(coords₁::Projected, coords₂::CRS; kwargs...) =
-  isapprox(convert(Cartesian3D, coords₁), convert(Cartesian, coords₂); kwargs...)
-
-Base.isapprox(coords₁::CRS, coords₂::Projected; kwargs...) =
-  isapprox(convert(Cartesian, coords₁), convert(Cartesian3D, coords₂); kwargs...)
-
 function Random.rand(rng::Random.AbstractRNG, ::Type{C}) where {C<:Projected}
   try
     convert(C, rand(rng, LatLon))
@@ -168,7 +158,7 @@ include("projected/orthographic.jl")
 include("projected/transversemercator.jl")
 include("projected/albers.jl")
 include("projected/sinusoidal.jl")
-include("projected/lambertazmeqarea.jl")
+include("projected/lambertazm.jl")
 include("projected/lambertconic.jl")
 include("projected/equalearth.jl")
 

@@ -2,7 +2,7 @@
   # Projected and Projected
   c1 = Mercator(T(1), T(1))
   c2 = PlateCarree(1.0, 1.0)
-  c3 = Lambert(1.0f0, 1.0f0)
+  c3 = LambertCylindrical(1.0f0, 1.0f0)
   cs = promote(c1, c2)
   @test all(c -> c isa Behrmann, cs)
   @test allequal(CoordRefSystems.mactype.(cs))

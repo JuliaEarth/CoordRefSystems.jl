@@ -8,6 +8,23 @@ using Test
 using CoordRefSystems: Met, Deg, Rad
 using Unitful: m, mm, cm, km, rad, °, s
 
+# environment settings
+isCI = "CI" ∈ keys(ENV)
+islinux = Sys.islinux()
+visualtests = !isCI || (isCI && islinux)
+datadir = joinpath(@__DIR__, "data")
+
+# float settings
+T = if isCI
+  if ENV["FLOAT_TYPE"] == "Float32"
+    Float32
+  elseif ENV["FLOAT_TYPE"] == "Float64"
+    Float64
+  end
+else
+  Float64
+end
+
 include("testutils.jl")
 
 basic2D = [Cartesian2D, Polar]
@@ -20,7 +37,7 @@ projected = [
   Mercator,
   WebMercator,
   PlateCarree,
-  Lambert,
+  LambertCylindrical,
   Behrmann,
   GallPeters,
   WinkelTripel,
@@ -30,31 +47,36 @@ projected = [
   TransverseMercator{0.9996,0.0°},
   Albers{23.0°,29.5°,45.0°},
   Sinusoidal,
-  LambertAzimuthalEqualArea{15.0°},
+  LambertAzimuthal{15.0°},
   LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°},
   EqualEarth
 ]
 
-testfiles = ["ellipsoids.jl", "datums.jl", "crs.jl", "strings.jl", "get.jl", "misc.jl"]
+testfiles = [
+  # ellipsoids
+  "ellipsoids.jl",
 
-# --------------------------------
-# RUN TESTS WITH SINGLE PRECISION
-# --------------------------------
+  # datums
+  "datums.jl",
 
-T = Float32
-@testset "CoordRefSystems.jl ($T)" begin
-  for testfile in testfiles
-    println("Testing $testfile...")
-    include(testfile)
-  end
-end
+  # crs
+  "crs/api.jl",
+  "crs/constructors.jl",
+  "crs/conversions.jl",
+  "crs/promotions.jl",
+  "crs/mactype.jl",
+  "crs/domains.jl",
+  "crs/rand.jl",
+  "crs/traits.jl",
 
-# --------------------------------
-# RUN TESTS WITH DOUBLE PRECISION
-# --------------------------------
+  # EPSG/ESRI codes
+  "get.jl",
 
-T = Float64
-@testset "CoordRefSystems.jl ($T)" begin
+  # WKT strings
+  "strings.jl"
+]
+
+@testset "CoordRefSystems.jl" begin
   for testfile in testfiles
     println("Testing $testfile...")
     include(testfile)

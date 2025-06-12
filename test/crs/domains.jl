@@ -1,22 +1,27 @@
 @testset "Projection domain" begin
+  c0 = LatLon(T(90), T(0))
   c1 = LatLon(T(30), T(60))
   c2 = LatLon(T(85), T(60))
   c3 = LatLon{ITRF{2008}}(T(30), T(60))
   c4 = LatLon{ITRF{2008}}(T(85), T(60))
-  c5 = convert(Lambert, c1)
-  c6 = convert(Lambert, c2)
+  c5 = convert(LambertCylindrical, c1)
+  c6 = convert(LambertCylindrical, c2)
   c7 = Cartesian(T(1), T(2))
   c8 = Cartesian{WGS84Latest}(T(1), T(2))
-  @test indomain(Mercator, c1)
-  @test !indomain(Mercator, c2)
-  @test indomain(Mercator{WGS84Latest}, c1)
-  @test !indomain(Mercator{WGS84Latest}, c2)
-  @test indomain(Mercator{WGS84{1762}}, c3)
-  @test !indomain(Mercator{WGS84{1762}}, c4)
-  @test indomain(Mercator, c5)
-  @test !indomain(Mercator, c6)
-  @test indomain(Mercator{WGS84Latest}, c7)
-  @test indomain(Mercator{WGS84Latest}, c8)
+  for C in [Mercator, WebMercator]
+    @test !indomain(C, c0)
+    @test indomain(C, c1)
+    @test indomain(C, c2)
+    @test !indomain(C{WGS84Latest}, c0)
+    @test indomain(C{WGS84Latest}, c1)
+    @test indomain(C{WGS84Latest}, c2)
+    @test indomain(C{WGS84{1762}}, c3)
+    @test indomain(C{WGS84{1762}}, c4)
+    @test indomain(C, c5)
+    @test indomain(C, c6)
+    @test indomain(C{WGS84Latest}, c7)
+    @test indomain(C{WGS84Latest}, c8)
+  end
 
   for C in projected
     # forward
@@ -32,7 +37,7 @@
     end
 
     # backward
-    atol = if C <: Lambert
+    atol = if C <: LambertCylindrical
       T === Float32 ? 1.0f-2° : 1e-4°
     elseif C <: Behrmann
       T === Float32 ? 1.0f-2° : 1e-4°
@@ -55,7 +60,7 @@
         if indomain(OrthoNorth, c1)
           c2 = convert(OrthoNorth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
 
@@ -67,7 +72,7 @@
         if indomain(OrthoNorth, c1)
           c2 = convert(OrthoNorth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
+          @test isclose(c3, c1; atol)
         end
       end
     elseif C <: OrthoSouth
@@ -77,7 +82,7 @@
         if indomain(OrthoSouth, c1)
           c2 = convert(OrthoSouth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
 
@@ -89,7 +94,7 @@
         if indomain(OrthoSouth, c1)
           c2 = convert(OrthoSouth, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; atol)
+          @test isclose(c3, c1; atol)
         end
       end
     elseif C <: TransverseMercator
@@ -102,10 +107,10 @@
         if indomain(Sinusoidal, c1)
           c2 = convert(Sinusoidal, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1)
+          @test isclose(c3, c1)
         end
       end
-    elseif C <: LambertAzimuthalEqualArea
+    elseif C <: LambertAzimuthal
       # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
       # Float32 inversion is not very accurate
       if T === Float32
@@ -116,7 +121,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
 
@@ -126,7 +131,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
       else
@@ -136,7 +141,7 @@
           if indomain(C, c1)
             c2 = convert(C, c1)
             c3 = convert(LatLon, c2)
-            @test allapprox(c3, c1; atol)
+            @test isclose(c3, c1; atol)
           end
         end
       end
@@ -148,7 +153,7 @@
         if indomain(C, c1)
           c2 = convert(C, c1)
           c3 = convert(LatLon, c2)
-          @test allapprox(c3, c1; kwargs...)
+          @test isclose(c3, c1; kwargs...)
         end
       end
     end

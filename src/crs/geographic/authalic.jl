@@ -19,7 +19,7 @@ AuthalicLatLon(45.0°, 45.0°)
 AuthalicLatLon{WGS84Latest}(45.0°, 45.0°)
 ```
 """
-struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum}
+struct AuthalicLatLon{Datum,D<:Deg} <: Geographic{Datum,2}
   lat::D
   lon::D
 end

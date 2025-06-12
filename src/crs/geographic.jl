@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------
 
 """
-    Geographic{Datum}
+    Geographic{Datum,N}
 
-Geographic CRS with a given `Datum`.
+Geographic CRS with a given `Datum` and `N` coordinates.
 """
-abstract type Geographic{Datum} <: CRS{Datum} end
+abstract type Geographic{Datum,N} <: CRS{Datum} end
 
 ndims(::Type{<:Geographic}) = 3
 

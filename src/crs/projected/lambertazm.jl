@@ -3,45 +3,41 @@
 # ------------------------------------------------------------------
 
 """
-    LambertAzimuthalEqualArea{latₒ,Datum,Shift}
+    LambertAzimuthal{latₒ,Datum,Shift}
 
-Lambert Azimuthal Equal Area CRS with latitude origin `latₒ` in degrees, `Datum` and `Shift`.
+Lambert Azimuthal CRS with latitude origin `latₒ` in degrees, `Datum` and `Shift`.
 """
-struct LambertAzimuthalEqualArea{latₒ,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
+struct LambertAzimuthal{latₒ,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
   y::M
 end
 
-LambertAzimuthalEqualArea{latₒ,Datum,Shift}(x::M, y::M) where {latₒ,Datum,Shift,M<:Met} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift,float(M)}(x, y)
-LambertAzimuthalEqualArea{latₒ,Datum,Shift}(x::Met, y::Met) where {latₒ,Datum,Shift} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift}(promote(x, y)...)
-LambertAzimuthalEqualArea{latₒ,Datum,Shift}(x::Len, y::Len) where {latₒ,Datum,Shift} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift}(uconvert(m, x), uconvert(m, y))
-LambertAzimuthalEqualArea{latₒ,Datum,Shift}(x::Number, y::Number) where {latₒ,Datum,Shift} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift}(addunit(x, m), addunit(y, m))
+LambertAzimuthal{latₒ,Datum,Shift}(x::M, y::M) where {latₒ,Datum,Shift,M<:Met} =
+  LambertAzimuthal{latₒ,Datum,Shift,float(M)}(x, y)
+LambertAzimuthal{latₒ,Datum,Shift}(x::Met, y::Met) where {latₒ,Datum,Shift} =
+  LambertAzimuthal{latₒ,Datum,Shift}(promote(x, y)...)
+LambertAzimuthal{latₒ,Datum,Shift}(x::Len, y::Len) where {latₒ,Datum,Shift} =
+  LambertAzimuthal{latₒ,Datum,Shift}(uconvert(m, x), uconvert(m, y))
+LambertAzimuthal{latₒ,Datum,Shift}(x::Number, y::Number) where {latₒ,Datum,Shift} =
+  LambertAzimuthal{latₒ,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-LambertAzimuthalEqualArea{latₒ,Datum}(args...) where {latₒ,Datum} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift()}(args...)
+LambertAzimuthal{latₒ,Datum}(args...) where {latₒ,Datum} = LambertAzimuthal{latₒ,Datum,Shift()}(args...)
 
-LambertAzimuthalEqualArea{latₒ}(args...) where {latₒ} = LambertAzimuthalEqualArea{latₒ,WGS84Latest}(args...)
+LambertAzimuthal{latₒ}(args...) where {latₒ} = LambertAzimuthal{latₒ,WGS84Latest}(args...)
 
 Base.convert(
-  ::Type{LambertAzimuthalEqualArea{latₒ,Datum,Shift,M}},
-  coords::LambertAzimuthalEqualArea{latₒ,Datum,Shift}
-) where {latₒ,Datum,Shift,M} = LambertAzimuthalEqualArea{latₒ,Datum,Shift,M}(coords.x, coords.y)
+  ::Type{LambertAzimuthal{latₒ,Datum,Shift,M}},
+  coords::LambertAzimuthal{latₒ,Datum,Shift}
+) where {latₒ,Datum,Shift,M} = LambertAzimuthal{latₒ,Datum,Shift,M}(coords.x, coords.y)
 
-constructor(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum,Shift}}) where {latₒ,Datum,Shift} =
-  LambertAzimuthalEqualArea{latₒ,Datum,Shift}
+constructor(::Type{<:LambertAzimuthal{latₒ,Datum,Shift}}) where {latₒ,Datum,Shift} = LambertAzimuthal{latₒ,Datum,Shift}
 
-lentype(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum,Shift,M}}) where {latₒ,Datum,Shift,M} = M
+lentype(::Type{<:LambertAzimuthal{latₒ,Datum,Shift,M}}) where {latₒ,Datum,Shift,M} = M
 
-==(
-  coords₁::LambertAzimuthalEqualArea{latₒ,Datum,Shift},
-  coords₂::LambertAzimuthalEqualArea{latₒ,Datum,Shift}
-) where {latₒ,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
+==(coords₁::LambertAzimuthal{latₒ,Datum,Shift}, coords₂::LambertAzimuthal{latₒ,Datum,Shift}) where {latₒ,Datum,Shift} =
+  coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
-isequalarea(::Type{<:LambertAzimuthalEqualArea}) = true
+isequalarea(::Type{<:LambertAzimuthal}) = true
 
 # ------------
 # CONVERSIONS
@@ -55,7 +51,7 @@ isequalarea(::Type{<:LambertAzimuthalEqualArea}) = true
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/projections/laea.cpp
 # reference formula: Section 3.6.2 of EPSG Guidance Note 7-2 (https://epsg.org/guidance-notes.html)
 
-function inbounds(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
+function inbounds(::Type{<:LambertAzimuthal{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(λ, eccentricity(🌎))
   e² = oftype(λ, eccentricity²(🌎))
@@ -76,7 +72,7 @@ function inbounds(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) whe
   abs(Bden) > atol(λ)
 end
 
-function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) where {latₒ,Datum,T}
+function formulas(::Type{<:LambertAzimuthal{latₒ,Datum}}, ::Type{T}) where {latₒ,Datum,T}
   🌎 = ellipsoid(Datum)
   e = T(eccentricity(🌎))
   e² = T(eccentricity²(🌎))
@@ -114,7 +110,7 @@ function formulas(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, ::Type{T}) 
   fx, fy
 end
 
-function forward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
+function forward(::Type{<:LambertAzimuthal{latₒ,Datum}}, λ, ϕ) where {latₒ,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(λ, eccentricity(🌎))
   e² = oftype(λ, eccentricity²(🌎))
@@ -147,7 +143,7 @@ function forward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, λ, ϕ) wher
   x, y
 end
 
-function backward(::Type{<:LambertAzimuthalEqualArea{latₒ,Datum}}, x, y) where {latₒ,Datum}
+function backward(::Type{<:LambertAzimuthal{latₒ,Datum}}, x, y) where {latₒ,Datum}
   🌎 = ellipsoid(Datum)
   e = oftype(x, eccentricity(🌎))
   e² = oftype(x, eccentricity²(🌎))
@@ -183,8 +179,8 @@ end
 # FALLBACKS
 # ----------
 
-indomain(::Type{LambertAzimuthalEqualArea{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
-  indomain(LambertAzimuthalEqualArea{latₒ,Datum}, coords)
+indomain(::Type{LambertAzimuthal{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
+  indomain(LambertAzimuthal{latₒ,Datum}, coords)
 
-Base.convert(::Type{LambertAzimuthalEqualArea{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
-  convert(LambertAzimuthalEqualArea{latₒ,Datum}, coords)
+Base.convert(::Type{LambertAzimuthal{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
+  convert(LambertAzimuthal{latₒ,Datum}, coords)
