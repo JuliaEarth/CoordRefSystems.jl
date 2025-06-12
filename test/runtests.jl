@@ -65,6 +65,7 @@ testfiles = [
   "crs/promotions.jl",
   "crs/mactype.jl",
   "crs/domains.jl",
+  "crs/fwdbwd.jl",
   "crs/rand.jl",
   "crs/traits.jl",
 
