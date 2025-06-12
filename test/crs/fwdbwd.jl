@@ -64,8 +64,8 @@
             continue
           else
             # we returned the incorrect sign for a longitude
-            # that is far from lon=180=-180 and this antipodal
-            # point does not match the expected result
+            # that is far from lon=180=-180 and this is not
+            # the expected result, certainly a bug to fix
             push!(latfail, lat)
             push!(lonfail, lon)
             success = false
