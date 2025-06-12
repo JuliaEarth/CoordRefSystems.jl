@@ -1,6 +1,6 @@
 @testset "Forward/Backward" begin
   @testset for C in projected
-    for lat in T.(-90:90), lon in T.(-180:180)
+    for (lat, lon) in Iterators.product(T.(-90:90), T.(-180:180))
       c1 = LatLon(lat, lon)
       if indomain(C, c1)
         c2 = convert(C, c1)
