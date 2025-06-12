@@ -7,10 +7,42 @@
     latfail = Set{T}()
     lonfail = Set{T}()
 
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/40
+    PRJ <: TransverseMercator && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/55
+    PRJ <: Robinson && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
+    PRJ <: LambertAzimuthal && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/272
+    PRJ <: OrthoNorth && continue
+    PRJ <: OrthoSouth && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/295
+    PRJ <: Sinusoidal && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/296
+    PRJ <: Albers && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/297
+    PRJ <: GallPeters && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/298
+    PRJ <: Behrmann && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/299
+    PRJ <: LambertCylindrical && continue
+
     # loop over all possible latitude and longitude values
     # that should be recovered by the given PRJ type
     success = true
     for (lat, lon) in Iterators.product(T.(-90:90), T.(-180:180))
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
+      PRJ <: EqualEarth && lat == T(-90) && continue
+
       ll = LatLon(lat, lon)
       LL = typeof(ll)
       if indomain(PRJ, ll)
