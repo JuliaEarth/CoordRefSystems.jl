@@ -4,7 +4,7 @@
       c1 = LatLon(lat, lon)
       if indomain(C, c1)
         c2 = convert(C, c1)
-        c3 = convert(LatLon, c2)
+        c3 = convert(typeof(c1), c2)
         @test isclose(c3, c1)
       end
     end
