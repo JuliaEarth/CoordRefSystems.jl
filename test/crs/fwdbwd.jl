@@ -1,5 +1,5 @@
 @testset "Forward/Backward" begin
-  # projections that flip the sign of longitude at 180°<>-180°
+  # projections that flip the sign of lon=180°=-180°
   prjflip = Set{String}()
 
   @testset for PRJ in projected
@@ -22,11 +22,11 @@
         elseif isapprox(ll′, LL(ll.lat, -ll.lon))
           # the round trip conversion led to an incorrect
           # sign for the longitude coordinate and we have
-          # to investigate if we are near lon=180=-180
+          # to investigate if we are near lon=180°=-180°
           rtol = CoordRefSystems.rtol(ll′.lon)
           atol = CoordRefSystems.atol(ll′.lon)
           if isapprox(abs(ll′.lon), T(180)°; rtol, atol)
-            # in that case we have exchanged 180 <> -180
+            # in that case we have exchanged lon=180°=-180°
             # which is is ok for most practical purposes
             push!(prjflip, string(PRJ))
             continue
