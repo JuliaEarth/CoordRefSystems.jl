@@ -1615,27 +1615,27 @@
   
       c1 = LatLon{NAD27}(T(28.5), -T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
-      @test allapprox(c2, LambertTexasSouthCentral(T(903277.7991828895), T(77650.94253892983)))
+      @test isapprox(c2, LambertTexasSouthCentral(T(903277.7991828895), T(77650.94253892983)))
       c3 = convert(LatLon{NAD27}, c2)
-      @test allapprox(c3, c1)
+      @test isapprox(c3, c1)
 
       c1 = LatLon{NAD27}(-T(28.5), -T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
-      @test allapprox(c2, LambertTexasSouthCentral(T(1.0965384045392217e6), T(-7.454704497666729e6)))
+      @test isapprox(c2, LambertTexasSouthCentral(T(1.0965384045392217e6), T(-7.454704497666729e6)))
       c3 = convert(LatLon{NAD27}, c2)
-      @test allapprox(c3, c1)
+      @test isapprox(c3, c1)
 
       c1 = LatLon{NAD27}(T(28.5), T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
-      @test allapprox(c2, LambertTexasSouthCentral(T(-1.0694092770898357e7), T(9.700135873608802e6)))
+      @test isapprox(c2, LambertTexasSouthCentral(T(-1.0694092770898357e7), T(9.700135873608802e6)))
       c3 = convert(LatLon{NAD27}, c2)
-      @test allapprox(c3, c1)
+      @test isapprox(c3, c1)
 
       c1 = LatLon{NAD27}(-T(28.5), T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
-      @test allapprox(c2, LambertTexasSouthCentral(T(-1.8132747713812184e7), T(8.500077216941461e6)))
+      @test isapprox(c2, LambertTexasSouthCentral(T(-1.8132747713812184e7), T(8.500077216941461e6)))
       c3 = convert(LatLon{NAD27}, c2)
-      @test allapprox(c3, c1)
+      @test isapprox(c3, c1)
 
       # type stability
       c1 = LatLon{NAD27}(T(28.5), -T(96))
