@@ -44,10 +44,10 @@ projected = [
   Robinson,
   OrthoNorth,
   OrthoSouth,
-  TransverseMercator{0.9996,0.0°},
-  Albers{23.0°,29.5°,45.0°},
+  TransverseMercator{T(0.9996),T(0.0)°},
+  Albers{T(23.0)°,T(29.5)°,T(45.0)°},
   Sinusoidal,
-  LambertAzimuthal{15.0°},
+  LambertAzimuthal{T(15.0)°},
   EqualEarth
 ]
 
