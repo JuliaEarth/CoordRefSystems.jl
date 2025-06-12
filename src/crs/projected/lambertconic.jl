@@ -46,7 +46,8 @@ isconformal(::Type{<:LambertConic}) = true
 # CONVERSIONS
 # ------------
 
-inbounds(::Type{<:LambertConic}, λ, ϕ) = !(ϕ ≈ -π/2)
+# inbounds(::Type{<:LambertConic}, λ, ϕ) = !(ϕ ≈ -π/2)
+inbounds(::Type{<:LambertConic}, λ, ϕ) = (-π/2 < ϕ <= π/2)
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -95,7 +96,8 @@ end
 #   Δϕ = Inf - ϕᵢ
 #   tol = 1e-16
 #   n = 0
-#   while (abs(Δϕ) > tol) && (n < 100)
+#   nmax = 1000
+#   while (abs(Δϕ) > tol) && (n < nmax)
 #     Δϕ = pi_half - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
 #     ϕᵢ = ϕᵢ + Δϕ
 #     n = n + 1
