@@ -41,7 +41,7 @@
     success = true
     for (lat, lon) in Iterators.product(T.(-90:90), T.(-180:180))
       # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
-      PRJ <: EqualEarth && lat == T(-90) && continue
+      PRJ <: EqualEarth && abs(lat) == T(90) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
