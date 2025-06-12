@@ -24,16 +24,6 @@ codestring(::Type{ESRI{Code}}) where {Code} = "ESRI:$Code"
 # TEST FUNCTIONS
 # ---------------
 
-isequaltest(CRS) = isequaltest(CRS, CoordRefSystems.ncoords(CRS))
-
-function isequaltest(CRS, n)
-  c1 = CRS(ntuple(_ -> T(1), n)...)
-  c2 = CRS(ntuple(_ -> 1.0, n)...)
-  c3 = CRS(ntuple(_ -> 1.0f0, n)...)
-  @test c1 == c2
-  @test c1 == c3
-end
-
 function randtest(CRS)
   rng = StableRNG(2025)
   @test rand(CRS) isa CRS
