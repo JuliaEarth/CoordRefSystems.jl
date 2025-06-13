@@ -98,7 +98,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   n = 0
   nmax = 1000
   while (abs(Δϕ) > tol) && (n < nmax)
-    Δϕ = pi_half - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
+    Δϕ = halfpi - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
     ϕᵢ = ϕᵢ + Δϕ
     n = n + 1
   end
