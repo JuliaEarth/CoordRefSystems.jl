@@ -126,10 +126,14 @@ with `isapprox` and the forwarded `kwargs`, except for `rtol` and `atol`.
 The `rtol` and `atol` are fixed based on the coordinate types. For example,
 angular coordinates in radians are compared with `rtol=0` and `atol=√eps(2π)`.
 
-In the case of different CRS types, converts `coords₂` to the `typeof(coords₁)`,
+In the case of different CRS types, converts both arguments
+to a common CRS type using the promotion mechanism,
 handling possibly different datums, units and machine types.
 """
-Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) = isapprox(coords₁, convert(typeof(coords₁), coords₂); kwargs...)
+function Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...)
+  C = promote_type(typeof(coords₁), typeof(coords₂))
+  isapprox(convert(C, coords₁), convert(C, coords₂); kwargs...)
+end
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
   all(1:nfields(coords₁)) do i
