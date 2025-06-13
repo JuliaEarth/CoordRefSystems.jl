@@ -1,4 +1,4 @@
-@testset "CRS API" begin
+@testset "API" begin
   @testset "datum" begin
     for C in basic2D
       c = C(T(1), T(2))

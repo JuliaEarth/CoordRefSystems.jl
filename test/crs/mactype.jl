@@ -1,4 +1,4 @@
-@testset "Machine type conversion" begin
+@testset "Machine type" begin
   @testset "Basic" begin
     C = Cartesian{NoDatum,2,Met{T}}
     c1 = Cartesian(1.0, 2.0)

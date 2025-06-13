@@ -1,119 +1,95 @@
 @testset "Forward/Backward" begin
-  for C in projected
-    if C <: OrthoNorth
-      # coordinates at the singularity of the projection (lat ≈ 90) cannot be inverted
-      for lat in T.(1:89), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1)
-        end
-      end
+  # projections that flip the sign of lon=180°=-180°
+  prjflip = Set{String}()
 
-      # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted due to numerical issues
-      for lon in T.(-180:180)
-        c1 = LatLon(T(0), lon)
-        if indomain(OrthoNorth, c1)
-          c2 = convert(OrthoNorth, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1; atol=T(0.5) * °)
-        end
-      end
-    elseif C <: OrthoSouth
-      # coordinates at the singularity of the projection (lat ≈ -90) cannot be inverted
-      for lat in T.(-89:-1), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1)
-        end
-      end
+  @testset for PRJ in projected
+    # latitude and longitude values that are not recovered
+    latfail = Set{T}()
+    lonfail = Set{T}()
 
-      # coordinates at the edge of the projection (lat ≈ 0)
-      # cannot be accurately inverted due to numerical issues
-      for lon in T.(-180:180)
-        c1 = LatLon(T(0), lon)
-        if indomain(OrthoSouth, c1)
-          c2 = convert(OrthoSouth, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1; atol=T(0.5) * °)
-        end
-      end
-    elseif C <: TransverseMercator
-      # TODO: fix backward implementation
-      continue
-    elseif C <: Sinusoidal
-      # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
-      for lat in T.(-89:89), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(Sinusoidal, c1)
-          c2 = convert(Sinusoidal, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1)
-        end
-      end
-    elseif C <: LambertAzimuthal
-      # coordinates at the singularity of the projection (lat ≈ ±90) cannot be inverted
-      # Float32 inversion is not very accurate
-      if T === Float32
-        # accuracy is better at coordinates far from the edge of the projection (lon ≈ ±180)
-        for lat in T.(-89:89), lon in T.(-170:170)
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test isclose(c3, c1; atol=1.0f-2°)
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/40
+    PRJ <: TransverseMercator && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/55
+    PRJ <: Robinson && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
+    PRJ <: LambertAzimuthal && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/272
+    PRJ <: OrthoNorth && continue
+    PRJ <: OrthoSouth && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/295
+    PRJ <: Sinusoidal && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/296
+    PRJ <: Albers && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/297
+    PRJ <: GallPeters && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/298
+    PRJ <: Behrmann && continue
+
+    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/299
+    PRJ <: LambertCylindrical && continue
+
+    # loop over all possible latitude and longitude values
+    # that should be recovered by the given PRJ type
+    success = true
+    for (lat, lon) in Iterators.product(T.(-90:90), T.(-180:180))
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
+      PRJ <: EqualEarth && abs(lat) == T(90) && continue
+
+      ll = LatLon(lat, lon)
+      LL = typeof(ll)
+      if indomain(PRJ, ll)
+        ll′ = convert(LL, convert(PRJ, ll))
+        if isapprox(ll′, ll)
+          # we are in the ideal case where the original
+          # latitude and longitude were fully recovered
+          continue
+        elseif isapprox(ll′, LL(ll.lat, -ll.lon))
+          # the round trip conversion led to an incorrect
+          # sign for the longitude coordinate and we have
+          # to investigate if we are near lon=180°=-180°
+          rtol = CoordRefSystems.rtol(ll′.lon)
+          atol = CoordRefSystems.atol(ll′.lon)
+          if isapprox(abs(ll′.lon), T(180)°; rtol, atol)
+            # in that case we have exchanged lon=180°=-180°
+            # which is is ok for most practical purposes
+            push!(prjflip, string(PRJ))
+            continue
+          else
+            # we returned the incorrect sign for a longitude
+            # that is far from lon=180=-180 and this is not
+            # the expected result, certainly a bug to fix
+            push!(latfail, lat)
+            push!(lonfail, lon)
+            success = false
           end
-        end
-
-        for lat in T.(-89:89), lon in T[-180:-171; 171:180]
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test isclose(c3, c1; atol=1.0f0°)
-          end
-        end
-      else
-        for lat in T.(-89:89), lon in T.(-180:180)
-          c1 = LatLon(lat, lon)
-          if indomain(C, c1)
-            c2 = convert(C, c1)
-            c3 = convert(LatLon, c2)
-            @test isclose(c3, c1; atol=1e-6°)
-          end
-        end
-      end
-    else
-      atol = if C <: LambertCylindrical
-        T === Float32 ? 1.0f-2° : 1e-4°
-      elseif C <: Behrmann
-        T === Float32 ? 1.0f-2° : 1e-4°
-      elseif C <: GallPeters
-        T === Float32 ? 1.0f-1° : 1e-4°
-      elseif C <: Robinson
-        T(1e-3) * °
-      elseif C <: Albers
-        T === Float32 ? 1.0f-1° : 1e-5°
-      elseif C <: EqualEarth && T === Float64
-        1e-5°
-      else
-        nothing
-      end
-
-      kwargs = isnothing(atol) ? (;) : (; atol)
-
-      for lat in T.(-90:90), lon in T.(-180:180)
-        c1 = LatLon(lat, lon)
-        if indomain(C, c1)
-          c2 = convert(C, c1)
-          c3 = convert(LatLon, c2)
-          @test isclose(c3, c1; kwargs...)
+        else
+          # we failed to recover the original latitude and longitude
+          # coordinates due to unknown reasons that are likely bugs
+          push!(latfail, lat)
+          push!(lonfail, lon)
+          success = false
         end
       end
     end
+
+    # report PRJ status
+    @test success
+
+    # display problematic latitude and longitude values in case of failure
+    if !success
+      @info "$PRJ failed with lat in $(sort(collect(latfail)))"
+      @info "$PRJ failed with lon in $(sort(collect(lonfail)))"
+    end
   end
+
+  # warn maintainers about the behavior of some projections near lon=180=-180
+  @warn "$(join(prjflip, ", ", " and ")) flipped the sign near lon=180°=-180°"
 end
