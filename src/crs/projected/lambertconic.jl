@@ -47,7 +47,7 @@ isconformal(::Type{<:LambertConic}) = true
 # ------------
 
 # inbounds(::Type{<:LambertConic}, λ, ϕ) = !(ϕ ≈ -π/2)
-inbounds(::Type{<:LambertConic}, λ, ϕ) = (-π/2 < ϕ <= π/2)
+inbounds(::Type{<:LambertConic}, λ, ϕ) = ϕ > -π/2
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -81,7 +81,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-  pi_half = oftype(x, π/2)
+  halfpi = oftype(x, π/2)
 
   F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
   t₀ = _lambertt(ϕₒ, e)
@@ -92,7 +92,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   t′ = (r′/F)^(1/n)
 
   λ = θ′ / n
-  ϕᵢ = pi_half - 2 * atan(t′)
+  ϕᵢ = halfpi - 2 * atan(t′)
   Δϕ = Inf - ϕᵢ
   tol = 1e-16
   n = 0
