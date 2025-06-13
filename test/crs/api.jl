@@ -1,4 +1,4 @@
-@testset "CRS API" begin
+@testset "API" begin
   @testset "datum" begin
     for C in basic2D
       c = C(T(1), T(2))
@@ -292,7 +292,12 @@
 
   @testset "isequal" begin
     for C in [basic; geographic; projected]
-      isequaltest(C)
+      n = CoordRefSystems.ncoords(C)
+      c1 = C(ntuple(_ -> T(1), n)...)
+      c2 = C(ntuple(_ -> 1.0, n)...)
+      c3 = C(ntuple(_ -> 1.0f0, n)...)
+      @test c1 == c2
+      @test c1 == c3
     end
   end
 

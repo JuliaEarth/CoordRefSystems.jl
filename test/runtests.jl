@@ -44,11 +44,11 @@ projected = [
   Robinson,
   OrthoNorth,
   OrthoSouth,
-  TransverseMercator{0.9996,0.0°},
-  Albers{23.0°,29.5°,45.0°},
+  TransverseMercator{T(0.9996),T(0.0)°},
+  Albers{T(23.0)°,T(29.5)°,T(45.0)°},
   Sinusoidal,
-  LambertAzimuthal{15.0°},
-  LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°},
+  LambertAzimuthal{T(15.0)°},
+  LambertConic{T(27.8333333333333)°,T(28.3833333333333)°,T(30.2833333333333)°},
   EqualEarth
 ]
 
@@ -66,6 +66,7 @@ testfiles = [
   "crs/promotions.jl",
   "crs/mactype.jl",
   "crs/domains.jl",
+  "crs/fwdbwd.jl",
   "crs/rand.jl",
   "crs/traits.jl",
 
