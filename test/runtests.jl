@@ -48,6 +48,7 @@ projected = [
   Albers{T(23.0)°,T(29.5)°,T(45.0)°},
   Sinusoidal,
   LambertAzimuthal{T(15.0)°},
+  LambertConic{T(27.8333333333333)°,T(28.3833333333333)°,T(30.2833333333333)°},
   EqualEarth
 ]
 
