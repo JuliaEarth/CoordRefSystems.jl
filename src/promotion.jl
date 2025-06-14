@@ -99,12 +99,22 @@ function Base.promote_rule(C₁::Type{<:Cartesian{Datum,3}}, C₂::Type{<:LatLon
   Cartesian{Datum,3,Met{T}}
 end
 
-function Base.promote_rule(C₁::Type{<:LatLon{Datum}}, C₂::Type{<:LatLon{Datum}}) where {Datum}
+function Base.promote_rule(C₁::Type{<:Geographic{Datum,2}}, C₂::Type{<:Geographic{Datum,2}}) where {Datum}
   T = promote_type(mactype(C₁), mactype(C₂))
   LatLon{Datum,Deg{T}}
 end
 
-function Base.promote_rule(C₁::Type{<:LatLon{Datum₁}}, C₂::Type{<:LatLon{Datum₂}}) where {Datum₁,Datum₂}
+function Base.promote_rule(C₁::Type{<:Geographic{Datum₁,2}}, C₂::Type{<:Geographic{Datum₂,2}}) where {Datum₁,Datum₂}
   T = promote_type(mactype(C₁), mactype(C₂))
   LatLon{DefaultDatum,Deg{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Geographic{Datum,3}}, C₂::Type{<:Geographic{Datum,3}}) where {Datum}
+  T = promote_type(mactype(C₁), mactype(C₂))
+  LatLonAlt{Datum,Deg{T},Met{T}}
+end
+
+function Base.promote_rule(C₁::Type{<:Geographic{Datum₁,3}}, C₂::Type{<:Geographic{Datum₂,3}}) where {Datum₁,Datum₂}
+  T = promote_type(mactype(C₁), mactype(C₂))
+  LatLonAlt{DefaultDatum,Deg{T},Met{T}}
 end
