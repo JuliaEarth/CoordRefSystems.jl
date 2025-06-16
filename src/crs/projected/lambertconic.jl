@@ -22,7 +22,8 @@ LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Len, y::Len) where {latₒ,lat
 LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(x::Number, y::Number) where {latₒ,lat₁,lat₂,Datum,Shift} =
   LambertConic{latₒ,lat₁,lat₂,Datum,Shift}(addunit(x, m), addunit(y, m))
 
-LambertConic{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} = LambertConic{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
+LambertConic{latₒ,lat₁,lat₂,Datum}(args...) where {latₒ,lat₁,lat₂,Datum} =
+  LambertConic{latₒ,lat₁,lat₂,Datum,Shift()}(args...)
 
 LambertConic{latₒ,lat₁,lat₂}(args...) where {latₒ,lat₁,lat₂} = LambertConic{latₒ,lat₁,lat₂,WGS84Latest}(args...)
 
@@ -47,7 +48,7 @@ isconformal(::Type{<:LambertConic}) = true
 # CONVERSIONS
 # ------------
 
-inbounds(::Type{<:LambertConic}, λ, ϕ) = ϕ > -π/2
+inbounds(::Type{<:LambertConic}, λ, ϕ) = ϕ > -π / 2
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -58,11 +59,11 @@ function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T})
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
   F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
-  
+
   θ(λ) = n * λ
   t(ϕ) = _lambertt(ϕ, e)
   r(ϕ) = _lambertr(F, t(ϕ), n)
-  
+
   t₀ = _lambertt(ϕₒ, e)
   r₀ = _lambertr(F, t₀, n)
 
@@ -81,7 +82,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-  halfpi = oftype(x, π/2)
+  halfpi = oftype(x, π / 2)
 
   F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
   t₀ = _lambertt(ϕₒ, e)
@@ -89,7 +90,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
 
   θ′ = atan(x, r₀ - y)
   r′ = sign(n) * sqrt(x^2 + (r₀ - y)^2)
-  t′ = (r′/F)^(1/n)
+  t′ = (r′ / F)^(1 / n)
 
   λ = θ′ / n
   ϕᵢ = halfpi - 2 * atan(t′)
@@ -98,7 +99,7 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   n = 0
   nmax = 1000
   while (abs(Δϕ) > tol) && (n < nmax)
-    Δϕ = halfpi - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
+    Δϕ = halfpi - 2 * atan(t′ * ((1 - e * sin(ϕᵢ)) / (1 + e * sin(ϕᵢ)))^(e / 2)) - ϕᵢ
     ϕᵢ = ϕᵢ + Δϕ
     n = n + 1
   end
@@ -122,7 +123,7 @@ end
 
 _lambertm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
-_lambertt(ϕ, e) = tan(oftype(ϕ, π/4) - ϕ/2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e/2)
+_lambertt(ϕ, e) = tan(oftype(ϕ, π / 4) - ϕ / 2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e / 2)
 
 _lambertr(F, t, n) = F * t^n
 

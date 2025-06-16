@@ -1609,10 +1609,11 @@
       #   xy_in=deg xy_out=rad step proj=lcc lat_0=27.8333333333333 lon_0=-99 lat_1=28.3833333333333 lat_2=30.2833333333333 
       #   x_0=609601.219202438 y_0=0 ellps=clrk66 step proj=unitconvert xy_in=m xy_out=m")
       LambertTexasSouthCentral = CoordRefSystems.shift(
-        LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27}, 
-        lonₒ=-99°, xₒ=609601.219202438m
+        LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27},
+        lonₒ=-99°,
+        xₒ=609601.219202438m
       )
-  
+
       c1 = LatLon{NAD27}(T(28.5), -T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
       @test isapprox(c2, LambertTexasSouthCentral(T(903277.7991828895), T(77650.94253892983)))
