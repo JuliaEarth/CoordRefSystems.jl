@@ -40,7 +40,7 @@ include("transforms/sequential.jl")
 @identity NZGD2000 WGS84
 
 # https://epsg.org/transformation_1170/NAD27-to-WGS-84-1.html
-@geoctranslation NAD27 WGS84 (δx=-3.0, δy=142, δz=183)
+@geoctranslation NAD27 WGS84 (δx=-3.0, δy=142.0, δz=183.0)
 
 # https://epsg.org/transformation_1130/Carthage-to-WGS-84-1.html
 @geoctranslation Carthage WGS84 (δx=-263.0, δy=6.0, δz=431.0)
