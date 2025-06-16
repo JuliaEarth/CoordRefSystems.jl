@@ -5,7 +5,8 @@
 """
     LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 
-Lambert Conic Conformal CRS with latitude origin `latₒ` standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
+Lambert Conic Conformal CRS with latitude origin `latₒ`,
+standard parallels `lat₁` and `lat₂`, `Datum` and `Shift`.
 """
 struct LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
@@ -40,10 +41,13 @@ lentype(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {lat�
   coords₂::LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 ) where {latₒ,lat₁,lat₂,Datum,Shift} = coords₁.x == coords₂.x && coords₁.y == coords₂.y
 
+isconformal(::Type{<:LambertConic}) = true
 
 # ------------
 # CONVERSIONS
 # ------------
+
+inbounds(::Type{<:LambertConic}, λ, ϕ) = ϕ > -π/2
 
 function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
   🌎 = ellipsoid(Datum)
@@ -69,6 +73,38 @@ function formulas(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, ::Type{T})
   fx, fy
 end
 
+function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) where {latₒ,lat₁,lat₂,Datum}
+  🌎 = ellipsoid(Datum)
+  e = oftype(x, eccentricity(🌎))
+  e² = oftype(x, eccentricity²(🌎))
+  ϕₒ = oftype(x, ustrip(deg2rad(latₒ)))
+  ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
+  ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
+
+  halfpi = oftype(x, π/2)
+
+  F, n = _lambertFn(ϕ₁, ϕ₂, e, e²)
+  t₀ = _lambertt(ϕₒ, e)
+  r₀ = _lambertr(F, t₀, n)
+
+  θ′ = atan(x, r₀ - y)
+  r′ = sign(n) * sqrt(x^2 + (r₀ - y)^2)
+  t′ = (r′/F)^(1/n)
+
+  λ = θ′ / n
+  ϕᵢ = halfpi - 2 * atan(t′)
+  Δϕ = Inf - ϕᵢ
+  tol = 1e-16
+  n = 0
+  nmax = 1000
+  while (abs(Δϕ) > tol) && (n < nmax)
+    Δϕ = halfpi - 2 * atan(t′ * ((1 - e*sin(ϕᵢ)) / (1 + e*sin(ϕᵢ)))^(e/2)) - ϕᵢ
+    ϕᵢ = ϕᵢ + Δϕ
+    n = n + 1
+  end
+  λ, ϕᵢ
+end
+
 # -----------------
 # HELPER FUNCTIONS
 # -----------------
@@ -86,7 +122,7 @@ end
 
 _lambertm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
-_lambertt(ϕ, e) = tan(π/4 - ϕ/2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e/2)
+_lambertt(ϕ, e) = tan(oftype(ϕ, π/4) - ϕ/2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e/2)
 
 _lambertr(F, t, n) = F * t^n
 

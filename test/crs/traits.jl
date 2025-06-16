@@ -1,6 +1,6 @@
 @testset "traits" begin
   @test isequalarea(Albers)
-  @test isequalarea(Lambert)
+  @test isequalarea(LambertCylindrical)
   @test isequalarea(Behrmann)
   @test isequalarea(GallPeters)
   @test isequidistant(PlateCarree)

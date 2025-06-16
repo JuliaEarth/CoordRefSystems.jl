@@ -54,10 +54,17 @@
   crsstringtest(ESRI{102035})
   crsstringtest(ESRI{102037})
 
+  # throws when WKT is not supported by EPSG database
+  @test_throws ArgumentError CoordRefSystems.wkt2(EPSG{5614})
+  @test_throws ArgumentError CoordRefSystems.wkt2(EPSG{6358})
+  @test_throws ArgumentError CoordRefSystems.wkt2(EPSG{8051})
+  @test_throws ArgumentError CoordRefSystems.wkt2(EPSG{8053})
+
   # parsing errors
   # CRS format not supported
   str = "PROJ(NAME=Mercator, DATUM=WGS84)"
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # invalid WKT string
   str = """
   GEOG["GCS_WGS_1984",
@@ -66,9 +73,11 @@
     PRIMEM["Greenwich",0.0],
     UNIT["Degree",0.0174532925199433]]"""
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # CRS ID not found in the WKT2 string
   str = "PROJCRS[]"
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # datum not found in the WKT1 string
   str = """
   GEOGCS["GCS_WGS_1984",
@@ -76,6 +85,7 @@
     UNIT["Degree",0.0174532925199433]]
   """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # ESRI ID of the CRS not found in the ESRI WKT string
   str = """
   GEOGCS[
@@ -85,6 +95,7 @@
     UNIT["Degree",0.0174532925199433]]
   """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # CRS for the ESRI ID "test" not found in dictionary
   str = """
   GEOGCS["test",
@@ -94,6 +105,7 @@
     UNIT["Degree",0.0174532925199433]]
   """
   @test_throws ArgumentError CoordRefSystems.string2code(str)
+
   # CRS AUTHORITY not found in the WKT1 string
   str = """
   GEOGCS["WGS 84",

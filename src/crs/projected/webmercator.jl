@@ -54,8 +54,7 @@ iscompromise(::Type{<:WebMercator}) = true
 
 function inbounds(::Type{<:WebMercator}, λ, ϕ)
   T = typeof(λ)
-  θ = deg2rad(T(85.06))
-  -T(π) ≤ λ ≤ T(π) && -θ ≤ ϕ ≤ θ
+  -T(π) ≤ λ ≤ T(π) && -T(π) / 2 < ϕ < T(π) / 2
 end
 
 function formulas(::Type{<:WebMercator}, ::Type{T}) where {T}

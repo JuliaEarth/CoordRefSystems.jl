@@ -1,4 +1,4 @@
-@testset "Machine type conversion" begin
+@testset "Machine type" begin
   @testset "Basic" begin
     C = Cartesian{NoDatum,2,Met{T}}
     c1 = Cartesian(1.0, 2.0)
@@ -8,19 +8,19 @@
     c2 = convert(C, c1)
     @test c2 isa C
 
-    C = Cartesian{NoDatum,3,Met{T}}
-    c1 = Cartesian(1.0, 2.0, 3.0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-    c1 = Cartesian(1.0f0, 2.0f0, 3.0f0)
-    c2 = convert(C, c1)
-    @test c2 isa C
-
     C = Polar{NoDatum,Met{T},Rad{T}}
     c1 = Polar(1.0, 2.0)
     c2 = convert(C, c1)
     @test c2 isa C
     c1 = Polar(1.0f0, 2.0f0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+
+    C = Cartesian{NoDatum,3,Met{T}}
+    c1 = Cartesian(1.0, 2.0, 3.0)
+    c2 = convert(C, c1)
+    @test c2 isa C
+    c1 = Cartesian(1.0f0, 2.0f0, 3.0f0)
     c2 = convert(C, c1)
     @test c2 isa C
 

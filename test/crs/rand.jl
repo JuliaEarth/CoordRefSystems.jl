@@ -1,4 +1,4 @@
-@testset "Random CRS" begin
+@testset "rand" begin
   @testset "Basic" begin
     for C in basic
       randtest(C{NoDatum})

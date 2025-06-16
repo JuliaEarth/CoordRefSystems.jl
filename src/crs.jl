@@ -120,20 +120,28 @@ mactype(C::Type{<:CRS}) = numtype(lentype(C))
 """
     isapprox(coords₁, coords₂; kwargs...)
 
-Converts `coords₁` and `coords₂` to `Cartesian` coordinates and compare the coordinate
-values with the `isapprox` method of vectors. The conversion to `Cartesian` coordinates
-takes care of possibly different `Datum`.
-"""
-Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...) =
-  isapprox(convert(Cartesian, coords₁), convert(Cartesian, coords₂); kwargs...)
+Checks whether or not `coords₁` and `coords₂` are approximately equal as
+if they were tuples, i.e., their coordinate values are compared one by one
+with `isapprox` and the forwarded `kwargs`, except for `rtol` and `atol`.
+The `rtol` and `atol` are fixed based on the coordinate types. For example,
+angular coordinates in radians are compared with `rtol=0` and `atol=√eps(2π)`.
 
+In the case of different CRS types, converts both arguments
+to a common CRS type using the promotion mechanism,
+handling possibly different datums, units and machine types.
 """
-    CoordRefSystems.tol(coords)
+function Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...)
+  C = promote_type(typeof(coords₁), typeof(coords₂))
+  isapprox(convert(C, coords₁), convert(C, coords₂); kwargs...)
+end
 
-Absolute tolerance for the underlying machine type (e.g. `Float64`) used to represent the `coords`. 
-The result inherits the unit of the `coords` after conversion to [`Cartesian`](@ref).
-"""
-tol(coords::CRS) = tol(convert(Cartesian, coords))
+function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
+  all(1:nfields(coords₁)) do i
+    c₁ = getfield(coords₁, i)
+    c₂ = getfield(coords₂, i)
+    isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁), kwargs...)
+  end
+end
 
 # -------------
 # RAND METHODS

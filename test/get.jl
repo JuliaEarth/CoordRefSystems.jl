@@ -10,7 +10,7 @@
   )
   gettest(
     EPSG{3035},
-    CoordRefSystems.shift(LambertAzimuthalEqualArea{52.0°,ETRFLatest}, lonₒ=-10.0°, xₒ=4321000.0m, yₒ=-3210000.0m)
+    CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m)
   )
   gettest(EPSG{3310}, CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m))
   gettest(EPSG{3395}, Mercator{WGS84Latest})
@@ -79,7 +79,7 @@
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
   gettest(ESRI{54030}, Robinson{WGS84Latest})
-  gettest(ESRI{54034}, Lambert{WGS84Latest})
+  gettest(ESRI{54034}, LambertCylindrical{WGS84Latest})
   gettest(ESRI{54042}, WinkelTripel{WGS84Latest})
   gettest(ESRI{102035}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest})
   gettest(ESRI{102037}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest})

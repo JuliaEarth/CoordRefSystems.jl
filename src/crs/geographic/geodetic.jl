@@ -21,7 +21,7 @@ GeodeticLatLon{WGS84Latest}(45.0°, 45.0°)
 
 See [EPSG:4326](https://epsg.io/4326).
 """
-struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum}
+struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum,2}
   lat::D
   lon::D
 end
@@ -93,7 +93,7 @@ GeodeticLatLonAlt(45.0°, 45.0°, 1.0m)
 GeodeticLatLonAlt{WGS84Latest}(45.0°, 45.0°, 1.0m)
 ```
 """
-struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum}
+struct GeodeticLatLonAlt{Datum,D<:Deg,M<:Met} <: Geographic{Datum,3}
   lat::D
   lon::D
   alt::M
