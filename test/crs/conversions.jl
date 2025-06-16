@@ -703,6 +703,14 @@
       c3 = convert(LatLon{WGS84{2296}}, c2)
       @test isapprox(c3, c1)
 
+      # BD72 to WGS84
+      # Literals obtained with Proj.Transformation("EPSG:4313", "EPSG:4326")(30,40)
+      c1 = LatLon{BD72}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{2296}}, c1)
+      @test isapprox(c2, LatLon{WGS84{2296}}(T(29.99885279576138), T(40.001644579587)))
+      c3 = convert(LatLon{BD72}, c2)
+      @test isapprox(c3, c1)
+
       # Carthage to WGS84
       c1 = LatLon{Carthage}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
