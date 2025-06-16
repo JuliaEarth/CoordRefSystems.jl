@@ -43,6 +43,9 @@
       # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
       PRJ <: EqualEarth && abs(lat) == T(90) && continue
 
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/pull/264
+      PRJ <: LambertConic && lat == T(90) && continue
+
       ll = LatLon(lat, lon)
       LL = typeof(ll)
       if indomain(PRJ, ll)
