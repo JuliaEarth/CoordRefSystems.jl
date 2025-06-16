@@ -498,15 +498,15 @@ abstract type RGF93v2b <: Datum end
 ellipsoid(::Type{RGF93v2b}) = GRS80🌎
 
 """
-    RNB72
+    BD72
 
 Reseau National Belge 1972.
 
 See <https://epsg.org/datum_6313/Reseau-National-Belge-1972.html>
 """
-abstract type RNB72 <: Datum end
+abstract type BD72 <: Datum end
 
-ellipsoid(::Type{RNB72}) = Intl🌎
+ellipsoid(::Type{BD72}) = Intl🌎
 
 """
     SAD69

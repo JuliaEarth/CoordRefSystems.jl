@@ -74,7 +74,7 @@
   )
   gettest(
     EPSG{31370},
-    CoordRefSystems.shift(LambertConic{90.0°,51.1667°,49.8333°, RNB72}, lonₒ=4.3675°, xₒ=150000m, yₒ=5400088m)
+    CoordRefSystems.shift(LambertConic{90.0°,51.1666672333333°,49.8333339°, BD72}, lonₒ=4.36748666666667°, xₒ=150000.013m, yₒ=5400088.438m)
   )
   gettest(EPSG{32662}, PlateCarree{WGS84Latest})
   gettest(ESRI{54017}, Behrmann{WGS84Latest})
