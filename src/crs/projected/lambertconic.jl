@@ -5,7 +5,8 @@
 """
     LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 
-Lambert Conic Conformal CRS with latitude origin `latₒ` standard parallels `lat₁` and `lat₂`,  `Datum` and `Shift`.
+Lambert Conic Conformal CRS with latitude origin `latₒ`,
+standard parallels `lat₁` and `lat₂`, `Datum` and `Shift`.
 """
 struct LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M<:Met} <: Projected{Datum,Shift}
   x::M
