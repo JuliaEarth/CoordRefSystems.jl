@@ -43,8 +43,7 @@
       # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
       PRJ <: EqualEarth && abs(lat) == T(90) && continue
 
-      # https://github.com/JuliaEarth/CoordRefSystems.jl/pull/264
-      # the LambertConic projection maps all values of the form (90, lon) to  (xₒ, y)
+      # the LambertConic projection maps all values of the form (90, lon) to (xₒ, y)
       # therefore we cannot recover the original lon value when lat=90
       PRJ <: LambertConic && lat == T(90) && continue
 
