@@ -256,6 +256,11 @@
       @inferred convert(Cartesian{ITRF{2008}}, c1)
       @inferred convert(Cartesian{ITRF{2020}}, c2)
 
+      # NAD27 to WGS84 (2296)
+      c1 = Cartesian{NAD27}(T(0), T(0), T(0))
+      c2 = convert(Cartesian{WGS84{2296}}, c1)
+      @test isapprox(c2, Cartesian{WGS84{2296}}(T(-3.0), T(142.0), T(183.0)))
+
       # other basic CRS
       c1 = Cylindrical{WGS84{1762}}(T(0), T(0), T(0))
       c2 = convert(Cylindrical{ITRF{2008}}, c1)
@@ -701,6 +706,13 @@
       c2 = convert(LatLon{ITRF{2020}}, c1)
       @test isapprox(c2, LatLon{ITRF{2020}}(T(35), T(45)))
       c3 = convert(LatLon{WGS84{2296}}, c2)
+      @test isapprox(c3, c1)
+
+      # NAD27 to WGS84
+      c1 = LatLon{NAD27}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{2296}}, c1)
+      @test isapprox(c2, LatLon{WGS84{2296}}(T(29.999172812878406), T(40.00114734092287)))
+      c3 = convert(LatLon{NAD27}, c2)
       @test isapprox(c3, c1)
 
       # Carthage to WGS84
