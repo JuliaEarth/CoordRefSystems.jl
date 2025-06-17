@@ -50,6 +50,7 @@ export
   NAD83CSRS,
   NAD83CSRSLatest,
   Aratu,
+  BD72,
   Carthage,
   Datum73,
   DHDN,

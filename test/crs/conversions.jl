@@ -256,6 +256,11 @@
       @inferred convert(Cartesian{ITRF{2008}}, c1)
       @inferred convert(Cartesian{ITRF{2020}}, c2)
 
+      # NAD27 to WGS84 (2296)
+      c1 = Cartesian{NAD27}(T(0), T(0), T(0))
+      c2 = convert(Cartesian{WGS84{2296}}, c1)
+      @test isapprox(c2, Cartesian{WGS84{2296}}(T(-3.0), T(142.0), T(183.0)))
+
       # other basic CRS
       c1 = Cylindrical{WGS84{1762}}(T(0), T(0), T(0))
       c2 = convert(Cylindrical{ITRF{2008}}, c1)
@@ -701,6 +706,13 @@
       c2 = convert(LatLon{ITRF{2020}}, c1)
       @test isapprox(c2, LatLon{ITRF{2020}}(T(35), T(45)))
       c3 = convert(LatLon{WGS84{2296}}, c2)
+      @test isapprox(c3, c1)
+
+      # NAD27 to WGS84
+      c1 = LatLon{NAD27}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{2296}}, c1)
+      @test isapprox(c2, LatLon{WGS84{2296}}(T(29.999172812878406), T(40.00114734092287)))
+      c3 = convert(LatLon{NAD27}, c2)
       @test isapprox(c3, c1)
 
       # BD72 to WGS84
@@ -1617,10 +1629,11 @@
       #   xy_in=deg xy_out=rad step proj=lcc lat_0=27.8333333333333 lon_0=-99 lat_1=28.3833333333333 lat_2=30.2833333333333 
       #   x_0=609601.219202438 y_0=0 ellps=clrk66 step proj=unitconvert xy_in=m xy_out=m")
       LambertTexasSouthCentral = CoordRefSystems.shift(
-        LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27}, 
-        lonₒ=-99°, xₒ=609601.219202438m
+        LambertConic{27.8333333333333°,28.3833333333333°,30.2833333333333°,NAD27},
+        lonₒ=-99°,
+        xₒ=609601.219202438m
       )
-  
+
       c1 = LatLon{NAD27}(T(28.5), -T(96))
       c2 = convert(LambertTexasSouthCentral, c1)
       @test isapprox(c2, LambertTexasSouthCentral(T(903277.7991828895), T(77650.94253892983)))
