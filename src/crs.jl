@@ -136,9 +136,9 @@ function Base.isapprox(coords₁::CRS, coords₂::CRS; kwargs...)
 end
 
 function Base.isapprox(coords₁::C, coords₂::C; kwargs...) where {C<:CRS}
-  all(1:nfields(coords₁)) do i
-    c₁ = getfield(coords₁, i)
-    c₂ = getfield(coords₂, i)
+  vals₁ = values(coords₁)
+  vals₂ = values(coords₂)
+  all(zip(vals₁, vals₂)) do (c₁, c₂)
     isapprox(c₁, c₂; rtol=rtol(c₁), atol=atol(c₁), kwargs...)
   end
 end
