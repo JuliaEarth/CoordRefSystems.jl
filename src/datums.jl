@@ -190,6 +190,17 @@ abstract type Aratu <: Datum end
 ellipsoid(::Type{Aratu}) = Intl🌎
 
 """
+    BD72
+
+Reseau National Belge 1972.
+
+See <https://epsg.org/datum_6313/Reseau-National-Belge-1972.html>
+"""
+abstract type BD72 <: Datum end
+
+ellipsoid(::Type{BD72}) = Intl🌎
+
+"""
     Carthage
 
 Carthage 1934 Tunisia datum.
