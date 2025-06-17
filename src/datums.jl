@@ -190,6 +190,17 @@ abstract type Aratu <: Datum end
 ellipsoid(::Type{Aratu}) = Intl🌎
 
 """
+    BD72
+
+Reseau National Belge 1972.
+
+See <https://epsg.org/datum_6313/Reseau-National-Belge-1972.html>
+"""
+abstract type BD72 <: Datum end
+
+ellipsoid(::Type{BD72}) = Intl🌎
+
+"""
     Carthage
 
 Carthage 1934 Tunisia datum.
@@ -496,17 +507,6 @@ See <https://epsg.org/datum_1313/Reseau-Geodesique-Francais-1993-v2b.html>
 abstract type RGF93v2b <: Datum end
 
 ellipsoid(::Type{RGF93v2b}) = GRS80🌎
-
-"""
-    BD72
-
-Reseau National Belge 1972.
-
-See <https://epsg.org/datum_6313/Reseau-National-Belge-1972.html>
-"""
-abstract type BD72 <: Datum end
-
-ellipsoid(::Type{BD72}) = Intl🌎
 
 """
     SAD69
