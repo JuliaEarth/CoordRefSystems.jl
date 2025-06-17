@@ -92,7 +92,12 @@ end
 @crscode EPSG{29903} shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
 # For EPSG:31370, the lat/lon projection parameters are given in sexagesimal DMS in the EPSG database.
 # To avoid unit conversion, the literal parameters are those obtained with the PROJ command `projinfo EPSG:31370`.
-@crscode EPSG{31370} shift(LambertConic{90.0°,51.1666672333333°,49.8333339°, BD72}, lonₒ=4.36748666666667°, xₒ=150000.013m, yₒ=5400088.438m)
+@crscode EPSG{31370} shift(
+  LambertConic{90.0°,51.1666672333333°,49.8333339°,BD72},
+  lonₒ=4.36748666666667°,
+  xₒ=150000.013m,
+  yₒ=5400088.438m
+)
 @crscode EPSG{32662} PlateCarree{WGS84Latest}
 @crscode ESRI{54017} Behrmann{WGS84Latest}
 @crscode ESRI{54030} Robinson{WGS84Latest}
