@@ -18,12 +18,6 @@ See also [`@helmert`](@ref).
 ## References
 
 * Section 4.3.5 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
-
-### Notes
-
-The convention used for rotation is the Position Vector. 
-To set rotation parameters that use the Coordinate Frame
-convention, simply invert the sign of the parameters.
 """
 macro timedephelmert(Datumₛ, Datumₜ, params)
   expr = quote

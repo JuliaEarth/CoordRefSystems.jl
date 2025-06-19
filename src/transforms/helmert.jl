@@ -12,12 +12,6 @@ and scale parameter `s` in ppm (parts per million).
 ## References
 
 * Section 4.3.3 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
-
-### Notes
-
-The convention used for rotation is the Position Vector. 
-To set rotation parameters that use the Coordinate Frame
-convention, simply invert the sign of the parameters.
 """
 macro helmert(Datumₛ, Datumₜ, params)
   expr = quote
@@ -61,7 +55,7 @@ end
 function helmertparams(xyz; δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0)
   T = numtype(eltype(xyz))
   δ = SVector(T(δx) * m, T(δy) * m, T(δz) * m)
-  R = RotXYZ(T(θx) / 3600 * °, T(θy) / 3600 * °, T(θz) / 3600 * °)
+  R = RotXYZ(-T(θx) / 3600 * °, -T(θy) / 3600 * °, -T(θz) / 3600 * °)
   S = T(s) * ppm
   δ, R, S
 end
