@@ -87,6 +87,9 @@ include("transforms/sequential.jl")
 # https://epsg.org/transformation_10607/WGS-84-G2139-to-WGS-84-G2296-1.html
 @helmert WGS84{2139} WGS84{2296} (δx=2.6e-3, δy=5.4e-3, δz=-0.9e-3, θx=0.01e-3, θy=0.07e-3, s=0.06e-3)
 
+# https://epsg.org/transformation_15929/BD72-to-WGS-84-3.html
+@helmert BD72 WGS84 (δx=-106.8686, δy=52.2978, δz=-103.7239, θx=0.3366, θy=-0.457, θz=1.8422, s=-1.2747)
+
 # https://epsg.org/transformation_9992/ITRF2008-to-ITRF2020-1.html
 @timedephelmert ITRF{2008} ITRF{2020} (δx=-0.2e-3, δy=-1e-3, δz=-3.3e-3, s=0.29e-3, dδy=0.1e-3, dδz=-0.1e-3, ds=0.03e-3)
 
