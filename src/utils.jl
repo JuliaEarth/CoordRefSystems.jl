@@ -33,16 +33,26 @@ asmet(::Quantity) = error("invalid unit, please pass a value in meters")
 
 Absolute tolerance for approximate comparison.
 """
-atol(x::Number) = atol(typeof(x))
-atol(::Type{T}) where {T} = eps(T)^(3 // 4)
+atol(x) = atol(typeof(x))
 
-atol(::Len{T}) where {T} = atol(T) * 6378137m
-atol(::Deg{T}) where {T} = sqrt(eps(T(360))) * °
-atol(::Rad{T}) where {T} = sqrt(eps(T(2π))) * rad
+atol(::Type{T}) where {T<:Number} = eps(T)^(3 // 4)
 
-rtol(::Len{T}) where {T} = sqrt(eps(T))
-rtol(::Deg{T}) where {T} = zero(T)
-rtol(::Rad{T}) where {T} = zero(T)
+atol(::Type{<:Len{T}}) where {T} = atol(T) * 6378137m
+atol(::Type{<:Deg{T}}) where {T} = sqrt(eps(T(360))) * °
+atol(::Type{<:Rad{T}}) where {T} = sqrt(eps(T(2π))) * rad
+
+"""
+    rtol(x)
+
+Relative tolerance for approximate comparison.
+"""
+rtol(x) = rtol(typeof(x))
+
+rtol(::Type{T}) where {T<:Number} = sqrt(eps(T))
+
+rtol(::Type{<:Len{T}}) where {T} = rtol(T)
+rtol(::Type{<:Deg{T}}) where {T} = zero(T)
+rtol(::Type{<:Rad{T}}) where {T} = zero(T)
 
 """
     addunit(x, u)
