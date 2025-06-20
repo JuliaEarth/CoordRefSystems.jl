@@ -834,13 +834,13 @@
       # OSGB36 to WGS84
       c1 = LatLon{OSGB36}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test isapprox(c2, LatLon{WGS84{1762}}(T(30.00369426351054), T(39.99584156010952)))
+      @test isapprox(c2, LatLon{WGS84{1762}}(T(30.00364258826244), T(39.99622212948247)))
       c3 = convert(LatLon{OSGB36}, c2)
       @test isapprox(c3, c1)
 
       c1 = LatLon{OSGB36}(T(35), T(45))
       c2 = convert(LatLon{WGS84{1762}}, c1)
-      @test isapprox(c2, LatLon{WGS84{1762}}(T(35.00351219826948), T(44.995392459056006)))
+      @test isapprox(c2, LatLon{WGS84{1762}}(T(35.00347406046026), T(44.99575175036389)))
       c3 = convert(LatLon{OSGB36}, c2)
       @test isapprox(c3, c1)
 

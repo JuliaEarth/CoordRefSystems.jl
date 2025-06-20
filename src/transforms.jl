@@ -64,7 +64,7 @@ include("transforms/sequential.jl")
 @helmert NZGD1949 WGS84 (δx=59.47, δy=-5.04, δz=187.44, θx=-0.47, θy=0.1, θz=-1.024, s=-4.5993)
 
 # https://epsg.org/transformation_1314/OSGB36-to-WGS-84-6.html
-@helmert OSGB36 WGS84 (δx=446.448, δy=-125.157, δz=542.060, θx=0.1502, θy=0.2470, θz=0.8421, s=-20.4894)
+@helmert OSGB36 WGS84 (δx=446.448, δy=-125.157, δz=542.060, θx=-0.15, θy=-0.247, θz=-0.842, s=-20.489)
 
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @helmert Potsdam WGS84 (δx=598.1, δy=73.7, δz=418.2, θx=-0.202, θy=-0.045, θz=2.455, s=6.7)
