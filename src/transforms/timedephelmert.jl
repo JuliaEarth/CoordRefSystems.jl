@@ -6,10 +6,10 @@
     @timedephelmert Datumₛ Datumₜ (δx=0.0, δy=0.0, δz=0.0, θx=0.0, θy=0.0, θz=0.0, s=0.0,
       dδx=0.0, dδy=0.0, dδz=0.0, dθx=0.0, dθy=0.0, dθz=0.0, ds=0.0, tᵣ=epoch(Datumₜ))
 
-Create a Helmert transform from time-dependent parameters:
+Helmert transform from time-dependent parameters:
 epoch difference `dt = epoch(Datumₛ) - tᵣ`,
-translation rates `dδx, dδy, dδz` in meters per year, 
-rotation rates `dθx, dθy, dθz` in arc seconds per year 
+translation rates `dδx`, `dδy` and `dδz` in meters per year, 
+rotation rates `dθx`, `dθy` and `dθz` in arc seconds per year 
 scale rate `ds` in ppm (parts per million) per year,
 and reference epoch `tᵣ` in decimalyears.
 
@@ -18,12 +18,6 @@ See also [`@helmert`](@ref).
 ## References
 
 * Section 4.3.5 of EPSG Guidance Note 7-2: <https://epsg.org/guidance-notes.html>
-
-### Notes
-
-The convention used for rotation is the Position Vector. 
-To set rotation parameters that use the Coordinate Frame
-convention, simply invert the sign of the parameters.
 """
 macro timedephelmert(Datumₛ, Datumₜ, params)
   expr = quote

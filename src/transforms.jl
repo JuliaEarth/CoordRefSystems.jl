@@ -55,22 +55,22 @@ include("transforms/sequential.jl")
 @geoctranslation SAD69 WGS84 (δx=-57.0, δy=1.0, δz=-41.0)
 
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
-@helmert Hermannskogel WGS84 (δx=577.326, δy=90.129, δz=463.919, θx=5.137, θy=1.474, θz=5.297, s=2.4232)
+@helmert Hermannskogel WGS84 (δx=577.326, δy=90.129, δz=463.919, θx=-5.137, θy=-1.474, θz=-5.297, s=2.4232)
 
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
-@helmert Ire65 WGS84 (δx=482.530, δy=-130.596, δz=564.557, θx=-1.042, θy=-0.214, θz=-0.631, s=8.15)
+@helmert Ire65 WGS84 (δx=482.530, δy=-130.596, δz=564.557, θx=1.042, θy=0.214, θz=0.631, s=8.15)
 
 # https://epsg.org/transformation_1564/NZGD49-to-WGS-84-2.html
-@helmert NZGD1949 WGS84 (δx=59.47, δy=-5.04, δz=187.44, θx=0.47, θy=-0.1, θz=1.024, s=-4.5993)
+@helmert NZGD1949 WGS84 (δx=59.47, δy=-5.04, δz=187.44, θx=-0.47, θy=0.1, θz=-1.024, s=-4.5993)
 
 # https://epsg.org/transformation_1314/OSGB36-to-WGS-84-6.html
-@helmert OSGB36 WGS84 (δx=446.448, δy=-125.157, δz=542.060, θx=0.1502, θy=0.2470, θz=0.8421, s=-20.4894)
+@helmert OSGB36 WGS84 (δx=446.448, δy=-125.157, δz=542.060, θx=-0.15, θy=-0.247, θz=-0.842, s=-20.489)
 
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
-@helmert Potsdam WGS84 (δx=598.1, δy=73.7, δz=418.2, θx=0.202, θy=0.045, θz=-2.455, s=6.7)
+@helmert Potsdam WGS84 (δx=598.1, δy=73.7, δz=418.2, θx=-0.202, θy=-0.045, θz=2.455, s=6.7)
 
 # https://epsg.org/transformation_9960/WGS-84-Transit-to-WGS-84-G730-1.html
-@helmert WGS84{0} WGS84{730} (δx=-58e-3, δy=521e-3, δz=239e-3, θx=-18.3e-3, θy=0.3e-3, θz=-7e-3, s=10.7e-3)
+@helmert WGS84{0} WGS84{730} (δx=-58e-3, δy=521e-3, δz=239e-3, θx=18.3e-3, θy=-0.3e-3, θz=7e-3, s=10.7e-3)
 
 # https://epsg.org/transformation_9961/WGS-84-G730-to-WGS-84-G873-1.html
 @helmert WGS84{730} WGS84{873} (δx=-20e-3, δy=-16e-3, δz=14e-3, s=-0.69e-3)
@@ -79,16 +79,16 @@ include("transforms/sequential.jl")
 @helmert WGS84{1150} WGS84{1762} (δx=-6e-3, δy=5e-3, δz=20e-3, s=-4.5e-3)
 
 # https://epsg.org/transformation_7667/WGS-84-G1674-to-WGS-84-G1762-1.html
-@helmert WGS84{1674} WGS84{1762} (δx=-4e-3, δy=3e-3, δz=4e-3, θx=-0.27e-3, θy=0.27e-3, θz=-0.38e-3, s=-6.9e-3)
+@helmert WGS84{1674} WGS84{1762} (δx=-4e-3, δy=3e-3, δz=4e-3, θx=0.27e-3, θy=-0.27e-3, θz=0.38e-3, s=-6.9e-3)
 
 # https://epsg.org/transformation_9756/WGS-84-G1762-to-WGS-84-G2139-1.html
-@helmert WGS84{1762} WGS84{2139} (δx=0.0058, δy=-0.0064, δz=0.007, θx=-0.08e-3, θy=-0.04e-3, θz=-0.12e-3, s=-4.4e-3)
+@helmert WGS84{1762} WGS84{2139} (δx=0.0058, δy=-0.0064, δz=0.007, θx=0.08e-3, θy=0.04e-3, θz=0.12e-3, s=-4.4e-3)
 
 # https://epsg.org/transformation_10607/WGS-84-G2139-to-WGS-84-G2296-1.html
-@helmert WGS84{2139} WGS84{2296} (δx=2.6e-3, δy=5.4e-3, δz=-0.9e-3, θx=0.01e-3, θy=0.07e-3, s=0.06e-3)
+@helmert WGS84{2139} WGS84{2296} (δx=2.6e-3, δy=5.4e-3, δz=-0.9e-3, θx=-0.01e-3, θy=-0.07e-3, s=0.06e-3)
 
 # https://epsg.org/transformation_15929/BD72-to-WGS-84-3.html
-@helmert BD72 WGS84 (δx=-106.8686, δy=52.2978, δz=-103.7239, θx=0.3366, θy=-0.457, θz=1.8422, s=-1.2747)
+@helmert BD72 WGS84 (δx=-106.8686, δy=52.2978, δz=-103.7239, θx=-0.3366, θy=0.457, θz=-1.8422, s=-1.2747)
 
 # https://epsg.org/transformation_9992/ITRF2008-to-ITRF2020-1.html
 @timedephelmert ITRF{2008} ITRF{2020} (δx=-0.2e-3, δy=-1e-3, δz=-3.3e-3, s=0.29e-3, dδy=0.1e-3, dδz=-0.1e-3, ds=0.03e-3)
@@ -98,11 +98,11 @@ include("transforms/sequential.jl")
   δx=1.1e-3,
   δy=-4.7e-3,
   δz=22e-3,
-  θz=-0.16e-3,
+  θz=0.16e-3,
   s=1.45e-3,
   dδy=0.6e-3,
   dδz=1.4e-3,
-  dθz=-0.02e-3,
+  dθz=0.02e-3,
   ds=-0.01e-3,
   tᵣ=2005.0 # reference epoch differs from epoch of target datum
 )
@@ -112,9 +112,9 @@ include("transforms/sequential.jl")
   δx=-2.4e-3,
   δy=1.6e-3,
   δz=23.2e-3,
-  θx=0.27e-3,
-  θy=-0.27e-3,
-  θz=0.38e-3,
+  θx=-0.27e-3,
+  θy=0.27e-3,
+  θz=-0.38e-3,
   s=2.08e-3,
   dδx=-0.1e-3,
   dδy=-0.1e-3,
