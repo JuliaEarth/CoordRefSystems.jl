@@ -378,7 +378,7 @@
 
       # datum conversion
       # altitude can only be calculated accurately using Float64
-      if T == Float64
+      if T === Float64
         # WGS84 (G1762) to ITRF2008
         c1 = LatLon{WGS84{1762}}(T(30), T(40))
         c2 = convert(LatLonAlt{ITRF{2008}}, c1)
