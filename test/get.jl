@@ -13,6 +13,7 @@
     CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m)
   )
   gettest(EPSG{3310}, CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m))
+  gettest(EPSG{3338}, CoordRefSystems.shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°))
   gettest(EPSG{3395}, Mercator{WGS84Latest})
   gettest(EPSG{3857}, WebMercator{WGS84Latest})
   gettest(EPSG{4171}, LatLon{RGF93v1})
