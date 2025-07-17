@@ -550,4 +550,3 @@ See <https://epsg.org/datum_6674/Sistema-de-Referencia-Geocentrico-para-las-Amer
 abstract type SIRGAS2000 <: Datum end
 
 ellipsoid(::Type{SIRGAS2000}) = GRS80🌎
-
