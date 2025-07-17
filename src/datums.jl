@@ -540,3 +540,13 @@ See <https://epsg.org/datum_6674/Sistema-de-Referencia-Geocentrico-para-las-Amer
 abstract type SIRGAS2000 <: Datum end
 
 ellipsoid(::Type{SIRGAS2000}) = GRS80🌎
+
+"""
+    Israel1993
+
+See <https://epsg.org/datum_6141/Israel-1993.html>
+"""
+
+abstract type Israel1993 <: Datum end
+
+ellipsoid(::Type{Israel1993}) = GRS80🌎

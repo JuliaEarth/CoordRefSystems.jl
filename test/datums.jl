@@ -117,4 +117,6 @@
   @test ellipsoid(SAD96) === CoordRefSystems.GRS67Modified🌎
 
   @test ellipsoid(SIRGAS2000) === CoordRefSystems.GRS80🌎
+
+  @test ellipsoid(Israel1993) === CoordRefSystems.GRS80🌎
 end

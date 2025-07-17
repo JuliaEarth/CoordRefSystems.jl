@@ -89,6 +89,14 @@
   gettest(ESRI{54042}, WinkelTripel{WGS84Latest})
   gettest(ESRI{102035}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest})
   gettest(ESRI{102037}, CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest})
+  gettest(EPSG{31370},
+    CoordRefSystems.shift(
+      TransverseMercator{1.0000067,31.734394°,Israel1993}, 
+      lonₒ=35.204517°,
+      xₒ=219529.584m,
+      yₒ=626907.39m
+    )
+  )
 
   for zone in 1:60
     NorthCode = 32600 + zone
