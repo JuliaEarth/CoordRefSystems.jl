@@ -5,6 +5,10 @@
     CoordRefSystems.shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
   )
   gettest(
+    EPSG{2180},
+    CoordRefSystems.shift(TransverseMercator{0.9993,0.0°,ETRF{2000}}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
+  )
+  gettest(
     EPSG{2193},
     CoordRefSystems.shift(TransverseMercator{0.9996,0.0°,NZGD2000}, lonₒ=173.0°, xₒ=1600000.0m, yₒ=10000000.0m)
   )
@@ -68,10 +72,6 @@
   gettest(
     EPSG{29903},
     CoordRefSystems.shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m)
-  )
-  gettest(
-    EPSG{2180},
-    CoordRefSystems.shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
   )
   gettest(
     EPSG{31370},
