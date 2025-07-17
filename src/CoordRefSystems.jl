@@ -67,6 +67,7 @@ export
   ISN93,
   ISN2004,
   ISN2016,
+  Israel1993,
   Lisbon1890,
   Lisbon1937,
   NAD27,

@@ -1,5 +1,13 @@
 @testset "get" begin
   # EPSG/ESRI code
+  gettest(EPSG{2039},
+    CoordRefSystems.shift(
+      TransverseMercator{1.0000067,31.734394°,Israel1993},
+      lonₒ=35.204517°,
+      xₒ=219529.584m,
+      yₒ=626907.39m
+    )
+  )
   gettest(
     EPSG{2157},
     CoordRefSystems.shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
