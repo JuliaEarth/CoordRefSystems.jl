@@ -361,6 +361,16 @@ abstract type ISN2016 <: Datum end
 ellipsoid(::Type{ISN2016}) = GRS80🌎
 
 """
+    Israel1993
+
+See <https://epsg.org/datum_6141/Israel-1993.html>
+"""
+
+abstract type Israel1993 <: Datum end
+
+ellipsoid(::Type{Israel1993}) = GRS80🌎
+
+"""
     Lisbon1890
 
 Lisbon 1890 datum.
@@ -541,12 +551,3 @@ abstract type SIRGAS2000 <: Datum end
 
 ellipsoid(::Type{SIRGAS2000}) = GRS80🌎
 
-"""
-    Israel1993
-
-See <https://epsg.org/datum_6141/Israel-1993.html>
-"""
-
-abstract type Israel1993 <: Datum end
-
-ellipsoid(::Type{Israel1993}) = GRS80🌎

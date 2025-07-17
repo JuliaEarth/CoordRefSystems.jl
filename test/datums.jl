@@ -84,6 +84,8 @@
 
   @test ellipsoid(ISN2016) === CoordRefSystems.GRS80🌎
 
+  @test ellipsoid(Israel1993) === CoordRefSystems.GRS80🌎
+
   @test ellipsoid(Lisbon1890) === CoordRefSystems.Bessel🌎
 
   @test ellipsoid(Lisbon1937) === CoordRefSystems.Intl🌎
@@ -118,5 +120,4 @@
 
   @test ellipsoid(SIRGAS2000) === CoordRefSystems.GRS80🌎
 
-  @test ellipsoid(Israel1993) === CoordRefSystems.GRS80🌎
 end
