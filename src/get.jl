@@ -50,6 +50,7 @@ end
   yₒ=626907.39m
 )
 @crscode EPSG{2157} shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m)
+@crscode EPSG{2180} shift(TransverseMercator{0.9993,0.0°,ETRF{2000}}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
 @crscode EPSG{2193} shift(TransverseMercator{0.9996,0.0°,NZGD2000}, lonₒ=173.0°, xₒ=1600000.0m, yₒ=10000000.0m)
 @crscode EPSG{3035} shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m)
 @crscode EPSG{3310} shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m)
@@ -112,7 +113,6 @@ end
 @crscode ESRI{54042} WinkelTripel{WGS84Latest}
 @crscode ESRI{102035} Orthographic{SphericalMode,90°,WGS84Latest}
 @crscode ESRI{102037} Orthographic{SphericalMode,-90°,WGS84Latest}
-@crscode EPSG{2180} shift(TransverseMercator{0.9993,0.0°,NoDatum}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m)
 
 for zone in 1:60
   NorthCode = 32600 + zone
