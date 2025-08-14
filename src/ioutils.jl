@@ -11,9 +11,9 @@ function prettyname(T::Type)
   replace(name, r".*\." => "")
 end
 
-# remove the "CoordRefSystems" module from type, 
-# it is displayed when the module is not imported
-rmmodule(T) = replace(string(T), "CoordRefSystems." => "")
+# remove the module from type, it is displayed
+# when the module is not imported in the session
+rmmodule(T) = replace(string(T), r".*\." => "")
 
 printfields(io, obj; kwargs...) = printfields(io, obj, fieldnames(typeof(obj)); kwargs...)
 
