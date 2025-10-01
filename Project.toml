@@ -1,7 +1,7 @@
 name = "CoordRefSystems"
 uuid = "b46f11dc-f210-4604-bfba-323c1ec968cb"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com>", "Júlio Hoffimann <julio.hoffimann@gmail.com> and contributors"]
-version = "0.18.10"
+version = "0.19.0"
 
 [deps]
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -11,9 +11,9 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
-Random = "1.9"
+Random = "1.10"
 Rotations = "1.7"
 StaticArrays = "1.9"
 Unitful = "1.19"
 Zygote = "0.6, 0.7"
-julia = "1.9"
+julia = "1.10"
