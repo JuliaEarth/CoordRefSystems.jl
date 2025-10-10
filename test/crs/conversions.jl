@@ -831,6 +831,19 @@
       c3 = convert(LatLon{NZGD2000}, c2)
       @test isapprox(c3, c1)
 
+      # SIRGAS2000 to WGS84
+      c1 = LatLon{SIRGAS2000}(T(30), T(40))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test isapprox(c2, LatLon{WGS84{1762}}(T(29.99999999918245), T(40.00000000000000)))
+      c3 = convert(LatLon{SIRGAS2000}, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon{SIRGAS2000}(T(35), T(45))
+      c2 = convert(LatLon{WGS84{1762}}, c1)
+      @test isapprox(c2, LatLon{WGS84{1762}}(T(34.99999999911314), T(44.99999999999999)))
+      c3 = convert(LatLon{SIRGAS2000}, c2)
+      @test isapprox(c3, c1)
+
       # OSGB36 to WGS84
       c1 = LatLon{OSGB36}(T(30), T(40))
       c2 = convert(LatLon{WGS84{1762}}, c1)
