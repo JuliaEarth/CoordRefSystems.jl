@@ -7,13 +7,21 @@
   @test flattening(🌎) == 0.003352891869237217
   @test flattening⁻¹(🌎) == 298.25
 
-  🌎 = CoordRefSystems.Airy🌎
+  🌎 = CoordRefSystems.Airy30🌎
   @test majoraxis(🌎) == 6.377563396e6m
   @test minoraxis(🌎) == 6.356256909237285e6m
   @test eccentricity(🌎) == 0.08167337387414189
   @test eccentricity²(🌎) == 0.006670539999985363
   @test flattening(🌎) == 0.0033408506414970775
   @test flattening⁻¹(🌎) == 299.3249646
+
+  🌎 = CoordRefSystems.Airy49🌎
+  @test majoraxis(🌎) == 6.377340189e6m
+  @test minoraxis(🌎) == 6.356034446e6m
+  @test eccentricity(🌎) == 0.08167337758351056
+  @test eccentricity²(🌎) == 0.006670540605898685
+  @test flattening(🌎) == 0.003340850945469264
+  @test flattening⁻¹(🌎) == 299.32493736548236
 
   🌎 = CoordRefSystems.Andrae🌎
   @test majoraxis(🌎) == 6.37710443e6m
@@ -270,14 +278,6 @@
   @test eccentricity²(🌎) == 0.00669438499958795
   @test flattening(🌎) == 0.0033528131778969143
   @test flattening⁻¹(🌎) == 298.257
-
-  🌎 = CoordRefSystems.ModAiry🌎
-  @test majoraxis(🌎) == 6.377340189e6m
-  @test minoraxis(🌎) == 6.356034446e6m
-  @test eccentricity(🌎) == 0.08167337758351056
-  @test eccentricity²(🌎) == 0.006670540605898685
-  @test flattening(🌎) == 0.003340850945469264
-  @test flattening⁻¹(🌎) == 299.32493736548236
 
   🌎 = CoordRefSystems.Mprts🌎
   @test majoraxis(🌎) == 6.3973e6m

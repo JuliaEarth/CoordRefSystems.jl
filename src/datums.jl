@@ -316,7 +316,7 @@ Ireland 1965 datum.
 """
 abstract type Ire65 <: Datum end
 
-ellipsoid(::Type{Ire65}) = ModAiry🌎
+ellipsoid(::Type{Ire65}) = Airy49🌎
 
 """
     IRENET95
@@ -452,7 +452,7 @@ See <https://epsg.org/datum_6277/Ordnance-Survey-of-Great-Britain-1936.html>
 """
 abstract type OSGB36 <: Datum end
 
-ellipsoid(::Type{OSGB36}) = Airy🌎
+ellipsoid(::Type{OSGB36}) = Airy30🌎
 
 """
     PD83

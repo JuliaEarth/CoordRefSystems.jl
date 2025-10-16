@@ -74,7 +74,7 @@
 
   @test ellipsoid(IGS20) === CoordRefSystems.GRS80🌎
 
-  @test ellipsoid(Ire65) === CoordRefSystems.ModAiry🌎
+  @test ellipsoid(Ire65) === CoordRefSystems.Airy49🌎
 
   @test ellipsoid(IRENET95) === CoordRefSystems.GRS80🌎
 
@@ -100,7 +100,7 @@
 
   @test ellipsoid(NZGD2000) === CoordRefSystems.GRS80🌎
 
-  @test ellipsoid(OSGB36) === CoordRefSystems.Airy🌎
+  @test ellipsoid(OSGB36) === CoordRefSystems.Airy30🌎
 
   @test ellipsoid(PD83) === CoordRefSystems.Bessel🌎
 

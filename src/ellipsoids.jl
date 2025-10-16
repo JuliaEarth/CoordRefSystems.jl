@@ -70,15 +70,26 @@ flattening⁻¹(E::Type{<:RevolutionEllipsoid}) = ellipsoidparams(E).f⁻¹
 # reference code: https://github.com/OSGeo/PROJ/blob/master/src/ellps.cpp
 
 """
-  Airy🌎
+  Airy30🌎
 
 Airy 1830 ellipsoid.
 """
-abstract type Airy🌎 <: RevolutionEllipsoid end
+abstract type Airy30🌎 <: RevolutionEllipsoid end
 
-const _Airy = ellipfromaf⁻¹(6377563.396m, 299.3249646)
+const _Airy30 = ellipfromaf⁻¹(6377563.396m, 299.3249646)
 
-ellipsoidparams(::Type{Airy🌎}) = _Airy
+ellipsoidparams(::Type{Airy30🌎}) = _Airy30
+
+"""
+  Airy49🌎
+
+Airy 1849 (modified) ellipsoid.
+"""
+abstract type Airy49🌎 <: RevolutionEllipsoid end
+
+const _Airy49 = ellipfromab(6377340.189m, 6356034.446m)
+
+ellipsoidparams(::Type{Airy49🌎}) = _Airy49
 
 """
   Andrae🌎
@@ -433,17 +444,6 @@ abstract type Lerch🌎 <: RevolutionEllipsoid end
 const _Lerch = ellipfromaf⁻¹(6378139.0m, 298.257)
 
 ellipsoidparams(::Type{Lerch🌎}) = _Lerch
-
-"""
-  ModAiry🌎
-
-Modified Airy ellipsoid.
-"""
-abstract type ModAiry🌎 <: RevolutionEllipsoid end
-
-const _ModAiry = ellipfromab(6377340.189m, 6356034.446m)
-
-ellipsoidparams(::Type{ModAiry🌎}) = _ModAiry
 
 """
   MERIT🌎
