@@ -59,12 +59,15 @@ function crsstringtest2(code::Type{<:ESRI})
   @test_throws ArgumentError CoordRefSystems.wkt2(code)
 end
 
-function gettest(code, CRS)
-  @test CoordRefSystems.get(code) === CRS
+function gettest(CRS, Codes...)
+  for Code in Codes
+    @test CoordRefSystems.get(Code) === CRS
+  end
+  Code₁ = first(Codes)
   # inverse operation
-  @test CoordRefSystems.code(CRS) === code
+  @test CoordRefSystems.code(CRS) === Code₁
   # with instance type
   n = CoordRefSystems.ncoords(CRS)
   c = CRS(ntuple(_ -> T(0), n)...)
-  @test CoordRefSystems.code(typeof(c)) === code
+  @test CoordRefSystems.code(typeof(c)) === Code₁
 end
