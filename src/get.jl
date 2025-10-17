@@ -27,10 +27,10 @@ function get(code::Type{<:CRSCode})
 end
 
 """
-    @crscode CRS Code₁ ... Codeₙ
+    @crscode CRS Code₁ Code₂ ... Codeₙ
 
-Define the `get(Codeᵢ) -> CRS` function mapping all codes to `CRS`,
-and define the `code(CRS) -> Code₁` function using the first code.
+Internal macro to map the codes `Code₁`, `Code₂`, ..., `Codeₙ` to
+the `CRS` type, and the `CRS` type to the first code, i.e. `Code₁`.
 """
 macro crscode(CRS, Codes...)
   Code₁ = first(Codes)
