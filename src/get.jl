@@ -46,6 +46,30 @@ end
 # IMPLEMENTATIONS
 # ----------------
 
+# To map a EPSG{code} to a CRS type, please go to
+# https://epsg.org/search/by-name and type the code
+# in the search box.
+#
+# Check the CRSs tab of the result and click on the
+# desired entry in the table. You will be redirected
+# to a page with clickable items.
+#
+# You need to find the ellipsoid inside the datum item
+# and the conversion parameters of the projection in case
+# of projected coordinates.
+#
+# Double check the parameters stored in the EPSG database
+# using the projinfo utility that is shipped with PROJ:
+#
+# shell> projinfo EPSG:5070
+#
+# If the sign of some parameter differs, for example lon_0=8
+# in the EPSG database and lon_0=-8 in the projinfo output,
+# please use the projinfo output.
+#
+# If the angle parameters are given in sexagesimal DMS in
+# the EPSG database, please use the projinfo output.
+
 @crscodes shift(
   TransverseMercator{1.0000067,31.734394°,Israel1993},
   lonₒ=35.204517°,
@@ -100,9 +124,12 @@ end
 @crscodes shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m) EPSG{25832}
 @crscodes shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m) EPSG{27700}
 @crscodes shift(TransverseMercator{0.9996,0.0°,GDA94}, lonₒ=147.0°, xₒ=500000.0m, yₒ=10000000.0m) EPSG{28355}
-@crscodes shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m) EPSG{29903}
-# For EPSG:31370, the lat/lon projection parameters are given in sexagesimal DMS in the EPSG database.
-# To avoid unit conversion, the literal parameters are those obtained with the PROJ command `projinfo EPSG:31370`.
+@crscodes shift(
+  TransverseMercator{1.000035,53.5°,Ire65},
+  lonₒ=-8.0°,
+  xₒ=200000.0m,
+  yₒ=250000.0m
+) EPSG{29902} EPSG{29903}
 @crscodes shift(
   LambertConic{90.0°,51.1666672333333°,49.8333339°,BD72},
   lonₒ=4.36748666666667°,

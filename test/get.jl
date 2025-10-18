@@ -80,6 +80,7 @@
   )
   gettest(
     CoordRefSystems.shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m),
+    EPSG{29902},
     EPSG{29903}
   )
   gettest(
