@@ -161,6 +161,6 @@ for zone in 17:25
   @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
 end
 
-@eval @crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
-@eval @crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
-@eval @crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
+@crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
+@crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
+@crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
