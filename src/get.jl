@@ -152,13 +152,13 @@ for zone in 1:60
 end
 
 for zone in 11:22
-    NorthCode = 31954 + zone
-    @eval @crscodes utmnorth($zone, datum=SIRGAS2000) EPSG{$NorthCode}
+  NorthCode = 31954 + zone
+  @eval @crscodes utmnorth($zone, datum=SIRGAS2000) EPSG{$NorthCode}
 end
 
 for zone in 17:25
-    SouthCode = 31960 + zone
-    @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
+  SouthCode = 31960 + zone
+  @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
 end
 
 @eval @crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
