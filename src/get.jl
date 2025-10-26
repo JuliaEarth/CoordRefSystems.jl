@@ -70,12 +70,9 @@ end
 # If the angle parameters are given in sexagesimal DMS in
 # the EPSG database, please use the projinfo output.
 
-@crscodes shift(
-  TransverseMercator{1.0000067,31.734394°,Israel1993},
-  lonₒ=35.204517°,
-  xₒ=219529.584m,
-  yₒ=626907.39m
-) EPSG{2039}
+@crscodes shift(TransverseMercator{1.0000067,31.734394°,Israel1993}, lonₒ=35.204517°, xₒ=219529.584m, yₒ=626907.39m) EPSG{
+  2039
+}
 @crscodes shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m) EPSG{2157}
 @crscodes shift(TransverseMercator{0.9993,0.0°,ETRF{2000}}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m) EPSG{2180}
 @crscodes shift(TransverseMercator{0.9996,0.0°,NZGD2000}, lonₒ=173.0°, xₒ=1600000.0m, yₒ=10000000.0m) EPSG{2193}
@@ -124,12 +121,9 @@ end
 @crscodes shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m) EPSG{25832}
 @crscodes shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m) EPSG{27700}
 @crscodes shift(TransverseMercator{0.9996,0.0°,GDA94}, lonₒ=147.0°, xₒ=500000.0m, yₒ=10000000.0m) EPSG{28355}
-@crscodes shift(
-  TransverseMercator{1.000035,53.5°,Ire65},
-  lonₒ=-8.0°,
-  xₒ=200000.0m,
-  yₒ=250000.0m
-) EPSG{29902} EPSG{29903}
+@crscodes shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m) EPSG{29902} EPSG{
+  29903
+}
 @crscodes shift(
   LambertConic{90.0°,51.1666672333333°,49.8333339°,BD72},
   lonₒ=4.36748666666667°,
