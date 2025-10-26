@@ -150,3 +150,17 @@ for zone in 1:60
   @eval @crscodes utmnorth($zone, datum=WGS84Latest) EPSG{$NorthCode}
   @eval @crscodes utmsouth($zone, datum=WGS84Latest) EPSG{$SouthCode}
 end
+
+for zone in 11:22
+    NorthCode = 31954 + zone
+    @eval @crscodes utmnorth($zone, datum=SIRGAS2000) EPSG{$NorthCode}
+end
+
+for zone in 17:25
+    SouthCode = 31960 + zone
+    @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
+end
+
+@eval @crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
+@eval @crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
+@eval @crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
