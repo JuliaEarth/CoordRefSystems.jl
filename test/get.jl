@@ -107,6 +107,20 @@
     gettest(utmsouth(zone, datum=WGS84Latest), EPSG{SouthCode})
   end
 
+  for zone in 11:22
+    NorthCode = 31954 + zone
+    gettest(utmnorth(zone, datum=SIRGAS2000), EPSG{NorthCode})
+  end
+
+  for zone in 17:25
+    SouthCode = 31960 + zone
+    gettest(utmsouth(zone, datum=SIRGAS2000), EPSG{SouthCode})
+  end
+
+  gettest(utmnorth(23, datum=SIRGAS2000), EPSG{6210})
+  gettest(utmnorth(24, datum=SIRGAS2000), EPSG{6211})
+  gettest(utmsouth(26, datum=SIRGAS2000), EPSG{5396})
+
   # CRS string
   str = wktstring(EPSG{3395})
   @test CoordRefSystems.get(str) === Mercator{WGS84Latest}
