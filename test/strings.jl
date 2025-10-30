@@ -61,7 +61,7 @@
     SouthCode = 31960 + zone
     crsstringtest(EPSG{SouthCode})
   end
-  
+
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
