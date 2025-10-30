@@ -2,7 +2,7 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-# if you coming from an error message,
+# if you're coming from an error message,
 # please add an entry to the following
 # dictionary in **alphabetical order**
 const esriid2code = let
