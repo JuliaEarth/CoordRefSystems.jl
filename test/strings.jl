@@ -26,7 +26,10 @@
   crsstringtest(EPSG{4746})
   crsstringtest(EPSG{4686})
   crsstringtest(EPSG{5324})
+  crsstringtest(EPSG{5396})
   crsstringtest(EPSG{5527})
+  crsstringtest(EPSG{6210})
+  crsstringtest(EPSG{6211})
   # TODO: check the generated strings for these codes
   # the datum of the ESRI WKT1 string does not have the "D_" suffix
   # crsstringtest(EPSG{8086})
@@ -41,9 +44,6 @@
   # crsstringtest(EPSG{9782})
   # crsstringtest(EPSG{10414})
   crsstringtest1(EPSG{32662})
-  crsstringtest(EPSG{5396})
-  crsstringtest(EPSG{6210})
-  crsstringtest(EPSG{6211})
 
   for zone in 1:60
     NorthCode = 32600 + zone
