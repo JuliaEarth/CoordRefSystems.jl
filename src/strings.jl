@@ -2,7 +2,7 @@
 # Licensed under the MIT License. See LICENSE in the project root.
 # ------------------------------------------------------------------
 
-# if you coming from an error message,
+# if you're coming from an error message,
 # please add an entry to the following
 # dictionary in **alphabetical order**
 const esriid2code = Dict(
@@ -47,6 +47,9 @@ const esriid2code = Dict(
   "NZGD_2000_New_Zealand_Transverse_Mercator" => EPSG{2193},
   "RGF93_v2" => EPSG{9777},
   "RGF93_v2b" => EPSG{9782},
+  "SIRGAS_2000_UTM_Zone_23N" => EPSG{6210},
+  "SIRGAS_2000_UTM_Zone_24N" => EPSG{6211},
+  "SIRGAS_2000_UTM_Zone_26S" => EPSG{5396},
   "South_Pole_Orthographic" => ESRI{102037},
   "TM75_Irish_Grid" => EPSG{29903},
   "WGS_1984_Plate_Carree" => EPSG{32662},
@@ -58,6 +61,23 @@ const esriid2code = Dict(
   "World_Robinson" => ESRI{54030},
   "World_Winkel_Tripel_NGS" => ESRI{54042}
 )
+
+for zone in 1:60
+  NorthCode = 32600 + zone
+  SouthCode = 32700 + zone
+  esriid2code["WGS_1984_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+  esriid2code["WGS_1984_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
+
+for zone in 11:22
+  NorthCode = 31954 + zone
+  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+end
+
+for zone in 17:25
+  SouthCode = 31960 + zone
+  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
 
 """
     CoordRefSystems.string2code(string)
