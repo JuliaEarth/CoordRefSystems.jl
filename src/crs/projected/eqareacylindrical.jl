@@ -33,6 +33,10 @@ Base.convert(
 constructor(::Type{<:EqualAreaCylindrical{latₜₛ,Datum,Shift}}) where {latₜₛ,Datum,Shift} =
   EqualAreaCylindrical{latₜₛ,Datum,Shift}
 
+constructor(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}) where {latₜₛ,Datum} = EqualAreaCylindrical{latₜₛ,Datum}
+
+constructor(::Type{<:EqualAreaCylindrical{latₜₛ}}) where {latₜₛ} = EqualAreaCylindrical{latₜₛ}
+
 lentype(::Type{<:EqualAreaCylindrical{latₜₛ,Datum,Shift,M}}) where {latₜₛ,Datum,Shift,M} = M
 
 ==(

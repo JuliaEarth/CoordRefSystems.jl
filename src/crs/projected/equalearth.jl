@@ -41,6 +41,10 @@ Base.convert(::Type{EqualEarth{Datum,Shift,M}}, coords::EqualEarth{Datum,Shift})
 
 constructor(::Type{<:EqualEarth{Datum,Shift}}) where {Datum,Shift} = EqualEarth{Datum,Shift}
 
+constructor(::Type{<:EqualEarth{Datum}}) where {Datum} = EqualEarth{Datum}
+
+constructor(::Type{<:EqualEarth}) = EqualEarth
+
 lentype(::Type{<:EqualEarth{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
 ==(coords₁::EqualEarth{Datum,Shift}, coords₂::EqualEarth{Datum,Shift}) where {Datum,Shift} =

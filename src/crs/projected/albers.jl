@@ -33,6 +33,10 @@ Base.convert(
 constructor(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift}}) where {latₒ,lat₁,lat₂,Datum,Shift} =
   Albers{latₒ,lat₁,lat₂,Datum,Shift}
 
+constructor(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}) where {latₒ,lat₁,lat₂,Datum} = Albers{latₒ,lat₁,lat₂,Datum}
+
+constructor(::Type{<:Albers{latₒ,lat₁,lat₂}}) where {latₒ,lat₁,lat₂} = Albers{latₒ,lat₁,lat₂}
+
 lentype(::Type{<:Albers{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat₁,lat₂,Datum,Shift,M} = M
 
 ==(

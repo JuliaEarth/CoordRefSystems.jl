@@ -41,6 +41,10 @@ Base.convert(::Type{Sinusoidal{Datum,Shift,M}}, coords::Sinusoidal{Datum,Shift})
 
 constructor(::Type{<:Sinusoidal{Datum,Shift}}) where {Datum,Shift} = Sinusoidal{Datum,Shift}
 
+constructor(::Type{<:Sinusoidal{Datum}}) where {Datum} = Sinusoidal{Datum}
+
+constructor(::Type{<:Sinusoidal}) = Sinusoidal
+
 lentype(::Type{<:Sinusoidal{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
 ==(coords₁::Sinusoidal{Datum,Shift}, coords₂::Sinusoidal{Datum,Shift}) where {Datum,Shift} =

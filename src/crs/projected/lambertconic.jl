@@ -35,6 +35,11 @@ Base.convert(
 constructor(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift}}) where {latₒ,lat₁,lat₂,Datum,Shift} =
   LambertConic{latₒ,lat₁,lat₂,Datum,Shift}
 
+constructor(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}) where {latₒ,lat₁,lat₂,Datum} =
+  LambertConic{latₒ,lat₁,lat₂,Datum}
+
+constructor(::Type{<:LambertConic{latₒ,lat₁,lat₂}}) where {latₒ,lat₁,lat₂} = LambertConic{latₒ,lat₁,lat₂}
+
 lentype(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum,Shift,M}}) where {latₒ,lat₁,lat₂,Datum,Shift,M} = M
 
 ==(

@@ -33,6 +33,10 @@ Base.convert(
 constructor(::Type{<:Orthographic{Mode,latₒ,Datum,Shift}}) where {Mode,latₒ,Datum,Shift} =
   Orthographic{Mode,latₒ,Datum,Shift}
 
+constructor(::Type{<:Orthographic{Mode,latₒ,Datum}}) where {Mode,latₒ,Datum} = Orthographic{Mode,latₒ,Datum}
+
+constructor(::Type{<:Orthographic{Mode,latₒ}}) where {Mode,latₒ} = Orthographic{Mode,latₒ}
+
 lentype(::Type{<:Orthographic{Mode,latₒ,Datum,Shift,M}}) where {Mode,latₒ,Datum,Shift,M} = M
 
 ==(

@@ -51,6 +51,8 @@ ndims(::Type{<:Cylindrical}) = 3
 
 constructor(::Type{<:Cylindrical{Datum}}) where {Datum} = Cylindrical{Datum}
 
+constructor(::Type{<:Cylindrical}) = Cylindrical
+
 lentype(::Type{<:Cylindrical{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Cylindrical{Datum}, coords₂::Cylindrical{Datum}) where {Datum} =

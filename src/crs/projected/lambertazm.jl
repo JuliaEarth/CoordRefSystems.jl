@@ -32,6 +32,10 @@ Base.convert(
 
 constructor(::Type{<:LambertAzimuthal{latₒ,Datum,Shift}}) where {latₒ,Datum,Shift} = LambertAzimuthal{latₒ,Datum,Shift}
 
+constructor(::Type{<:LambertAzimuthal{latₒ,Datum}}) where {latₒ,Datum} = LambertAzimuthal{latₒ,Datum}
+
+constructor(::Type{<:LambertAzimuthal{latₒ}}) where {latₒ} = LambertAzimuthal{latₒ}
+
 lentype(::Type{<:LambertAzimuthal{latₒ,Datum,Shift,M}}) where {latₒ,Datum,Shift,M} = M
 
 ==(coords₁::LambertAzimuthal{latₒ,Datum,Shift}, coords₂::LambertAzimuthal{latₒ,Datum,Shift}) where {latₒ,Datum,Shift} =

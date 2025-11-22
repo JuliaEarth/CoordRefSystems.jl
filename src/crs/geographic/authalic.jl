@@ -38,6 +38,8 @@ raw(coords::AuthalicLatLon) = ustrip(coords.lon), ustrip(coords.lat) # reverse o
 
 constructor(::Type{<:AuthalicLatLon{Datum}}) where {Datum} = AuthalicLatLon{Datum}
 
+constructor(::Type{<:AuthalicLatLon}) = AuthalicLatLon
+
 function reconstruct(C::Type{<:AuthalicLatLon}, raw)
   lon, lat = raw .* units(C)
   constructor(C)(lat, lon) # reverse order

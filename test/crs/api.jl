@@ -187,30 +187,32 @@
   end
 
   @testset "constructor" begin
-    c = Cartesian(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
-    c = Polar(T(1), T(2))
-    @test CoordRefSystems.constructor(c) === Polar{NoDatum}
-    c = Cartesian(T(1), T(2), T(3))
-    @test CoordRefSystems.constructor(c) === Cartesian{NoDatum}
-    c = Cylindrical(T(1), T(2), T(3))
-    @test CoordRefSystems.constructor(c) === Cylindrical{NoDatum}
-    c = Spherical(T(1), T(2), T(3))
-    @test CoordRefSystems.constructor(c) === Spherical{NoDatum}
+    @test CoordRefSystems.constructor(Cartesian) === Cartesian
+    @test CoordRefSystems.constructor(Cartesian(T(1), T(2))) === Cartesian{NoDatum}
+    @test CoordRefSystems.constructor(Cartesian(T(1), T(2), T(3))) === Cartesian{NoDatum}
+
+    @test CoordRefSystems.constructor(Polar) === Polar
+    @test CoordRefSystems.constructor(Polar(T(1), T(2))) === Polar{NoDatum}
+
+    @test CoordRefSystems.constructor(Cylindrical) === Cylindrical
+    @test CoordRefSystems.constructor(Cylindrical(T(1), T(2), T(3))) === Cylindrical{NoDatum}
+
+    @test CoordRefSystems.constructor(Spherical) === Spherical
+    @test CoordRefSystems.constructor(Spherical(T(1), T(2), T(3))) === Spherical{NoDatum}
 
     for C in geographic2D
-      c = C(T(30), T(60))
-      @test CoordRefSystems.constructor(c) === C{WGS84Latest}
+      @test CoordRefSystems.constructor(C) === C
+      @test CoordRefSystems.constructor(C(T(30), T(60))) === C{WGS84Latest}
     end
 
     for C in geographic3D
-      c = C(T(30), T(60), T(1))
-      @test CoordRefSystems.constructor(c) === C{WGS84Latest}
+      @test CoordRefSystems.constructor(C) === C
+      @test CoordRefSystems.constructor(C(T(30), T(60), T(1))) === C{WGS84Latest}
     end
 
     for C in projected
-      c = C(T(1), T(2))
-      @test CoordRefSystems.constructor(c) === C{WGS84Latest,CoordRefSystems.Shift()}
+      @test CoordRefSystems.constructor(C) === C
+      @test CoordRefSystems.constructor(C(T(1), T(2))) === C{WGS84Latest,CoordRefSystems.Shift()}
     end
   end
 

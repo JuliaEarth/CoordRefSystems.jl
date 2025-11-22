@@ -40,6 +40,8 @@ raw(coords::GeodeticLatLon) = ustrip(coords.lon), ustrip(coords.lat) # reverse o
 
 constructor(::Type{<:GeodeticLatLon{Datum}}) where {Datum} = GeodeticLatLon{Datum}
 
+constructor(::Type{<:GeodeticLatLon}) = GeodeticLatLon
+
 function reconstruct(C::Type{<:GeodeticLatLon}, raw)
   lon, lat = raw .* units(C)
   constructor(C)(lat, lon) # reverse order
@@ -118,6 +120,8 @@ Base.convert(::Type{GeodeticLatLonAlt{Datum,D,M}}, coords::GeodeticLatLonAlt{Dat
 raw(coords::GeodeticLatLonAlt) = ustrip(coords.lon), ustrip(coords.lat), ustrip(coords.alt) # reverse order
 
 constructor(::Type{<:GeodeticLatLonAlt{Datum}}) where {Datum} = GeodeticLatLonAlt{Datum}
+
+constructor(::Type{<:GeodeticLatLonAlt}) = GeodeticLatLonAlt
 
 function reconstruct(C::Type{<:GeodeticLatLonAlt}, raw)
   lon, lat, alt = raw .* units(C)

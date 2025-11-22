@@ -28,6 +28,10 @@ Base.convert(::Type{Winkel{lat₁,Datum,Shift,M}}, coords::Winkel{lat₁,Datum,S
 
 constructor(::Type{<:Winkel{lat₁,Datum,Shift}}) where {lat₁,Datum,Shift} = Winkel{lat₁,Datum,Shift}
 
+constructor(::Type{<:Winkel{lat₁,Datum}}) where {lat₁,Datum} = Winkel{lat₁,Datum}
+
+constructor(::Type{<:Winkel{lat₁}}) where {lat₁} = Winkel{lat₁}
+
 lentype(::Type{<:Winkel{lat₁,Datum,Shift,M}}) where {lat₁,Datum,Shift,M} = M
 
 ==(coords₁::Winkel{lat₁,Datum,Shift}, coords₂::Winkel{lat₁,Datum,Shift}) where {lat₁,Datum,Shift} =

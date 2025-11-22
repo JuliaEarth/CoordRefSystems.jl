@@ -33,6 +33,10 @@ Base.convert(
 constructor(::Type{<:TransverseMercator{k₀,latₒ,Datum,Shift}}) where {k₀,latₒ,Datum,Shift} =
   TransverseMercator{k₀,latₒ,Datum,Shift}
 
+constructor(::Type{<:TransverseMercator{k₀,latₒ,Datum}}) where {k₀,latₒ,Datum} = TransverseMercator{k₀,latₒ,Datum}
+
+constructor(::Type{<:TransverseMercator{k₀,latₒ}}) where {k₀,latₒ} = TransverseMercator{k₀,latₒ}
+
 lentype(::Type{<:TransverseMercator{k₀,latₒ,Datum,Shift,M}}) where {k₀,latₒ,Datum,Shift,M} = M
 
 ==(

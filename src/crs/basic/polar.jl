@@ -43,6 +43,8 @@ ndims(::Type{<:Polar}) = 2
 
 constructor(::Type{<:Polar{Datum}}) where {Datum} = Polar{Datum}
 
+constructor(::Type{<:Polar}) = Polar
+
 lentype(::Type{<:Polar{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Polar{Datum}, coords₂::Polar{Datum}) where {Datum} = coords₁.ρ == coords₂.ρ && coords₁.ϕ == coords₂.ϕ
