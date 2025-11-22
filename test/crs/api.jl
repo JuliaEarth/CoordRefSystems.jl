@@ -212,6 +212,7 @@
 
     for C in projected
       @test CoordRefSystems.constructor(C) === C
+      @test CoordRefSystems.constructor(C{WGS84Latest}) === C{WGS84Latest}
       @test CoordRefSystems.constructor(C(T(1), T(2))) === C{WGS84Latest,CoordRefSystems.Shift()}
     end
   end
