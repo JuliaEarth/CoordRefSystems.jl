@@ -40,6 +40,10 @@ Base.convert(::Type{Robinson{Datum,Shift,M}}, coords::Robinson{Datum,Shift}) whe
 
 constructor(::Type{<:Robinson{Datum,Shift}}) where {Datum,Shift} = Robinson{Datum,Shift}
 
+constructor(::Type{<:Robinson{Datum}}) where {Datum} = Robinson{Datum}
+
+constructor(::Type{<:Robinson}) = Robinson
+
 lentype(::Type{<:Robinson{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
 ==(coords₁::Robinson{Datum,Shift}, coords₂::Robinson{Datum,Shift}) where {Datum,Shift} =

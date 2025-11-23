@@ -41,6 +41,10 @@ Base.convert(::Type{WebMercator{Datum,Shift,M}}, coords::WebMercator{Datum,Shift
 
 constructor(::Type{<:WebMercator{Datum,Shift}}) where {Datum,Shift} = WebMercator{Datum,Shift}
 
+constructor(::Type{<:WebMercator{Datum}}) where {Datum} = WebMercator{Datum}
+
+constructor(::Type{<:WebMercator}) = WebMercator
+
 lentype(::Type{<:WebMercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
 ==(coords₁::WebMercator{Datum,Shift}, coords₂::WebMercator{Datum,Shift}) where {Datum,Shift} =

@@ -47,6 +47,8 @@ ndims(::Type{<:Spherical}) = 3
 
 constructor(::Type{<:Spherical{Datum}}) where {Datum} = Spherical{Datum}
 
+constructor(::Type{<:Spherical}) = Spherical
+
 lentype(::Type{<:Spherical{Datum,L}}) where {Datum,L} = L
 
 ==(coords₁::Spherical{Datum}, coords₂::Spherical{Datum}) where {Datum} =

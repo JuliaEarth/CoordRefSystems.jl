@@ -40,6 +40,10 @@ Base.convert(::Type{Mercator{Datum,Shift,M}}, coords::Mercator{Datum,Shift}) whe
 
 constructor(::Type{<:Mercator{Datum,Shift}}) where {Datum,Shift} = Mercator{Datum,Shift}
 
+constructor(::Type{<:Mercator{Datum}}) where {Datum} = Mercator{Datum}
+
+constructor(::Type{<:Mercator}) = Mercator
+
 lentype(::Type{<:Mercator{Datum,Shift,M}}) where {Datum,Shift,M} = M
 
 ==(coords₁::Mercator{Datum,Shift}, coords₂::Mercator{Datum,Shift}) where {Datum,Shift} =

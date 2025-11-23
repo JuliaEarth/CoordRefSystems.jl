@@ -33,6 +33,10 @@ Base.convert(
 constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum,Shift}}) where {latₜₛ,Datum,Shift} =
   EquidistantCylindrical{latₜₛ,Datum,Shift}
 
+constructor(::Type{<:EquidistantCylindrical{latₜₛ,Datum}}) where {latₜₛ,Datum} = EquidistantCylindrical{latₜₛ,Datum}
+
+constructor(::Type{<:EquidistantCylindrical{latₜₛ}}) where {latₜₛ} = EquidistantCylindrical{latₜₛ}
+
 lentype(::Type{<:EquidistantCylindrical{latₜₛ,Datum,Shift,M}}) where {latₜₛ,Datum,Shift,M} = M
 
 ==(
