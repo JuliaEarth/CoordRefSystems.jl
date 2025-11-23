@@ -33,7 +33,8 @@ Get the latest stable release with Julia's package manager:
 ### Basic usage
 
 Consider the following conversions between `Cartesian`, `Spherical`,
-`Cylindrical` and `Polar` coordinates to get started:
+`Cylindrical` and `Polar` coordinates to get started. The full list
+of supported CRS types is too large to fit in this README.
 
 #### Cartesian <> Spherical
 
@@ -217,6 +218,9 @@ Mercator{WGS84Latest} coordinates
 ├─ x: 1.0018754171394622e7 m
 └─ y: 0.0 m
 ```
+
+Please read the source code and test suite to learn more
+about the supported CRS types and implemented conversions.
 
 ## Credits
 
