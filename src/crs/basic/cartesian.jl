@@ -119,6 +119,10 @@ constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
 constructor(::Type{<:Cartesian}) = Cartesian
 
+reconstruct(C::Type{Cartesian{Datum}}, raw) where {Datum} = constructor(C)(raw...)
+
+reconstruct(C::Type{Cartesian}, raw) = constructor(C)(raw...)
+
 lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)

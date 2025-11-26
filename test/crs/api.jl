@@ -219,37 +219,64 @@
 
   @testset "reconstruct" begin
     c = Cartesian(T(1) * mm, T(2) * mm)
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
-    c = Polar(T(1) * km, T(2) * rad)
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    r = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), r) == c
+    C = Cartesian{WGS84Latest}
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * m)
+    C = Cartesian
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * m)
+
     c = Cartesian(T(1) * cm, T(2) * cm, T(3) * cm)
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    r = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), r) == c
+    C = Cartesian{WGS84Latest}
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * m, T(3) * m)
+    C = Cartesian
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * m, T(3) * m)
+
+    c = Polar(T(1) * km, T(2) * rad)
+    r = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), r) == c
+    C = Polar{WGS84Latest}
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad)
+    C = Polar
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad)
+
     c = Cylindrical(T(1) * cm, T(2) * rad, T(3) * cm)
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    r = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), r) == c
+    C = Cylindrical{WGS84Latest}
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad, T(3) * m)
+    C = Cylindrical
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad, T(3) * m)
+
     c = Spherical(T(1) * mm, T(2) * rad, T(3) * rad)
-    rv = CoordRefSystems.raw(c)
-    @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+    r = CoordRefSystems.raw(c)
+    @test CoordRefSystems.reconstruct(typeof(c), r) == c
+    C = Spherical{WGS84Latest}
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad, T(3) * rad)
+    C = Spherical
+    @test CoordRefSystems.reconstruct(C, r) == C(T(1) * m, T(2) * rad, T(3) * rad)
 
     for C in geographic2D
       c = C(T(30), T(60))
-      rv = CoordRefSystems.raw(c)
-      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+      r = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), r) == c
+      @test CoordRefSystems.reconstruct(C, r) == c
     end
 
     for C in geographic3D
       c = C(T(30), T(60), T(1))
-      rv = CoordRefSystems.raw(c)
-      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+      r = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), r) == c
+      @test CoordRefSystems.reconstruct(C, r) == c
     end
 
     for C in projected
       c = C(T(1), T(2))
-      rv = CoordRefSystems.raw(c)
-      @test CoordRefSystems.reconstruct(typeof(c), rv) == c
+      r = CoordRefSystems.raw(c)
+      @test CoordRefSystems.reconstruct(typeof(c), r) == c
+      @test CoordRefSystems.reconstruct(C, r) == c
     end
   end
 
