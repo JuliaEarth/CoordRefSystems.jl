@@ -63,7 +63,7 @@
   end
 
   for zone in 28:38
-    NorthCode = 22900 + zone
+    NorthCode = 23000 + zone
     crsstringtest(EPSG{NorthCode})
   end
 
