@@ -80,13 +80,11 @@ end
 
 for zone in 28:38
   NorthCode = 23000 + zone
-  # use ESRI ID format matching the dataset naming convention
   esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
 for zone in 38:41
   NorthCode = 2020 + zone
-  # ED77 variant of ED50
   esriid2code["ED_1950_ED77_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
