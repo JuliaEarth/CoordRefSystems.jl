@@ -62,6 +62,11 @@
     crsstringtest(EPSG{SouthCode})
   end
 
+  for zone in 28:38
+    NorthCode = 23000 + zone
+    crsstringtest(EPSG{NorthCode})
+  end
+
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})

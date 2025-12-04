@@ -53,7 +53,6 @@ const esriid2code = Dict(
   "South_Pole_Orthographic" => ESRI{102037},
   "TM75_Irish_Grid" => EPSG{29903},
   "WGS_1984_Plate_Carree" => EPSG{32662},
-  "WGS_1984_UTM_Zone_33N" => EPSG{32633},
   "WGS_1984_Web_Mercator_Auxiliary_Sphere" => EPSG{3857},
   "WGS_1984_World_Mercator" => EPSG{3395},
   "World_Behrmann" => ESRI{54017},
@@ -77,6 +76,11 @@ end
 for zone in 17:25
   SouthCode = 31960 + zone
   esriid2code["SIRGAS_2000_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
+
+for zone in 28:38
+  NorthCode = 23000 + zone
+  esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
 """
