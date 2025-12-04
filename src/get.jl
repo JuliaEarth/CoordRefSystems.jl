@@ -158,3 +158,8 @@ end
 @crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
 @crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
 @crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
+
+for zone in 28:38
+  NorthCode = 23000 + zone
+  @eval @crscodes utmnorth($zone, datum=ED50) EPSG{$NorthCode}
+end

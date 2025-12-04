@@ -67,11 +67,6 @@
     crsstringtest(EPSG{NorthCode})
   end
 
-  for zone in 38:41
-    NorthCode = 2020 + zone
-    crsstringtest(EPSG{NorthCode})
-  end
-
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})

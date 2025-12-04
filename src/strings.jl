@@ -88,6 +88,12 @@ for zone in 38:41
   esriid2code["ED_1950_ED77_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
+# aliases without the underscore-year format (some WKT use ED50 instead of ED_1950)
+for zone in 28:38
+  NorthCode = 23000 + zone
+  esriid2code["ED50_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+end
+
 """
     CoordRefSystems.string2code(string)
 
