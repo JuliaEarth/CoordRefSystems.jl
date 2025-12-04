@@ -83,11 +83,6 @@ for zone in 28:38
   esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
-for zone in 28:38
-  NorthCode = 23000 + zone
-  esriid2code["ED50_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
-end
-
 """
     CoordRefSystems.string2code(string)
 
