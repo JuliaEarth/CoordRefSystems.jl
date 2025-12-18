@@ -48,6 +48,7 @@
   gettest(LatLon{SIRGAS2000}, EPSG{4674})
   gettest(LatLon{RD83}, EPSG{4745})
   gettest(LatLon{PD83}, EPSG{4746})
+  gettest(LatLonAlt{WGS84Latest}, EPSG{4979})
   gettest(Cartesian{CoordRefSystems.shift(ITRF{2000}, 2000.4),3}, EPSG{4988})
   gettest(LatLonAlt{CoordRefSystems.shift(ITRF{2000}, 2000.4)}, EPSG{4989})
   gettest(CoordRefSystems.shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°), EPSG{5070})

@@ -100,6 +100,7 @@ end
 @crscodes LatLon{SIRGAS2000} EPSG{4674}
 @crscodes LatLon{RD83} EPSG{4745}
 @crscodes LatLon{PD83} EPSG{4746}
+@crscodes LatLonAlt{WGS84Latest} EPSG{4979}
 @crscodes Cartesian3D{shift(ITRF{2000}, 2000.4)} EPSG{4988}
 @crscodes LatLonAlt{shift(ITRF{2000}, 2000.4)} EPSG{4989}
 @crscodes shift(Albers{23.0°,29.5°,45.5°,NAD83}, lonₒ=-96.0°) EPSG{5070}
