@@ -71,6 +71,7 @@ testfiles = [
   "crs/traits.jl",
 
   # EPSG/ESRI codes
+  "codes.jl",
   "get.jl",
 
   # WKT strings
