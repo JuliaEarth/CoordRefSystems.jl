@@ -12,6 +12,13 @@ See also [`EPSG`](@ref), [`ESRI`](@ref).
 abstract type CRSCode end
 
 """
+    CoordRefSystems.integer(::Type{<:CRSCode})
+
+Get the integer code associated with the `CRSCode` type.
+"""
+function integer end
+
+"""
     EPSG{code}
 
 EPSG dataset `code` between 1024 and 32767.
@@ -21,12 +28,7 @@ See [EPSG Geodetic Parameter Dataset](https://en.wikipedia.org/wiki/EPSG_Geodeti
 """
 abstract type EPSG{Code} <: CRSCode end
 
-"""
-    ESRI{code}
-
-ESRI dataset `code`. Codes can be searched at [epsg.io](https://epsg.io).
-"""
-abstract type ESRI{Code} <: CRSCode end
+integer(::Type{EPSG{Code}}) where {Code} = Code
 
 function wkt2(::Type{EPSG{Code}}) where {Code}
   epsg = joinpath(pkgdir(@__MODULE__), "artifacts", "epsg-wkt2")
@@ -49,6 +51,15 @@ function wkt2(::Type{EPSG{Code}}) where {Code}
   end
   str
 end
+
+"""
+    ESRI{code}
+
+ESRI dataset `code`. Codes can be searched at [epsg.io](https://epsg.io).
+"""
+abstract type ESRI{Code} <: CRSCode end
+
+integer(::Type{ESRI{Code}}) where {Code} = Code
 
 function wkt2(::Type{ESRI{Code}}) where {Code}
   throw(ArgumentError("""
