@@ -39,6 +39,7 @@
   gettest(LatLon{Datum73}, EPSG{4274})
   gettest(LatLon{NTF}, EPSG{4275})
   gettest(LatLon{OSGB36}, EPSG{4277})
+  gettest(LatLon{GDA94}, EPSG{4283})
   gettest(LatLon{DHDN}, EPSG{4314})
   gettest(LatLon{WGS84Latest}, EPSG{4326})
   gettest(LatLon{SAD69}, EPSG{4618})
