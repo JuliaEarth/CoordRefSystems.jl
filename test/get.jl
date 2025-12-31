@@ -28,6 +28,7 @@
   gettest(CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m), EPSG{3310})
   gettest(CoordRefSystems.shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°), EPSG{3338})
   gettest(Mercator{WGS84Latest}, EPSG{3395})
+  gettest(CoordRefSystems.shift(Albers{0.0°,-18.0°,-36.0°,GDA94}, lonₒ=132.0°), EPSG{3577})
   gettest(WebMercator{WGS84Latest}, EPSG{3857})
   gettest(LatLon{RGF93v1}, EPSG{4171})
   gettest(LatLon{Lisbon1937}, EPSG{4207})
