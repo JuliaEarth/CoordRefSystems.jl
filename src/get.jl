@@ -91,6 +91,7 @@ end
 @crscodes LatLon{Datum73} EPSG{4274}
 @crscodes LatLon{NTF} EPSG{4275}
 @crscodes LatLon{OSGB36} EPSG{4277}
+@crscodes LatLon{GDA94} EPSG{4283}
 @crscodes LatLon{DHDN} EPSG{4314}
 @crscodes LatLon{WGS84Latest} EPSG{4326}
 @crscodes LatLon{SAD69} EPSG{4618}
