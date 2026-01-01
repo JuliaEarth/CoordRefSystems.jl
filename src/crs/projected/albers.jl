@@ -64,9 +64,9 @@ function inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {l
   ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
 
-  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
-  ρ = _ambersρ(ϕ, C, n, e, e²)
-  ρ ≥ 0
+  C, n = _albersCn(ϕ₁, ϕ₂, e, e²)
+  ρ² = _albersρ²(ϕ, C, n, e, e²)
+  ρ² ≥ 0
 end
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
@@ -77,10 +77,10 @@ function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where
   ϕ₁ = T(ustrip(deg2rad(lat₁)))
   ϕ₂ = T(ustrip(deg2rad(lat₂)))
 
-  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
+  C, n = _albersCn(ϕ₁, ϕ₂, e, e²)
 
   θ(λ) = n * λ
-  ρ(ϕ) = _ambersρ(ϕ, C, n, e, e²)
+  ρ(ϕ) = _albersρ(ϕ, C, n, e, e²)
   ρₒ = ρ(ϕₒ)
 
   fx(λ, ϕ) = ρ(ϕ) * sin(θ(λ))
@@ -98,15 +98,11 @@ function forward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {la
   ϕ₁ = oftype(λ, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
 
-  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
-  ρ = _ambersρ(ϕ, C, n, e, e²)
-
-  if ρ < 0
-    throw(ArgumentError("coordinates outside of the projection domain"))
-  end
+  C, n = _albersCn(ϕ₁, ϕ₂, e, e²)
+  ρ = _albersρ(ϕ, C, n, e, e²)
 
   θ = n * λ
-  ρₒ = _ambersρ(ϕₒ, C, n, e, e²)
+  ρₒ = _albersρ(ϕₒ, C, n, e, e²)
 
   x = ρ * sin(θ)
   y = ρₒ - ρ * cos(θ)
@@ -122,8 +118,8 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   ϕ₁ = oftype(x, ustrip(deg2rad(lat₁)))
   ϕ₂ = oftype(x, ustrip(deg2rad(lat₂)))
 
-  C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
-  ρₒ = _ambersρ(ϕₒ, C, n, e, e²)
+  C, n = _albersCn(ϕ₁, ϕ₂, e, e²)
+  ρₒ = _albersρ(ϕₒ, C, n, e, e²)
 
   θ = n ≥ 0 ? atan(x, ρₒ - y) : atan(-x, y - ρₒ)
   ρ′ = sqrt(x^2 + (ρₒ - y)^2)
@@ -140,7 +136,7 @@ end
 # HELPER FUNCTIONS
 # -----------------
 
-function _ambersCn(ϕ₁, ϕ₂, e, e²)
+function _albersCn(ϕ₁, ϕ₂, e, e²)
   m₁ = _albersm(ϕ₁, e²)
   m₂ = _albersm(ϕ₂, e²)
   α₁ = _albersα(ϕ₁, e, e²)
@@ -150,10 +146,9 @@ function _ambersCn(ϕ₁, ϕ₂, e, e²)
   C, n
 end
 
-function _ambersρ(ϕ, C, n, e, e²)
-  α = _albersα(ϕ, e, e²)
-  sqrt(C - n * α) / n
-end
+_albersρ²(ϕ, C, n, e, e²) = C - n * _albersα(ϕ, e, e²)
+
+_albersρ(ϕ, C, n, e, e²) = sqrt(_albersρ²(ϕ, C, n, e, e²)) / n
 
 _albersm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
