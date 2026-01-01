@@ -65,8 +65,12 @@ function inbounds(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {l
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
 
   C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
-  ρ = _ambersρ(ϕ, C, n, e, e²)
-  ρ ≥ 0
+  try
+    ρ = _ambersρ(ϕ, C, n, e, e²)
+  catch DomainError
+    return false
+  end
+  true
 end
 
 function formulas(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, ::Type{T}) where {latₒ,lat₁,lat₂,Datum,T}
@@ -99,9 +103,10 @@ function forward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, λ, ϕ) where {la
   ϕ₂ = oftype(λ, ustrip(deg2rad(lat₂)))
 
   C, n = _ambersCn(ϕ₁, ϕ₂, e, e²)
-  ρ = _ambersρ(ϕ, C, n, e, e²)
-
-  if ρ < 0
+  ρ = 0.0
+  try
+    ρ = _ambersρ(ϕ, C, n, e, e²)
+  catch DomainError
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
 
