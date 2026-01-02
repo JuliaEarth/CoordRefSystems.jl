@@ -148,7 +148,13 @@ end
 
 _albersρ²(ϕ, C, n, e, e²) = C - n * _albersα(ϕ, e, e²)
 
-_albersρ(ϕ, C, n, e, e²) = sqrt(_albersρ²(ϕ, C, n, e, e²)) / n
+function _albersρ(ϕ, C, n, e, e²)
+  ρ² = _albersρ²(ϕ, C, n, e, e²)
+  if ρ² < 0
+    throw(ArgumentError("coordinates outside of the projection domain"))
+  end
+  sqrt(ρ²) / n
+end
 
 _albersm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
