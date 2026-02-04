@@ -21,6 +21,7 @@
     CoordRefSystems.shift(TransverseMercator{0.9996,0.0°,NZGD2000}, lonₒ=173.0°, xₒ=1600000.0m, yₒ=10000000.0m),
     EPSG{2193}
   )
+  gettest(CoordRefSystems.shift(Albers{45.0°,50.0°,58.5°,NAD83}, lonₒ=-126.0°, yₒ=1000000.0m), EPSG{3005})
   gettest(
     CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m),
     EPSG{3035}
