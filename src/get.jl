@@ -76,8 +76,9 @@ end
 @crscodes shift(TransverseMercator{0.99982,53.5°,IRENET95}, lonₒ=-8.0°, xₒ=600000.0m, yₒ=750000.0m) EPSG{2157}
 @crscodes shift(TransverseMercator{0.9993,0.0°,ETRF{2000}}, lonₒ=19.0°, xₒ=500000.0m, yₒ=-5300000.0m) EPSG{2180}
 @crscodes shift(TransverseMercator{0.9996,0.0°,NZGD2000}, lonₒ=173.0°, xₒ=1600000.0m, yₒ=10000000.0m) EPSG{2193}
-@crscodes shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m) EPSG{3035}
+@crscodes shift(Albers{45.0°,50.0°,58.5°,NAD83}, lonₒ=-126.0°, yₒ=1000000.0m) EPSG{3005}
 @crscodes shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m) EPSG{3310}
+@crscodes shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m) EPSG{3035}
 @crscodes shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°) EPSG{3338}
 @crscodes Mercator{WGS84Latest} EPSG{3395}
 @crscodes shift(Albers{0.0°,-18.0°,-36.0°,GDA94}, lonₒ=132.0°) EPSG{3577}
