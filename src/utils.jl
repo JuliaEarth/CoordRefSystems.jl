@@ -151,23 +151,21 @@ guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
   MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
 """
 function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
-  # deviation from target
-  f₁(λ, ϕ) = fx(λ, ϕ) - x
-  f₂(λ, ϕ) = fy(λ, ϕ) - y
-
-  # corresponding gradient
-  ∇f₁(λ, ϕ) = gradient(f₁, λ, ϕ)
-  ∇f₂(λ, ϕ) = gradient(f₂, λ, ϕ)
-
-  # Newton-Rhapson iteration
+  T = typeof(x)
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
   for _ in 1:maxiter
-    v₁ = f₁(λᵢ, ϕᵢ)
-    v₂ = f₂(λᵢ, ϕᵢ)
+    λd = ForwardDiff.Dual{Nothing}(λᵢ, one(T), zero(T))
+    ϕd = ForwardDiff.Dual{Nothing}(ϕᵢ, zero(T), one(T))
+    r₁ = fx(λd, ϕd)
+    r₂ = fy(λd, ϕd)
 
-    df₁dλ, df₁dϕ = ∇f₁(λᵢ, ϕᵢ)
-    df₂dλ, df₂dϕ = ∇f₂(λᵢ, ϕᵢ)
+    v₁ = ForwardDiff.value(r₁) - x
+    v₂ = ForwardDiff.value(r₂) - y
+    df₁dλ = ForwardDiff.partials(r₁, 1)
+    df₁dϕ = ForwardDiff.partials(r₁, 2)
+    df₂dλ = ForwardDiff.partials(r₂, 1)
+    df₂dϕ = ForwardDiff.partials(r₂, 2)
 
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
