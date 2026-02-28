@@ -154,17 +154,13 @@ function projinv(fx, fy, x::T, y, λₒ, ϕₒ; maxiter=10, tol=atol(x)) where {
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
   for _ in 1:maxiter
-    λd = ForwardDiff.Dual{Nothing}(λᵢ, one(T), zero(T))
-    ϕd = ForwardDiff.Dual{Nothing}(ϕᵢ, zero(T), one(T))
-    r₁ = fx(λd, ϕd)
-    r₂ = fy(λd, ϕd)
+    v₁ = fx(λᵢ, ϕᵢ) - x
+    v₂ = fy(λᵢ, ϕᵢ) - y
 
-    v₁ = ForwardDiff.value(r₁) - x
-    v₂ = ForwardDiff.value(r₂) - y
-    df₁dλ = ForwardDiff.partials(r₁, 1)
-    df₁dϕ = ForwardDiff.partials(r₁, 2)
-    df₂dλ = ForwardDiff.partials(r₂, 1)
-    df₂dϕ = ForwardDiff.partials(r₂, 2)
+    g₁ = ForwardDiff.gradient(u -> fx(u[1], u[2]), SVector(λᵢ, ϕᵢ))
+    g₂ = ForwardDiff.gradient(u -> fy(u[1], u[2]), SVector(λᵢ, ϕᵢ))
+    df₁dλ, df₁dϕ = g₁[1], g₁[2]
+    df₂dλ, df₂dϕ = g₂[1], g₂[2]
 
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
