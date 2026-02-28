@@ -157,8 +157,8 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
     v₁ = fx(λᵢ, ϕᵢ) - x
     v₂ = fy(λᵢ, ϕᵢ) - y
 
-    g₁ = ForwardDiff.gradient(u -> fx(u[1], u[2]), SVector(λᵢ, ϕᵢ))
-    g₂ = ForwardDiff.gradient(u -> fy(u[1], u[2]), SVector(λᵢ, ϕᵢ))
+    g₁ = gradient(u -> fx(u[1], u[2]), SVector(λᵢ, ϕᵢ))
+    g₂ = gradient(u -> fy(u[1], u[2]), SVector(λᵢ, ϕᵢ))
     df₁dλ, df₁dϕ = g₁[1], g₁[2]
     df₂dλ, df₂dϕ = g₂[1], g₂[2]
 
