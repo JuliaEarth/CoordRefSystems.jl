@@ -151,16 +151,23 @@ guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
   MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
 """
 function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
+  # deviation from target
+  f₁(λ, ϕ) = fx(λ, ϕ) - x
+  f₂(λ, ϕ) = fy(λ, ϕ) - y
+
+  # corresponding gradient
+  ∇f₁(λ, ϕ) = gradient(u -> f₁(u[1], u[2]), SVector(λ, ϕ))
+  ∇f₂(λ, ϕ) = gradient(u -> f₂(u[1], u[2]), SVector(λ, ϕ))
+
+  # Newton-Rhapson iteration
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
   for _ in 1:maxiter
-    v₁ = fx(λᵢ, ϕᵢ) - x
-    v₂ = fy(λᵢ, ϕᵢ) - y
+    v₁ = f₁(λᵢ, ϕᵢ)
+    v₂ = f₂(λᵢ, ϕᵢ)
 
-    g₁ = gradient(u -> fx(u[1], u[2]), SVector(λᵢ, ϕᵢ))
-    g₂ = gradient(u -> fy(u[1], u[2]), SVector(λᵢ, ϕᵢ))
-    df₁dλ, df₁dϕ = g₁[1], g₁[2]
-    df₂dλ, df₂dϕ = g₂[1], g₂[2]
+    df₁dλ, df₁dϕ = ∇f₁(λᵢ, ϕᵢ)
+    df₂dλ, df₂dϕ = ∇f₂(λᵢ, ϕᵢ)
 
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
