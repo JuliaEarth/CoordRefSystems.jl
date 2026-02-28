@@ -150,7 +150,7 @@ guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
 * Cengizhan Ipbuker and İbrahim Öztuğ Bildirici. 2002. [A GENERAL ALGORITHM FOR THE INVERSE TRANSFORMATION OF MAP PROJECTIONS USING JACOBIAN
   MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
 """
-function projinv(fx, fy, x::T, y, λₒ, ϕₒ; maxiter=10, tol=atol(x)) where {T}
+function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
   λᵢ₊₁ = λᵢ = λₒ
   ϕᵢ₊₁ = ϕᵢ = ϕₒ
   for _ in 1:maxiter
