@@ -123,7 +123,7 @@ lam2lon(λ) = rad2deg(λ) * °
 """
     newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
 
-Newton's method approximates the root of the function `f` using its derivative `df`, 
+Newton's method approximates the root of the function `f` using its derivative `df`,
 initial guess `xₒ`, `maxiter` iterations, and tolerance `tol`.
 """
 function newton(f, df, xₒ; maxiter=10, tol=atol(xₒ))
@@ -147,7 +147,7 @@ guess `λₒ` and `ϕₒ`, `maxiter` iterations, and tolerance `tol`.
 
 ## References
 
-* Cengizhan Ipbuker and İbrahim Öztuğ Bildirici. 2002. [A GENERAL ALGORITHM FOR THE INVERSE TRANSFORMATION OF MAP PROJECTIONS USING JACOBIAN 
+* Cengizhan Ipbuker and İbrahim Öztuğ Bildirici. 2002. [A GENERAL ALGORITHM FOR THE INVERSE TRANSFORMATION OF MAP PROJECTIONS USING JACOBIAN
   MATRICES](https://www.researchgate.net/publication/241170163_A_GENERAL_ALGORITHM_FOR_THE_INVERSE_TRANSFORMATION_OF_MAP_PROJECTIONS_USING_JACOBIAN_MATRICES)
 """
 function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
@@ -156,8 +156,8 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
   f₂(λ, ϕ) = fy(λ, ϕ) - y
 
   # corresponding gradient
-  ∇f₁(λ, ϕ) = gradient(f₁, λ, ϕ)
-  ∇f₂(λ, ϕ) = gradient(f₂, λ, ϕ)
+  ∇f₁(λ, ϕ) = gradient(u -> f₁(u[1], u[2]), SVector(λ, ϕ))
+  ∇f₂(λ, ϕ) = gradient(u -> f₂(u[1], u[2]), SVector(λ, ϕ))
 
   # Newton-Rhapson iteration
   λᵢ₊₁ = λᵢ = λₒ
