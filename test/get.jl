@@ -26,6 +26,10 @@
     CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m),
     EPSG{3035}
   )
+  gettest(
+    CoordRefSystems.shift(LambertConic{65.0°,64.25°,65.75°,ISN93}, lonₒ=-19.0°, xₒ=500000.0m, yₒ=500000.0m),
+    EPSG{3057}
+  )
   gettest(CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m), EPSG{3310})
   gettest(CoordRefSystems.shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°), EPSG{3338})
   gettest(Mercator{WGS84Latest}, EPSG{3395})
