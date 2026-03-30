@@ -78,6 +78,35 @@ See [EPSG:4326](https://epsg.io/4326).
 const LatLon = GeodeticLatLon
 
 """
+Degrees Minutes Seconds representation
+"""
+struct DMS{T<:Real} <: Number
+  deg::Int
+  minute::Int
+  sec::T
+end
+
+# show the DMS in DMS format
+function Base.show(io::IO, x::DMS)
+  d = x.deg
+  m = x.minute
+  s = x.sec
+  print(io, "$(d)° $(m)′ $(s)″")
+end
+
+struct GeodeticLatLonDMS{Datum} <: Geographic{Datum,2}
+  lat::DMS
+  lon::DMS
+end
+
+GeodeticLatLonDMS{Datum}(lat::DMS, lon::DMS) where {Datum} = GeodeticLatLonDMS{Datum}(lat, lon)
+
+"""
+Alias for GeodeticLatLonDMS
+"""
+const LatLonDMS = GeodeticLatLonDMS
+
+"""
     GeodeticLatLonAlt(lat, lon, alt)
     GeodeticLatLonAlt{Datum}(lat, lon, alt)
 
@@ -261,6 +290,11 @@ Base.convert(C::Type{LatLonAlt{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datu
 
 Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ} =
   convert(C, convert(LatLon, coords))
+
+# converting DMS and Deg
+function Base.convert(::Type{Deg}, x::DMS)
+  # pass
+end
 
 # ----------
 # FALLBACKS

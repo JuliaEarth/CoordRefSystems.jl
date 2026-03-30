@@ -106,6 +106,7 @@ export
   GeocentricLatLonAlt,
   AuthalicLatLon,
   LatLon,
+  LatLonDMS,
   LatLonAlt,
 
   # projected
