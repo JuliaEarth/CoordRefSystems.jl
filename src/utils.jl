@@ -27,6 +27,7 @@ function Base.convert(::Type{DMS}, x::T) where {T<:Deg}
   val = ustrip(x)
 
   # Formula: https://en.wikipedia.org/wiki/Geographic_coordinate_conversion
+  # Reference proj: https://github.com/OSGeo/PROJ/blob/5c64452ecd74a99e05556d1f4e9c1d0af1ed06b7/src/rtodms.cpp#L38
   # Work with absolute value for components, sign is typically handled 
   # by the parent LatLon struct or hemisphere chars
   abs_val = abs(val)
