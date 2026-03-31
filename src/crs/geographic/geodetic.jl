@@ -82,11 +82,19 @@ const LatLon = GeodeticLatLon
 Degrees Minutes Seconds representation
 """
 struct LatLonDMS{Datum}
-  lat::D
-  lon::D
+  lat::DMS
+  lon::DMS
 end
 
+# How to make a constructor?
+LatLonDMS(args...) = LatLonDMS{WGS84Latest}(args...)
 
+
+function Base.convert(::Type{LatLonDMS{Datum}}, x::GeodeticLatLon{Datum}) where {Datum}
+  lat = convert(DMS, x.lat)
+  lon = convert(DMS, x.lon)
+  return LatLonDMS{Datum}(lat, lon)
+end
 
 """
     GeodeticLatLonAlt(lat, lon, alt)
@@ -273,16 +281,6 @@ Base.convert(C::Type{LatLonAlt{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datu
 Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ} =
   convert(C, convert(LatLon, coords))
 
-# converting DMS and Deg
-function Base.convert(::Type{Deg}, x::DMS)
-  # pass
-end
-
-function Base.convert(::Type{LatLonDMS{Datum}}, x::GeodeticLatLon{Datum}) where {Datum}
-  lat = convert(DMS, x.lat)
-  lon = convert(DMS, x.lon)
-  return GeodeticLatLonDMS{Datum}(lat, lon)
-end
 
 # ----------
 # FALLBACKS

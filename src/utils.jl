@@ -13,13 +13,12 @@ struct DMS{T<:Real} <: Number
   deg::Int
   minute::Int
   sec::T
-  # DMS(deg, minute, sec) = (minute < 0 || sec < 0.0) ? error("Only deg can be negative!") : new{T}(deg, minute, sec)
-  # DMS{T}(deg, minute, sec) where {T<:Real} =
-  # (minute < 0 || sec < 0.0) ? error("Only deg can be negative!") : new{T}(deg, minute, sec)
-  # explicit declaration
-  # DMS{T}(deg, minute, sec) where {T<:Real} = new(deg, minute, sec)
 end
 
+# converting DMS and Deg
+function Base.convert(::Type{Deg}, x::DMS)
+  # TODO: Implement DMS conversion
+end
 # DMS(deg::Int, minute::Int, sec::T) where {T<:Real} = DMS{T}(deg, minute, sec)
 
 # show the DMS in DMS format
