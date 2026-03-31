@@ -86,14 +86,18 @@ struct LatLonDMS{Datum}
   lon::DMS
 end
 
-# How to make a constructor?
 LatLonDMS(args...) = LatLonDMS{WGS84Latest}(args...)
 
+function Base.convert(::Type{LatLonDMS{Datum}}, coords::GeodeticLatLon{Datum}) where {Datum}
+  lat = convert(DMS, coords.lat)
+  lon = convert(DMS, coords.lon)
+  LatLonDMS{Datum}(lat, lon)
+end
 
-function Base.convert(::Type{LatLonDMS{Datum}}, x::GeodeticLatLon{Datum}) where {Datum}
-  lat = convert(DMS, x.lat)
-  lon = convert(DMS, x.lon)
-  return LatLonDMS{Datum}(lat, lon)
+function Base.convert(::Type{GeodeticLatLon{Datum}}, coords::LatLonDMS{Datum}) where {Datum}
+  lat = convert(Deg, coords.lat)
+  lon = convert(Deg, coords.lon)
+  LatLon{Datum}(lat, lon)
 end
 
 """
@@ -280,7 +284,6 @@ Base.convert(C::Type{LatLonAlt{Datumₜ}}, coords::LatLon{Datumₛ}) where {Datu
 
 Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datumₜ,Datumₛ} =
   convert(C, convert(LatLon, coords))
-
 
 # ----------
 # FALLBACKS

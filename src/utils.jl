@@ -17,7 +17,30 @@ end
 
 # converting DMS and Deg
 function Base.convert(::Type{Deg}, x::DMS)
-  # TODO: Implement DMS conversion
+  # TODO: Implement DMS -> Deg conversion
+  decimal_degree = x.deg + (x.minute / 60) + (x.sec / 3600)
+  Deg(decimal_degree)
+end
+
+function Base.convert(::Type{DMS}, x::T) where {T<:Deg}
+  # Extract the raw numeric value from the Unitful Quantity
+  val = ustrip(x)
+
+  # Work with absolute value for components, sign is typically handled 
+  # by the parent LatLon struct or hemisphere chars
+  abs_val = abs(val)
+
+  d = floor(Int, abs_val)
+  rem_m = (abs_val - d) * 60
+  m = floor(Int, rem_m)
+  s = (rem_m - m) * 60
+
+  # Restore sign to the degrees if your DMS convention requires it
+  # Most Geo libraries keep DMS positive and use 'N/S/E/W'
+  # Here we follow the sign of the input for the 'deg' field
+  final_d = val < 0 ? -d : d
+
+  return DMS(final_d, m, s)
 end
 # DMS(deg::Int, minute::Int, sec::T) where {T<:Real} = DMS{T}(deg, minute, sec)
 
