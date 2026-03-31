@@ -101,6 +101,7 @@ export
 
   # geographic
   GeodeticLatLon,
+  # GeodeticLatLonDMS,
   GeodeticLatLonAlt,
   GeocentricLatLon,
   GeocentricLatLonAlt,

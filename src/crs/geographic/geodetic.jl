@@ -21,6 +21,7 @@ GeodeticLatLon{WGS84Latest}(45.0°, 45.0°)
 
 See [EPSG:4326](https://epsg.io/4326).
 """
+# Array{T} where T<:Integer refers to all arrays whose element type is some kind of Integer
 struct GeodeticLatLon{Datum,D<:Deg} <: Geographic{Datum,2}
   lat::D
   lon::D
@@ -80,31 +81,12 @@ const LatLon = GeodeticLatLon
 """
 Degrees Minutes Seconds representation
 """
-struct DMS{T<:Real} <: Number
-  deg::Int
-  minute::Int
-  sec::T
+struct LatLonDMS{Datum}
+  lat::D
+  lon::D
 end
 
-# show the DMS in DMS format
-function Base.show(io::IO, x::DMS)
-  d = x.deg
-  m = x.minute
-  s = x.sec
-  print(io, "$(d)° $(m)′ $(s)″")
-end
 
-struct GeodeticLatLonDMS{Datum} <: Geographic{Datum,2}
-  lat::DMS
-  lon::DMS
-end
-
-GeodeticLatLonDMS{Datum}(lat::DMS, lon::DMS) where {Datum} = GeodeticLatLonDMS{Datum}(lat, lon)
-
-"""
-Alias for GeodeticLatLonDMS
-"""
-const LatLonDMS = GeodeticLatLonDMS
 
 """
     GeodeticLatLonAlt(lat, lon, alt)
@@ -294,6 +276,12 @@ Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datu
 # converting DMS and Deg
 function Base.convert(::Type{Deg}, x::DMS)
   # pass
+end
+
+function Base.convert(::Type{LatLonDMS{Datum}}, x::GeodeticLatLon{Datum}) where {Datum}
+  lat = convert(DMS, x.lat)
+  lon = convert(DMS, x.lon)
+  return GeodeticLatLonDMS{Datum}(lat, lon)
 end
 
 # ----------

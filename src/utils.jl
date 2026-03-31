@@ -8,6 +8,28 @@ const Met{T} = Quantity{T,u"𝐋",typeof(m)}
 const Deg{T} = Quantity{T,NoDims,typeof(°)}
 const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
+# degrees, minutes, seconds format
+struct DMS{T<:Real} <: Number
+  deg::Int
+  minute::Int
+  sec::T
+  # DMS(deg, minute, sec) = (minute < 0 || sec < 0.0) ? error("Only deg can be negative!") : new{T}(deg, minute, sec)
+  # DMS{T}(deg, minute, sec) where {T<:Real} =
+  # (minute < 0 || sec < 0.0) ? error("Only deg can be negative!") : new{T}(deg, minute, sec)
+  # explicit declaration
+  # DMS{T}(deg, minute, sec) where {T<:Real} = new(deg, minute, sec)
+end
+
+# DMS(deg::Int, minute::Int, sec::T) where {T<:Real} = DMS{T}(deg, minute, sec)
+
+# show the DMS in DMS format
+function Base.show(io::IO, x::DMS)
+  d = x.deg
+  m = x.minute
+  s = x.sec
+  print(io, "$(d)° $(m)′ $(s)″")
+end
+
 """
     asdeg(x)
 
