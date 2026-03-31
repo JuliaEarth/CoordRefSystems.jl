@@ -100,6 +100,10 @@ function Base.convert(::Type{GeodeticLatLon{Datum}}, coords::LatLonDMS{Datum}) w
   LatLon{Datum}(lat, lon)
 end
 
+Base.convert(::Type{LatLonDMS}, coords::GeodeticLatLon) = convert(LatLonDMS{WGS84Latest}, coords)
+Base.convert(::Type{GeodeticLatLon}, coords::LatLonDMS) = convert(GeodeticLatLon{WGS84Latest}, coords)
+# Base.convert()
+
 """
     GeodeticLatLonAlt(lat, lon, alt)
     GeodeticLatLonAlt{Datum}(lat, lon, alt)
@@ -292,3 +296,6 @@ Base.convert(C::Type{LatLon{Datumₜ}}, coords::LatLonAlt{Datumₛ}) where {Datu
 Base.convert(::Type{LatLon}, coords::CRS{Datum}) where {Datum} = convert(LatLon{Datum}, coords)
 
 Base.convert(::Type{LatLonAlt}, coords::CRS{Datum}) where {Datum} = convert(LatLonAlt{Datum}, coords)
+
+# For LatLonDMS
+# Base.convert(::Type{LatLonDMS}, coords::CRS{Datum}) where {Datum} = convert(LatLonDMS{Datum}, coords)
