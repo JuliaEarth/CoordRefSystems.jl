@@ -2051,13 +2051,21 @@
       c3 = convert(ShiftedMercator, c2)
       @test isapprox(c3, c1)
 
-      # converting using Cartesian is equivalent to converting using Cartesian2D
+      # conversion using Cartesian is equivalent to conversion using Cartesian2D
       c1 = Mercator(T(1), T(1))
       c2 = OrthoNorth(T(1), T(1))
       c3 = ShiftedMercator(T(1), T(1))
       @test convert(Cartesian, c1) == convert(Cartesian2D, c1)
       @test convert(Cartesian, c2) == convert(Cartesian2D, c2)
       @test convert(Cartesian, c3) == convert(Cartesian2D, c3)
+
+      # conversion using Cartesian with same datum is also possible
+      c1 = Mercator(T(1), T(1))
+      c2 = OrthoNorth(T(1), T(1))
+      c3 = ShiftedMercator(T(1), T(1))
+      @test convert(Cartesian{WGS84Latest}, c1) == convert(Cartesian2D, c1)
+      @test convert(Cartesian{WGS84Latest}, c2) == convert(Cartesian2D, c2)
+      @test convert(Cartesian{WGS84Latest}, c3) == convert(Cartesian2D, c3)
 
       # conversion to cartesian 3D
       c1 = convert(Mercator, LatLon(T(30), T(40)))
