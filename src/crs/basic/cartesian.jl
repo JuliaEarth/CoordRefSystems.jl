@@ -33,12 +33,12 @@ end
 
 Cartesian{Datum,N}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
 Cartesian{Datum,N}(coords::NTuple{N,Len}) where {Datum,N} = Cartesian{Datum,N}(promote(coords...))
-Cartesian{Datum,N}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum,N}(addunit.(coords, m))
+Cartesian{Datum,N}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum,N}(map(c -> addunit(c, m), coords))
 Cartesian{Datum,N}(coords::Vararg{Number,N}) where {Datum,N} = Cartesian{Datum,N}(coords)
 
 Cartesian{Datum}(coords::NTuple{N,L}) where {Datum,N,L<:Len} = Cartesian{Datum,N,float(L)}(coords)
 Cartesian{Datum}(coords::NTuple{N,Len}) where {Datum,N} = Cartesian{Datum}(promote(coords...))
-Cartesian{Datum}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum}(addunit.(coords, m))
+Cartesian{Datum}(coords::NTuple{N,Number}) where {Datum,N} = Cartesian{Datum}(map(c -> addunit(c, m), coords))
 Cartesian{Datum}(coords::Number...) where {Datum} = Cartesian{Datum}(coords)
 
 Cartesian(args...) = Cartesian{NoDatum}(args...)
