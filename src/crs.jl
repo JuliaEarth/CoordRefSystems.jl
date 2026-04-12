@@ -67,7 +67,7 @@ on the coordinate reference system. For instance,
 `LatLon` values are reversed to produce the tuple
 `(lon, lat)`.
 """
-raw(coords::CRS) = ustrip.(values(coords))
+raw(coords::CRS) = map(ustrip, values(coords))
 
 """
     CoordRefSystems.units(coords)
