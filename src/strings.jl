@@ -100,7 +100,7 @@ function string2code(crsstr)
   if endswith(keyword, "CRS") # WKT2
     # match the last EPSG/ESRI ID
     # the last ID comes with the CRS code
-    idregex = r"ID\[\"(EPSG|ESRI)\",([0-9]+)\]$"
+    idregex = r".*ID\[\"(EPSG|ESRI)\",([0-9]+)\]"
     # removing all extra spaces for safe matching
     idmatch = match(idregex, filter(!isspace, content)) |> checkmatch
     type, codestr = idmatch
