@@ -17,7 +17,7 @@ which is the most widely used software library for cartography in the world (wri
 For datum conversions with [offset grids](https://cdn.proj.org), please install the accompanying
 [CoordGridTransforms.jl](https://github.com/JuliaEarth/CoordGridTransforms.jl) package.
 
-If you are interested advanced geospatial data science with full CRS support, please check the
+If you are interested in advanced geospatial data science with full CRS support, please check the
 [GeoStats.jl](https://github.com/JuliaEarth/GeoStats.jl) framework.
 
 ## Installation
