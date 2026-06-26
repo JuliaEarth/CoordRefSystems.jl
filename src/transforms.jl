@@ -91,7 +91,7 @@ include("transforms/sequential.jl")
 @helmert WGS84{2139} WGS84{2296} (δx=2.6e-3, δy=5.4e-3, δz=-0.9e-3, θx=-0.01e-3, θy=-0.07e-3, s=0.06e-3)
 
 # https://epsg.org/transformation_1152/Hu-Tzu-Shan-1950-to-WGS-84-1.html
-@helmert EPSG{4236} WSG84 (δx=-637, δy=-549, δz=-203)
+@helmert HuTzuShan1950 WGS84 (δx=-637, δy=-549, δz=-203)
 
 # https://epsg.org/transformation_15929/BD72-to-WGS-84-3.html
 @helmert BD72 WGS84 (δx=-106.8686, δy=52.2978, δz=-103.7239, θx=-0.3366, θy=0.457, θz=-1.8422, s=-1.2747)
