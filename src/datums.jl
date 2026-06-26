@@ -181,15 +181,6 @@ epoch(::Type{NAD83CSRS{7}}) = 2010.0
 epoch(::Type{NAD83CSRS{8}}) = 2010.0
 
 """
-    HuTzuShan1950
-
-Hu Tzu Shan 1950 datum
-"""
-abstract type HuTzuShan1950 <: Datum end
-
-ellipsoid(::Type{HuTzuShan1950}) = Intl🌎
-
-"""
     Aratu
 
 Aratu datum.
@@ -308,6 +299,15 @@ Hermannskogel datum.
 abstract type Hermannskogel <: Datum end
 
 ellipsoid(::Type{Hermannskogel}) = Bessel🌎
+
+"""
+    HuTzuShan1950
+
+Hu Tzu Shan 1950 datum
+"""
+abstract type HuTzuShan1950 <: Datum end
+
+ellipsoid(::Type{HuTzuShan1950}) = Intl🌎
 
 """
     IGS20
