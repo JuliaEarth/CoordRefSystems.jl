@@ -89,7 +89,7 @@ end
 @crscodes LatLon{Aratu} EPSG{4208}
 @crscodes LatLon{ED50} EPSG{4230}
 @crscodes LatLon{ED87} EPSG{4231}
-@crscodes LatLon{WGS84} EPSG{4236}
+@crscodes LatLong{Intl} EPSG{4236}
 @crscodes LatLon{NAD27} EPSG{4267}
 @crscodes LatLon{NAD83} EPSG{4269}
 @crscodes LatLon{Datum73} EPSG{4274}
