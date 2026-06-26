@@ -60,6 +60,9 @@ include("transforms/sequential.jl")
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @helmert Hermannskogel WGS84 (δx=577.326, δy=90.129, δz=463.919, θx=-5.137, θy=-1.474, θz=-5.297, s=2.4232)
 
+# https://epsg.org/transformation_1152/Hu-Tzu-Shan-1950-to-WGS-84-1.html
+@helmert HuTzuShan1950 WGS84 (δx=-637, δy=-549, δz=-203)
+
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @helmert Ire65 WGS84 (δx=482.530, δy=-130.596, δz=564.557, θx=1.042, θy=0.214, θz=0.631, s=8.15)
 
@@ -89,9 +92,6 @@ include("transforms/sequential.jl")
 
 # https://epsg.org/transformation_10607/WGS-84-G2139-to-WGS-84-G2296-1.html
 @helmert WGS84{2139} WGS84{2296} (δx=2.6e-3, δy=5.4e-3, δz=-0.9e-3, θx=-0.01e-3, θy=-0.07e-3, s=0.06e-3)
-
-# https://epsg.org/transformation_1152/Hu-Tzu-Shan-1950-to-WGS-84-1.html
-@helmert HuTzuShan1950 WGS84 (δx=-637, δy=-549, δz=-203)
 
 # https://epsg.org/transformation_15929/BD72-to-WGS-84-3.html
 @helmert BD72 WGS84 (δx=-106.8686, δy=52.2978, δz=-103.7239, θx=-0.3366, θy=0.457, θz=-1.8422, s=-1.2747)
