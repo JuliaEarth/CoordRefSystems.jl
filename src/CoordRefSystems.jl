@@ -61,6 +61,7 @@ export
   GGRS87,
   GRS80S,
   Hermannskogel,
+  HuTzuShan1950,
   IGS20,
   Ire65,
   IRENET95,
