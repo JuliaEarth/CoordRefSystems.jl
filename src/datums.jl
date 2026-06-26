@@ -301,6 +301,15 @@ abstract type Hermannskogel <: Datum end
 ellipsoid(::Type{Hermannskogel}) = Bessel🌎
 
 """
+    HuTzuShan1950
+
+Hu Tzu Shan 1950 datum
+"""
+abstract type HuTzuShan1950 <: Datum end
+
+ellipsoid(::Type{HuTzuShan1950}) = Intl🌎
+
+"""
     IGS20
 
 IGS20 datum.

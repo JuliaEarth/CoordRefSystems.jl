@@ -40,6 +40,7 @@
   gettest(LatLon{Aratu}, EPSG{4208})
   gettest(LatLon{ED50}, EPSG{4230})
   gettest(LatLon{ED87}, EPSG{4231})
+  gettest(LatLon{HuTzuShan1950}, EPSG{4236})
   gettest(LatLon{NAD27}, EPSG{4267})
   gettest(LatLon{NAD83}, EPSG{4269})
   gettest(LatLon{Datum73}, EPSG{4274})

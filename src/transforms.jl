@@ -57,6 +57,9 @@ include("transforms/sequential.jl")
 # https://epsg.org/transformation_1864/SAD69-to-WGS-84-1.html
 @geoctranslation SAD69 WGS84 (δx=-57.0, δy=1.0, δz=-41.0)
 
+# https://epsg.org/transformation_1152/Hu-Tzu-Shan-1950-to-WGS-84-1.html
+@geoctranslation HuTzuShan1950 WGS84 (δx=-637, δy=-549, δz=-203)
+
 # https://github.com/OSGeo/PROJ/blob/master/src/datums.cpp
 @helmert Hermannskogel WGS84 (δx=577.326, δy=90.129, δz=463.919, θx=-5.137, θy=-1.474, θz=-5.297, s=2.4232)
 
