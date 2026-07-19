@@ -124,6 +124,7 @@ end
 @crscodes Cartesian3D{ITRF{2020}} EPSG{9988}
 @crscodes Cartesian3D{IGS20} EPSG{10176}
 @crscodes LatLon{NAD83CSRS{8}} EPSG{10414}
+@crscodes shift(TransverseMercator{0.9996,0.0°,CorregoAlegre}, lonₒ=-45.0°, xₒ=500000.0m, yₒ=10000000.0m) EPSG{22523}
 @crscodes shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m) EPSG{25832}
 @crscodes shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m) EPSG{27700}
 @crscodes shift(TransverseMercator{0.9996,0.0°,GDA94}, lonₒ=147.0°, xₒ=500000.0m, yₒ=10000000.0m) EPSG{28355}

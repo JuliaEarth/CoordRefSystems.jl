@@ -210,6 +210,15 @@ abstract type Carthage <: Datum end
 ellipsoid(::Type{Carthage}) = Clrk80IGN🌎
 
 """
+    CorregoAlegre
+
+Corrego Alegre 1970-72 datum.
+"""
+abstract type CorregoAlegre <: Datum end
+
+ellipsoid(::Type{CorregoAlegre}) = Intl🌎
+
+"""
     Datum73
 
 Datum 73 from Portugal.

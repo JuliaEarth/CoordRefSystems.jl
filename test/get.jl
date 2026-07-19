@@ -76,6 +76,10 @@
   gettest(Cartesian{IGS20,3}, EPSG{10176})
   gettest(LatLon{NAD83CSRS{8}}, EPSG{10414})
   gettest(
+    CoordRefSystems.shift(TransverseMercator{0.9996,0.0°,CorregoAlegre}, lonₒ=-45.0°, xₒ=500000.0m, yₒ=10000000.0m),
+    EPSG{22523}
+  )
+  gettest(
     CoordRefSystems.shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m),
     EPSG{25832}
   )
