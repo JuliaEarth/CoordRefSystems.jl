@@ -51,7 +51,11 @@
 
   @test ellipsoid(Aratu) === CoordRefSystems.Intl🌎
 
+  @test ellipsoid(BD72) === CoordRefSystems.Intl🌎
+
   @test ellipsoid(Carthage) === CoordRefSystems.Clrk80IGN🌎
+
+  @test ellipsoid(CorregoAlegre) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(Datum73) === CoordRefSystems.Intl🌎
 
@@ -71,6 +75,8 @@
   @test ellipsoid(GRS80S) === CoordRefSystems.GRS80S🌎
 
   @test ellipsoid(Hermannskogel) === CoordRefSystems.Bessel🌎
+
+  @test ellipsoid(HuTzuShan1950) === CoordRefSystems.Intl🌎
 
   @test ellipsoid(IGS20) === CoordRefSystems.GRS80🌎
 

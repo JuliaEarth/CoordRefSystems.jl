@@ -52,6 +52,7 @@ export
   Aratu,
   BD72,
   Carthage,
+  CorregoAlegre,
   Datum73,
   DHDN,
   ED50,
