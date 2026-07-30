@@ -110,7 +110,7 @@ names(::Type{<:Cartesian{<:Any,N}}) where {N} = _fnames(N)
 
 values(coords::Cartesian) = _coords(coords)
 
-units(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = ntuple(_ -> unit(L), N)
+units(::Type{<:Cartesian{<:Any,N,L}}) where {N,L} = ntuple(_ -> unit(L), N)
 
 constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
@@ -120,7 +120,7 @@ reconstruct(C::Type{Cartesian{Datum}}, raw) where {Datum} = constructor(C)(raw..
 
 reconstruct(C::Type{Cartesian}, raw) = constructor(C)(raw...)
 
-lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+lentype(::Type{<:Cartesian{<:Any,<:Any,L}}) where {L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
