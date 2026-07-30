@@ -87,7 +87,7 @@ Cartesian3D(args...) = Cartesian3D{NoDatum}(args...)
 Base.convert(::Type{Cartesian{Datum,N,L}}, coords::Cartesian{Datum}) where {Datum,N,L} =
   Cartesian{Datum,N,L}(_coords(coords))
 
-Base.propertynames(::Cartesian{Datum,N}) where {Datum,N} = _fnames(N)
+Base.propertynames(::Cartesian{<:Any,N}) where {N} = _fnames(N)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
   tup = _coords(coords)
