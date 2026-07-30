@@ -102,6 +102,15 @@
     end
   end
 
+  @testset "propertynames" begin
+    c = Cartesian(T(1))
+    @test propertynames(c) == (:x,)
+    c = Cartesian(T(1), T(2))
+    @test propertynames(c) == (:x, :y)
+    c = Cartesian(T(1), T(2), T(3))
+    @test propertynames(c) == (:x, :y, :z)
+  end
+
   @testset "values" begin
     c = Cartesian(T(1), T(2))
     @test CoordRefSystems.values(c) == (T(1) * m, T(2) * m)

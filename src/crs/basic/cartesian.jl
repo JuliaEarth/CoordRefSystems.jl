@@ -3,14 +3,13 @@
 # ------------------------------------------------------------------
 
 """
-    Cartesian(x₁, x₂, ..., xₙ)
-    Cartesian{Datum}(x₁, x₂, ..., xₙ)
-    Cartesian((x₁, x₂, ..., xₙ))
-    Cartesian{Datum}((x₁, x₂, ..., xₙ))
+    Cartesian(x, [y, z])
+    Cartesian{Datum}(x, [y, z])
+    Cartesian((x, [y, z]))
+    Cartesian{Datum}((x, [y, z]))
 
-N-dimensional Cartesian coordinates `x₁, x₂, ..., xₙ` in length units (default to meter)
+Cartesian coordinates `x`, `y` and `z` in length units (default to meter)
 with a given `Datum` (default to `NoDatum`).
-The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, respectively.
 
 ## Examples
 
@@ -88,7 +87,7 @@ Cartesian3D(args...) = Cartesian3D{NoDatum}(args...)
 Base.convert(::Type{Cartesian{Datum,N,L}}, coords::Cartesian{Datum}) where {Datum,N,L} =
   Cartesian{Datum,N,L}(_coords(coords))
 
-Base.propertynames(::Cartesian) = (:x, :y, :z)
+Base.propertynames(::Cartesian{<:Any,N}) where {N} = _fnames(N)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
   tup = _coords(coords)
@@ -98,8 +97,6 @@ function Base.getproperty(coords::Cartesian, name::Symbol)
     tup[2]
   elseif name === :z
     tup[3]
-  else
-    error("invalid property, use `x`, `y` or `z`")
   end
 end
 
@@ -109,11 +106,11 @@ ncoords(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
 ndims(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
-names(C::Type{<:Cartesian}) = _fnames(C)
+names(::Type{<:Cartesian{<:Any,N}}) where {N} = _fnames(N)
 
 values(coords::Cartesian) = _coords(coords)
 
-units(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = ntuple(_ -> unit(L), N)
+units(::Type{<:Cartesian{<:Any,N,L}}) where {N,L} = ntuple(_ -> unit(L), N)
 
 constructor(::Type{<:Cartesian{Datum}}) where {Datum} = Cartesian{Datum}
 
@@ -123,7 +120,7 @@ reconstruct(C::Type{Cartesian{Datum}}, raw) where {Datum} = constructor(C)(raw..
 
 reconstruct(C::Type{Cartesian}, raw) = constructor(C)(raw...)
 
-lentype(::Type{<:Cartesian{Datum,N,L}}) where {Datum,N,L} = L
+lentype(::Type{<:Cartesian{<:Any,<:Any,L}}) where {L} = L
 
 ==(coords₁::Cartesian{Datum,N}, coords₂::Cartesian{Datum,N}) where {Datum,N} = _coords(coords₁) == _coords(coords₂)
 
@@ -136,14 +133,12 @@ Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian3D}) = rand(rng, Cartesian3
 
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
-function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}
+function _fnames(N::Int)
   if N == 1
     (:x,)
   elseif N == 2
     (:x, :y)
   elseif N == 3
     (:x, :y, :z)
-  else
-    ntuple(i -> Symbol(:x, i), N)
   end
 end
