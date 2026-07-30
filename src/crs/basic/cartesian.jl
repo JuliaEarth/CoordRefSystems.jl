@@ -3,14 +3,13 @@
 # ------------------------------------------------------------------
 
 """
-    Cartesian(x₁, x₂, ..., xₙ)
-    Cartesian{Datum}(x₁, x₂, ..., xₙ)
-    Cartesian((x₁, x₂, ..., xₙ))
-    Cartesian{Datum}((x₁, x₂, ..., xₙ))
+    Cartesian(x, [y, z])
+    Cartesian{Datum}(x, [y, z])
+    Cartesian((x, [y, z]))
+    Cartesian{Datum}((x, [y, z]))
 
-N-dimensional Cartesian coordinates `x₁, x₂, ..., xₙ` in length units (default to meter)
+Cartesian coordinates `x`, `y` and `z` in length units (default to meter)
 with a given `Datum` (default to `NoDatum`).
-The first 3 coordinates can be accessed with the properties `x`, `y` and `z`, respectively.
 
 ## Examples
 
