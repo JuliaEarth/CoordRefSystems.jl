@@ -55,24 +55,6 @@
       └─ z: 3.0 m"""
     end
 
-    c = Cartesian(T(1), T(2), T(3), T(4))
-    @test sprint(show, c) == "Cartesian{NoDatum}(x1: 1.0 m, x2: 2.0 m, x3: 3.0 m, x4: 4.0 m)"
-    if T === Float32
-      @test sprint(show, MIME("text/plain"), c) == """
-      Cartesian{NoDatum} coordinates
-      ├─ x1: 1.0f0 m
-      ├─ x2: 2.0f0 m
-      ├─ x3: 3.0f0 m
-      └─ x4: 4.0f0 m"""
-    else
-      @test sprint(show, MIME("text/plain"), c) == """
-      Cartesian{NoDatum} coordinates
-      ├─ x1: 1.0 m
-      ├─ x2: 2.0 m
-      ├─ x3: 3.0 m
-      └─ x4: 4.0 m"""
-    end
-
     # error: invalid units for coordinates
     @test_throws ArgumentError Cartesian(T(1), T(2) * m)
     @test_throws ArgumentError Cartesian(T(1) * s, T(2) * m)

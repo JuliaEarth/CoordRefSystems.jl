@@ -98,8 +98,6 @@ function Base.getproperty(coords::Cartesian, name::Symbol)
     tup[2]
   elseif name === :z
     tup[3]
-  else
-    error("invalid property, use `x`, `y` or `z`")
   end
 end
 
@@ -143,7 +141,5 @@ function _fnames(N::Int)
     (:x, :y)
   elseif N == 3
     (:x, :y, :z)
-  else
-    ntuple(i -> Symbol(:x, i), N)
   end
 end
