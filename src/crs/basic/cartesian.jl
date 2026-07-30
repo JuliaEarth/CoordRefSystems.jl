@@ -88,7 +88,7 @@ Cartesian3D(args...) = Cartesian3D{NoDatum}(args...)
 Base.convert(::Type{Cartesian{Datum,N,L}}, coords::Cartesian{Datum}) where {Datum,N,L} =
   Cartesian{Datum,N,L}(_coords(coords))
 
-Base.propertynames(::Cartesian) = (:x, :y, :z)
+Base.propertynames(::Cartesian{Datum,N}) where {Datum,N} = _fnames(N)
 
 function Base.getproperty(coords::Cartesian, name::Symbol)
   tup = _coords(coords)
@@ -109,7 +109,7 @@ ncoords(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
 ndims(::Type{<:Cartesian{<:Any,N}}) where {N} = N
 
-names(C::Type{<:Cartesian}) = _fnames(C)
+names(::Type{<:Cartesian{<:Any,N}}) where {N} = _fnames(N)
 
 values(coords::Cartesian) = _coords(coords)
 
@@ -136,7 +136,7 @@ Random.rand(rng::Random.AbstractRNG, ::Type{Cartesian3D}) = rand(rng, Cartesian3
 
 _coords(coords::Cartesian) = getfield(coords, :coords)
 
-function _fnames(::Type{<:Cartesian{Datum,N}}) where {Datum,N}
+function _fnames(N::Int)
   if N == 1
     (:x,)
   elseif N == 2
