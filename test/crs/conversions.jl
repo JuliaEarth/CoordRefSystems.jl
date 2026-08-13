@@ -531,6 +531,12 @@
         c3 = convert(LatLonAlt, c2)
         @test isapprox(c3, c1)
 
+        # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/358
+        c1 = LatLonAlt(T(90), T(0), T(0))
+        c2 = Cartesian{WGS84Latest}(T(0.0), T(0.0), T(6356752.314245179))
+        c3 = convert(LatLonAlt, c2)
+        @test isapprox(c3, c1)
+
         # type stability
         c1 = LatLonAlt(T(30), T(40), T(0))
         c2 = Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637))
