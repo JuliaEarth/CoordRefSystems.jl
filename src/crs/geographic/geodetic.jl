@@ -231,8 +231,13 @@ function Base.convert(::Type{LatLonAlt{Datum}}, coords::Cartesian{Datum,3}) wher
 
   λ = atan(y, x)
   ϕ = atan(z + b * e′² * sin(ψ)^3, p - a * e² * cos(ψ)^3)
-  N = a / sqrt(1 - e² * sin(ϕ)^2)
-  h = p / cos(ϕ) - N
+  sinϕ, cosϕ = sincos(ϕ)
+  N = a / sqrt(1 - e² * sinϕ^2)
+  h = ifelse(
+      abs(cosϕ) > abs(sinϕ),
+      p / cosϕ - N,
+      z / sinϕ - N * (1 - e²)
+  )
 
   LatLonAlt{Datum}(phi2lat(ϕ), lam2lon(λ), h * m)
 end
