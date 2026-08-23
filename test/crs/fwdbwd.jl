@@ -20,15 +20,6 @@
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/296
     PRJ <: Albers && continue
 
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/297
-    PRJ <: GallPeters && continue
-
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/298
-    PRJ <: Behrmann && continue
-
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/299
-    PRJ <: LambertCylindrical && continue
-
     # loop over all possible latitude and longitude values
     # that should be recovered by the given PRJ type
     success = true
@@ -53,6 +44,10 @@
       # the Sinusoidal projection maps all values of the form (±90, lon) to (0, y)
       # therefore we cannot recover the original lon value at the poles
       PRJ <: Sinusoidal && abs(lat) == T(90) && continue
+
+      # the EqualAreaCylindrical projections compress the latitude near the poles,
+      # so only half of the significant digits of the latitude can be recovered
+      PRJ <: Union{LambertCylindrical,Behrmann,GallPeters} && abs(lat) == T(90) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
