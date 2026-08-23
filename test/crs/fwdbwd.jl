@@ -17,10 +17,6 @@
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
     PRJ <: LambertAzimuthal && continue
 
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/272
-    PRJ <: OrthoNorth && continue
-    PRJ <: OrthoSouth && continue
-
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/295
     PRJ <: Sinusoidal && continue
 
@@ -46,6 +42,16 @@
       # the LambertConic projection maps all values of the form (90, lon) to (xₒ, y)
       # therefore we cannot recover the original lon value when lat=90
       PRJ <: LambertConic && lat == T(90) && continue
+
+      # the Orthographic projection maps all values of the form (90, lon) to (xₒ, yₒ)
+      # therefore we cannot recover the original lon value at the pole
+      PRJ <: OrthoNorth && lat == T(90) && continue
+      PRJ <: OrthoSouth && lat == T(-90) && continue
+
+      # at the limb of the Orthographic projection the derivative of the radius
+      # with respect to the latitude vanishes, so only half of the significant
+      # digits of the latitude can be recovered
+      PRJ <: Union{OrthoNorth,OrthoSouth} && lat == T(0) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
