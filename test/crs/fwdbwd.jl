@@ -17,9 +17,6 @@
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
     PRJ <: LambertAzimuthal && continue
 
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/296
-    PRJ <: Albers && continue
-
     # loop over all possible latitude and longitude values
     # that should be recovered by the given PRJ type
     success = true
@@ -51,6 +48,10 @@
       PRJ <: LambertCylindrical && abs(lat) == T(90) && continue
       PRJ <: Behrmann && abs(lat) == T(90) && continue
       PRJ <: GallPeters && abs(lat) == T(90) && continue
+
+      # the Albers projection compresses the latitude near the poles,
+      # so only half of the significant digits of the latitude can be recovered
+      PRJ <: Albers && abs(lat) == T(90) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
