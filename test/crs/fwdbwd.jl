@@ -13,10 +13,6 @@
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/55
     PRJ <: Robinson && continue
 
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
-    PRJ <: LambertAzimuthal && continue
-
     # loop over all possible latitude and longitude values
     # that should be recovered by the given PRJ type
     success = true
@@ -52,6 +48,17 @@
       # the Albers projection compresses the latitude near the poles,
       # so only half of the significant digits of the latitude can be recovered
       PRJ <: Albers && abs(lat) == T(90) && continue
+
+      # at the poles the argument of the arcsine in the LambertAzimuthal inverse
+      # approaches one, so only half of the significant digits of the latitude
+      # can be recovered
+      PRJ <: LambertAzimuthal && abs(lat) == T(90) && continue
+
+      # the LambertAzimuthal projection above is centered at lat=15, so its antipode
+      # is the point (-15, 180). The derivative of the radius with respect to the
+      # angular distance vanishes there, and within one degree of it the latitude
+      # loses half of its significant digits in Float32
+      PRJ <: LambertAzimuthal && abs(lon) == T(180) && abs(lat + T(15)) ≤ T(1) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)

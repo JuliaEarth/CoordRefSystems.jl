@@ -67,12 +67,11 @@ function inbounds(::Type{<:LambertAzimuthal{latₒ,Datum}}, λ, ϕ) where {lat�
   q = authq(ϕ, e, ome²)
   βₒ = geod2auth(qₒ, qₚ)
   β = geod2auth(q, qₚ)
-  sinβₒ, cosβₒ = sincos(βₒ)
-  sinβ, cosβ = sincos(β)
-  cosλ = cos(λ)
+  cosβₒ = cos(βₒ)
+  cosβ = cos(β)
 
   # check if the denominator of the B equation is not equal (or approx) to zero
-  Bden = 1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ)
+  Bden = _laeaBden(βₒ, β, cosβₒ, cosβ, λ)
   abs(Bden) > atol(λ)
 end
 
@@ -91,14 +90,14 @@ function formulas(::Type{<:LambertAzimuthal{latₒ,Datum}}, ::Type{T}) where {la
 
   Rq = sqrt(qₚ / 2)
   D = (cosϕₒ / sqrt(1 - e² * sinϕₒ^2)) / (Rq * cosβₒ)
-  fB(cosλ, sinβ, cosβ) = Rq * sqrt(2 / (1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ)))
+  fB(λ, β, cosβ) = Rq * sqrt(2 / _laeaBden(βₒ, β, cosβₒ, cosβ, λ))
 
   function fx(λ, ϕ)
     q = authq(ϕ, e, ome²)
     β = geod2auth(q, qₚ)
-    sinβ, cosβ = sincos(β)
-    sinλ, cosλ = sincos(λ)
-    B = fB(cosλ, sinβ, cosβ)
+    cosβ = cos(β)
+    sinλ = sin(λ)
+    B = fB(λ, β, cosβ)
     (B * D) * (cosβ * sinλ)
   end
 
@@ -107,7 +106,7 @@ function formulas(::Type{<:LambertAzimuthal{latₒ,Datum}}, ::Type{T}) where {la
     β = geod2auth(q, qₚ)
     sinβ, cosβ = sincos(β)
     cosλ = cos(λ)
-    B = fB(cosλ, sinβ, cosβ)
+    B = fB(λ, β, cosβ)
     (B / D) * ((cosβₒ * sinβ) - (sinβₒ * cosβ * cosλ))
   end
 
@@ -133,7 +132,7 @@ function forward(::Type{<:LambertAzimuthal{latₒ,Datum}}, λ, ϕ) where {latₒ
 
   Rq = sqrt(qₚ / 2)
   # check if the denominator of the B equation is not equal (or approx) to zero
-  Bden = (1 + (sinβₒ * sinβ) + (cosβₒ * cosβ * cosλ))
+  Bden = _laeaBden(βₒ, β, cosβₒ, cosβ, λ)
   if abs(Bden) < atol(λ)
     throw(ArgumentError("coordinates outside of the projection domain"))
   end
@@ -178,6 +177,14 @@ function backward(::Type{<:LambertAzimuthal{latₒ,Datum}}, x, y) where {latₒ,
     λ, ϕ
   end
 end
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+# 1 + cos(c) with c the angular distance to the center of the projection, written
+# as a sum of non-negative terms to avoid cancellation near the antipode
+_laeaBden(βₒ, β, cosβₒ, cosβ, λ) = 2 * (sin((β + βₒ) / 2)^2 + (cosβₒ * cosβ) * cos(λ / 2)^2)
 
 # ----------
 # FALLBACKS
