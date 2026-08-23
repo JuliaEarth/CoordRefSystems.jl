@@ -1709,6 +1709,17 @@
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
+      # the poles collapse to a single point and the longitude is undefined
+      c1 = LatLon(T(90), T(45))
+      c2 = convert(Sinusoidal, c1)
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, LatLon(T(90), T(0)))
+
+      c1 = LatLon(-T(90), T(45))
+      c2 = convert(Sinusoidal, c1)
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, LatLon(-T(90), T(0)))
+
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = Sinusoidal(T(7.084329013634147e6), T(5.009377085697311e6))
