@@ -147,12 +147,11 @@ function backward(::Type{<:EqualAreaCylindrical{latₜₛ,Datum}}, x, y) where {
 
   ome² = 1 - e²
   k₀ = cos(ϕₜₛ) / sqrt(1 - e² * sin(ϕₜₛ)^2)
-  # same formula as q, but ϕ = 90°
-  qₚ = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
+  qₚ = authqₚ(e, ome²)
 
   λ = x / k₀
   q = 2y * k₀
-  β = asin(q / qₚ)
+  β = geod2auth(q, qₚ)
   ϕ = auth2geod(β, e²)
 
   λ, ϕ

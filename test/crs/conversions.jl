@@ -1270,6 +1270,12 @@
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
+      # backward must not throw for datums where q/qₚ rounds slightly above 1
+      c1 = LatLon{ITRF{2008}}(-T(90), T(0))
+      c2 = convert(LambertCylindrical{ITRF{2008}}, c1)
+      c3 = convert(LatLon{ITRF{2008}}, c2)
+      @test isapprox(c3.lat, -T(90) * °, atol=T(0.1) * °)
+
       # type stability
       c1 = LatLon(T(45), T(90))
       c2 = LambertCylindrical(T(10018754.171394622), T(4489858.8869480025))
