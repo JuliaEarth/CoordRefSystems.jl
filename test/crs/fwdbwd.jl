@@ -39,7 +39,8 @@
       # at the limb of the Orthographic projection the derivative of the radius
       # with respect to the latitude vanishes, so only half of the significant
       # digits of the latitude can be recovered
-      PRJ <: Union{OrthoNorth,OrthoSouth} && lat == T(0) && continue
+      PRJ <: OrthoNorth && lat == T(0) && continue
+      PRJ <: OrthoSouth && lat == T(0) && continue
 
       # the Sinusoidal projection maps all values of the form (±90, lon) to (0, y)
       # therefore we cannot recover the original lon value at the poles
@@ -47,7 +48,9 @@
 
       # the EqualAreaCylindrical projections compress the latitude near the poles,
       # so only half of the significant digits of the latitude can be recovered
-      PRJ <: Union{LambertCylindrical,Behrmann,GallPeters} && abs(lat) == T(90) && continue
+      PRJ <: LambertCylindrical && abs(lat) == T(90) && continue
+      PRJ <: Behrmann && abs(lat) == T(90) && continue
+      PRJ <: GallPeters && abs(lat) == T(90) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
