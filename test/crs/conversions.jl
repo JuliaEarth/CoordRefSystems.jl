@@ -1771,6 +1771,21 @@
       c3 = convert(LatLon, c2)
       @test isapprox(c3, c1)
 
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/265
+      # at the pole the argument of the arcsine reaches one, so the latitude
+      # keeps only half of its significant digits
+      c1 = LatLon(-T(90), T(0))
+      c2 = convert(LAEA, c1)
+      c3 = convert(LatLon, c2)
+      @test abs(c3.lat - c1.lat) < 2 * sqrt(eps(T)) * T(90) * °
+
+      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
+      # one degree away from the antipode of the projection center
+      c1 = LatLon(-T(14), T(180))
+      c2 = convert(LAEA, c1)
+      c3 = convert(LatLon, c2)
+      @test abs(c3.lat - c1.lat) < T(0.001) * T(90) * °
+
       # invert central coordinates
       ShiftedLAEA = CoordRefSystems.shift(LambertAzimuthal{30.0°,WGS84Latest}, lonₒ=60°)
       c1 = LatLon(T(30), T(60))
