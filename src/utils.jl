@@ -159,9 +159,13 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
   ∇f₁(λ, ϕ) = gradient(u -> f₁(u[1], u[2]), SVector(λ, ϕ))
   ∇f₂(λ, ϕ) = gradient(u -> f₂(u[1], u[2]), SVector(λ, ϕ))
 
+  # norm of the deviation
+  ε(λ, ϕ) = hypot(f₁(λ, ϕ), f₂(λ, ϕ))
+
   # Newton-Rhapson iteration
-  λᵢ₊₁ = λᵢ = λₒ
-  ϕᵢ₊₁ = ϕᵢ = ϕₒ
+  λᵢ = λₒ
+  ϕᵢ = ϕₒ
+  εᵢ = ε(λᵢ, ϕᵢ)
   for _ in 1:maxiter
     v₁ = f₁(λᵢ, ϕᵢ)
     v₂ = f₂(λᵢ, ϕᵢ)
@@ -172,16 +176,23 @@ function projinv(fx, fy, x, y, λₒ, ϕₒ; maxiter=10, tol=atol(x))
     den = (df₁dϕ * df₂dλ - df₂dϕ * df₁dλ)
     λᵢ₊₁ = λᵢ - (v₂ * df₁dϕ - v₁ * df₂dϕ) / den
     ϕᵢ₊₁ = ϕᵢ - (v₁ * df₂dλ - v₂ * df₁dλ) / den
+    εᵢ₊₁ = ε(λᵢ₊₁, ϕᵢ₊₁)
 
-    if abs(λᵢ₊₁ - λᵢ) ≤ tol && abs(ϕᵢ₊₁ - ϕᵢ) ≤ tol
-      break
-    end
+    # reject steps that do not reduce the deviation, which happens
+    # where the Jacobian is singular, e.g. at the limb of the projection
+    (isfinite(εᵢ₊₁) && εᵢ₊₁ < εᵢ) || break
+
+    # assess convergence in latitude and longitude values
+    converged = abs(λᵢ₊₁ - λᵢ) ≤ tol && abs(ϕᵢ₊₁ - ϕᵢ) ≤ tol
 
     λᵢ = λᵢ₊₁
     ϕᵢ = ϕᵢ₊₁
+    εᵢ = εᵢ₊₁
+
+    converged && break
   end
 
-  λᵢ₊₁, ϕᵢ₊₁
+  λᵢ, ϕᵢ
 end
 
 """
