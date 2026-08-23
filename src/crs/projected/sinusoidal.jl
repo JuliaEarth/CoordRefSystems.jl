@@ -67,7 +67,8 @@ end
 
 function backward(::Type{<:Sinusoidal}, x, y)
   ϕ = y
-  λ = x / cos(ϕ)
+  cosϕ = cos(ϕ)
+  λ = abs(cosϕ) < atol(x) ? zero(x) : x / cosϕ
 
   λ, ϕ
 end

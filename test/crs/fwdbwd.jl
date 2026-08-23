@@ -17,9 +17,6 @@
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/268
     PRJ <: LambertAzimuthal && continue
 
-    # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/295
-    PRJ <: Sinusoidal && continue
-
     # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/296
     PRJ <: Albers && continue
 
@@ -52,6 +49,10 @@
       # with respect to the latitude vanishes, so only half of the significant
       # digits of the latitude can be recovered
       PRJ <: Union{OrthoNorth,OrthoSouth} && lat == T(0) && continue
+
+      # the Sinusoidal projection maps all values of the form (±90, lon) to (0, y)
+      # therefore we cannot recover the original lon value at the poles
+      PRJ <: Sinusoidal && abs(lat) == T(90) && continue
 
       ll = LatLon(lat, lon)
       LL = typeof(ll)
