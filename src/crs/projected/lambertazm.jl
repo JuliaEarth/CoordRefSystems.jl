@@ -178,14 +178,6 @@ function backward(::Type{<:LambertAzimuthal{latₒ,Datum}}, x, y) where {latₒ,
   end
 end
 
-# -----------------
-# HELPER FUNCTIONS
-# -----------------
-
-# 1 + cos(c) with c the angular distance to the center of the projection, written
-# as a sum of non-negative terms to avoid cancellation near the antipode
-_laeaBden(βₒ, β, cosβₒ, cosβ, λ) = 2 * (sin((β + βₒ) / 2)^2 + (cosβₒ * cosβ) * cos(λ / 2)^2)
-
 # ----------
 # FALLBACKS
 # ----------
@@ -195,3 +187,11 @@ indomain(::Type{LambertAzimuthal{latₒ}}, coords::CRS{Datum}) where {latₒ,Dat
 
 Base.convert(::Type{LambertAzimuthal{latₒ}}, coords::CRS{Datum}) where {latₒ,Datum} =
   convert(LambertAzimuthal{latₒ,Datum}, coords)
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+# 1 + cos(c) with c the angular distance to the center of the projection, written
+# as a sum of non-negative terms to avoid cancellation near the antipode
+_laeaBden(βₒ, β, cosβₒ, cosβ, λ) = 2 * (sin((β + βₒ) / 2)^2 + (cosβₒ * cosβ) * cos(λ / 2)^2)
