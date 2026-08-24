@@ -1741,10 +1741,10 @@
       # step proj=stere lat_0=<latₒ> k_0=1 lon_0=0 ellps=WGS84
       # """)
       # inverse tested against the same pipeline with proj=stere inv
-      North = StereoNorth{1.0,WGS84Latest}
-      South = StereoSouth{1.0,WGS84Latest}
-      Equat = CoordRefSystems.Stereographic{CoordRefSystems.EllipticalMode,1.0,0.0°,WGS84Latest}
-      Obliq = CoordRefSystems.Stereographic{CoordRefSystems.EllipticalMode,1.0,45.0°,WGS84Latest}
+      North = Stereographic{CoordRefSystems.EllipticalMode,1.0,90°,WGS84Latest}
+      South = Stereographic{CoordRefSystems.EllipticalMode,1.0,-90°,WGS84Latest}
+      Equat = Stereographic{CoordRefSystems.EllipticalMode,1.0,0°,WGS84Latest}
+      Obliq = Stereographic{CoordRefSystems.EllipticalMode,1.0,45°,WGS84Latest}
 
       c1 = LatLon(T(45), T(90))
       c2 = convert(North, c1)
@@ -1783,7 +1783,7 @@
       @test isapprox(c3, c1)
 
       # spherical mode
-      Sphere = CoordRefSystems.Stereographic{CoordRefSystems.SphericalMode,1.0,45.0°,WGS84Latest}
+      Sphere = Stereographic{CoordRefSystems.SphericalMode,1.0,45°,WGS84Latest}
       c1 = LatLon(T(30), T(60))
       c2 = convert(Sphere, c1)
       c3 = convert(LatLon, c2)
