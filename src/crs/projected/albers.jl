@@ -132,6 +132,16 @@ function backward(::Type{<:Albers{latₒ,lat₁,lat₂,Datum}}, x, y) where {lat
   λ, ϕ
 end
 
+# ----------
+# FALLBACKS
+# ----------
+
+indomain(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  indomain(Albers{latₒ,lat₁,lat₂,Datum}, coords)
+
+Base.convert(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  convert(Albers{latₒ,lat₁,lat₂,Datum}, coords)
+
 # -----------------
 # HELPER FUNCTIONS
 # -----------------
@@ -160,13 +170,3 @@ _albersm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 
 _albersα(ϕ, e, e²) =
   (1 - e²) * ((sin(ϕ) / (1 - e² * sin(ϕ)^2)) - (1 / (2 * e) * log((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))))
-
-# ----------
-# FALLBACKS
-# ----------
-
-indomain(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  indomain(Albers{latₒ,lat₁,lat₂,Datum}, coords)
-
-Base.convert(::Type{Albers{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  convert(Albers{latₒ,lat₁,lat₂,Datum}, coords)

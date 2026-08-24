@@ -111,6 +111,16 @@ function backward(::Type{<:LambertConic{latₒ,lat₁,lat₂,Datum}}, x, y) wher
   λ, ϕᵢ
 end
 
+# ----------
+# FALLBACKS
+# ----------
+
+indomain(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  indomain(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
+
+Base.convert(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
+  convert(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
+
 # -----------------
 # HELPER FUNCTIONS
 # -----------------
@@ -131,13 +141,3 @@ _lambertm(ϕ, e²) = cos(ϕ) / sqrt(1 - e² * sin(ϕ)^2)
 _lambertt(ϕ, e) = tan(oftype(ϕ, π / 4) - ϕ / 2) / ((1 - e * sin(ϕ)) / (1 + e * sin(ϕ)))^(e / 2)
 
 _lambertr(F, t, n) = F * t^n
-
-# ----------
-# FALLBACKS
-# ----------
-
-indomain(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  indomain(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
-
-Base.convert(::Type{LambertConic{latₒ,lat₁,lat₂}}, coords::CRS{Datum}) where {latₒ,lat₁,lat₂,Datum} =
-  convert(LambertConic{latₒ,lat₁,lat₂,Datum}, coords)
