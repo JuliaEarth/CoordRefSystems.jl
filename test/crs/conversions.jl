@@ -1801,6 +1801,73 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> Stereographic" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=stere lat_0=<latₒ> k_0=1 lon_0=0 ellps=WGS84
+      # """)
+      # inverse tested against the same pipeline with proj=stere inv
+      StereoNorth = Stereographic{CoordRefSystems.EllipticalMode,1.0,90.0°,WGS84Latest}
+      StereoSouth = Stereographic{CoordRefSystems.EllipticalMode,1.0,-90.0°,WGS84Latest}
+      StereoEquat = Stereographic{CoordRefSystems.EllipticalMode,1.0,0.0°,WGS84Latest}
+      StereoObliq = Stereographic{CoordRefSystems.EllipticalMode,1.0,45.0°,WGS84Latest}
+
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(StereoNorth, c1)
+      @test isapprox(c2, StereoNorth(T(5.291160727448346e6), T(0)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon(-T(45), T(90))
+      c2 = convert(StereoSouth, c1)
+      @test isapprox(c2, StereoSouth(T(5.291160727448346e6), T(0)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(StereoEquat, c1)
+      @test isapprox(c2, StereoEquat(T(9.05027318888033e6), T(8.989720883860068e6)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(StereoEquat, c1)
+      @test isapprox(c2, StereoEquat(-T(9.05027318888033e6), -T(8.989720883860068e6)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon(T(45), T(90))
+      c2 = convert(StereoObliq, c1)
+      @test isapprox(c2, StereoObliq(T(6.0369633020619275e6), T(4.254425318211489e6)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon(-T(45), -T(90))
+      c2 = convert(StereoObliq, c1)
+      @test isapprox(c2, StereoObliq(-T(1.7949865307985418e7), -T(1.2649797191693429e7)))
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      # spherical mode
+      SphereObliq = Stereographic{CoordRefSystems.SphericalMode,1.0,45.0°,WGS84Latest}
+      c1 = LatLon(T(30), T(60))
+      c2 = convert(SphereObliq, c1)
+      c3 = convert(LatLon, c2)
+      @test isapprox(c3, c1)
+
+      # the antipode of the center is outside of the projection domain
+      @test !indomain(StereoNorth, LatLon(-T(90), T(0)))
+      @test !indomain(StereoObliq, LatLon(-T(45), T(180)))
+
+      # type stability
+      c1 = LatLon(T(45), T(90))
+      c2 = StereoObliq(T(6.0369633020619275e6), T(4.254425318211489e6))
+      @inferred convert(StereoObliq, c1)
+      @inferred convert(LatLon, c2)
+    end
+
     @testset "LatLon <> EqualEarth" begin
       # forward tested against Proj.Transformation("""
       # proj=pipeline
