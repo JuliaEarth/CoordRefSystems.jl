@@ -1800,6 +1800,50 @@
       @inferred convert(LatLon, c2)
     end
 
+    @testset "LatLon <> ObliqueStereographic" begin
+      # forward tested against Proj.Transformation("""
+      # proj=pipeline
+      # step proj=axisswap order=2,1
+      # step proj=unitconvert xy_in=deg xy_out=rad
+      # step proj=sterea lat_0=52.1561605555556 lon_0=0 k=0.9999079 ellps=bessel
+      # """)
+      # inverse tested against the same pipeline with proj=sterea inv
+      RDNew = ObliqueStereographic{0.9999079,52.1561605555556°,DHDN}
+
+      c1 = LatLon{DHDN}(T(52), T(0))
+      c2 = convert(RDNew, c1)
+      @test isapprox(c2, RDNew(T(0), -T(17372.222458345983)))
+      c3 = convert(LatLon{DHDN}, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon{DHDN}(T(53), T(1))
+      c2 = convert(RDNew, c1)
+      @test isapprox(c2, RDNew(T(67124.93808585788), T(94348.51937548892)))
+      c3 = convert(LatLon{DHDN}, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon{DHDN}(T(51), -T(1))
+      c2 = convert(RDNew, c1)
+      @test isapprox(c2, RDNew(-T(70188.27347900372), -T(128131.51813421959)))
+      c3 = convert(LatLon{DHDN}, c2)
+      @test isapprox(c3, c1)
+
+      c1 = LatLon{DHDN}(T(52), T(2))
+      c2 = convert(RDNew, c1)
+      @test isapprox(c2, RDNew(T(137314.7725435889), -T(15481.476974554616)))
+      c3 = convert(LatLon{DHDN}, c2)
+      @test isapprox(c3, c1)
+
+      # the antipode of the center is outside of the projection domain
+      @test !indomain(RDNew, LatLon{DHDN}(-T(52.1561605555556), T(180)))
+
+      # type stability
+      c1 = LatLon{DHDN}(T(52), T(0))
+      c2 = RDNew(T(0), -T(17372.222458345983))
+      @inferred convert(RDNew, c1)
+      @inferred convert(LatLon{DHDN}, c2)
+    end
+
     @testset "LatLon <> LambertAzimuthal" begin
       # forward tested against Proj.Transformation("""
       # proj=pipeline
