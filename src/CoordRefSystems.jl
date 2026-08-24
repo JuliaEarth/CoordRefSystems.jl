@@ -124,6 +124,7 @@ export
   TransverseMercator,
   Albers,
   Sinusoidal,
+  Stereographic,
   LambertAzimuthal,
   LambertConic,
   EqualEarth,
