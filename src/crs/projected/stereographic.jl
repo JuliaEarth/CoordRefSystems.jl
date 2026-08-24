@@ -48,6 +48,44 @@ lentype(::Type{<:Stereographic{Mode,k₀,latₒ,Datum,Shift,M}}) where {Mode,k�
 
 isconformal(::Type{<:Stereographic}) = true
 
+"""
+    StereoNorth{k₀}(x, y)
+    StereoNorth{k₀,Datum}(x, y)
+
+Stereographic North Pole coordinates with scale factor `k₀` in length units
+(default to meter) with a given `Datum` (default to `WGS84`).
+
+## Examples
+
+```julia
+StereoNorth{1.0}(1, 1) # add default units
+StereoNorth{1.0}(1m, 1m) # integers are converted converted to floats
+StereoNorth{1.0}(1.0km, 1.0km) # length quantities are converted to meters
+StereoNorth{1.0}(1.0m, 1.0m)
+StereoNorth{1.0,WGS84Latest}(1.0m, 1.0m)
+```
+"""
+const StereoNorth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,90.0°,Datum,Shift}
+
+"""
+    StereoSouth{k₀}(x, y)
+    StereoSouth{k₀,Datum}(x, y)
+
+Stereographic South Pole coordinates with scale factor `k₀` in length units
+(default to meter) with a given `Datum` (default to `WGS84`).
+
+## Examples
+
+```julia
+StereoSouth{1.0}(1, 1) # add default units
+StereoSouth{1.0}(1m, 1m) # integers are converted converted to floats
+StereoSouth{1.0}(1.0km, 1.0km) # length quantities are converted to meters
+StereoSouth{1.0}(1.0m, 1.0m)
+StereoSouth{1.0,WGS84Latest}(1.0m, 1.0m)
+```
+"""
+const StereoSouth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,-90.0°,Datum,Shift}
+
 # ------------
 # CONVERSIONS
 # ------------
