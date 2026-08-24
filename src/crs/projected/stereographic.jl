@@ -65,7 +65,7 @@ StereoNorth{1.0}(1.0m, 1.0m)
 StereoNorth{1.0,WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const StereoNorth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,90.0°,Datum,Shift}
+const StereoNorth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,90°,Datum,Shift}
 
 """
     StereoSouth{k₀}(x, y)
@@ -84,7 +84,7 @@ StereoSouth{1.0}(1.0m, 1.0m)
 StereoSouth{1.0,WGS84Latest}(1.0m, 1.0m)
 ```
 """
-const StereoSouth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,-90.0°,Datum,Shift}
+const StereoSouth{k₀,Datum,Shift} = Stereographic{EllipticalMode,k₀,-90°,Datum,Shift}
 
 # ------------
 # CONVERSIONS
