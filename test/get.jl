@@ -113,26 +113,42 @@
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest}, ESRI{102035})
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest}, ESRI{102037})
 
+  # UTUM with ED50 datum
+  for zone in 28:38
+    NorthCode = 23000 + zone
+    gettest(utmnorth(zone, datum=ED50), EPSG{NorthCode})
+  end
+
+  # UTM with SAD69 datum
+  for zone in 18:25
+    NorthCode = 29150 + zone
+    gettest(utmnorth(zone, datum=SAD69), EPSG{NorthCode})
+  end
+  for zone in 17:25
+    SouthCode = 29170 + zone
+    gettest(utmsouth(zone, datum=SAD69), EPSG{SouthCode})
+  end
+
+  # UTM with SIRGAS2000 datum
+  for zone in 11:22
+    NorthCode = 31954 + zone
+    gettest(utmnorth(zone, datum=SIRGAS2000), EPSG{NorthCode})
+  end
+  for zone in 17:25
+    SouthCode = 31960 + zone
+    gettest(utmsouth(zone, datum=SIRGAS2000), EPSG{SouthCode})
+  end
+  gettest(utmnorth(23, datum=SIRGAS2000), EPSG{6210})
+  gettest(utmnorth(24, datum=SIRGAS2000), EPSG{6211})
+  gettest(utmsouth(26, datum=SIRGAS2000), EPSG{5396})
+
+  # UTM with WGS84 datum
   for zone in 1:60
     NorthCode = 32600 + zone
     SouthCode = 32700 + zone
     gettest(utmnorth(zone, datum=WGS84Latest), EPSG{NorthCode})
     gettest(utmsouth(zone, datum=WGS84Latest), EPSG{SouthCode})
   end
-
-  for zone in 11:22
-    NorthCode = 31954 + zone
-    gettest(utmnorth(zone, datum=SIRGAS2000), EPSG{NorthCode})
-  end
-
-  for zone in 17:25
-    SouthCode = 31960 + zone
-    gettest(utmsouth(zone, datum=SIRGAS2000), EPSG{SouthCode})
-  end
-
-  gettest(utmnorth(23, datum=SIRGAS2000), EPSG{6210})
-  gettest(utmnorth(24, datum=SIRGAS2000), EPSG{6211})
-  gettest(utmsouth(26, datum=SIRGAS2000), EPSG{5396})
 
   # CRS string
   str = wktstring(EPSG{3395})
