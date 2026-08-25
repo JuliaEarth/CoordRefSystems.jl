@@ -176,8 +176,10 @@ function _invgauss(λᵪ, ϕᵪ, C, K, e; maxiter=20)
   ϕᵢ = ϕᵪ
   for _ in 1:maxiter
     ϕ = 2 * atan(num * _srat(e * sin(ϕᵢ), -e / 2)) - halfpi
-    abs(ϕ - ϕᵢ) < tol && (ϕᵢ = ϕ;
-    break)
+    if abs(ϕ - ϕᵢ) < tol
+      ϕᵢ = ϕ
+      break
+    end
     ϕᵢ = ϕ
   end
 
