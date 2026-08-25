@@ -145,35 +145,39 @@ end
 @crscodes Orthographic{SphericalMode,90°,WGS84Latest} ESRI{102035}
 @crscodes Orthographic{SphericalMode,-90°,WGS84Latest} ESRI{102037}
 
-for zone in 1:60
-  NorthCode = 32600 + zone
-  SouthCode = 32700 + zone
-  @eval @crscodes utmnorth($zone, datum=WGS84Latest) EPSG{$NorthCode}
-  @eval @crscodes utmsouth($zone, datum=WGS84Latest) EPSG{$SouthCode}
-end
-
-for zone in 11:22
-  NorthCode = 31954 + zone
-  @eval @crscodes utmnorth($zone, datum=SIRGAS2000) EPSG{$NorthCode}
-end
-
-for zone in 17:25
-  SouthCode = 31960 + zone
-  @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
-end
-
-@crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
-@crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
-@crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
-
+# UTM with ED50 datum
 for zone in 28:38
   NorthCode = 23000 + zone
   @eval @crscodes utmnorth($zone, datum=ED50) EPSG{$NorthCode}
 end
 
+# UTM with SAD69 datum
+for zone in 18:25
+  NorthCode = 29150 + zone
+  @eval @crscodes utmnorth($zone, datum=SAD69) EPSG{$NorthCode}
+end
 for zone in 17:25
   SouthCode = 29170 + zone
-  NorthCode = 29150 + zone
-  zone!=17 && (@eval @crscodes utmnorth($zone, datum=SAD69) EPSG{$NorthCode})
   @eval @crscodes utmsouth($zone, datum=SAD69) EPSG{$SouthCode}
+end
+
+# UTM with SIRGAS2000 datum
+for zone in 11:22
+  NorthCode = 31954 + zone
+  @eval @crscodes utmnorth($zone, datum=SIRGAS2000) EPSG{$NorthCode}
+end
+for zone in 17:25
+  SouthCode = 31960 + zone
+  @eval @crscodes utmsouth($zone, datum=SIRGAS2000) EPSG{$SouthCode}
+end
+@crscodes utmnorth(23, datum=SIRGAS2000) EPSG{6210}
+@crscodes utmnorth(24, datum=SIRGAS2000) EPSG{6211}
+@crscodes utmsouth(26, datum=SIRGAS2000) EPSG{5396}
+
+# UTM with WGS84 datum
+for zone in 1:60
+  NorthCode = 32600 + zone
+  SouthCode = 32700 + zone
+  @eval @crscodes utmnorth($zone, datum=WGS84Latest) EPSG{$NorthCode}
+  @eval @crscodes utmsouth($zone, datum=WGS84Latest) EPSG{$SouthCode}
 end
