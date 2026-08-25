@@ -22,6 +22,7 @@
     EPSG{2193}
   )
   gettest(CoordRefSystems.shift(Albers{45.0°,50.0°,58.5°,NAD83}, lonₒ=-126.0°, yₒ=1000000.0m), EPSG{3005})
+  gettest(Stereographic{CoordRefSystems.EllipticalMode,0.9727690128917972,-90°,WGS84Latest}, EPSG{3031})
   gettest(
     CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m),
     EPSG{3035}
@@ -33,8 +34,13 @@
   gettest(CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m), EPSG{3310})
   gettest(CoordRefSystems.shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°), EPSG{3338})
   gettest(Mercator{WGS84Latest}, EPSG{3395})
+  gettest(
+    CoordRefSystems.shift(Stereographic{CoordRefSystems.EllipticalMode,0.969858190326352,90°,WGS84Latest}, lonₒ=-45.0°),
+    EPSG{3413}
+  )
   gettest(CoordRefSystems.shift(Albers{0.0°,-18.0°,-36.0°,GDA94}, lonₒ=132.0°), EPSG{3577})
   gettest(WebMercator{WGS84Latest}, EPSG{3857})
+  gettest(Stereographic{CoordRefSystems.EllipticalMode,0.9727690128917972,90°,WGS84Latest}, EPSG{3995})
   gettest(LatLon{RGF93v1}, EPSG{4171})
   gettest(LatLon{Lisbon1937}, EPSG{4207})
   gettest(LatLon{Aratu}, EPSG{4208})
