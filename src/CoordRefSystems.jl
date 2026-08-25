@@ -23,6 +23,7 @@ include("crs.jl")
 include("transforms.jl")
 include("promotion.jl")
 include("utm.jl")
+include("stereo.jl")
 include("shift.jl")
 include("codes.jl")
 include("strings.jl")
@@ -139,6 +140,11 @@ export
   utm,
   utmnorth,
   utmsouth,
+
+  # Polar Stereographic
+  stereo,
+  stereonorth,
+  stereosouth,
 
   # codes
   EPSG,
