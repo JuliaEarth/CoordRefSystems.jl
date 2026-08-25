@@ -90,7 +90,7 @@ for zone in 17:25
     SouthCode = 29170 + zone
     NorthCode = 29150 + zone
     esriid2code["SAD_1969_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
-    zone != 17 && esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+    zone != 17 && (esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode})
 end
 
 """
