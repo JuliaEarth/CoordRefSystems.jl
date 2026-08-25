@@ -86,6 +86,11 @@ for zone in 28:38
   esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
+for zone in 18:25
+    SouthCode = 29170 + zone
+    esriid2code["SAD_1969_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
+
 """
     CoordRefSystems.string2code(string)
 
