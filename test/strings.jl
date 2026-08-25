@@ -83,6 +83,7 @@
     crsstringtest(EPSG{NorthCode})
   end
 
+  # UTM miscellaneous
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
