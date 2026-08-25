@@ -49,7 +49,6 @@ const esriid2code = Dict(
   "NZGD_2000_New_Zealand_Transverse_Mercator" => EPSG{2193},
   "RGF93_v2" => EPSG{9777},
   "RGF93_v2b" => EPSG{9782},
-  "SAD_1969_UTM_Zone_23S" => EPSG{29193},
   "SIRGAS_2000_UTM_Zone_23N" => EPSG{6210},
   "SIRGAS_2000_UTM_Zone_24N" => EPSG{6211},
   "SIRGAS_2000_UTM_Zone_26S" => EPSG{5396},
