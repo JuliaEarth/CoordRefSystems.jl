@@ -67,7 +67,7 @@ for zone in 28:38
 end
 
 # UTM with SAD69 datum
-for zone in 18:25
+for zone in 18:22
     NorthCode = 29150 + zone
     esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
