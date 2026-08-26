@@ -181,6 +181,17 @@ epoch(::Type{NAD83CSRS{7}}) = 2010.0
 epoch(::Type{NAD83CSRS{8}}) = 2010.0
 
 """
+    Amersfoort
+
+Amersfoort datum.
+
+See <https://epsg.org/datum_6289/Amersfoort.html>
+"""
+abstract type Amersfoort <: Datum end
+
+ellipsoid(::Type{Amersfoort}) = Bessel🌎
+
+"""
     Aratu
 
 Aratu datum.
