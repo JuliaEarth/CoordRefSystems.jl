@@ -22,8 +22,8 @@ include("modes.jl")
 include("crs.jl")
 include("transforms.jl")
 include("promotion.jl")
-include("utm.jl")
 include("stereo.jl")
+include("utm.jl")
 include("shift.jl")
 include("codes.jl")
 include("strings.jl")
@@ -136,15 +136,15 @@ export
   isequidistant,
   iscompromise,
 
-  # UTM
-  utm,
-  utmnorth,
-  utmsouth,
-
-  # Polar Stereographic
+  # polar stereographic
   stereo,
   stereonorth,
   stereosouth,
+
+  # universal transverse mercator
+  utm,
+  utmnorth,
+  utmsouth,
 
   # codes
   EPSG,
