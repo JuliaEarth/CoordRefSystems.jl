@@ -126,6 +126,7 @@ export
   Albers,
   Sinusoidal,
   Stereographic,
+  ObliqueStereographic,
   LambertAzimuthal,
   LambertConic,
   EqualEarth,
