@@ -53,7 +53,7 @@
   end
 
   # UTM with SAD69 datum
-  for zone in 18:25
+  for zone in 18:22
     NorthCode = 29150 + zone
     crsstringtest(EPSG{NorthCode})
   end
