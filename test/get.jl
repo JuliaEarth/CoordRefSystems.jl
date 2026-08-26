@@ -116,6 +116,25 @@
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest}, ESRI{102035})
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest}, ESRI{102037})
 
+  # polar stereographic helpers
+  # the hemisphere sets the pole, only the magnitude of the latitude is used
+  @test stereonorth(71.0°) === stereo(:north, 71.0°)
+  @test stereosouth(71.0°) === stereo(:south, -71.0°)
+  @test stereonorth(71.0°) !== stereosouth(71.0°)
+  # true scale at the pole is a unit scale factor
+  @test CoordRefSystems.scalefactor(90.0°, CoordRefSystems.ellipsoid(WGS84Latest)) == 1
+  # scale factor decreases as the latitude of true scale moves away from the pole
+  let E = CoordRefSystems.ellipsoid(WGS84Latest)
+    ks = [CoordRefSystems.scalefactor(ϕ * °, E) for ϕ in (30, 50, 71, 85)]
+    @test issorted(ks)
+    @test all(0 .< ks .< 1)
+  end
+  # error: the hemisphere must be :north or :south
+  @test_throws ArgumentError stereo(:east, 71.0°)
+  # error: the latitude of true scale must be greater than 0° and at most 90°
+  @test_throws ArgumentError stereonorth(0.0°)
+  @test_throws ArgumentError stereonorth(91.0°)
+
   for zone in 1:60
     NorthCode = 32600 + zone
     SouthCode = 32700 + zone
@@ -136,25 +155,6 @@
   gettest(utmnorth(23, datum=SIRGAS2000), EPSG{6210})
   gettest(utmnorth(24, datum=SIRGAS2000), EPSG{6211})
   gettest(utmsouth(26, datum=SIRGAS2000), EPSG{5396})
-
-  # polar stereographic helpers
-  # the hemisphere sets the pole, only the magnitude of the latitude is used
-  @test stereonorth(71.0°) === stereo(:north, 71.0°)
-  @test stereosouth(71.0°) === stereo(:south, -71.0°)
-  @test stereonorth(71.0°) !== stereosouth(71.0°)
-  # true scale at the pole is a unit scale factor
-  @test CoordRefSystems.scalefactor(90.0°, CoordRefSystems.ellipsoid(WGS84Latest)) == 1
-  # scale factor decreases as the latitude of true scale moves away from the pole
-  let E = CoordRefSystems.ellipsoid(WGS84Latest)
-    ks = [CoordRefSystems.scalefactor(ϕ * °, E) for ϕ in (30, 50, 71, 85)]
-    @test issorted(ks)
-    @test all(0 .< ks .< 1)
-  end
-  # error: the hemisphere must be :north or :south
-  @test_throws ArgumentError stereo(:east, 71.0°)
-  # error: the latitude of true scale must be greater than 0° and at most 90°
-  @test_throws ArgumentError stereonorth(0.0°)
-  @test_throws ArgumentError stereonorth(91.0°)
 
   # CRS string
   str = wktstring(EPSG{3395})
