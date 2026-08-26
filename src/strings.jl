@@ -68,12 +68,12 @@ end
 
 # UTM with SAD69 datum
 for zone in 18:22
-    NorthCode = 29150 + zone
-    esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+  NorthCode = 29150 + zone
+  esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 for zone in 17:25
-    SouthCode = 29170 + zone
-    esriid2code["SAD_1969_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+  SouthCode = 29170 + zone
+  esriid2code["SAD_1969_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
 end
 
 # UTM with SIRGAS2000 datum
