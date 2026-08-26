@@ -135,11 +135,20 @@
   @test_throws ArgumentError stereonorth(0.0°)
   @test_throws ArgumentError stereonorth(91.0°)
 
-  for zone in 1:60
-    NorthCode = 32600 + zone
-    SouthCode = 32700 + zone
-    gettest(utmnorth(zone, datum=WGS84Latest), EPSG{NorthCode})
-    gettest(utmsouth(zone, datum=WGS84Latest), EPSG{SouthCode})
+  # UTUM with ED50 datum
+  for zone in 28:38
+    NorthCode = 23000 + zone
+    gettest(utmnorth(zone, datum=ED50), EPSG{NorthCode})
+  end
+
+  # UTM with SAD69 datum
+  for zone in 18:22
+    NorthCode = 29150 + zone
+    gettest(utmnorth(zone, datum=SAD69), EPSG{NorthCode})
+  end
+  for zone in 17:25
+    SouthCode = 29170 + zone
+    gettest(utmsouth(zone, datum=SAD69), EPSG{SouthCode})
   end
 
   # UTM with SIRGAS2000 datum
