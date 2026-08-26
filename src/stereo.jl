@@ -50,9 +50,9 @@ stereosouth(latₜₛ; kwargs...) = stereo(:south, latₜₛ; kwargs...)
 # scale factor at the pole for a given latitude of true scale,
 # equation 21-35 of Snyder, with true scale at the pole itself
 # corresponding to a unit scale factor
-function scalefactor(ϕₜₛ, E)
+function scalefactor(ϕₜₛ, 🌎)
   ϕₜₛ == 90° && return 1.0
-  e = eccentricity(E)
+  e = eccentricity(🌎)
   esinϕ = e * sin(ϕₜₛ)
   m = cos(ϕₜₛ) / sqrt(1 - esinϕ^2)
   t = tan(45° - ϕₜₛ / 2) / ((1 - esinϕ) / (1 + esinϕ))^(e / 2)
