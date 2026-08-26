@@ -22,6 +22,7 @@
     EPSG{2193}
   )
   gettest(CoordRefSystems.shift(Albers{45.0°,50.0°,58.5°,NAD83}, lonₒ=-126.0°, yₒ=1000000.0m), EPSG{3005})
+  gettest(stereosouth(71.0°), EPSG{3031})
   gettest(
     CoordRefSystems.shift(LambertAzimuthal{52.0°,ETRFLatest}, lonₒ=10.0°, xₒ=4321000.0m, yₒ=3210000.0m),
     EPSG{3035}
@@ -33,8 +34,10 @@
   gettest(CoordRefSystems.shift(Albers{0.0°,34.0°,40.5°,NAD83}, lonₒ=-120.0°, yₒ=-4000000.0m), EPSG{3310})
   gettest(CoordRefSystems.shift(Albers{50.0°,55.0°,65.0°,NAD83}, lonₒ=-154.0°), EPSG{3338})
   gettest(Mercator{WGS84Latest}, EPSG{3395})
+  gettest(stereonorth(70.0°, lonₒ=-45.0°), EPSG{3413})
   gettest(CoordRefSystems.shift(Albers{0.0°,-18.0°,-36.0°,GDA94}, lonₒ=132.0°), EPSG{3577})
   gettest(WebMercator{WGS84Latest}, EPSG{3857})
+  gettest(stereonorth(71.0°), EPSG{3995})
   gettest(LatLon{RGF93v1}, EPSG{4171})
   gettest(LatLon{Lisbon1937}, EPSG{4207})
   gettest(LatLon{Aratu}, EPSG{4208})
@@ -112,6 +115,25 @@
   gettest(WinkelTripel{WGS84Latest}, ESRI{54042})
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,90°,WGS84Latest}, ESRI{102035})
   gettest(CoordRefSystems.Orthographic{CoordRefSystems.SphericalMode,-90°,WGS84Latest}, ESRI{102037})
+
+  # polar stereographic helpers
+  # the hemisphere sets the pole, only the magnitude of the latitude is used
+  @test stereonorth(71.0°) === stereo(:north, 71.0°)
+  @test stereosouth(71.0°) === stereo(:south, -71.0°)
+  @test stereonorth(71.0°) !== stereosouth(71.0°)
+  # true scale at the pole is a unit scale factor
+  @test CoordRefSystems.scalefactor(90.0°, CoordRefSystems.ellipsoid(WGS84Latest)) == 1
+  # scale factor decreases as the latitude of true scale moves away from the pole
+  let E = CoordRefSystems.ellipsoid(WGS84Latest)
+    ks = [CoordRefSystems.scalefactor(ϕ * °, E) for ϕ in (30, 50, 71, 85)]
+    @test issorted(ks)
+    @test all(0 .< ks .< 1)
+  end
+  # error: the hemisphere must be :north or :south
+  @test_throws ArgumentError stereo(:east, 71.0°)
+  # error: the latitude of true scale must be greater than 0° and at most 90°
+  @test_throws ArgumentError stereonorth(0.0°)
+  @test_throws ArgumentError stereonorth(91.0°)
 
   for zone in 1:60
     NorthCode = 32600 + zone
