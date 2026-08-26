@@ -49,9 +49,6 @@ const esriid2code = Dict(
   "NZGD_2000_New_Zealand_Transverse_Mercator" => EPSG{2193},
   "RGF93_v2" => EPSG{9777},
   "RGF93_v2b" => EPSG{9782},
-  "SIRGAS_2000_UTM_Zone_23N" => EPSG{6210},
-  "SIRGAS_2000_UTM_Zone_24N" => EPSG{6211},
-  "SIRGAS_2000_UTM_Zone_26S" => EPSG{5396},
   "South_Pole_Orthographic" => ESRI{102037},
   "TM75_Irish_Grid" => EPSG{29903},
   "WGS_1984_Plate_Carree" => EPSG{32662},
@@ -63,26 +60,41 @@ const esriid2code = Dict(
   "World_Winkel_Tripel_NGS" => ESRI{54042}
 )
 
+# UTM with ED50 datum
+for zone in 28:38
+  NorthCode = 23000 + zone
+  esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+end
+
+# UTM with SAD69 datum
+for zone in 18:22
+    NorthCode = 29150 + zone
+    esriid2code["SAD_1969_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+end
+for zone in 17:25
+    SouthCode = 29170 + zone
+    esriid2code["SAD_1969_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
+
+# UTM with SIRGAS2000 datum
+for zone in 11:22
+  NorthCode = 31954 + zone
+  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
+end
+for zone in 17:25
+  SouthCode = 31960 + zone
+  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
+end
+esriid2code["SIRGAS_2000_UTM_Zone_23N"] = EPSG{6210}
+esriid2code["SIRGAS_2000_UTM_Zone_24N"] = EPSG{6211}
+esriid2code["SIRGAS_2000_UTM_Zone_26S"] = EPSG{5396}
+
+# UTM with WGS84 datum
 for zone in 1:60
   NorthCode = 32600 + zone
   SouthCode = 32700 + zone
   esriid2code["WGS_1984_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
   esriid2code["WGS_1984_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
-end
-
-for zone in 11:22
-  NorthCode = 31954 + zone
-  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
-end
-
-for zone in 17:25
-  SouthCode = 31960 + zone
-  esriid2code["SIRGAS_2000_UTM_Zone_$(zone)S"] = EPSG{SouthCode}
-end
-
-for zone in 28:38
-  NorthCode = 23000 + zone
-  esriid2code["ED_1950_UTM_Zone_$(zone)N"] = EPSG{NorthCode}
 end
 
 """

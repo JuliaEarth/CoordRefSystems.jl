@@ -46,6 +46,36 @@
   # crsstringtest(EPSG{10414})
   crsstringtest1(EPSG{32662})
 
+  # UTM with ED50 datum
+  for zone in 28:38
+    NorthCode = 23000 + zone
+    crsstringtest(EPSG{NorthCode})
+  end
+
+  # UTM with SAD69 datum
+  for zone in 18:22
+    NorthCode = 29150 + zone
+    crsstringtest(EPSG{NorthCode})
+  end
+  for zone in 17:25
+    SouthCode = 29170 + zone
+    crsstringtest(EPSG{SouthCode})
+  end
+
+  # UTM with SIRGAS2000 datum
+  for zone in 11:22
+    NorthCode = 31954 + zone
+    crsstringtest(EPSG{NorthCode})
+  end
+  for zone in 17:25
+    SouthCode = 31960 + zone
+    crsstringtest(EPSG{SouthCode})
+  end
+  crsstringtest(EPSG{6210})
+  crsstringtest(EPSG{6211})
+  crsstringtest(EPSG{5396})
+
+  # UTM with WGS84 datum
   for zone in 1:60
     NorthCode = 32600 + zone
     SouthCode = 32700 + zone
@@ -53,21 +83,7 @@
     crsstringtest(EPSG{NorthCode})
   end
 
-  for zone in 11:22
-    NorthCode = 31954 + zone
-    crsstringtest(EPSG{NorthCode})
-  end
-
-  for zone in 17:25
-    SouthCode = 31960 + zone
-    crsstringtest(EPSG{SouthCode})
-  end
-
-  for zone in 28:38
-    NorthCode = 23000 + zone
-    crsstringtest(EPSG{NorthCode})
-  end
-
+  # UTM miscellaneous
   crsstringtest(EPSG{25832})
   crsstringtest(EPSG{27700})
   crsstringtest(EPSG{29903})
