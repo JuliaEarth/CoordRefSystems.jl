@@ -50,6 +50,7 @@ export
   ETRFLatest,
   NAD83CSRS,
   NAD83CSRSLatest,
+  Amersfoort,
   Aratu,
   BD72,
   Carthage,

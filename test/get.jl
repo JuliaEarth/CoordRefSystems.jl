@@ -95,6 +95,15 @@
     EPSG{28355}
   )
   gettest(
+    CoordRefSystems.shift(
+      ObliqueStereographic{0.9999079,52.1561605555556°,Amersfoort},
+      lonₒ=5.38763888888889°,
+      xₒ=155000.0m,
+      yₒ=463000.0m
+    ),
+    EPSG{28992}
+  )
+  gettest(
     CoordRefSystems.shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m),
     EPSG{29902},
     EPSG{29903}

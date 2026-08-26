@@ -131,6 +131,12 @@ end
 @crscodes shift(TransverseMercator{0.9996,0.0°,ETRFLatest}, lonₒ=9.0°, xₒ=500000.0m, yₒ=0.0m) EPSG{25832}
 @crscodes shift(TransverseMercator{0.9996012717,49.0°,OSGB36}, lonₒ=-2.0°, xₒ=400000.0m, yₒ=-100000.0m) EPSG{27700}
 @crscodes shift(TransverseMercator{0.9996,0.0°,GDA94}, lonₒ=147.0°, xₒ=500000.0m, yₒ=10000000.0m) EPSG{28355}
+@crscodes shift(
+  ObliqueStereographic{0.9999079,52.1561605555556°,Amersfoort},
+  lonₒ=5.38763888888889°,
+  xₒ=155000.0m,
+  yₒ=463000.0m
+) EPSG{28992}
 @crscodes shift(TransverseMercator{1.000035,53.5°,Ire65}, lonₒ=-8.0°, xₒ=200000.0m, yₒ=250000.0m) EPSG{29902} EPSG{
   29903
 }
