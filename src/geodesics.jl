@@ -195,7 +195,7 @@ function geodesicazimuth(coords::LatLon, v)
   U = numtype(eltype(v))
   S = promote_type(T, U)
   ê, n̂ = _eastnorth(coords)
-  S(atand(v ⋅ ê, v ⋅ n̂) * u"°")
+  S(atand(v ⋅ ê, v ⋅ n̂)) * u"°"
 end
 
 # fallback for other coordinate reference systems
