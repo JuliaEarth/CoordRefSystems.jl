@@ -136,4 +136,18 @@
   c₁ = LatLon(T(-33.8688), T(151.2093))
   c₂ = LatLon(T(51.5074), T(-0.1278))
   @test isapprox(geodesicazimuth(c₁, geodesictangent(c₁, geodesicbwd(c₁, c₂))), geodesicbwd(c₁, c₂), atol=1e-4u"°")
+
+  # tests with other coordinate reference systems
+  ll₁ = LatLon(T(0), T(0))
+  ll₂ = LatLon(T(0), T(1))
+  me₁ = convert(Mercator, ll₁)
+  me₂ = convert(Mercator, ll₂)
+  @test isapprox(geodesicfwd(ll₁, T(0), T(1000)), geodesicfwd(me₁, T(0), T(1000)))
+  @test isapprox(geodesicfwd(ll₂, T(0), T(1000)), geodesicfwd(me₂, T(0), T(1000)))
+  @test isapprox(geodesicbwd(ll₁, ll₂), geodesicbwd(me₁, me₂))
+  @test isapprox(geodesicdistance(ll₁, ll₂), geodesicdistance(me₁, me₂))
+  @test isapprox(geodesictangent(ll₁, 0), geodesictangent(me₁, 0))
+  @test isapprox(geodesictangent(ll₂, 0), geodesictangent(me₂, 0))
+  @test isapprox(geodesicazimuth(ll₁, geodesictangent(ll₁, 0)), geodesicazimuth(me₁, geodesictangent(me₁, 0)))
+  @test isapprox(geodesicazimuth(ll₂, geodesictangent(ll₂, 0)), geodesicazimuth(me₂, geodesictangent(me₂, 0)))
 end
