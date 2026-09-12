@@ -9,14 +9,14 @@ const Deg{T} = Quantity{T,NoDims,typeof(°)}
 const Rad{T} = Quantity{T,NoDims,typeof(rad)}
 
 """
-    asdeg(x)
+    aslen(x)
 
-Return `x` if it is in degrees, add the degree unit if it is a number,
-and throw an error otherwise.
+Adds meter unit if the argument is not a quantity
+with length unit, otherwise, returns `x` as is.
 """
-asdeg(x::Deg) = x
-asdeg(x::Number) = x * °
-asdeg(::Quantity) = error("invalid unit, please pass a value in degrees")
+aslen(x::Len) = x
+aslen(x::Number) = x * u"m"
+aslen(::Quantity) = throw(ArgumentError("invalid length unit"))
 
 """
     asmet(x)
@@ -27,6 +27,16 @@ and throw an error otherwise.
 asmet(x::Met) = x
 asmet(x::Number) = x * m
 asmet(::Quantity) = error("invalid unit, please pass a value in meters")
+
+"""
+    asdeg(x)
+
+Return `x` if it is in degrees, add the degree unit if it is a number,
+and throw an error otherwise.
+"""
+asdeg(x::Deg) = x
+asdeg(x::Number) = x * °
+asdeg(::Quantity) = error("invalid unit, please pass a value in degrees")
 
 """
     atol(x)
