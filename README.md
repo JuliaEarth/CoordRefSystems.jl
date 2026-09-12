@@ -219,8 +219,35 @@ Mercator{WGS84Latest} coordinates
 └─ y: 0.0 m
 ```
 
-Please read the source code and test suite to learn more
-about the supported CRS types and implemented conversions.
+### Geodesics
+
+The functions `geodesicfwd` and `geodesicbwd` can be used
+to solve the forward and backward (a.k.a. inverse) geodesic
+problem:
+
+```julia
+julia> geodesicfwd(LatLon(0, 0), 90, 1000)
+GeodeticLatLon{WGS84Latest} coordinates
+├─ lat: 0.0°
+└─ lon: 0.008983152841195215°
+
+julia> geodesicbwd(LatLon(0, 0), LatLon(0, 1))
+90.0°
+```
+
+The `geodesicdistance` is also provided between two coordinates:
+
+```julia
+julia> geodesicdistance(LatLon(0, 0), LatLon(0, 90))
+1.0018754171394622e7 m
+```
+
+Other utility functions such as `geodesictangent` and
+`geodesicazimuth` can be used to convert between tanget
+vectors in a local frame and the corresponding azimuth
+angle.
+
+Please read the source code and docstrings to learn more.
 
 ## Credits
 
