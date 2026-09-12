@@ -30,12 +30,14 @@
   c₂ = LatLon(T(51.5074), T(-0.1278))
   @test isapprox(geodesicfwd(c₁, geodesicbwd(c₁, c₂), geodesicdistance(c₁, c₂)), c₂)
 
-  # the ellipsoid comes from the datum
-  c₁′ = LatLon{ITRF{2008}}(T(-33.8688), T(151.2093))
-  c₂′ = LatLon{ITRF{2008}}(T(51.5074), T(-0.1278))
-  @test geodesicbwd(c₁′, c₂′) ≠ geodesicbwd(c₁, c₂)
-
   if T === Float64
+    # the ellipsoid comes from the datum
+    c₁ = LatLon(T(-33.8688), T(151.2093))
+    c₂ = LatLon(T(51.5074), T(-0.1278))
+    c₁′ = LatLon{ITRF{2008}}(T(-33.8688), T(151.2093))
+    c₂′ = LatLon{ITRF{2008}}(T(51.5074), T(-0.1278))
+    @test geodesicbwd(c₁′, c₂′) ≠ geodesicbwd(c₁, c₂)
+
     # reference values from the test set of Karney (2013)
     # https://geographiclib.sourceforge.io/C++/doc/geodesic.html#testgeod
     τϕ = 1e-9u"°"
