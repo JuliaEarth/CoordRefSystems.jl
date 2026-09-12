@@ -243,7 +243,7 @@ julia> geodesicdistance(LatLon(0, 0), LatLon(0, 90))
 ```
 
 Other utility functions such as `geodesictangent` and
-`geodesicazimuth` can be used to convert between tanget
+`geodesicazimuth` can be used to convert between tangent
 vectors in a local frame and the corresponding azimuth
 angle.
 
