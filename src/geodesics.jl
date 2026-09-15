@@ -92,7 +92,7 @@ function geodesicbwd(coords₁::LatLon, coords₂::LatLon)
 
   _, ϕ₁, _ = _geodesicinverse(🌎, lat₁, lon₁, lat₂, lon₂)
 
-  T(ϕ₁) * u"°"
+  T(ϕ₁) * °
 end
 
 # fallback for other coordinate reference systems
@@ -161,6 +161,7 @@ geodesictangent(LatLon(0, 0), 90u"°")
 ```
 """
 function geodesictangent(coords::LatLon, ϕ)
+  # unitful azimuth
   ϕ′ = asdeg(ϕ)
   u = unit(lentype(coords))
   T = numtype(lentype(coords))
@@ -191,11 +192,13 @@ geodesicazimuth(LatLon(0, 0), (0, 1, 0))
 ```
 """
 function geodesicazimuth(coords::LatLon, v)
+  # unitful vector
+  v′ = aslen.(v)
   T = numtype(lentype(coords))
-  U = eltype(ustrip.(v))
+  U = numtype(eltype(v′))
   S = promote_type(T, U)
   ê, n̂ = _eastnorth(coords)
-  S(atand(v ⋅ ê, v ⋅ n̂)) * u"°"
+  S(atand(v′ ⋅ ê, v′ ⋅ n̂)) * °
 end
 
 # fallback for other coordinate reference systems
