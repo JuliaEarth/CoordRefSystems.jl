@@ -3,6 +3,7 @@ using Unitful
 using StableRNGs
 using ArchGDAL
 using ArchGDAL.GDAL
+using LinearAlgebra
 using Test
 
 using CoordRefSystems: Met, Deg, Rad
@@ -75,7 +76,10 @@ testfiles = [
   "get.jl",
 
   # WKT strings
-  "strings.jl"
+  "strings.jl",
+
+  # geodesics
+  "geodesics.jl"
 ]
 
 @testset "CoordRefSystems.jl" begin

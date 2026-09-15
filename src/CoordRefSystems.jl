@@ -10,6 +10,7 @@ using Unitful: m, rad, °, ppm
 using ForwardDiff: gradient
 using Rotations: RotXYZ
 using StaticArrays: SVector
+using StaticArrays: normalize, ⋅
 
 import Random
 import Base: ==
@@ -28,6 +29,7 @@ include("shift.jl")
 include("codes.jl")
 include("strings.jl")
 include("get.jl")
+include("geodesics.jl")
 
 export
   # revolution ellipsoids
@@ -150,6 +152,13 @@ export
 
   # codes
   EPSG,
-  ESRI
+  ESRI,
+
+  # geodesics
+  geodesicfwd,
+  geodesicbwd,
+  geodesicdistance,
+  geodesictangent,
+  geodesicazimuth
 
 end
