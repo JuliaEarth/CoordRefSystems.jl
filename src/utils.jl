@@ -15,7 +15,7 @@ Adds meter unit if the argument is not a quantity
 with length unit, otherwise, returns `x` as is.
 """
 aslen(x::Len) = x
-aslen(x::Number) = x * u"m"
+aslen(x::Number) = x * m
 aslen(::Quantity) = throw(ArgumentError("invalid length unit"))
 
 """
