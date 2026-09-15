@@ -60,7 +60,7 @@ end
 """
     geodesicbwd(coords₁, coords₂)
 
-Solve the inverse geodesic problem: return the azimuth at the
+Solve the inverse geodesic problem: return the azimuth at
 the coordinates `coords₁` of the shortest geodesic connecting
 `coords₁` to the coordinates `coords₂`, measured clockwise
 from the north.
@@ -192,7 +192,7 @@ geodesicazimuth(LatLon(0, 0), (0, 1, 0))
 """
 function geodesicazimuth(coords::LatLon, v)
   T = numtype(lentype(coords))
-  U = numtype(eltype(v))
+  U = eltype(ustrip.(v))
   S = promote_type(T, U)
   ê, n̂ = _eastnorth(coords)
   S(atand(v ⋅ ê, v ⋅ n̂)) * u"°"
