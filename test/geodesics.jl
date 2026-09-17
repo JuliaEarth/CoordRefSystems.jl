@@ -116,6 +116,10 @@
   @test Unitful.numtype(eltype(geodesictangent(LatLon(T(30), T(40)), 25))) === T
   @test Unitful.numtype(typeof(geodesicazimuth(LatLon(T(30), T(40)), geodesictangent(LatLon(T(30), T(40)), 25)))) === T
 
+  # the vector can mix plain numbers and quantities
+  @test geodesicazimuth(LatLon(T(0), T(0)), (0, 1.0, 0)) ≈ T(90) * u"°"
+  @test geodesicazimuth(LatLon(T(0), T(0)), (0u"m", 1.0u"m", 0u"m")) ≈ T(90) * u"°"
+
   # azimuth inverts tangent
   for lat in T.(-80:20:80), lon in T.(-150:50:150), ϕ in T.(-150:50:150)
     ll = LatLon(lat, lon)
