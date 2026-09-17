@@ -150,7 +150,7 @@ Unit vector tangent to the ellipsoid at the coordinates `coords`,
 pointing along the azimuth `ϕ`, measured clockwise from the north.
 
 The vector is expressed in the geocentric Cartesian coordinates of the
-the datum of `coords`, and is the direction in which [`geodesicfwd`](@ref) walks.
+datum of `coords`, and is the direction in which [`geodesicfwd`](@ref) walks.
 
 See also [`geodesicazimuth`](@ref).
 
@@ -195,10 +195,10 @@ function geodesicazimuth(coords::LatLon, v)
   # unitful vector
   v′ = aslen.(v)
   T = numtype(lentype(coords))
-  U = numtype(eltype(v′))
-  S = promote_type(T, U)
   ê, n̂ = _eastnorth(coords)
-  S(atand(v′ ⋅ ê, v′ ⋅ n̂)) * °
+  ϕ = atand(v′ ⋅ ê, v′ ⋅ n̂)
+  S = promote_type(T, typeof(ϕ))
+  S(ϕ) * °
 end
 
 # fallback for other coordinate reference systems
