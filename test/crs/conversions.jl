@@ -2252,21 +2252,27 @@
       c1 = Mercator(T(1), T(1))
       c2 = convert(Polar, c1)
       c3 = convert(Mercator{WGS84Latest}, c2)
-      @test isapprox(c2, Polar{WGS84Latest}(T(√2), T(π/4)))
+      @test isapprox(c2, Polar{WGS84Latest}(T(√2), T(π / 4)))
       @test isapprox(c3, c1)
 
       # cylindrical (via Cartesian3D)
       c1 = Mercator(T(1), T(1))
       c2 = convert(Cylindrical, c1)
       c3 = convert(Mercator{WGS84Latest}, c2)
-      @test isapprox(c2, Cylindrical{WGS84Latest}(T(6.378136999999922e6), T(1.5678559428873976e-7), T(0.9999999999999915)))
+      @test isapprox(
+        c2,
+        Cylindrical{WGS84Latest}(T(6.378136999999922e6), T(1.5678559428873976e-7), T(0.9999999999999915))
+      )
       @test isapprox(c3, c1)
 
       # spherical (via Cartesian3D)
       c1 = Mercator(T(1), T(1))
       c2 = convert(Spherical, c1)
       c3 = convert(Mercator{WGS84Latest}, c2)
-      @test isapprox(c2, Spherical{WGS84Latest}(T(6.378137000000001e6), T(1.5707961700093023), T(1.5678559428873976e-7)))
+      @test isapprox(
+        c2,
+        Spherical{WGS84Latest}(T(6.378137000000001e6), T(1.5707961700093023), T(1.5678559428873976e-7))
+      )
       @test isapprox(c3, c1)
 
       # type stability
