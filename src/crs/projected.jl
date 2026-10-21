@@ -240,18 +240,25 @@ Base.convert(C::Type{<:Projected{Datum}}, coords::Cartesian{Datum,3}) where {Dat
 
 # Projected <-> Polar (via Cartesian2D)
 Base.convert(::Type{Polar}, coords::Projected{Datum}) where {Datum} = convert(Polar, convert(Cartesian2D, coords))
-Base.convert(::Type{Polar{Datum}}, coords::Projected{Datum}) where {Datum} = convert(Polar, convert(Cartesian2D, coords))
+Base.convert(::Type{Polar{Datum}}, coords::Projected{Datum}) where {Datum} =
+  convert(Polar, convert(Cartesian2D, coords))
 Base.convert(C::Type{<:Projected{Datum}}, coords::Polar{Datum}) where {Datum} = convert(C, convert(Cartesian, coords))
 
 # Projected <-> Cylindrical (via Cartesian3D)
-Base.convert(::Type{Cylindrical}, coords::Projected{Datum}) where {Datum} = convert(Cylindrical, convert(Cartesian3D, coords))
-Base.convert(::Type{Cylindrical{Datum}}, coords::Projected{Datum}) where {Datum} = convert(Cylindrical, convert(Cartesian3D, coords))
-Base.convert(C::Type{<:Projected{Datum}}, coords::Cylindrical{Datum}) where {Datum} = convert(C, convert(Cartesian, coords))
+Base.convert(::Type{Cylindrical}, coords::Projected{Datum}) where {Datum} =
+  convert(Cylindrical, convert(Cartesian3D, coords))
+Base.convert(::Type{Cylindrical{Datum}}, coords::Projected{Datum}) where {Datum} =
+  convert(Cylindrical, convert(Cartesian3D, coords))
+Base.convert(C::Type{<:Projected{Datum}}, coords::Cylindrical{Datum}) where {Datum} =
+  convert(C, convert(Cartesian, coords))
 
 # Projected <-> Spherical (via Cartesian3D)
-Base.convert(::Type{Spherical}, coords::Projected{Datum}) where {Datum} = convert(Spherical, convert(Cartesian3D, coords))
-Base.convert(::Type{Spherical{Datum}}, coords::Projected{Datum}) where {Datum} = convert(Spherical, convert(Cartesian3D, coords))
-Base.convert(C::Type{<:Projected{Datum}}, coords::Spherical{Datum}) where {Datum} = convert(C, convert(Cartesian, coords))
+Base.convert(::Type{Spherical}, coords::Projected{Datum}) where {Datum} =
+  convert(Spherical, convert(Cartesian3D, coords))
+Base.convert(::Type{Spherical{Datum}}, coords::Projected{Datum}) where {Datum} =
+  convert(Spherical, convert(Cartesian3D, coords))
+Base.convert(C::Type{<:Projected{Datum}}, coords::Spherical{Datum}) where {Datum} =
+  convert(C, convert(Cartesian, coords))
 
 # projection conversion with same datum
 function Base.convert(::Type{Cₜ}, coords::Cₛ) where {Datum,Cₜ<:Projected{Datum},Cₛ<:Projected{Datum}}
