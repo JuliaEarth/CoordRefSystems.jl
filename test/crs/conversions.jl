@@ -2178,26 +2178,26 @@
       @inferred convert(GeocentricLatLonAlt, c4)
     end
 
-    @testset "Cartesian <> Projected" begin
+    @testset "Basic <> Projected" begin
       ShiftedMercator = CoordRefSystems.shift(Mercator{WGS84Latest}, lonₒ=15.0°, xₒ=200.0m, yₒ=200.0m)
 
       # conversion to cartesian 2D
       c1 = Mercator(T(1), T(1))
       c2 = convert(Cartesian2D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(Mercator{WGS84Latest}, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       @test isapprox(c3, c1)
 
       c1 = OrthoNorth(T(1), T(1))
       c2 = convert(Cartesian2D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(OrthoNorth{WGS84Latest}, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       @test isapprox(c3, c1)
 
       c1 = ShiftedMercator(T(1), T(1))
       c2 = convert(Cartesian2D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       c3 = convert(ShiftedMercator, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(1), T(1)))
       @test isapprox(c3, c1)
 
       # conversion using Cartesian is equivalent to conversion using Cartesian2D
@@ -2219,20 +2219,20 @@
       # conversion to cartesian 3D
       c1 = convert(Mercator, LatLon(T(30), T(40)))
       c2 = convert(Cartesian3D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(Mercator{WGS84Latest}, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       @test isapprox(c3, c1)
 
       c1 = convert(OrthoNorth, LatLon(T(30), T(40)))
       c2 = convert(Cartesian3D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(OrthoNorth{WGS84Latest}, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       @test isapprox(c3, c1)
 
       c1 = convert(ShiftedMercator, LatLon(T(30), T(40)))
       c2 = convert(Cartesian3D, c1)
-      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       c3 = convert(ShiftedMercator, c2)
+      @test isapprox(c2, Cartesian{WGS84Latest}(T(4234890.278665873), T(3553494.8709047823), T(3170373.735383637)))
       @test isapprox(c3, c1)
 
       # cartesian without datum
@@ -2247,6 +2247,27 @@
       c1 = Cartesian(T(1), T(2))
       c2 = convert(ShiftedMercator, c1)
       @test isapprox(c2, ShiftedMercator(T(1), T(2)))
+
+      # polar (via Cartesian2D)
+      c1 = Mercator(T(1), T(1))
+      c2 = convert(Polar, c1)
+      c3 = convert(Mercator{WGS84Latest}, c2)
+      @test isapprox(c2, Polar{WGS84Latest}(T(√2), T(π/4)))
+      @test isapprox(c3, c1)
+
+      # cylindrical (via Cartesian3D)
+      c1 = Mercator(T(1), T(1))
+      c2 = convert(Cylindrical, c1)
+      c3 = convert(Mercator{WGS84Latest}, c2)
+      @test isapprox(c2, Cylindrical{WGS84Latest}(T(6.378136999999922e6), T(1.5678559428873976e-7), T(0.9999999999999915)))
+      @test isapprox(c3, c1)
+
+      # spherical (via Cartesian3D)
+      c1 = Mercator(T(1), T(1))
+      c2 = convert(Spherical, c1)
+      c3 = convert(Mercator{WGS84Latest}, c2)
+      @test isapprox(c2, Spherical{WGS84Latest}(T(6.378137000000001e6), T(1.5707961700093023), T(1.5678559428873976e-7)))
+      @test isapprox(c3, c1)
 
       # type stability
       c1 = Cartesian{WGS84Latest}(T(1), T(1))
