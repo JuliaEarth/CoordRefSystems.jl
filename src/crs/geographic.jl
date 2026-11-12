@@ -118,13 +118,21 @@ function geod2auth(q, qₚ)
 end
 
 function authq(ϕ, e, ome²)
+  # q is odd in ϕ, so compute it for |sin(ϕ)| and restore the sign.
+  # Otherwise rounding makes q(-90°) differ from -qₚ, and the arcsine
+  # in geod2auth turns that into a large error near the pole (#243)
   sinϕ = sin(ϕ)
-  esinϕ = e * sinϕ
-  ome² * (sinϕ / (1 - esinϕ^2) - (1 / 2e) * log((1 - esinϕ) / (1 + esinϕ)))
+  copysign(_authq(abs(sinϕ), e, ome²), sinϕ)
 end
 
 # same formula as q, but ϕ = 90°
-authqₚ(e, ome²) = ome² * (1 / ome² - (1 / 2e) * log((1 - e) / (1 + e)))
+authqₚ(e, ome²) = _authq(one(e), e, ome²)
+
+# q as a function of s = |sin(ϕ)|, with log((1 + es) / (1 - es)) = 2atanh(es)
+function _authq(s, e, ome²)
+  es = e * s
+  ome² * (s / (1 - es^2) + atanh(es) / e)
+end
 
 const _P₁₁ = 0.33333333333333333333 # 1 / 3
 const _P₁₂ = 0.17222222222222222222 # 31 / 180

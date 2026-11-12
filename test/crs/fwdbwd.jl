@@ -17,8 +17,10 @@
     # that should be recovered by the given PRJ type
     success = true
     for (lat, lon) in Iterators.product(T.(-90:90), T.(-180:180))
-      # https://github.com/JuliaEarth/CoordRefSystems.jl/issues/243
-      PRJ <: EqualEarth && abs(lat) == T(90) && continue
+      # at the poles the argument of the arcsine in the EqualEarth inverse
+      # approaches one, so only half of the significant digits of the latitude
+      # can be recovered in Float32
+      PRJ <: EqualEarth && T === Float32 && abs(lat) == T(90) && continue
 
       # the LambertConic projection maps all values of the form (90, lon) to (xₒ, y)
       # therefore we cannot recover the original lon value when lat=90
