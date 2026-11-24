@@ -172,6 +172,7 @@ const NAD83CSRSLatest = NAD83CSRS{8}
 
 ellipsoid(::Type{<:NAD83CSRS}) = GRS80🌎
 
+epoch(::Type{NAD83CSRS{1}}) = 1997.0
 epoch(::Type{NAD83CSRS{2}}) = 1997.0
 epoch(::Type{NAD83CSRS{3}}) = 1997.0
 epoch(::Type{NAD83CSRS{4}}) = 2002.0

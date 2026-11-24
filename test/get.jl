@@ -66,6 +66,7 @@
   gettest(LatLon{ISN2004}, EPSG{5324})
   gettest(LatLon{SAD96}, EPSG{5527})
   gettest(LatLon{ISN2016}, EPSG{8086})
+  gettest(Cartesian2D{NAD83CSRS{1}}, EPSG{3155})
   gettest(LatLon{NAD83CSRS{1}}, EPSG{8232})
   gettest(LatLon{NAD83CSRS{2}}, EPSG{8237})
   gettest(LatLon{NAD83CSRS{3}}, EPSG{8240})

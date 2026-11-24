@@ -37,6 +37,7 @@
   @test epoch(ETRF{2020}) == 2015.0
 
   @test ellipsoid(NAD83CSRSLatest) === CoordRefSystems.GRS80🌎
+  @test epoch(NAD83CSRS{1}) == 1997.0
   @test epoch(NAD83CSRS{2}) == 1997.0
   @test epoch(NAD83CSRS{3}) == 1997.0
   @test epoch(NAD83CSRS{4}) == 2002.0
