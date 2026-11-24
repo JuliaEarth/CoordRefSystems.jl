@@ -45,6 +45,7 @@ const esriid2code = Dict(
   "ISN93_Lambert_1993" => EPSG{3057},
   "NAD_1983_California_Teale_Albers" => EPSG{3310},
   "NAD_1983_Contiguous_USA_Albers" => EPSG{5070},
+  "NAD_1983_CSRS_UTM_Zone_8N" => EPSG{3155},
   "North_Pole_Orthographic" => ESRI{102035},
   "NZGD_2000_New_Zealand_Transverse_Mercator" => EPSG{2193},
   "RGF93_v2" => EPSG{9777},
