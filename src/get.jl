@@ -115,7 +115,7 @@ end
 @crscodes LatLon{ISN2004} EPSG{5324}
 @crscodes LatLon{SAD96} EPSG{5527}
 @crscodes LatLon{ISN2016} EPSG{8086}
-@crscodes Cartesian2D{NAD83CSRS{1}} EPSG{3155}
+@crscodes shift(TransverseMercator{0.9996,0.0°,NAD83CSRS{1}}, lonₒ=-135.0°, xₒ=500000.0m, yₒ=0.0m) EPSG{3155}
 @crscodes LatLon{NAD83CSRS{1}} EPSG{8232}
 @crscodes LatLon{NAD83CSRS{2}} EPSG{8237}
 @crscodes LatLon{NAD83CSRS{3}} EPSG{8240}
